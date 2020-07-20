@@ -11,21 +11,21 @@
 class Tower {
     public:
         //Constructor
-        Tower();
+        Tower(Position p) : position_(p) {};
 
         //Destructor
-        //virtual ~Tower();
+        virtual ~Tower() {};
 
         //Update the state of the tower, should be virtual
-        void Update();
+        virtual void Update() = 0;
 
         //Shoot an enemy, should be virtual
-        void Shoot();
+        virtual void Shoot() = 0;
 
     protected:
         int range_;
         Position position_;
         //enemies_in_range_;
         int reload_speed_;
-        Bullet bullet_type_;
+        //Bullet bullet_type_;
 };
