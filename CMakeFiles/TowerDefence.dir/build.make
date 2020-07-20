@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /mnt/c/Koulu/C++/towerDefence
+CMAKE_SOURCE_DIR = /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /mnt/c/Koulu/C++/towerDefence
+CMAKE_BINARY_DIR = /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2
 
 # Include any dependencies generated for this target.
 include CMakeFiles/TowerDefence.dir/depend.make
@@ -57,30 +57,75 @@ include CMakeFiles/TowerDefence.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/TowerDefence.dir/flags.make
 
+CMakeFiles/TowerDefence.dir/src/bullet.cpp.o: CMakeFiles/TowerDefence.dir/flags.make
+CMakeFiles/TowerDefence.dir/src/bullet.cpp.o: src/bullet.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/TowerDefence.dir/src/bullet.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TowerDefence.dir/src/bullet.cpp.o -c /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/src/bullet.cpp
+
+CMakeFiles/TowerDefence.dir/src/bullet.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TowerDefence.dir/src/bullet.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/src/bullet.cpp > CMakeFiles/TowerDefence.dir/src/bullet.cpp.i
+
+CMakeFiles/TowerDefence.dir/src/bullet.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TowerDefence.dir/src/bullet.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/src/bullet.cpp -o CMakeFiles/TowerDefence.dir/src/bullet.cpp.s
+
+CMakeFiles/TowerDefence.dir/src/enemy.cpp.o: CMakeFiles/TowerDefence.dir/flags.make
+CMakeFiles/TowerDefence.dir/src/enemy.cpp.o: src/enemy.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/TowerDefence.dir/src/enemy.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TowerDefence.dir/src/enemy.cpp.o -c /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/src/enemy.cpp
+
+CMakeFiles/TowerDefence.dir/src/enemy.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TowerDefence.dir/src/enemy.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/src/enemy.cpp > CMakeFiles/TowerDefence.dir/src/enemy.cpp.i
+
+CMakeFiles/TowerDefence.dir/src/enemy.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TowerDefence.dir/src/enemy.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/src/enemy.cpp -o CMakeFiles/TowerDefence.dir/src/enemy.cpp.s
+
 CMakeFiles/TowerDefence.dir/src/main.cpp.o: CMakeFiles/TowerDefence.dir/flags.make
 CMakeFiles/TowerDefence.dir/src/main.cpp.o: src/main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Koulu/C++/towerDefence/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/TowerDefence.dir/src/main.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TowerDefence.dir/src/main.cpp.o -c /mnt/c/Koulu/C++/towerDefence/src/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/TowerDefence.dir/src/main.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TowerDefence.dir/src/main.cpp.o -c /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/src/main.cpp
 
 CMakeFiles/TowerDefence.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TowerDefence.dir/src/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Koulu/C++/towerDefence/src/main.cpp > CMakeFiles/TowerDefence.dir/src/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/src/main.cpp > CMakeFiles/TowerDefence.dir/src/main.cpp.i
 
 CMakeFiles/TowerDefence.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TowerDefence.dir/src/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Koulu/C++/towerDefence/src/main.cpp -o CMakeFiles/TowerDefence.dir/src/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/src/main.cpp -o CMakeFiles/TowerDefence.dir/src/main.cpp.s
+
+CMakeFiles/TowerDefence.dir/src/tower.cpp.o: CMakeFiles/TowerDefence.dir/flags.make
+CMakeFiles/TowerDefence.dir/src/tower.cpp.o: src/tower.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/TowerDefence.dir/src/tower.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/TowerDefence.dir/src/tower.cpp.o -c /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/src/tower.cpp
+
+CMakeFiles/TowerDefence.dir/src/tower.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/TowerDefence.dir/src/tower.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/src/tower.cpp > CMakeFiles/TowerDefence.dir/src/tower.cpp.i
+
+CMakeFiles/TowerDefence.dir/src/tower.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/TowerDefence.dir/src/tower.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/src/tower.cpp -o CMakeFiles/TowerDefence.dir/src/tower.cpp.s
 
 # Object files for target TowerDefence
 TowerDefence_OBJECTS = \
-"CMakeFiles/TowerDefence.dir/src/main.cpp.o"
+"CMakeFiles/TowerDefence.dir/src/bullet.cpp.o" \
+"CMakeFiles/TowerDefence.dir/src/enemy.cpp.o" \
+"CMakeFiles/TowerDefence.dir/src/main.cpp.o" \
+"CMakeFiles/TowerDefence.dir/src/tower.cpp.o"
 
 # External object files for target TowerDefence
 TowerDefence_EXTERNAL_OBJECTS =
 
+TowerDefence: CMakeFiles/TowerDefence.dir/src/bullet.cpp.o
+TowerDefence: CMakeFiles/TowerDefence.dir/src/enemy.cpp.o
 TowerDefence: CMakeFiles/TowerDefence.dir/src/main.cpp.o
+TowerDefence: CMakeFiles/TowerDefence.dir/src/tower.cpp.o
 TowerDefence: CMakeFiles/TowerDefence.dir/build.make
 TowerDefence: CMakeFiles/TowerDefence.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/mnt/c/Koulu/C++/towerDefence/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable TowerDefence"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable TowerDefence"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/TowerDefence.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -93,6 +138,6 @@ CMakeFiles/TowerDefence.dir/clean:
 .PHONY : CMakeFiles/TowerDefence.dir/clean
 
 CMakeFiles/TowerDefence.dir/depend:
-	cd /mnt/c/Koulu/C++/towerDefence && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /mnt/c/Koulu/C++/towerDefence /mnt/c/Koulu/C++/towerDefence /mnt/c/Koulu/C++/towerDefence /mnt/c/Koulu/C++/towerDefence /mnt/c/Koulu/C++/towerDefence/CMakeFiles/TowerDefence.dir/DependInfo.cmake --color=$(COLOR)
+	cd /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2 && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2 /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2 /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2 /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2 /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles/TowerDefence.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/TowerDefence.dir/depend
 

@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /mnt/c/Koulu/C++/towerDefence
+CMAKE_SOURCE_DIR = /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /mnt/c/Koulu/C++/towerDefence
+CMAKE_BINARY_DIR = /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -126,9 +126,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Koulu/C++/towerDefence/CMakeFiles /mnt/c/Koulu/C++/towerDefence/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Koulu/C++/towerDefence/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -169,6 +169,60 @@ TowerDefence/fast:
 	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/build
 .PHONY : TowerDefence/fast
 
+src/bullet.o: src/bullet.cpp.o
+
+.PHONY : src/bullet.o
+
+# target to build an object file
+src/bullet.cpp.o:
+	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/src/bullet.cpp.o
+.PHONY : src/bullet.cpp.o
+
+src/bullet.i: src/bullet.cpp.i
+
+.PHONY : src/bullet.i
+
+# target to preprocess a source file
+src/bullet.cpp.i:
+	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/src/bullet.cpp.i
+.PHONY : src/bullet.cpp.i
+
+src/bullet.s: src/bullet.cpp.s
+
+.PHONY : src/bullet.s
+
+# target to generate assembly for a file
+src/bullet.cpp.s:
+	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/src/bullet.cpp.s
+.PHONY : src/bullet.cpp.s
+
+src/enemy.o: src/enemy.cpp.o
+
+.PHONY : src/enemy.o
+
+# target to build an object file
+src/enemy.cpp.o:
+	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/src/enemy.cpp.o
+.PHONY : src/enemy.cpp.o
+
+src/enemy.i: src/enemy.cpp.i
+
+.PHONY : src/enemy.i
+
+# target to preprocess a source file
+src/enemy.cpp.i:
+	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/src/enemy.cpp.i
+.PHONY : src/enemy.cpp.i
+
+src/enemy.s: src/enemy.cpp.s
+
+.PHONY : src/enemy.s
+
+# target to generate assembly for a file
+src/enemy.cpp.s:
+	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/src/enemy.cpp.s
+.PHONY : src/enemy.cpp.s
+
 src/main.o: src/main.cpp.o
 
 .PHONY : src/main.o
@@ -196,6 +250,33 @@ src/main.cpp.s:
 	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/tower.o: src/tower.cpp.o
+
+.PHONY : src/tower.o
+
+# target to build an object file
+src/tower.cpp.o:
+	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/src/tower.cpp.o
+.PHONY : src/tower.cpp.o
+
+src/tower.i: src/tower.cpp.i
+
+.PHONY : src/tower.i
+
+# target to preprocess a source file
+src/tower.cpp.i:
+	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/src/tower.cpp.i
+.PHONY : src/tower.cpp.i
+
+src/tower.s: src/tower.cpp.s
+
+.PHONY : src/tower.s
+
+# target to generate assembly for a file
+src/tower.cpp.s:
+	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/src/tower.cpp.s
+.PHONY : src/tower.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -209,9 +290,18 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... TowerDefence"
+	@echo "... src/bullet.o"
+	@echo "... src/bullet.i"
+	@echo "... src/bullet.s"
+	@echo "... src/enemy.o"
+	@echo "... src/enemy.i"
+	@echo "... src/enemy.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/tower.o"
+	@echo "... src/tower.i"
+	@echo "... src/tower.s"
 .PHONY : help
 
 

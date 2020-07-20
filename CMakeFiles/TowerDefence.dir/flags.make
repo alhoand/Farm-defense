@@ -6,5 +6,5 @@ CXX_FLAGS =
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/mnt/c/Koulu/C++/towerDefence/src 
+CXX_INCLUDES = -I/u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/src 
 

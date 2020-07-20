@@ -1,7 +1,7 @@
-/mnt/c/Koulu/C++/towerDefence/CMakeFiles/install/strip.dir
-/mnt/c/Koulu/C++/towerDefence/CMakeFiles/install/local.dir
-/mnt/c/Koulu/C++/towerDefence/CMakeFiles/install.dir
-/mnt/c/Koulu/C++/towerDefence/CMakeFiles/list_install_components.dir
-/mnt/c/Koulu/C++/towerDefence/CMakeFiles/rebuild_cache.dir
-/mnt/c/Koulu/C++/towerDefence/CMakeFiles/edit_cache.dir
-/mnt/c/Koulu/C++/towerDefence/CMakeFiles/TowerDefence.dir
+/u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles/install/strip.dir
+/u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles/install/local.dir
+/u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles/install.dir
+/u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles/list_install_components.dir
+/u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles/rebuild_cache.dir
+/u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles/edit_cache.dir
+/u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles/TowerDefence.dir
