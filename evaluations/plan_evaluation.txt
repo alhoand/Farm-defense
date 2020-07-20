@@ -1,0 +1,6 @@
+The project plan details well the intended structure of the project and shows 
+that some thought went into the technology and library choices. The plan is 
+clear and has a good idea about what can be done in the given time. The 
+division of work is clear and reasonable. Looking forward to the end result!
+
+Grade for the project plan: 5
