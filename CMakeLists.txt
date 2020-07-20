@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 2.8.9)
-project (TowerDefence)
+project (TowerDefense)
 include_directories("src")
 
-set(EXECUTABLE_NAME TowerDefence)
+set(EXECUTABLE_NAME TowerDefense)
 
 #addFiles
 file(GLOB SOURCES src/*.cpp)
