@@ -44,16 +44,16 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /mnt/c/Koulu/C++/towerDefence/src
+CMAKE_SOURCE_DIR = /mnt/c/Koulu/C++/towerDefence
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /mnt/c/Koulu/C++/towerDefence/src
+CMAKE_BINARY_DIR = /mnt/c/Koulu/C++/towerDefence
 
 #=============================================================================
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/hello.dir/all
+all: CMakeFiles/TowerDefence.dir/all
 
 .PHONY : all
 
@@ -63,36 +63,36 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/hello.dir/clean
+clean: CMakeFiles/TowerDefence.dir/clean
 
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/hello.dir
+# Target rules for target CMakeFiles/TowerDefence.dir
 
 # All Build rule for target.
-CMakeFiles/hello.dir/all:
-	$(MAKE) -f CMakeFiles/hello.dir/build.make CMakeFiles/hello.dir/depend
-	$(MAKE) -f CMakeFiles/hello.dir/build.make CMakeFiles/hello.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/Koulu/C++/towerDefence/src/CMakeFiles --progress-num=1,2 "Built target hello"
-.PHONY : CMakeFiles/hello.dir/all
+CMakeFiles/TowerDefence.dir/all:
+	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/depend
+	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/Koulu/C++/towerDefence/CMakeFiles --progress-num=1,2 "Built target TowerDefence"
+.PHONY : CMakeFiles/TowerDefence.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/hello.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Koulu/C++/towerDefence/src/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/hello.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Koulu/C++/towerDefence/src/CMakeFiles 0
-.PHONY : CMakeFiles/hello.dir/rule
+CMakeFiles/TowerDefence.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Koulu/C++/towerDefence/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/TowerDefence.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Koulu/C++/towerDefence/CMakeFiles 0
+.PHONY : CMakeFiles/TowerDefence.dir/rule
 
 # Convenience name for target.
-hello: CMakeFiles/hello.dir/rule
+TowerDefence: CMakeFiles/TowerDefence.dir/rule
 
-.PHONY : hello
+.PHONY : TowerDefence
 
 # clean rule for target.
-CMakeFiles/hello.dir/clean:
-	$(MAKE) -f CMakeFiles/hello.dir/build.make CMakeFiles/hello.dir/clean
-.PHONY : CMakeFiles/hello.dir/clean
+CMakeFiles/TowerDefence.dir/clean:
+	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/clean
+.PHONY : CMakeFiles/TowerDefence.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

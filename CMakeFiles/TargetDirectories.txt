@@ -1,0 +1,7 @@
+/mnt/c/Koulu/C++/towerDefence/CMakeFiles/install/strip.dir
+/mnt/c/Koulu/C++/towerDefence/CMakeFiles/install/local.dir
+/mnt/c/Koulu/C++/towerDefence/CMakeFiles/install.dir
+/mnt/c/Koulu/C++/towerDefence/CMakeFiles/list_install_components.dir
+/mnt/c/Koulu/C++/towerDefence/CMakeFiles/rebuild_cache.dir
+/mnt/c/Koulu/C++/towerDefence/CMakeFiles/edit_cache.dir
+/mnt/c/Koulu/C++/towerDefence/CMakeFiles/TowerDefence.dir

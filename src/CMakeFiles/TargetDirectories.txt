@@ -1,3 +1,0 @@
-/mnt/c/Koulu/C++/towerDefence/src/CMakeFiles/rebuild_cache.dir
-/mnt/c/Koulu/C++/towerDefence/src/CMakeFiles/edit_cache.dir
-/mnt/c/Koulu/C++/towerDefence/src/CMakeFiles/hello.dir

@@ -4,12 +4,13 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/mnt/c/Koulu/C++/towerDefence/src/helloworld.cpp" "/mnt/c/Koulu/C++/towerDefence/src/CMakeFiles/hello.dir/helloworld.cpp.o"
+  "/mnt/c/Koulu/C++/towerDefence/src/main.cpp" "/mnt/c/Koulu/C++/towerDefence/CMakeFiles/TowerDefence.dir/src/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
+  "src"
   )
 
 # Targets to which this target links.
