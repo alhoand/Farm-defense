@@ -13,7 +13,7 @@ class Bullet {
         Bullet();
 
         //Destructor
-        //virtual ~Bullet();
+        virtual ~Bullet() {};
 
         //Update the state of the bullet, should be virtual
         void Update();
