@@ -4,10 +4,10 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/src/bullet.cpp" "/u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles/TowerDefence.dir/src/bullet.cpp.o"
-  "/u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/src/enemy.cpp" "/u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles/TowerDefence.dir/src/enemy.cpp.o"
-  "/u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/src/main.cpp" "/u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles/TowerDefence.dir/src/main.cpp.o"
-  "/u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/src/tower.cpp" "/u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles/TowerDefence.dir/src/tower.cpp.o"
+  "/mnt/c/Koulu/C++/towerDefence/src/bullet.cpp" "/mnt/c/Koulu/C++/towerDefence/CMakeFiles/TowerDefence.dir/src/bullet.cpp.o"
+  "/mnt/c/Koulu/C++/towerDefence/src/enemy.cpp" "/mnt/c/Koulu/C++/towerDefence/CMakeFiles/TowerDefence.dir/src/enemy.cpp.o"
+  "/mnt/c/Koulu/C++/towerDefence/src/main.cpp" "/mnt/c/Koulu/C++/towerDefence/CMakeFiles/TowerDefence.dir/src/main.cpp.o"
+  "/mnt/c/Koulu/C++/towerDefence/src/tower.cpp" "/mnt/c/Koulu/C++/towerDefence/CMakeFiles/TowerDefence.dir/src/tower.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

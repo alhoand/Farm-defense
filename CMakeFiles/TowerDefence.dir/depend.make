@@ -10,6 +10,7 @@ CMakeFiles/TowerDefence.dir/src/main.cpp.o: src/enemy.hpp
 CMakeFiles/TowerDefence.dir/src/main.cpp.o: src/game_field.hpp
 CMakeFiles/TowerDefence.dir/src/main.cpp.o: src/main.cpp
 CMakeFiles/TowerDefence.dir/src/main.cpp.o: src/position.hpp
+CMakeFiles/TowerDefence.dir/src/main.cpp.o: src/test_tower.hpp
 CMakeFiles/TowerDefence.dir/src/main.cpp.o: src/tower.hpp
 
 CMakeFiles/TowerDefence.dir/src/tower.cpp.o: src/tower.cpp

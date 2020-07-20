@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2
+CMAKE_SOURCE_DIR = /mnt/c/Koulu/C++/towerDefence
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2
+CMAKE_BINARY_DIR = /mnt/c/Koulu/C++/towerDefence
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -126,9 +126,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Koulu/C++/towerDefence/CMakeFiles /mnt/c/Koulu/C++/towerDefence/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Koulu/C++/towerDefence/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -157,17 +157,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named TowerDefence
+# Target rules for targets named TowerDefense
 
 # Build rule for target.
-TowerDefence: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 TowerDefence
-.PHONY : TowerDefence
+TowerDefense: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 TowerDefense
+.PHONY : TowerDefense
 
 # fast build rule for target.
-TowerDefence/fast:
-	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/build
-.PHONY : TowerDefence/fast
+TowerDefense/fast:
+	$(MAKE) -f CMakeFiles/TowerDefense.dir/build.make CMakeFiles/TowerDefense.dir/build
+.PHONY : TowerDefense/fast
 
 src/bullet.o: src/bullet.cpp.o
 
@@ -175,7 +175,7 @@ src/bullet.o: src/bullet.cpp.o
 
 # target to build an object file
 src/bullet.cpp.o:
-	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/src/bullet.cpp.o
+	$(MAKE) -f CMakeFiles/TowerDefense.dir/build.make CMakeFiles/TowerDefense.dir/src/bullet.cpp.o
 .PHONY : src/bullet.cpp.o
 
 src/bullet.i: src/bullet.cpp.i
@@ -184,7 +184,7 @@ src/bullet.i: src/bullet.cpp.i
 
 # target to preprocess a source file
 src/bullet.cpp.i:
-	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/src/bullet.cpp.i
+	$(MAKE) -f CMakeFiles/TowerDefense.dir/build.make CMakeFiles/TowerDefense.dir/src/bullet.cpp.i
 .PHONY : src/bullet.cpp.i
 
 src/bullet.s: src/bullet.cpp.s
@@ -193,7 +193,7 @@ src/bullet.s: src/bullet.cpp.s
 
 # target to generate assembly for a file
 src/bullet.cpp.s:
-	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/src/bullet.cpp.s
+	$(MAKE) -f CMakeFiles/TowerDefense.dir/build.make CMakeFiles/TowerDefense.dir/src/bullet.cpp.s
 .PHONY : src/bullet.cpp.s
 
 src/enemy.o: src/enemy.cpp.o
@@ -202,7 +202,7 @@ src/enemy.o: src/enemy.cpp.o
 
 # target to build an object file
 src/enemy.cpp.o:
-	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/src/enemy.cpp.o
+	$(MAKE) -f CMakeFiles/TowerDefense.dir/build.make CMakeFiles/TowerDefense.dir/src/enemy.cpp.o
 .PHONY : src/enemy.cpp.o
 
 src/enemy.i: src/enemy.cpp.i
@@ -211,7 +211,7 @@ src/enemy.i: src/enemy.cpp.i
 
 # target to preprocess a source file
 src/enemy.cpp.i:
-	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/src/enemy.cpp.i
+	$(MAKE) -f CMakeFiles/TowerDefense.dir/build.make CMakeFiles/TowerDefense.dir/src/enemy.cpp.i
 .PHONY : src/enemy.cpp.i
 
 src/enemy.s: src/enemy.cpp.s
@@ -220,8 +220,35 @@ src/enemy.s: src/enemy.cpp.s
 
 # target to generate assembly for a file
 src/enemy.cpp.s:
-	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/src/enemy.cpp.s
+	$(MAKE) -f CMakeFiles/TowerDefense.dir/build.make CMakeFiles/TowerDefense.dir/src/enemy.cpp.s
 .PHONY : src/enemy.cpp.s
+
+src/game_field.o: src/game_field.cpp.o
+
+.PHONY : src/game_field.o
+
+# target to build an object file
+src/game_field.cpp.o:
+	$(MAKE) -f CMakeFiles/TowerDefense.dir/build.make CMakeFiles/TowerDefense.dir/src/game_field.cpp.o
+.PHONY : src/game_field.cpp.o
+
+src/game_field.i: src/game_field.cpp.i
+
+.PHONY : src/game_field.i
+
+# target to preprocess a source file
+src/game_field.cpp.i:
+	$(MAKE) -f CMakeFiles/TowerDefense.dir/build.make CMakeFiles/TowerDefense.dir/src/game_field.cpp.i
+.PHONY : src/game_field.cpp.i
+
+src/game_field.s: src/game_field.cpp.s
+
+.PHONY : src/game_field.s
+
+# target to generate assembly for a file
+src/game_field.cpp.s:
+	$(MAKE) -f CMakeFiles/TowerDefense.dir/build.make CMakeFiles/TowerDefense.dir/src/game_field.cpp.s
+.PHONY : src/game_field.cpp.s
 
 src/main.o: src/main.cpp.o
 
@@ -229,7 +256,7 @@ src/main.o: src/main.cpp.o
 
 # target to build an object file
 src/main.cpp.o:
-	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/src/main.cpp.o
+	$(MAKE) -f CMakeFiles/TowerDefense.dir/build.make CMakeFiles/TowerDefense.dir/src/main.cpp.o
 .PHONY : src/main.cpp.o
 
 src/main.i: src/main.cpp.i
@@ -238,7 +265,7 @@ src/main.i: src/main.cpp.i
 
 # target to preprocess a source file
 src/main.cpp.i:
-	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/src/main.cpp.i
+	$(MAKE) -f CMakeFiles/TowerDefense.dir/build.make CMakeFiles/TowerDefense.dir/src/main.cpp.i
 .PHONY : src/main.cpp.i
 
 src/main.s: src/main.cpp.s
@@ -247,7 +274,7 @@ src/main.s: src/main.cpp.s
 
 # target to generate assembly for a file
 src/main.cpp.s:
-	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/src/main.cpp.s
+	$(MAKE) -f CMakeFiles/TowerDefense.dir/build.make CMakeFiles/TowerDefense.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
 src/tower.o: src/tower.cpp.o
@@ -256,7 +283,7 @@ src/tower.o: src/tower.cpp.o
 
 # target to build an object file
 src/tower.cpp.o:
-	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/src/tower.cpp.o
+	$(MAKE) -f CMakeFiles/TowerDefense.dir/build.make CMakeFiles/TowerDefense.dir/src/tower.cpp.o
 .PHONY : src/tower.cpp.o
 
 src/tower.i: src/tower.cpp.i
@@ -265,7 +292,7 @@ src/tower.i: src/tower.cpp.i
 
 # target to preprocess a source file
 src/tower.cpp.i:
-	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/src/tower.cpp.i
+	$(MAKE) -f CMakeFiles/TowerDefense.dir/build.make CMakeFiles/TowerDefense.dir/src/tower.cpp.i
 .PHONY : src/tower.cpp.i
 
 src/tower.s: src/tower.cpp.s
@@ -274,7 +301,7 @@ src/tower.s: src/tower.cpp.s
 
 # target to generate assembly for a file
 src/tower.cpp.s:
-	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/src/tower.cpp.s
+	$(MAKE) -f CMakeFiles/TowerDefense.dir/build.make CMakeFiles/TowerDefense.dir/src/tower.cpp.s
 .PHONY : src/tower.cpp.s
 
 # Help Target
@@ -289,13 +316,16 @@ help:
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... TowerDefence"
+	@echo "... TowerDefense"
 	@echo "... src/bullet.o"
 	@echo "... src/bullet.i"
 	@echo "... src/bullet.s"
 	@echo "... src/enemy.o"
 	@echo "... src/enemy.i"
 	@echo "... src/enemy.s"
+	@echo "... src/game_field.o"
+	@echo "... src/game_field.i"
+	@echo "... src/game_field.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

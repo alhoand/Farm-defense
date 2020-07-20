@@ -44,16 +44,16 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2
+CMAKE_SOURCE_DIR = /mnt/c/Koulu/C++/towerDefence
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2
+CMAKE_BINARY_DIR = /mnt/c/Koulu/C++/towerDefence
 
 #=============================================================================
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/TowerDefence.dir/all
+all: CMakeFiles/TowerDefense.dir/all
 
 .PHONY : all
 
@@ -63,36 +63,36 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/TowerDefence.dir/clean
+clean: CMakeFiles/TowerDefense.dir/clean
 
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/TowerDefence.dir
+# Target rules for target CMakeFiles/TowerDefense.dir
 
 # All Build rule for target.
-CMakeFiles/TowerDefence.dir/all:
-	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/depend
-	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles --progress-num=1,2,3,4,5 "Built target TowerDefence"
-.PHONY : CMakeFiles/TowerDefence.dir/all
+CMakeFiles/TowerDefense.dir/all:
+	$(MAKE) -f CMakeFiles/TowerDefense.dir/build.make CMakeFiles/TowerDefense.dir/depend
+	$(MAKE) -f CMakeFiles/TowerDefense.dir/build.make CMakeFiles/TowerDefense.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/Koulu/C++/towerDefence/CMakeFiles --progress-num=1,2,3,4,5,6 "Built target TowerDefense"
+.PHONY : CMakeFiles/TowerDefense.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/TowerDefence.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles 5
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/TowerDefence.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles 0
-.PHONY : CMakeFiles/TowerDefence.dir/rule
+CMakeFiles/TowerDefense.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Koulu/C++/towerDefence/CMakeFiles 6
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/TowerDefense.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Koulu/C++/towerDefence/CMakeFiles 0
+.PHONY : CMakeFiles/TowerDefense.dir/rule
 
 # Convenience name for target.
-TowerDefence: CMakeFiles/TowerDefence.dir/rule
+TowerDefense: CMakeFiles/TowerDefense.dir/rule
 
-.PHONY : TowerDefence
+.PHONY : TowerDefense
 
 # clean rule for target.
-CMakeFiles/TowerDefence.dir/clean:
-	$(MAKE) -f CMakeFiles/TowerDefence.dir/build.make CMakeFiles/TowerDefence.dir/clean
-.PHONY : CMakeFiles/TowerDefence.dir/clean
+CMakeFiles/TowerDefense.dir/clean:
+	$(MAKE) -f CMakeFiles/TowerDefense.dir/build.make CMakeFiles/TowerDefense.dir/clean
+.PHONY : CMakeFiles/TowerDefense.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

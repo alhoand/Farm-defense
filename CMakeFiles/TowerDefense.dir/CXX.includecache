@@ -14,6 +14,10 @@ position.hpp
 position.hpp
 /mnt/c/Koulu/C++/towerDefence/src/position.hpp
 
+/mnt/c/Koulu/C++/towerDefence/src/game_field.cpp
+game_field.hpp
+/mnt/c/Koulu/C++/towerDefence/src/game_field.hpp
+
 /mnt/c/Koulu/C++/towerDefence/src/game_field.hpp
 list
 -
@@ -41,6 +45,8 @@ position.hpp
 /mnt/c/Koulu/C++/towerDefence/src/position.hpp
 
 /mnt/c/Koulu/C++/towerDefence/src/position.hpp
+iostream
+-
 utility
 -
 
