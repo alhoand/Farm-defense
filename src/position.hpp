@@ -1,4 +1,5 @@
 #pragma once
+#include<iostream>
 
 //Helper class for coordinates on game field
 #include <utility>
