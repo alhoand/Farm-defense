@@ -17,13 +17,15 @@ class GameField {
         GameField();
 
         //Destructor
-        //virtual ~GameField();
-
+		//virtual ~GameField();
+		
+		void AddTower(Tower* t);
+		
         //Update whole game field, should be virtual
         void Update();
 
     private:
-        std::list<Tower> towers_;
-        std::list<Enemy> enemies_;
-        std::list<Bullet> bullets_;
+        std::list<Tower*> towers_;
+        std::list<Enemy*> enemies_;
+        std::list<Bullet*> bullets_;
 };
