@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /mnt/c/Koulu/C++/towerDefence
+CMAKE_SOURCE_DIR = /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /mnt/c/Koulu/C++/towerDefence
+CMAKE_BINARY_DIR = /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -126,9 +126,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Koulu/C++/towerDefence/CMakeFiles /mnt/c/Koulu/C++/towerDefence/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Koulu/C++/towerDefence/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /u/38/mikkonj8/unix/Documents/cpp_project/tower-defense-2020-2/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

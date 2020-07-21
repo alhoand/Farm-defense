@@ -20,12 +20,16 @@ class Enemy {
             }
 
         //Destructor
-        virtual ~Enemy() {}
+        virtual ~Enemy() {
+            for (auto it = path_.begin(); it != path_.end(); it++) {
+                delete *it;
+            }
+        }
 
-        //Update the state of enemy, should be virtual
+        //Update the state of enemy
         virtual void Update() = 0;
 
-        //Take damage, should be virtual
+        //Take damage
         virtual void TakeDamage(Bullet bullet) = 0;
 
     protected:
