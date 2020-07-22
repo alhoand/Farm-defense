@@ -1,6 +1,5 @@
 #pragma once
 
-//Initial header file for abstract tower class
 #include "position.hpp"
 
 /*  ***TODO***

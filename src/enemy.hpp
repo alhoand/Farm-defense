@@ -29,8 +29,8 @@ class Enemy {
         //Update the state of enemy
         virtual void Update() = 0;
 
-        //Take damage
-        virtual void TakeDamage(Bullet bullet) = 0;
+        //Take hit from a bullet
+        virtual void TakeHit(Bullet bullet) = 0;
 
     protected:
         int hitpoints_;

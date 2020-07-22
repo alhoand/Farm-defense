@@ -1,14 +1,12 @@
 #pragma once
-#include<iostream>
 
-//Helper class for coordinates on game field
+#include <iostream>
 #include <utility>
 
+//Helper class for coordinates on game field
 class Position {
     public:
-
 		Position(int x, int y): x_(x), y_(y) {};
-		
 		
         //getter function for coordinates
         std::pair<int, int> GetPosition() {
