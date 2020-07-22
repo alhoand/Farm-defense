@@ -38,7 +38,7 @@ class TestEnemy : public Enemy {
         *   => if true take damage more or less than normally
         * 2. otherwise take damage or slow down for number of ticks
         */
-        virtual void TakeDamage(Bullet bullet) {
+        virtual void TakeHit(Bullet bullet) {
             std::cout << "Enemy takes damage" << std::endl;
             hitpoints_ -= 1;
         }
