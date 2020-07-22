@@ -26,8 +26,25 @@ class Enemy {
             }
         }
 
-        //Update the state of enemy
-        virtual void Update() = 0;
+        //Update the state of enemy, should return something!
+        /* Possible cases:
+        * 1. enemy is alive (hp > 0) 
+        *   - and not at the end of the path
+        *   => move enemy forward (change position) 
+        *   - and it is at the end of the path)
+            => game lost
+        * 2. enemy is dead (hp <= 0)
+        *  => return something to indicate enemy should be deleted from the game field
+        * TODO:
+        * Long lasting damage implementation
+        */
+        void Update() {
+            if (hitpoints_ > 0) {
+                //move enemy or game lost
+            } else {
+                //indicate game field somehow that enemy is dead
+            }
+        }
 
         //Take hit from a bullet
         virtual void TakeHit(Bullet bullet) = 0;

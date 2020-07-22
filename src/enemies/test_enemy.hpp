@@ -19,18 +19,6 @@ class TestEnemy : public Enemy {
         //Destructor, implement when class is abstract
         //~TestEnemy() = default;
 
-        //Update the state of enemy
-        /* Possible cases:
-        * 1. enemy is alive (hp > 0) and not at the end of the path
-        *   => move enemy forward (change position) 
-        * 2. enemy is at the end of the path
-        *   => game lost
-        * 3. enemy is dead (hp <= 0)
-        *  => ??? tell gamefield or do nothing?
-        */
-        virtual void Update() {
-            std::cout << "Enemy updated" << std::endl;
-        }
 
         //Take damage
         /* Damage depends on bullet, certain bullets can have stronger or weaker effects on certain enemies.
