@@ -1,7 +1,0 @@
-/Users/andersalho/Documents/Aalto-yliopisto/Cpp-kansio/project/tower-defense-2020-2/CMakeFiles/install/local.dir
-/Users/andersalho/Documents/Aalto-yliopisto/Cpp-kansio/project/tower-defense-2020-2/CMakeFiles/install/strip.dir
-/Users/andersalho/Documents/Aalto-yliopisto/Cpp-kansio/project/tower-defense-2020-2/CMakeFiles/install.dir
-/Users/andersalho/Documents/Aalto-yliopisto/Cpp-kansio/project/tower-defense-2020-2/CMakeFiles/TowerDefense.dir
-/Users/andersalho/Documents/Aalto-yliopisto/Cpp-kansio/project/tower-defense-2020-2/CMakeFiles/list_install_components.dir
-/Users/andersalho/Documents/Aalto-yliopisto/Cpp-kansio/project/tower-defense-2020-2/CMakeFiles/rebuild_cache.dir
-/Users/andersalho/Documents/Aalto-yliopisto/Cpp-kansio/project/tower-defense-2020-2/CMakeFiles/edit_cache.dir
