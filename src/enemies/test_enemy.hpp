@@ -28,6 +28,9 @@ class TestEnemy : public Enemy {
         */
         virtual void TakeHit(Bullet bullet) {
             std::cout << "Enemy takes damage" << std::endl;
+             //to make errors go away this just does something with bullet
+            hitpoints_ -= bullet.GetDamage();
+            hitpoints_ += bullet.GetDamage();
             hitpoints_ -= 1;
         }
 

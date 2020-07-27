@@ -1,3 +1,6 @@
+#ifndef TOWER_DEF_GAME
+#define TOWER_DEF_GAME
+
 #include <SFML/Graphics.hpp>
 
 class Game {
@@ -10,7 +13,8 @@ private:
     void Render();
     void HandlePlayerInput(sf::Keyboard::Key key, bool isPressed);
     sf::RenderWindow window_;
-    sf::CircleShape player_;
+    sf::Sprite player_;
+    sf::Texture texture_;
     bool isMovingUp_;
     bool isMovingDown_;
     bool isMovingLeft_;
@@ -19,3 +23,5 @@ private:
     const float playerSpeed_;
 
 };
+
+#endif

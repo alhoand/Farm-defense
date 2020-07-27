@@ -25,6 +25,7 @@ find_package(SFML 2.5 COMPONENTS network audio graphics window system REQUIRED)
 
 add_subdirectory(src)
 
+target_compile_options(${EXECUTABLE_NAME} PRIVATE -std=c++11 -Wall -Wextra -pedantic -Werror -g)
 target_link_libraries(${EXECUTABLE_NAME} sfml-network sfml-audio sfml-graphics sfml-window sfml-system)
 
 # For installing targets (not mandatory)

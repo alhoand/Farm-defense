@@ -1,14 +1,18 @@
 #include "game.hpp"
+#include <iostream>
 
 // All this code is essentially from the book SFML Game Development
 Game::Game() 
     : window_(sf::VideoMode(640, 480), "Tower Defense"), 
     player_(),
+    texture_(),
     timePerFrame_(sf::seconds(1.f / 60.f)),
     playerSpeed_(100.f) {
-    player_.setRadius(40.f);
-    player_.setPosition(100.f, 100.f);
-    player_.setFillColor(sf::Color::Cyan);
+        if (!texture_.loadFromFile("../media/textures/Doge.png")) {
+            std::cout << "Loading the Doge failed!" << std::endl;
+        }
+        player_.setTexture(texture_);
+        player_.setPosition(100.f, 100.f);
 }
 
 
@@ -41,6 +45,7 @@ void Game::ProcessEvents() {
             case sf::Event::Closed:
                 window_.close();
                 break;
+            default: break;
         }
     }
 }
