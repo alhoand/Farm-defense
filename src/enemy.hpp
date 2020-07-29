@@ -5,26 +5,48 @@
 
 #include "position.hpp"
 #include "bullet.hpp"
-
+#include "entity.hpp"
+#include "resource_identifiers.hpp"
 /*  ***TODO***
 * - all return values are void, to be changed for right ones
+ - Intregrate the path to work with sfml vectors 
 */
 
-class Enemy {
+class Enemy : public Entity {
     public:
-        //Constructor
-        Enemy(int hp, int speed, std::vector<Position*> path)
+        enum class Type {
+            Fire,
+            Water,
+            Leaf
+        };
+        //Constructors
+        Enemy();
+            
+        Enemy(Type type, const TextureHolder &textures, int hp, int speed);
+
+        //TODO: Integrate path with sfml 
+
+       /* Enemy(int hp, int speed, std::vector<Position*> path)
             : hitpoints_(hp), speed_(speed), path_(path) 
             {
                 position_ = path_[0];
-            }
+            } 
+        */
 
-        //Destructor
+        virtual void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+
+
+        // TODO: integrate path with sfml 
         virtual ~Enemy() {
-            for (auto it = path_.begin(); it != path_.end(); it++) {
+        /*    for (auto it = path_.begin(); it != path_.end(); it++) {
                 delete *it;
-            }
+            }*/
         }
+
+        //Take hit from a bullet
+        virtual void TakeHit(Bullet bullet);
+
+    protected:
 
         //Update the state of enemy, should return something!
         /* Possible cases:
@@ -38,18 +60,11 @@ class Enemy {
         * TODO:
         * Long lasting damage implementation
         */
-        void Update() {
-            if (hitpoints_ > 0) {
-                //move enemy or game lost
-            } else {
-                //indicate game field somehow that enemy is dead
-            }
-        }
+        virtual void UpdateCurrent(sf::Time dt);
 
-        //Take hit from a bullet
-        virtual void TakeHit(Bullet bullet) = 0;
 
-    protected:
+        Type type_;
+        sf::Sprite sprite_;
         int hitpoints_;
         int speed_;
         std::vector<Position*> path_;
