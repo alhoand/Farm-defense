@@ -33,7 +33,7 @@ class Enemy : public Entity {
             } 
         */
 
-        virtual void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+        virtual void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 
         // TODO: integrate path with sfml 
@@ -45,6 +45,8 @@ class Enemy : public Entity {
 
         //Take hit from a bullet
         virtual void TakeHit(Bullet bullet);
+
+        unsigned int GetCategory() const override;
 
     protected:
 
@@ -60,8 +62,9 @@ class Enemy : public Entity {
         * TODO:
         * Long lasting damage implementation
         */
-        virtual void UpdateCurrent(sf::Time dt);
+        virtual void UpdateCurrent(sf::Time dt) override;
 
+        Textures::ID ToTextureID(Enemy::Type type);
 
         Type type_;
         sf::Sprite sprite_;

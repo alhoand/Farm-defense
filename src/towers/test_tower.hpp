@@ -5,9 +5,11 @@
 #include <iostream>
 #include <string>
 
-class TestTower: public Tower{
+class TestTower: public Tower {
 	public:
-		TestTower(Position p): Tower(p) {}
+		TestTower(Position p): Tower() { }
+
+		virtual ~TestTower() { }
 		
 		void Update(){
 				std::cout << "TestTower updated" << std::endl;

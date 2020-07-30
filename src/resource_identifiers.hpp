@@ -11,6 +11,9 @@ namespace Textures {
         Leaf,
         Water,
         Grass,
+        FireTower,
+        WaterTower,
+        LeafTower,
         Path
     };
 }

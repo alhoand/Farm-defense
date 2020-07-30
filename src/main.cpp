@@ -19,7 +19,7 @@ int main(){
         Position pos = Position(1,2);   
         std::cout << pos << std::endl;
     
-        TestTower testi = TestTower(Position(1,2));
+        TestTower testi(Position(1,2));
         
         std::cout << "Testing tower" << std::endl;
         testi.Shoot();

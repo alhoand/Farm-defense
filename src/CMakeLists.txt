@@ -21,5 +21,16 @@ target_sources(TowerDefense
         scene_node.cpp
         sprite_node.hpp
         sprite_node.cpp
+        category.hpp
+        command.hpp
+        command.cpp
+        command_queue.hpp
+        command_queue.cpp
+        player.hpp
+        player.cpp
+        tower.hpp
+        tower.cpp
+
+
         
 )

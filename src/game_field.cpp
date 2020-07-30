@@ -3,25 +3,35 @@
 #include <iostream> // for debugging
 
 
-GameField::GameField(sf::RenderWindow& window)
+GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	: window_(window),
-	 gameFieldView_(window.getDefaultView()), 
+	viewOffset_(viewOffset), 
+	 gameFieldView_(window.getDefaultView()),
+	 
 	 gameFieldBounds_(0.f, 0.f, // x and y of the game field
-	 				gameFieldView_.getSize().x + 200, //world width is a bit bigger than the view's width
-					gameFieldView_.getSize().y), // world height is same as view's height
+	 				gameFieldView_.getSize().x + viewOffset_.x, //world width is a bit bigger than the view's width
+					gameFieldView_.getSize().y + viewOffset_.y), // world height is same as view's height
 	 spawnPosition_(gameFieldBounds_.left,
 	 				 (gameFieldBounds_.top + gameFieldBounds_.height)/3.f),
 	enemySpeed_(50.f),
-	firstEnemy_()
+	firstEnemy_(),
+	firstTower_()
 	{ 
 		LoadTextures();
 		BuildScene();
-		gameFieldView_.setCenter(gameFieldBounds_.left + (gameFieldBounds_.width + 200)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f);
+		gameFieldView_.setCenter(gameFieldBounds_.left + (gameFieldBounds_.width + viewOffset_.x)/2.f, gameFieldBounds_.top + (gameFieldBounds_.height + viewOffset_.y)/2.f);
 	}
 
 
 void GameField::Update(sf::Time dt) {
 	//std::cout << "updating game field" << std::endl;
+
+	// Forwards the commands to the scene graph
+	while(!commandQueue_.IsEmpty()) {
+		sceneGraph_.OnCommand(commandQueue_.Pop(), dt);
+	}
+
+
 	sceneGraph_.Update(dt);
 }
 
@@ -30,6 +40,7 @@ void GameField::LoadTextures() {
 	textures_.Load(Textures::ID::Fire, "../media/textures/Doge.png");
 	textures_.Load(Textures::ID::Leaf, "../media/textures/cat.png");
 	textures_.Load(Textures::ID::Grass, "../media/textures/grass.jpg");
+	textures_.Load(Textures::ID::FireTower, "../media/textures/tower.png");
 	
 }
 
@@ -62,12 +73,24 @@ void GameField::BuildScene() {
 	secondEnemy->setPosition(-300.f, 0.f); // position relative to the first enemy
 	firstEnemy_ -> AttachChild(std::move(secondEnemy));
 
+	//Initialize a tower that can be moved
+	std::unique_ptr<Tower> firstTower(new Tower(Tower::Type::Fire, textures_, Position(0,0)));
+	firstTower_ = firstTower.get();
+	firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
+	firstTower_->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f);
+	sceneLayers_[Ground] -> AttachChild(std::move(firstTower));
+
+
 }
 
 void GameField::Draw() {
 	window_.setView(gameFieldView_);
 	window_.draw(sceneGraph_);
 
+}
+
+CommandQueue& GameField::GetCommandQueue() {
+	return commandQueue_;
 }
 
 /*void GameField::AddTower(Tower* t){

@@ -5,21 +5,21 @@
 // Associates enemies with the corresponding textures
 // Textures are images that live on the graphics card
 
-Textures::ID toTextureID(Enemy::Type type) {
+Textures::ID Enemy::ToTextureID(Enemy::Type type) {
     switch (type) {
-    case Enemy::Type::Fire:
-        return Textures::ID::Fire;
-    case Enemy::Type::Water:
-        return Textures::ID::Water;
-    case Enemy::Type::Leaf:
-        return Textures::ID::Leaf;
-    default: 
-        return Textures::ID::Fire;
+        case Enemy::Type::Fire:
+            return Textures::ID::Fire;
+        case Enemy::Type::Water:
+            return Textures::ID::Water;
+        case Enemy::Type::Leaf:
+            return Textures::ID::Leaf;
+        default: 
+            return Textures::ID::Fire;
     }
 }
 // Constructor that works with SFML
 Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, int hp, int speed)
-         : type_(type), sprite_(textures.Get(toTextureID(type))),
+         : type_(type), sprite_(textures.Get(ToTextureID(type))),
             hitpoints_(hp),
             speed_(speed)  { 
         sf::FloatRect bounds = sprite_.getLocalBounds();
@@ -33,7 +33,6 @@ Enemy::Enemy() : type_(Enemy::Type::Fire), hitpoints_(50), speed_(50) { }
 
 void Enemy::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(sprite_, states);
-
 }
 
 //Update the state of enemy, should return something!
@@ -62,3 +61,7 @@ void Enemy::UpdateCurrent(sf::Time dt) {
 void Enemy::TakeHit(Bullet bullet) {
     // Do nothing for now 
 }
+
+unsigned int Enemy::GetCategory() const {
+    return Category::Enemy;
+} 

@@ -1,4 +1,5 @@
 #include "scene_node.hpp"
+#include "command.hpp"
 
 SceneNode::SceneNode() : children_(), parent_(nullptr) { }
 
@@ -71,4 +72,24 @@ void SceneNode::DrawChildren(sf::RenderTarget &target, sf::RenderStates states) 
     }
 }
 
+//
+unsigned int SceneNode::GetCategory() const {
+    return Category::Scene; // By default every scene node belongs to Scene-category
+}
+
+// From the sfml game development -book
+void SceneNode::OnCommand(const Command &command, sf::Time dt) {
+    // This works because all non-zero values are cast to true
+    // e.g.
+    // 0010 & 0010 -> 0010 = 2 = true
+    // 1101 & 0100 -> 0100 = 4 = true
+    // 1000 & 0100 -> 0000 = 0 = false
+    if (command.category_ & GetCategory()) { 
+        command.action_(*this, dt);
+        //this->accelerate(2.f, 3.f);
+    }
+    for (const Ptr &child : children_) {
+        child->OnCommand(command, dt);
+    }
+}
 

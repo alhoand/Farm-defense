@@ -3,50 +3,51 @@
 
 // All this code is essentially from the book SFML Game Development
 Game::Game() 
-    : window_(sf::VideoMode(1024,768), "Tower Defense", sf::Style::Close), 
-    gameField_(window_),
-    timePerFrame_(sf::seconds(1.f / 60.f))
+    : window_(sf::VideoMode(1024,768), "Tower Defense", sf::Style::Close),
+    viewOffset_(200.f, 0.f), 
+    gameField_(window_, viewOffset_),
+    timePerFrame_(sf::seconds(1.f / 60.f)),
+    player_(window_, viewOffset_)
     { }
 
 void Game::Run() {
     sf::Clock clock;
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
     while (window_.isOpen()) {
-        ProcessEvents();
+        ProcessInput();
         timeSinceLastUpdate += clock.restart();
         while (timeSinceLastUpdate > timePerFrame_)
         {
             timeSinceLastUpdate -= timePerFrame_;
-            ProcessEvents();
+            ProcessInput();
             Update(timePerFrame_);
         }
         Render();
     }
 }
-void Game::ProcessEvents() { 
+void Game::ProcessInput() { 
+
+    CommandQueue& commands = gameField_.GetCommandQueue();
+    
     sf::Event event;
-	while (window_.pollEvent(event))
-	{
-		switch (event.type)
-		{
-			case sf::Event::KeyPressed:
-				//handlePlayerInput(event.key.code, true);
-				break;
+	while (window_.pollEvent(event)) {
+        player_.HandleEvent(event, commands);
 
-			case sf::Event::KeyReleased:
-				//handlePlayerInput(event.key.code, false);
-				break;
-
-			case sf::Event::Closed:
-				window_.close();
-				break;
-		}
+        if (event.type == sf::Event::Closed) {
+            window_.close();
+        }
+        if (event.type == sf::Event::GainedFocus)
+            isPaused_ = false;
+            
+        else if (event.type == sf::Event::LostFocus)
+            isPaused_ = true;
     }
+    player_.HandleRealtimeInput(commands);
 }
 
 void Game::Update(sf::Time deltaTime) {
-
-    gameField_.Update(deltaTime); // updates the gamefield on each tick
+    if (!isPaused_)
+        gameField_.Update(deltaTime); // updates the gamefield on each tick
 
 }
 

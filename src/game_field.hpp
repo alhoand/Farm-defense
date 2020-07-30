@@ -9,6 +9,7 @@
 #include "bullet.hpp"
 #include "SFML/Graphics.hpp"
 #include "sprite_node.hpp"
+#include "command_queue.hpp"
 /*  ***TODO***
 * 
 * - add multiple towers and enemies to the sceneGraph
@@ -26,12 +27,14 @@ namespace sf
 class GameField : private sf::NonCopyable {
     public:
         //Constructor
-        explicit GameField(sf::RenderWindow& window);
+        explicit GameField(sf::RenderWindow& window, sf::Vector2f viewOffset);
 		
         //Update whole game field
         void Update(sf::Time dt);
 
         void Draw();
+
+        CommandQueue& GetCommandQueue();
 
         //void AddTower(Tower* t); not implemented yet
 
@@ -46,14 +49,17 @@ class GameField : private sf::NonCopyable {
         };
 
         sf::RenderWindow& window_;
+        sf::Vector2f viewOffset_;
         sf::View gameFieldView_;
         TextureHolder textures_;
         SceneNode sceneGraph_;
         std::array<SceneNode*, LayerCount> sceneLayers_;
         sf::FloatRect gameFieldBounds_;
         sf::Vector2f spawnPosition_;
+        CommandQueue commandQueue_;
         float enemySpeed_;
         //std::list<Tower*> towers_;
         Enemy* firstEnemy_;
+        Tower* firstTower_;
         //std::list<Bullet*> bullets_;
 };
