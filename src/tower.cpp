@@ -14,11 +14,11 @@ Textures::ID Tower::ToTextureID(Tower::Type type) {
     }
 }
 
-Tower::Tower(Tower::Type type, const TextureHolder &textures, Position p)
-        : type_(Type::Fire), sprite_(textures.Get(ToTextureID(type))),  canMove_(true), isMoving_(false), position_(p) { }
+Tower::Tower(Tower::Type type, const TextureHolder &textures, Position p, int range, int reload_speed, Bullet bullet)
+        : type_(Type::Fire), sprite_(textures.Get(ToTextureID(type))),  canMove_(true), isMoving_(false), position_(p), range_(range), reload_speed_(reload_speed), bullet_(bullet) { }
 
-// Default constructor with hard-coded values for hitpoints for testing
-Tower::Tower() : type_(Tower::Type::Fire), canMove_(true), isMoving_(false), position_(0, 0) { }
+// Default constructor with hard-coded values for hitpoints and bullet for testing
+Tower::Tower() : type_(Tower::Type::Fire), canMove_(true), isMoving_(false), position_(0, 0), bullet_(BulletType::Fire, Position(0, 0), 5, 5) { }
 
 unsigned int Tower::GetCategory() const {
     return Category::Tower;

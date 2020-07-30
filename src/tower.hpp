@@ -12,8 +12,6 @@
 * - all return values are void, to be changed for right ones
 */
 
-
-
 class Tower : public Entity {
     public:
         enum class Type {
@@ -21,17 +19,20 @@ class Tower : public Entity {
             Water,
             Leaf
         };
-        //Constructor
+
+        //Constructors
+
+        // Default constructor - is it needed?
         Tower();
 
-
+        // Constructor which is given the position
+        // Tower(Position p);
         
-        Tower(Type type, const TextureHolder &textures, Position p); 
-
-
+        // The constructor for now. Most of the parameters should be given automatically
+        Tower(Type type, const TextureHolder &textures, Position position, int range, int reload_speed, Bullet bullet);
 
         //Destructor
-        virtual ~Tower() { }
+        virtual ~Tower() { };
 
         virtual void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 
@@ -44,21 +45,23 @@ class Tower : public Entity {
         virtual unsigned int GetCategory() const override;
 
         // This sets the permission for the tower to move
+        // for now: this maybe is a clumsy way to achieve this
         void SetMovePermission(bool permissionToMove);
 
         // Getter of permission to move
         bool CanMove() const;
 
-        // Sets if the tower is moving, i.e., it is being moved by the player
-        // returns true if the setting was succesful
+        // Sets if the tower is moving at the moment, i.e., is it being moved by the player
+        // returns true if setting the state was succesful
         bool SetMoveState(bool state);
 
-        // Tells if the tower is being moved by the player
+        // Getter that tells if the tower is being moved by the player
         bool IsMoving() const;
 
         virtual sf::FloatRect GetBoundingRect() const;
 
     protected:
+        // Helper that makes textures::ID-types from Tower::Types
         Textures::ID ToTextureID(Type type);
         Tower::Type type_;
         int range_;
@@ -68,5 +71,5 @@ class Tower : public Entity {
         Position position_;
         //enemies_in_range_;
         int reload_speed_;
-        //Bullet bullet_type_;
+        Bullet bullet_;
 };
