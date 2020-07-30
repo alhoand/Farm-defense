@@ -73,8 +73,9 @@ void GameField::BuildScene() {
 	secondEnemy->setPosition(-300.f, 0.f); // position relative to the first enemy
 	firstEnemy_ -> AttachChild(std::move(secondEnemy));
 
-	//Initialize a tower that can be moved
-	std::unique_ptr<Tower> firstTower(new Tower(Tower::Type::Fire, textures_, Position(0,0)));
+	//Initialize a tower that can be moved with hard-coded bullet
+	// TODO: make bullets work
+	std::unique_ptr<Tower> firstTower(new Tower(Tower::Type::Fire, textures_, Position(0,0), 50, 30, Bullet(BulletType::Fire, Position(0,0), 5, 5)));
 	firstTower_ = firstTower.get();
 	firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
 	firstTower_->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f);

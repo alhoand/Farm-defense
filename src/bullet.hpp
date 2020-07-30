@@ -16,7 +16,7 @@ enum BulletType {
 //First implementation of Bullet class
 class Bullet {
     public:
-        //Constructor
+        //Constructor for now
         Bullet(BulletType type, Position position, int damage, int damage_duration) 
             : type_(type), position_(position), damage_(damage), damage_duration_(damage_duration) {} 
 
