@@ -34,3 +34,20 @@ State::Ptr StateStack::CreateState(States::ID stateID) {
     assert(found != factories_.end());
     return found->second();
 }
+
+void StateStack::ApplyPendingChanges() {
+    for (PendingChange change : pendingList_) {
+        switch (change.action) {
+        case Push:
+            stack_.push_back(CreateState(change.stateID));
+            break;
+        case Pop:
+            stack_.pop_back();
+            break;
+        case Clear:
+            stack_.clear();
+            break;
+        }
+    }
+    pendingList_.clear();
+}

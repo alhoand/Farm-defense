@@ -2,6 +2,7 @@
 #include "resource_holder.hpp"
 namespace sf {
     class Texture;
+    class Font;
 }
 
 
@@ -18,4 +19,11 @@ namespace Textures {
     };
 }
 
-typedef ResourceHolder<sf::Texture, Textures::ID> TextureHolder; 
+namespace Fonts {
+	enum ID {
+		Main,
+	};
+}
+
+typedef ResourceHolder<sf::Texture, Textures::ID> TextureHolder;
+typedef ResourceHolder<sf::Font, Fonts::ID>			FontHolder;

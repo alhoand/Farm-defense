@@ -1,15 +1,21 @@
 #include <state_identifiers.hpp>
 #include <resource_identifiers.hpp>
+#include <player.hpp>
 
-#include <SFML/System/Time.hpp>
-#include <SFML/Window/Event.hpp>
+#include "SFML/Graphics.hpp"
 
 #include <memory>
 
 class State {
     public:
         typedef std::unique_ptr<State> Ptr;
-        struct Context { };
+        struct Context {
+            Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, Player& player);
+            sf::RenderWindow* window;
+            TextureHolder* textures;
+            FontHolder* fonts;
+            Player* player;
+        };
 
         State(StateStack& stack, Context context);
         virtual ~State();
