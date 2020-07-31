@@ -28,7 +28,8 @@ class Tower : public Entity {
         // Constructor which is given the position
         // Tower(Position p);
         
-        // The constructor for now. Most of the parameters should be given automatically
+        // The constructor for now. Most of the parameters should be given automatically, 
+        // depending on type (inherited class)
         Tower(Type type, const TextureHolder &textures, Position position, int range, int reload_speed, Bullet bullet);
 
         //Destructor
