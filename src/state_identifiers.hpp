@@ -1,7 +1,5 @@
-namespace States
-{
-	enum ID
-	{
+namespace States {
+	enum ID {
 		None,
 		Title,
 		Menu,
