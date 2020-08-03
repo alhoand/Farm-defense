@@ -2,8 +2,8 @@
 #include "resource_holder.hpp"
 namespace sf {
     class Texture;
+    class Font;
 }
-
 
 namespace Textures {
     enum class ID {
@@ -14,8 +14,19 @@ namespace Textures {
         FireTower,
         WaterTower,
         LeafTower,
-        Path
+        Path,
+        TitleBackground
+    };
+}
+
+namespace Fonts {
+    enum class ID {
+        Title,
+        Main,
+        Game
     };
 }
 
 typedef ResourceHolder<sf::Texture, Textures::ID> TextureHolder; 
+
+typedef ResourceHolder<sf::Font, Fonts::ID> FontHolder;

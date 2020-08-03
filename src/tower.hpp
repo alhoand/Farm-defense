@@ -51,8 +51,8 @@ class Tower : public Entity {
         // Getter of permission to move
         bool CanMove() const;
 
-        // Sets if the tower is moving at the moment, i.e., is it being moved by the player
-        // returns true if setting the state was succesful
+        // Sets the tower moving with state=true, stops with state=false.
+        // Returns true if setting was succesful
         bool SetMoveState(bool state);
 
         // Getter that tells if the tower is being moved by the player

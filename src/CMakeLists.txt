@@ -30,7 +30,16 @@ target_sources(TowerDefense
         player.cpp
         tower.hpp
         tower.cpp
-
-
+        state_identifiers.hpp
+        state.hpp
+        state.cpp
+        state_stack.hpp
+        state_stack.cpp
+        application.hpp
+        application.cpp
+        game_state.hpp
+        game_state.cpp
+        title_state.hpp
+        title_state.cpp
         
 )

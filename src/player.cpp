@@ -2,11 +2,11 @@
 #include "tower.hpp"
 
 
-Player::Player(sf::RenderWindow& window, sf::Vector2f viewOffset) : window_(window), viewOffset_(viewOffset) { }
+Player::Player(sf::RenderWindow& window) : window_(window), viewOffset_() { }
 
 
-// This is adapted from SFML Game Development-book
-void Player::HandleEvent(sf::Event& event, CommandQueue& commands) {
+// Adapted from SFML Game Development-book
+void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
     if (event.type == sf::Event::MouseButtonPressed) {
         Command output;
         std::cout << "Mouse pressed" << std::endl;
@@ -21,18 +21,13 @@ void Player::HandleEvent(sf::Event& event, CommandQueue& commands) {
                 std::cout << "tower pos x: " << tower.getPosition().x << " y: " << tower.getPosition().y << std::endl;
                 std::cout << "mouse pos x: " << mouse.x << " y: " << mouse.y << std::endl;
 
-                // If the mouse is on the sprite and the tower is permitted to move
-                if (bounds.contains(mouse) && tower.CanMove()) {
-                    std::cout << "mouse in bounds" << std::endl;
-                    std::cout << "tower can move" << std::endl;
-                    if (!tower.IsMoving()){
-                        // This origin part is adapted from https://gamedev.stackexchange.com/questions/97060/moving-a-sprite-using-mouse-in-sfml-setorigin-logic-needed
+                if (bounds.contains(mouse)){
+                    if (tower.SetMoveState(true)){
                         tower.setOrigin(mouse.x - (tower.getPosition().x - tower.getOrigin().x),
                                         mouse.y - (tower.getPosition().y - tower.getOrigin().y));
-                        tower.SetMoveState(true); // Set the tower to follow the mouse
                         std::cout << "tower was set moving..." << std::endl;
-                    } else {
-                        tower.SetMoveState(false); // "Set the tower to stay put"
+                    }else{
+                        tower.SetMoveState(false);
                         std::cout << "tower was set to not move anymore" << std::endl;
                     }
                 }

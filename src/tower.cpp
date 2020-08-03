@@ -45,11 +45,15 @@ bool Tower::CanMove() const {
     return canMove_;
 }
 
+// Returns true if changing the state was successful
 bool Tower::SetMoveState(bool state) {
-    if (canMove_) {
+    if (canMove_ && (IsMoving() != state)) {
         isMoving_ = state;
         return true;
-    }else{
+    } else if (!canMove_ && (IsMoving() != state)) {
+        isMoving_ = state;
+        return false;
+    } else {
         return false;
     }
 }

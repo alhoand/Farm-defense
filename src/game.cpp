@@ -7,7 +7,7 @@ Game::Game()
     viewOffset_(200.f, 0.f), 
     gameField_(window_, viewOffset_),
     timePerFrame_(sf::seconds(1.f / 60.f)),
-    player_(window_, viewOffset_)
+    player_(window_)
     { }
 
 void Game::Run() {
