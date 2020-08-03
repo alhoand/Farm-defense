@@ -3,6 +3,8 @@ add_subdirectory(towers)
 
 target_sources(TowerDefense
     PRIVATE
+        application.hpp
+        application.cpp
         resource_identifiers.hpp
         entity.hpp
         entity.cpp
@@ -35,8 +37,6 @@ target_sources(TowerDefense
         state.cpp
         state_stack.hpp
         state_stack.cpp
-        application.hpp
-        application.cpp
         game_state.hpp
         game_state.cpp
         title_state.hpp

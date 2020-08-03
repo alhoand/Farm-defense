@@ -1,14 +1,21 @@
+
 #include "application.hpp"
+#include "state.hpp"
+#include "state_identifiers.hpp"
 #include <SFML/System/Time.hpp>
+#include "title_state.hpp"
+#include "game_state.hpp"
+#include <iostream>
 
 static const sf::Time timePerFrame = sf::seconds(1.f / 60.f);
 
 Application::Application()
     : window_(sf::VideoMode(1024,768), "Tower Defense", sf::Style::Close),
+    viewOffset_(sf::Vector2f(200.f, 0.f)),
     textures_(),
     fonts_(),
-    player_(window_),
-    stateStack_(State::Context(window_, textures_, fonts_, player_, sf::Vector2f(200.f, 0.f)))
+    player_(window_, viewOffset_),
+    stateStack_(State::Context(window_, textures_, fonts_, player_, viewOffset_))
     { 
         fonts_.Load(Fonts::ID::Title, "../media/fonts/Lato-Regular.ttf");
         textures_.Load(Textures::ID::TitleBackground, "../media/textures/otaniemi.jpg");
@@ -19,7 +26,7 @@ Application::Application()
 
 void Application::RegisterStates() {
     stateStack_.RegisterState<TitleState>(States::ID::Title);
-    stateStack_.RegisterState<MenuState>(States::ID::Menu);
+    //stateStack_.RegisterState<MenuState>(States::ID::Menu);
     stateStack_.RegisterState<GameState>(States::ID::Game);
 }
 
@@ -30,7 +37,7 @@ void Application::Run() {
     while (window_.isOpen()) {
         sf::Time dt = clock.restart();
         timeSinceLastUpdate += dt;
-        
+        //ProcessInput();
         while (timeSinceLastUpdate > timePerFrame) {
             timeSinceLastUpdate -= timePerFrame;
             ProcessInput();
@@ -55,9 +62,9 @@ void Application::ProcessInput() {
 }
 
 void Application::Update(sf::Time dt) {
+    //std::cout << "The state stack was updated" << std::endl;
     stateStack_.Update(dt);
 }
-
 
 void Application::Render() {
     window_.clear();

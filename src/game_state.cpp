@@ -3,7 +3,7 @@
 GameState::GameState(StateStack& stack, Context context) 
             : State(stack, context),
              gameField_(*context.window_, context.viewOffset_),
-             player_(*context.player) { }
+             player_(*context.player_) { }
 
 void GameState::Draw() {
     gameField_.Draw(); // calls the gamefield to draw everything

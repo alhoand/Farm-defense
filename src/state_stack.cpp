@@ -1,10 +1,22 @@
 #include "state_stack.hpp"
+#include <iostream>
 
-template <typename T>
-void StateStack::RegisterState(States::ID stateID) {
-    factories_[stateID] = [this] () {
-        return State::Ptr(new T(*this, context_));
-    };
+StateStack::StateStack(State::Context context) 
+    : stack_(),
+    pendingList_(),
+    context_(context),
+    factories_() { }
+
+void StateStack::PushState(States::ID stateID) {
+    pendingList_.push_back(PendingChange(Action::Push, stateID));
+}
+
+void StateStack::PopState() {
+    pendingList_.push_back(PendingChange(Action::Pop));
+}
+
+void StateStack::ClearStates() {
+    pendingList_.push_back(PendingChange(Action::Clear));
 }
 
  State::Ptr StateStack::CreateState(States::ID stateID) {
@@ -29,6 +41,7 @@ void StateStack::RegisterState(States::ID stateID) {
              break;
          }
      }
+     ApplyPendingChanges();
  }
 /*
 // From the SFML-game-dev-book:
@@ -40,6 +53,7 @@ The updating happens under the same guidelines of event handling,
          if(!(*it)->Update(dt))
             break;
      }
+     ApplyPendingChanges();
  }
 
 /*
@@ -60,7 +74,7 @@ The first state to be drawn is the lowest and oldest on the stack,
  }
 
  void StateStack::ApplyPendingChanges() {
-     for (PendingChange change : pendingList_) {
+     for (PendingChange &change : pendingList_) {
          switch (change.action_) {
              case Action::Push:
                 stack_.push_back(CreateState(change.stateID_));
@@ -76,3 +90,9 @@ The first state to be drawn is the lowest and oldest on the stack,
      pendingList_.clear();
  }
 
+StateStack::PendingChange::PendingChange(Action action, States::ID stateID)
+        : action_(action), stateID_(stateID) { }
+
+bool StateStack::IsEmpty() const {
+    return stack_.empty();
+}

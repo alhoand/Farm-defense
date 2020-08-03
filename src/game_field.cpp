@@ -8,7 +8,7 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	viewOffset_(viewOffset), 
 	 gameFieldView_(window.getDefaultView()),
 	 
-	 gameFieldBounds_(0.f, 0.f, // x and y of the game field
+	 gameFieldBounds_(-viewOffset_.x, -viewOffset_.y, // x and y of the game field
 	 				gameFieldView_.getSize().x + viewOffset_.x, //world width is a bit bigger than the view's width
 					gameFieldView_.getSize().y + viewOffset_.y), // world height is same as view's height
 	 spawnPosition_(gameFieldBounds_.left,
@@ -19,7 +19,7 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	{ 
 		LoadTextures();
 		BuildScene();
-		gameFieldView_.setCenter(gameFieldBounds_.left + (gameFieldBounds_.width + viewOffset_.x)/2.f, gameFieldBounds_.top + (gameFieldBounds_.height + viewOffset_.y)/2.f);
+		gameFieldView_.setCenter(gameFieldBounds_.left + gameFieldBounds_.width - gameFieldView_.getSize().x/2.f, gameFieldBounds_.top + (gameFieldBounds_.height + viewOffset_.y)/2.f);
 	}
 
 

@@ -2,17 +2,13 @@
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
+#include "resource_holder.hpp"
 #include "resource_identifiers.hpp"
 #include "state_identifiers.hpp"
 #include "state_stack.hpp"
 #include "player.hpp"
-
-class StateStack;
-
-namespace sf {
-    class Vector2f;
-}
-
+#include <SFML/Graphics/Text.hpp>
+#include <SFML/System/Vector2.hpp>
 
 class Application {
 public:
@@ -24,7 +20,7 @@ public:
     void Update(sf::Time dt);
 private:
     sf::RenderWindow window_;
-    sf::Vector2f viewOffset;
+    sf::Vector2f viewOffset_;
     TextureHolder textures_;
     FontHolder fonts_;
     Player player_;

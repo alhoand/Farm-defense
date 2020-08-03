@@ -19,29 +19,29 @@ class State {
 public:
     typedef std::unique_ptr<State> Ptr; // We use pointers a lot since State is abstract
     struct Context {
-        Context(sf::RenderWindow &window,
-                 TextureHolder &textures,
+        Context(sf::RenderWindow& window,
+                 TextureHolder& textures,
                  FontHolder& fonts_,
-                 Player &player,
+                 Player& player,
                  sf::Vector2f viewOffset
         );
 
         sf::RenderWindow* window_;
         TextureHolder* textures_;
         FontHolder* fonts_;
-        Player* player;
+        Player* player_;
         sf::Vector2f viewOffset_;
     };
 
     State(StateStack& stack, Context context);
 
-    virtual ~State();
+    virtual ~State() { }
 
     virtual void Draw() = 0;
 
     virtual bool Update(sf::Time dt) = 0;
 
-    virtual bool HandleEvent(const sf::Event &event);
+    virtual bool HandleEvent(const sf::Event &event) = 0;
 
 protected:
     void RequestStackPush(States::ID stateID);
@@ -53,6 +53,5 @@ protected:
 
 private:
     Context context_;
-    StateStack stateStack_;
-
+    StateStack* stateStack_;
 };

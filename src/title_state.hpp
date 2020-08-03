@@ -4,6 +4,7 @@
 
 class TitleState : public State {
 
+public:
     TitleState(StateStack& stack_, Context context);
 
     virtual void Draw() override;
@@ -20,4 +21,4 @@ private:
     //sf::Time textEffectTime_;
 
 
-}
+};

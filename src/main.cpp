@@ -1,8 +1,8 @@
 #include<iostream>
 #include<vector>
 #include <SFML/Graphics.hpp>
+#include "application.hpp"
 #include "game_field.hpp"
-#include "game.hpp"
 #include "tower.hpp"
 #include "enemy.hpp"
 #include "bullet.hpp"
@@ -32,8 +32,8 @@ int main(){
         path1.push_back(p1);
         std::cout << *p1 << std::endl;
        //  TestEnemy* enemy1 = new TestEnemy(path1);
-        Game game;
-        game.Run();
+        Application app;
+        app.Run();
     } catch (std::exception& e) {
         std::cout << "\nEXCEPTION: " << e.what() << std::endl;
     }
