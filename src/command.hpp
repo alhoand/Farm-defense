@@ -4,6 +4,7 @@
 #include <functional>
 #include "scene_node.hpp"
 #include "category.hpp"
+#include <cassert>
 
 class SceneNode;
 
