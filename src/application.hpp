@@ -1,15 +1,16 @@
-#include <state_stack.hpp>
 #include <resource_holder.hpp>
 #include <resource_identifiers.hpp>
 #include <player.hpp>
+#include <state_stack.hpp>
 
 #include <SFML/System/Time.hpp>
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Text.hpp>
 
 class Application {
     public:
         Application();
-        void run();
+        void Run();
 
     private:
         void RegisterStates();

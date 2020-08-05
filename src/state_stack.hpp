@@ -10,6 +10,11 @@
 #include <functional>
 #include <map>
 
+namespace sf {
+	class Event;
+	class RenderWindow;
+}
+
 class StateStack : private sf::NonCopyable {
     public:
         enum Action {
@@ -35,7 +40,7 @@ class StateStack : private sf::NonCopyable {
         void ApplyPendingChanges();
 
         struct PendingChange {
-            // ...
+            explicit PendingChange(Action action, States::ID stateID = States::None);
             Action action;
             States::ID stateID;
         };
@@ -45,3 +50,10 @@ class StateStack : private sf::NonCopyable {
         State::Context context_;
         std::map<States::ID, std::function<State::Ptr()>> factories_;
 };
+
+template <typename T>
+void StateStack::RegisterState(States::ID stateID) {
+	factories_[stateID] = [this] () {
+		return State::Ptr(new T(*this, context_));
+	};
+}

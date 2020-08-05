@@ -1,10 +1,17 @@
 #include <state_identifiers.hpp>
 #include <resource_identifiers.hpp>
-#include <player.hpp>
 
-#include "SFML/Graphics.hpp"
+#include <SFML/System/Time.hpp>
+#include <SFML/Window/Event.hpp>
 
 #include <memory>
+
+namespace sf {
+	class RenderWindow;
+}
+
+class StateStack;
+class Player;
 
 class State {
     public:
