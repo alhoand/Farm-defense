@@ -66,7 +66,12 @@ void GameField::BuildScene() {
 	std::unique_ptr<Enemy> firstEnemy(new Enemy(Enemy::Type::Fire, textures_, 50, enemySpeed_));
 	firstEnemy_ = firstEnemy.get();
 	firstEnemy_->setPosition(spawnPosition_);
+
+	std::cout << "DEBUG: spawn position:" << firstEnemy_->getPosition().x << "," << firstEnemy_->getPosition().y << std::endl;
+
 	firstEnemy_->SetVelocity(enemySpeed_, 0.f);
+	std::cout << "DEBUG: initial velocity: " << firstEnemy_->GetVelocity().x << "," << firstEnemy_->GetVelocity().y << std::endl;
+ 
 	sceneLayers_[Ground] -> AttachChild(std::move(firstEnemy));
 
 	std::unique_ptr<Enemy> secondEnemy(new Enemy(Enemy::Type::Leaf, textures_, 50, enemySpeed_));

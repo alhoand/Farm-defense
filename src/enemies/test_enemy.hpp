@@ -10,7 +10,7 @@
 class TestEnemy : public Enemy {
     public:
         //Constructor
-        TestEnemy(std::vector<Position*> path) 
+        TestEnemy() 
             : Enemy() 
             {
                 std::cout << "New enemy created!" << std::endl;
