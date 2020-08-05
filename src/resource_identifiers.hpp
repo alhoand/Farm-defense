@@ -1,5 +1,6 @@
 #pragma once
 #include "resource_holder.hpp"
+
 namespace sf {
     class Texture;
     class Font;
@@ -7,7 +8,7 @@ namespace sf {
 
 
 namespace Textures {
-    enum class ID {
+    enum ID {
         Fire,
         Leaf,
         Water,

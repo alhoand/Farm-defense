@@ -1,5 +1,6 @@
 #include "scene_node.hpp"
 #include "command.hpp"
+#include <cassert>     
 
 SceneNode::SceneNode() : children_(), parent_(nullptr) { }
 

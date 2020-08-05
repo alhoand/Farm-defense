@@ -2,6 +2,7 @@
 
 #include <SFML/System/Time.hpp>
 #include <functional>
+#include <cassert>     
 #include "scene_node.hpp"
 #include "category.hpp"
 
@@ -21,5 +22,5 @@ std::function<void(SceneNode&, sf::Time)> DerivedAction(Function fn) {
         // call the function given as parameter and forward the derived class
         fn(static_cast<GameObject&>(node), dt);
     };
-};
+}
 
