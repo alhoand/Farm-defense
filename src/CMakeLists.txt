@@ -11,8 +11,6 @@ target_sources(TowerDefense
         entity.cpp
         bullet.hpp
         bullet.cpp
-        enemy.hpp
-        enemy.cpp
         game.hpp
         game.cpp
         game_field.hpp
@@ -34,8 +32,6 @@ target_sources(TowerDefense
         tower.hpp
         tower.cpp
         state_identifiers.hpp
-        state.hpp
-        state.cpp
         state_stack.hpp
         state_stack.cpp
         ghost.hpp

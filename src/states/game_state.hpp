@@ -1,8 +1,8 @@
 #pragma once
 
 
-#include "game_field.hpp"
-#include "player.hpp"
+#include "../game_field.hpp"
+#include "../player.hpp"
 #include "state.hpp"
 
 

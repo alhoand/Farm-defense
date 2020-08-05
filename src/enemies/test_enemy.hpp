@@ -3,7 +3,7 @@
 #include <vector>
 #include <iostream>
 
-#include "../enemy.hpp"
+#include "enemy.hpp"
 #include "../position.hpp"
 #include "../bullet.hpp"
 

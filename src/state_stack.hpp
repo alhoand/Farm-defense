@@ -3,7 +3,7 @@
 #include <vector>
 #include <map>
 #include <functional>
-#include "state.hpp"
+#include "states/state.hpp"
 #include "state_identifiers.hpp"
 #include "resource_identifiers.hpp"
 #include <SFML/System/Time.hpp>

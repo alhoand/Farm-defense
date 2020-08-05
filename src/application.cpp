@@ -1,10 +1,11 @@
 
 #include "application.hpp"
-#include "state.hpp"
+#include "states/state.hpp"
 #include "state_identifiers.hpp"
 #include <SFML/System/Time.hpp>
-#include "title_state.hpp"
-#include "game_state.hpp"
+#include "states/title_state.hpp"
+#include "states/game_state.hpp"
+#include "states/menu_state.hpp"
 #include <iostream>
 
 static const sf::Time timePerFrame = sf::seconds(1.f / 60.f);

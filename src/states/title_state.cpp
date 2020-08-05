@@ -1,8 +1,8 @@
 #include "state.hpp"
-#include "state_identifiers.hpp"
+#include "../state_identifiers.hpp"
 #include <SFML/Graphics/Rect.hpp>
-#include "resource_holder.hpp"
-#include "state_stack.hpp"
+#include "../resource_holder.hpp"
+#include "../state_stack.hpp"
 #include "title_state.hpp"
 #include <cmath>
 #include <SFML/Graphics/RenderWindow.hpp>

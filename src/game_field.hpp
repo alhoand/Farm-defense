@@ -4,7 +4,7 @@
 #include <list>
 #include <array>
 #include <memory>
-#include "enemy.hpp"
+#include "enemies/enemy.hpp"
 #include "tower.hpp"
 #include "bullet.hpp"
 #include "ghost.hpp"

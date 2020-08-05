@@ -4,7 +4,7 @@
 #include "application.hpp"
 #include "game_field.hpp"
 #include "tower.hpp"
-#include "enemy.hpp"
+#include "enemies/enemy.hpp"
 #include "bullet.hpp"
 #include "position.hpp"
 #include "towers/test_tower.hpp"

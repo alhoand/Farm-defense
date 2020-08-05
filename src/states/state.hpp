@@ -4,8 +4,8 @@
 #include <SFML/System/Time.hpp>
 #include <SFML/Window/Event.hpp>
 
-#include "resource_identifiers.hpp"
-#include "state_identifiers.hpp"
+#include "../resource_identifiers.hpp"
+#include "../state_identifiers.hpp"
 #include <SFML/System/Vector2.hpp>
 
 namespace sf {
