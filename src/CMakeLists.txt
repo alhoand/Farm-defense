@@ -1,5 +1,6 @@
 add_subdirectory(enemies)
 add_subdirectory(towers)
+add_subdirectory(states)
 
 target_sources(TowerDefense
     PRIVATE
@@ -37,10 +38,6 @@ target_sources(TowerDefense
         state.cpp
         state_stack.hpp
         state_stack.cpp
-        game_state.hpp
-        game_state.cpp
-        title_state.hpp
-        title_state.cpp
         ghost.hpp
         ghost.cpp
         

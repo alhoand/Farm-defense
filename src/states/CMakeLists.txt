@@ -1,0 +1,9 @@
+target_sources(TowerDefense
+    PRIVATE
+        title_state.hpp
+		title_state.cpp
+		menu_state.hpp
+		menu_state.cpp
+		game_state.hpp
+		game_state.cpp
+)
