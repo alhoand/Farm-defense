@@ -8,9 +8,10 @@ class SpriteNode : public SceneNode {
 public:
     SpriteNode(const sf::Texture& texture);
     SpriteNode(const sf::Texture& texture, sf::IntRect& rect);
+    sf::FloatRect GetBounds() const;
 
 
-private:
+protected:
     virtual void   DrawCurrent(sf::RenderTarget& target,sf::RenderStates states) const;
     sf::Sprite sprite_;
     

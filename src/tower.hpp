@@ -60,14 +60,14 @@ class Tower : public Entity {
 
         virtual sf::FloatRect GetBoundingRect() const;
 
+        static Textures::ID ToTextureID(Type type);
+
+
     protected:
         // Helper that makes textures::ID-types from Tower::Types
-        Textures::ID ToTextureID(Type type);
         Tower::Type type_;
         int range_;
         sf::Sprite sprite_;
-        bool canMove_;
-        bool isMoving_;
         Position position_;
         //enemies_in_range_;
         int reload_speed_;

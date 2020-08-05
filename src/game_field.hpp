@@ -7,6 +7,7 @@
 #include "enemy.hpp"
 #include "tower.hpp"
 #include "bullet.hpp"
+#include "ghost.hpp"
 #include "SFML/Graphics.hpp"
 #include "sprite_node.hpp"
 #include "command_queue.hpp"
@@ -45,6 +46,7 @@ class GameField : private sf::NonCopyable {
         enum Layer {
             Background,
             Ground,
+            Air,
             LayerCount
         };
 

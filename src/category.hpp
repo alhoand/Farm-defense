@@ -7,7 +7,8 @@ namespace Category {
         None = 0,
         Scene = 1 << 0,
         Tower = 1 << 1,
-        Enemy = 1 << 2,   
+        Enemy = 1 << 2,
+        Ghost = 1 << 3   
     };
 }
 

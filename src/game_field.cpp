@@ -42,7 +42,6 @@ void GameField::LoadTextures() {
 	textures_.Load(Textures::ID::Leaf, "../media/textures/cat.png");
 	textures_.Load(Textures::ID::Grass, "../media/textures/grass.jpg");
 	textures_.Load(Textures::ID::FireTower, "../media/textures/tower.png");
-	
 }
 
 void GameField::BuildScene() {
@@ -61,7 +60,8 @@ void GameField::BuildScene() {
 	std::unique_ptr<SpriteNode> backgroundSprite(new SpriteNode(texture, textureRect));
 	backgroundSprite->setPosition(gameFieldBounds_.left, gameFieldBounds_.top);
 	sceneLayers_[Background]->AttachChild(std::move(backgroundSprite));
-
+	std::unique_ptr<Ghost> towerSideBarSprite(new Ghost(Tower::Type::Fire, textures_, sf::Vector2f(300.f, 300.f)));
+	sceneLayers_[Air]->AttachChild(std::move(towerSideBarSprite));
 
 	//Initialize two enemies
 	std::unique_ptr<Enemy> firstEnemy(new Enemy(Enemy::Type::Fire, textures_, 50, enemySpeed_));
@@ -81,6 +81,8 @@ void GameField::BuildScene() {
 	firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
 	firstTower_->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f);
 	sceneLayers_[Ground] -> AttachChild(std::move(firstTower));
+
+
 
 
 }

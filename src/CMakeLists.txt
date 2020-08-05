@@ -41,5 +41,7 @@ target_sources(TowerDefense
         game_state.cpp
         title_state.hpp
         title_state.cpp
+        ghost.hpp
+        ghost.cpp
         
 )

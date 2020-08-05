@@ -1,5 +1,5 @@
 #include "player.hpp"
-#include "tower.hpp"
+#include "Ghost.hpp"
 
 
 Player::Player(sf::RenderWindow& window, sf::Vector2f viewOffset) : window_(window), viewOffset_(viewOffset) { }
@@ -13,29 +13,10 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
         std::cout << "Mouse pressed" << std::endl;
   //      sf::Vector2i mouseInt = sf::Mouse::getPosition(window_);
   //      sf::Vector2f mouse(mouseInt.x + viewOffset_.x, mouseInt.y + viewOffset_.y);
-        output.category_ = Category::Tower;
-        output.action_ = DerivedAction<Tower>(
-            [=] (Tower& tower, sf::Time dt) {
-                sf::FloatRect bounds = tower.GetBoundingRect();
-                std::cout << "tower pos x: " << tower.getPosition().x << " y: " << tower.getPosition().y << std::endl;
-                std::cout << "mouse pos x: " << mouse.x << " y: " << mouse.y << std::endl;
-                if (bounds.contains(mouse)) {
-                    std::cout << "tower bounds height: " << bounds.height << " width: " << bounds.width << std::endl;
-                    std::cout << "tower pos x: " << tower.getPosition().x << " y: " << tower.getPosition().y << std::endl;
-                    std::cout << "mouse pos x: " << mouse.x << " y: " << mouse.y << std::endl;
-
-                    if(!tower.IsMoving()) {
-                        
-                        tower.setOrigin(mouse.x - (tower.getPosition().x - tower.getOrigin().x),
-                                        mouse.y - (tower.getPosition().y - tower.getOrigin().y));
-                        tower.SetMoveState(true);
-                        std::cout << "tower was set moving..." << std::endl;
-                    } else {
-                        tower.SetMoveState(false);
-                        std::cout << "tower was set to not move anymore" << std::endl;
-                    }
-                }
-        });
+        output.category_ = Category::Ghost;
+        output.action_ = DerivedAction<Ghost>(
+            [=] (Ghost& ghost, sf::Time dt) {
+            });
         commands.Push(output);
     }
 
@@ -46,14 +27,23 @@ void Player::HandleRealtimeInput(CommandQueue& commands) {
     //sf::Vector2f mouse = sf::Vector2f(sf::Mouse::getPosition(window_));
     sf::Vector2f mouse = window_.mapPixelToCoords(sf::Mouse::getPosition(window_));
  //  sf::Vector2f mouse(mouseInt.x + viewOffset_.x, mouseInt.y + viewOffset_.y);
-    output.category_ = Category::Tower;
-    output.action_ = DerivedAction<Tower>(
-        [=] (Tower& tower, sf::Time dt) {
-            if (tower.CanMove() && tower.IsMoving()) {
-                tower.setPosition(mouse);
-                std::cout <<"mouse: " << mouse.x <<", " << mouse.y << std::endl;
-                std::cout << "tower: " << tower.getPosition().x << ","<< tower.getPosition().y << std::endl;
-                
+    output.category_ = Category::Ghost;
+    output.action_ = DerivedAction<Ghost>(
+        [=] (Ghost& ghost, sf::Time dt) {
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+                sf::FloatRect bounds = ghost.GetBounds();
+                if (bounds.contains(mouse)) {
+                    if (!ghost.GetClicked()){
+                        ghost.setOrigin(mouse.x - (ghost.getPosition().x - ghost.getOrigin().x),
+                                        mouse.y - (ghost.getPosition().y, ghost.getOrigin().y));
+                        ghost.SetClicked(true);
+                    }
+                }
+                if (ghost.GetClicked()) {
+                    ghost.setPosition(mouse);
+                }
+            }else{
+                ghost.SetClicked(false);
             }
         }
     );
