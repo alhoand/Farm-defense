@@ -9,10 +9,10 @@
 #include "bullet.hpp"
 #include "sprite_node.hpp"
 #include "command_queue.hpp"
-#include <resource_holder.hpp>
-#include <resource_identifiers.hpp>
-#include <scene_node.hpp>
-#include <command.hpp>
+#include "resource_holder.hpp"
+#include "resource_identifiers.hpp"
+#include "scene_node.hpp"
+#include "command.hpp"
 
 #include <SFML/System/NonCopyable.hpp>
 #include "SFML/Graphics.hpp"
