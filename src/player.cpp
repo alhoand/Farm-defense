@@ -6,7 +6,7 @@ Player::Player(sf::RenderWindow& window, sf::Vector2f viewOffset) : window_(wind
 
 
 // This is adapted from SFML Game Development-book
-void Player::HandleEvent(sf::Event& event, CommandQueue& commands) {
+void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
     if (event.type == sf::Event::MouseButtonPressed) {
         Command output;
         std::cout << "Mouse pressed" << std::endl;

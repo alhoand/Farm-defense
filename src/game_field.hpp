@@ -7,9 +7,16 @@
 #include "enemy.hpp"
 #include "tower.hpp"
 #include "bullet.hpp"
-#include "SFML/Graphics.hpp"
 #include "sprite_node.hpp"
 #include "command_queue.hpp"
+#include <resource_holder.hpp>
+#include <resource_identifiers.hpp>
+#include <scene_node.hpp>
+#include <command.hpp>
+
+#include <SFML/System/NonCopyable.hpp>
+#include "SFML/Graphics.hpp"
+
 /*  ***TODO***
 * 
 * - add multiple towers and enemies to the sceneGraph
@@ -19,8 +26,7 @@
 * - all return values are void, to be changed for right ones
 */
 // Forward declaration
-namespace sf
-{
+namespace sf {
 	class RenderWindow;
 }
 // Takes care of building, updating and rendering the world to a SFML window

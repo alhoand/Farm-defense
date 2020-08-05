@@ -16,7 +16,8 @@ namespace Textures {
         FireTower,
         WaterTower,
         LeafTower,
-        Path
+        Path,
+        TitleScreen,
     };
 }
 
@@ -25,6 +26,9 @@ namespace Fonts {
 		Main,
 	};
 }
+
+template <typename Resource, typename Identifier>
+class ResourceHolder;
 
 typedef ResourceHolder<sf::Texture, Textures::ID> TextureHolder;
 typedef ResourceHolder<sf::Font, Fonts::ID>			FontHolder;

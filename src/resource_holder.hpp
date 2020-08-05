@@ -2,6 +2,7 @@
 #include <memory>
 #include <string>
 #include <exception>
+#include <cassert>
 #pragma once
 
 template <typename Resource, typename Identifier>
