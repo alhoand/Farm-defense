@@ -3,7 +3,7 @@
 
 
 Player::Player(sf::RenderWindow& window, sf::Vector2f viewOffset) : window_(window), viewOffset_(viewOffset) { }
-
+Player::Player(sf::RenderWindow& window) : window_(window), viewOffset_() { }
 
 // This is adapted from SFML Game Development-book
 void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {

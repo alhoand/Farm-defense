@@ -8,6 +8,7 @@
 class Player {
 public:
     Player(sf::RenderWindow& window, sf::Vector2f viewOffset);
+    Player(sf::RenderWindow& window);
     void HandleEvent(const sf::Event& event, CommandQueue& commands);
     void HandleRealtimeInput(CommandQueue& commands);
 private:

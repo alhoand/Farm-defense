@@ -1,7 +1,7 @@
-#include <resource_holder.hpp>
-#include <resource_identifiers.hpp>
-#include <player.hpp>
-#include <state_stack.hpp>
+#include "resource_holder.hpp"
+#include "resource_identifiers.hpp"
+#include "player.hpp"
+#include "state_stack.hpp"
 
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>

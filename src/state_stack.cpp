@@ -1,5 +1,6 @@
-#include <state_stack.hpp>
+#include "state_stack.hpp"
 #include <cassert>
+
 template <typename T>
 void StateStack::RegisterState(States::ID stateID) {
     factories_[stateID] = [this] () {
