@@ -11,7 +11,7 @@ static const sf::Time timePerFrame = sf::seconds(1.f / 60.f);
 
 Application::Application()
     : window_(sf::VideoMode(1024,768), "Tower Defense", sf::Style::Close),
-    viewOffset_(sf::Vector2f(200.f, 0.f)),
+    viewOffset_(sf::Vector2f(0.f, 0.f)),
     textures_(),
     fonts_(),
     player_(window_, viewOffset_),
@@ -69,6 +69,7 @@ void Application::Update(sf::Time dt) {
 void Application::Render() {
     window_.clear();
     stateStack_.Draw();
+    
     window_.setView(window_.getDefaultView()); // not necessary right now 
     window_.display();
     

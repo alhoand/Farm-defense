@@ -1,3 +1,5 @@
+#include <cassert>
+
 template <class Resource, class Identifier>
 void ResourceHolder<Resource, Identifier>::Load(Identifier id, const std::string& filename) {
     std::unique_ptr<Resource> resource(new Resource());

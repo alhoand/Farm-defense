@@ -52,7 +52,7 @@ void Player::HandleRealtimeInput(CommandQueue& commands) {
             if (tower.CanMove() && tower.IsMoving()) {
                 tower.setPosition(mouse);
                 std::cout <<"mouse: " << mouse.x <<", " << mouse.y << std::endl;
-                std::cout << tower.getPosition().x << ","<< tower.getPosition().y << std::endl;
+                std::cout << "tower: " << tower.getPosition().x << ","<< tower.getPosition().y << std::endl;
                 
             }
         }
