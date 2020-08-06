@@ -24,8 +24,10 @@ class Bullet : public Entity {
         };
 
     public:
-        //Constructor for now
+        //Constructor for now - this is probably not needed?
         Bullet(Type type, int damage, int damage_duration, const TextureHolder& textures);
+        // A constructor with fewer parameters
+        Bullet(Type type, const TextureHolder& textures);
 
         //Destructor, only needed if abstract class
         //virtual ~Bullet() {};
@@ -42,9 +44,9 @@ class Bullet : public Entity {
         Textures::ID ToTextureID(Bullet::Type type);
         
     protected:
-        Type type_;
-        sf::Sprite sprite_;
-        sf::Vector2f targetDirection_;
-        int damage_;
-        int damage_duration_;
+        Type            type_;
+        sf::Sprite      sprite_;
+        sf::Vector2f    targetDirection_;
+        int             damage_;
+        int             damage_duration_;
 };
