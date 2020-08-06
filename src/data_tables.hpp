@@ -2,6 +2,7 @@
 #define DATATABLES_HPP
 
 #include "resource_identifiers.hpp"
+#include "bullet.hpp"
 
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/Color.hpp>

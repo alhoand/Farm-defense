@@ -28,8 +28,8 @@ std::vector<EnemyData> initializeEnemyData()
     data[Enemy::Leaf].path.push_back(Direction(-90.f, 200.f));
 
 
-    /*TODO
-    * add rest of the enemy types
+    // TODO
+    //   add rest of the enemy types
     
 
 	return data;
