@@ -45,7 +45,7 @@ void Container::HandleEvent(const sf::Event& event)
 		for(const Component::Ptr& child: children_){
 			if(child->GetGlobalBounds().contains(sf::Vector2f(event.mouseMove.x,event.mouseMove.y))){
 				selectedChild_ = n;
-				child->Select();
+				child->Select();	
 				return;
 			}
 			else
