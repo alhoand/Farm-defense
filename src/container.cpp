@@ -11,10 +11,10 @@
 namespace GUI
 {
 
-Container::Container()
+Container::Container(State::Context context)
 : children_()
 , selectedChild_(-1)
-//, context_(context)
+, context_(context)
 {
 }
 
@@ -37,16 +37,15 @@ void Container::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 	for(const Component::Ptr& child: children_)
 		target.draw(*child, states);
 }
-/*
+
 void Container::HandleEvent(const sf::Event& event)
 {
 	if(event.type == sf::Event::MouseMoved){
 		int n = 0;
 		for(const Component::Ptr& child: children_){
-			if(child->GetGlobalBounds().contains(sf::Vector2f(sf::Vector2i(event.mouseMove.x, event.mouseMove.y)))){
+			if(child->GetGlobalBounds().contains(sf::Vector2f(event.mouseMove.x,event.mouseMove.y))){
 				selectedChild_ = n;
 				child->Select();
-				std::cout << "jiihaa" << std::endl;
 				return;
 			}
 			else
@@ -57,7 +56,22 @@ void Container::HandleEvent(const sf::Event& event)
 		}
 		selectedChild_ = -1;
 	}
-}*/
+	else if(event.type == sf::Event::MouseButtonPressed){
+		int n = 0;
+		for(const Component::Ptr& child: children_){
+			if(child->GetGlobalBounds().contains(sf::Vector2f(event.mouseButton.x,event.mouseButton.y))){
+				selectedChild_ = n;
+				child->Activate();
+				//std::cout << "jiihaa" << std::endl;
+				return;
+			}
+			else
+				child->Deselect();
+			n++;
+		}
+		selectedChild_ = -1;
+	}
+}
 
 bool Container::HasSelection() const
 {
@@ -65,7 +79,7 @@ bool Container::HasSelection() const
 }
 
 
-
+/*
 void Container::HandleEvent(const sf::Event& event)
 {
     // If we have selected a child then give it events
@@ -105,35 +119,5 @@ void Container::Select(std::size_t index)
 		selectedChild_ = index;
 	}
 }
-
-void Container::SelectNext()
-{
-	if (!HasSelection())
-		return;
-
-	// Search next component that is selectable, wrap around if necessary
-	int next = selectedChild_;
-	do
-		next = (next + 1) % children_.size();
-	while (!children_[next]->IsSelectable());
-
-	// Select that component
-	Select(next);
-}
-
-void Container::SelectPrevious()
-{
-	if (!HasSelection())
-		return;
-
-	// Search previous component that is selectable, wrap around if necessary
-	int prev = selectedChild_;
-	do
-		prev = (prev + children_.size() - 1) % children_.size();
-	while (!children_[prev]->IsSelectable());
-
-	// Select that component
-	Select(prev);
-}
-
+*/
 }

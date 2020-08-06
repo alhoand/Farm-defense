@@ -41,7 +41,7 @@ void Button::SetToggle(bool flag)
 }
 
 sf::FloatRect Button::GetGlobalBounds(){
-	return sprite_.getGlobalBounds();
+	return getTransform().transformRect(sprite_.getGlobalBounds());
 }
 
 bool Button::IsSelectable() const

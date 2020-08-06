@@ -1,6 +1,7 @@
 #include "component.hpp"
 #include "states/state.hpp"
 
+#include <SFML/Graphics.hpp>
 #include <vector>
 #include <memory>
 
@@ -15,13 +16,12 @@ class Container : public Component
             
 
 	public:
-							Container();
+							Container(State::Context context);
 
         void				Pack(Component::Ptr component);
 
         virtual bool		IsSelectable() const;
         virtual void		HandleEvent(const sf::Event& event);
-
 
     private:
         virtual void		draw(sf::RenderTarget& target, sf::RenderStates states) const override{
@@ -38,7 +38,7 @@ class Container : public Component
     private:
         std::vector<Component::Ptr>		children_;
         int								selectedChild_;
-        //State::Context                  context_;
+        State::Context                 context_;
 };
 
 }
