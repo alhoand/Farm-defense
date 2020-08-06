@@ -6,6 +6,7 @@
 
 #include <cassert>
 #include <set>
+#include <algorithm>
 
 SceneNode::SceneNode() : children_(), parent_(nullptr) { }
 
@@ -77,10 +78,26 @@ bool SceneNode::IsDestroyed() const
     return false;
 }
 
+//some other cases than immediate death?
+bool SceneNode::IsMarkedForRemoval() const
+{
+    return IsDestroyed();
+}
+
+void SceneNode::RemoveWrecks()
+{
+    auto wreckfieldBegin = std::remove_if(children_.begin(),children_.end(), std::mem_fn(&SceneNode::IsMarkedForRemoval));
+    children_.erase(wreckfieldBegin, children_.end());
+
+    std::for_each(children_.begin(), children_.end(),std::mem_fn(&SceneNode::RemoveWrecks));
+}
+
 sf::FloatRect SceneNode::GetBoundingRect() const 
 {
     return sf::FloatRect();
 }
+
+
 
 
 SceneNode::Ptr SceneNode::DetachChild(const SceneNode& node) {

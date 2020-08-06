@@ -20,17 +20,19 @@ public:
     typedef std::pair<SceneNode*, SceneNode*> Pair;
 
     SceneNode();
-    void AttachChild(Ptr node);
-    Ptr DetachChild(const SceneNode& node);
-    void Update(sf::Time dt);
-    virtual unsigned int GetCategory() const;
-    void OnCommand(const Command& command, sf::Time dt);
-    sf::Transform GetWorldTransform() const;
-    sf::Vector2f GetWorldPosition() const;
-    void CheckNodeCollision(SceneNode& node, std::set<Pair>& collisionPairs);
-    void CheckSceneCollision(SceneNode& sceneGraph, std::set<Pair>& collisionPairs);
-    virtual bool IsDestroyed() const;
-    virtual sf::FloatRect GetBoundingRect() const;
+    void                    AttachChild(Ptr node);
+    Ptr                     DetachChild(const SceneNode& node);
+    void                    Update(sf::Time dt);
+    virtual unsigned int    GetCategory() const;
+    void                    OnCommand(const Command& command, sf::Time dt);
+    sf::Transform           GetWorldTransform() const;
+    sf::Vector2f            GetWorldPosition() const;
+    void                    CheckNodeCollision(SceneNode& node, std::set<Pair>& collisionPairs);
+    void                    CheckSceneCollision(SceneNode& sceneGraph, std::set<Pair>& collisionPairs);
+    virtual bool            IsDestroyed() const;
+    virtual bool			IsMarkedForRemoval() const;
+    void					RemoveWrecks();
+    virtual sf::FloatRect   GetBoundingRect() const;
 
 private:
     virtual void UpdateCurrent(sf::Time dt);
