@@ -40,9 +40,6 @@ class Enemy : public Entity {
             }
         } */
 
-        //Take hit from a bullet
-//        virtual void TakeHit(Bullet bullet);
-        void TakeHit(Bullet bullet);
         unsigned int GetCategory() const;
         virtual sf::FloatRect getBoundingRect() const;
 
@@ -75,7 +72,6 @@ class Enemy : public Entity {
         sf::Sprite sprite_;
         float travelledDistance_;
 		std::size_t directionIndex_;
-        int hitpoints_;
         int speed_;
 };
 

@@ -1,6 +1,7 @@
 #include "bullet.hpp"
 #include "entity.hpp"
 #include "resource_holder.hpp"
+#include "category.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
@@ -21,7 +22,8 @@ Textures::ID Bullet::ToTextureID(Bullet::Type type) {
 }
 
 Bullet::Bullet(Type type, int damage, int damage_duration, const TextureHolder& textures)
-    : type_(type), 
+    : Entity(1),
+        type_(type), 
         sprite_(textures.Get(ToTextureID(type))),
         targetDirection_(),
         damage_(damage),
@@ -49,4 +51,9 @@ void Bullet::UpdateCurrent(sf::Time dt)
 void Bullet::DrawCurrent(sf::RenderTarget& target,sf::RenderStates states) const
 {
     target.draw(sprite_, states);
+}
+
+unsigned int Bullet::GetCategory() const
+{
+	return Category::Bullet;
 }

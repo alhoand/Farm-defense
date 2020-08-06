@@ -1,5 +1,7 @@
 #include "entity.hpp"
 
+Entity::Entity(int hp) : hitpoints_(hp) {}
+
 void Entity::SetVelocity(sf::Vector2f velocity) {
     velocity_ = velocity;
 }
@@ -13,7 +15,27 @@ sf::Vector2f Entity::GetVelocity() const {
     return velocity_;
 }
 
+int Entity::GetHitpoints() const
+{
+    return hitpoints_;
+}
+
 // Makes the entity move with sfml move function
 void Entity::UpdateCurrent(sf::Time dt) {
     move(velocity_ * dt.asSeconds());
+}
+
+void Entity::Destroy() 
+{
+    hitpoints_ = 0;
+}
+
+bool Entity::IsDestroyed() const
+{
+    return hitpoints_ <= 0;
+}
+
+void Entity::Damage(int damage) 
+{
+    hitpoints_ -= damage;
 }

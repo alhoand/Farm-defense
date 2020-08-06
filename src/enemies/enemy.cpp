@@ -16,8 +16,6 @@
 //this function should be in data_tables.cpp
 std::vector<EnemyData> initializeEnemyData()
 {
-    //DEBUG
-
     std::cout << "DEBUG: Initializing enemy data" << std::endl; 
 
 	std::vector<EnemyData> data(Enemy::TypeCount);
@@ -63,11 +61,11 @@ Textures::ID Enemy::ToTextureID(Enemy::Type type) {
 
 // Constructor that works with SFML
 Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, int hp, int speed)
-    : type_(type), 
+    : Entity(hp),
+        type_(type), 
         sprite_(textures.Get(ToTextureID(type))),
         travelledDistance_(0.f), 
         directionIndex_(0),
-        hitpoints_(hp),
         speed_(speed)
     { 
         sf::FloatRect bounds = sprite_.getLocalBounds();
@@ -76,7 +74,7 @@ Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, int hp, int speed)
 
 
 // Default constructor with hard-coded values for hitpoints for testing
-Enemy::Enemy() : type_(Enemy::Type::Fire), hitpoints_(50), speed_(50) { }
+Enemy::Enemy() : Entity(50), type_(Enemy::Type::Fire), speed_(50) { }
 
 
 void Enemy::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const {
@@ -102,18 +100,14 @@ void Enemy::UpdateCurrent(sf::Time dt) {
     updateMovementPattern(dt);
     Entity::UpdateCurrent(dt); // Apply velocity
 
-    if (hitpoints_ > 0) {
+    if (GetHitpoints() > 0) {
         //move enemy or game lost
     } else {
         //indicate game field somehow that enemy is dead
     }
 }
 
-void Enemy::TakeHit(Bullet bullet) 
-{
-    std::cout << bullet.GetDamage() << std::endl;
-    // Do nothing for now 
-}
+
 
 unsigned int Enemy::GetCategory() const 
 {
