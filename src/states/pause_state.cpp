@@ -33,7 +33,7 @@ void PauseState::Draw() {
     window.setView(window.getDefaultView());
 
     sf::RectangleShape backgroundShape;
-    backgroundShape.setFillColor(sf::Color(0, 0, 0,150));
+    backgroundShape.setFillColor(sf::Color(0, 0, 0, 150));
     backgroundShape.setSize(sf::Vector2f(window.getSize()));
 
     window.draw(backgroundShape);

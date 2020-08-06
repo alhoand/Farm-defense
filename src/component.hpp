@@ -32,6 +32,8 @@ class Component : public sf::Drawable, public sf::Transformable, private sf::Non
         virtual void		Activate();
         virtual void		Deactivate();
 
+
+        virtual sf::FloatRect       GetGlobalBounds(){return sf::FloatRect();}
         virtual void		HandleEvent(const sf::Event& event) = 0;
 
 

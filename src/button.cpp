@@ -40,6 +40,10 @@ void Button::SetToggle(bool flag)
 	isToggle_ = flag;
 }
 
+sf::FloatRect Button::GetGlobalBounds(){
+	sprite_.getGlobalBounds();
+}
+
 bool Button::IsSelectable() const
 {
     return true;

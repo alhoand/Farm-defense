@@ -27,6 +27,8 @@ class Button : public Component
         void					SetCallback(Callback callback);
         void					SetText(const std::string& text);
         void					SetToggle(bool flag);
+        virtual sf::FloatRect           GetGlobalBounds() override;
+
 
         virtual bool			IsSelectable() const override;
         virtual void			Select();

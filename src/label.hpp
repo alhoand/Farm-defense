@@ -19,6 +19,7 @@ class Label : public Component
 
         virtual bool		IsSelectable() const;
 		void				SetText(const std::string& text);
+        virtual sf::FloatRect       GetGlobalBounds() override;
 
         virtual void		HandleEvent(const sf::Event& event);
 

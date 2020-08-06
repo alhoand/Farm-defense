@@ -2,6 +2,7 @@
 //#include <foreach.hpp"
 
 #include <SFML/Window/Event.hpp>
+#include <SFML/Window/Mouse.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
@@ -28,6 +29,44 @@ bool Container::IsSelectable() const
     return false;
 }
 
+void Container::Draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+    states.transform *= getTransform();
+
+	//FOREACH(const Component::Ptr& child, children_)
+	//	target.draw(*child, states);
+	for(const Component::Ptr& child: children_)
+		target.draw(*child, states);
+}
+
+void Container::HandleEvent(const sf::Event& event)
+{
+	if(event.type == sf::Event::MouseMoved){
+		int n = 0;
+		while(n < children_.size()){
+			if(children_[n]->GetGlobalBounds().contains(event.mouseMove.x, event.mouseMove.y)){
+				selectedChild_ = n;
+				children_[n]->Select();
+				return;
+			}
+			else
+			{
+				children_[n]->Deselect();
+			}
+			n++;
+		}
+		selectedChild_ = -1;
+	}
+}
+
+bool Container::HasSelection() const
+{
+	return selectedChild_ >= 0;
+}
+
+
+
+/*
 void Container::HandleEvent(const sf::Event& event)
 {
     // If we have selected a child then give it events
@@ -53,20 +92,8 @@ void Container::HandleEvent(const sf::Event& event)
 	}
 }
 
-void Container::Draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
-    states.transform *= getTransform();
 
-	//FOREACH(const Component::Ptr& child, children_)
-	//	target.draw(*child, states);
-	for(const Component::Ptr& child: children_)
-		target.draw(*child, states);
-}
 
-bool Container::HasSelection() const
-{
-	return selectedChild_ >= 0;
-}
 
 void Container::Select(std::size_t index)
 {
@@ -109,5 +136,5 @@ void Container::SelectPrevious()
 	// Select that component
 	Select(prev);
 }
-
+*/
 }
