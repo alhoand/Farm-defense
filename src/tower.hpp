@@ -7,6 +7,7 @@
 #include "category.hpp"
 #include "entity.hpp"
 #include "resource_identifiers.hpp"
+#include "command_queue.hpp"
 
 /*  ***TODO***
 * - all return values are void, to be changed for right ones
@@ -24,24 +25,26 @@ class Tower : public Entity {
 
         // Default constructor - is it needed?
         Tower();
-
-        // Constructor which is given the position
-        // Tower(Position p);
         
         // The constructor for now. Most of the parameters should be given automatically, 
         // depending on type (inherited class)
-        Tower(Type type, const TextureHolder &textures, int range, int reload_speed, Bullet::Type bullet_type);
+        Tower(Type type, const TextureHolder &textures, int range, int reloadSpeed, Bullet::Type bulletType, CommandQueue& commands);
 
         //Destructor
         virtual ~Tower() { };
 
+        void CreateBullet(SceneNode& node, Bullet::Type type, float xOffset, float yOffset, const TextureHolder& textures) const;
+
         virtual void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 
         //Update the state of the tower, should be virtual
-        virtual void Update() { }
+        virtual void UpdateCurrent(sf::Time dt) override;
 
         //Shoot an enemy, should be virtual
-        virtual void Shoot() { }
+        // virtual void Shoot();
+
+        // Helper function
+        void CheckShoot(sf::Time dt);
 
         virtual unsigned int GetCategory() const override;
 
@@ -74,7 +77,12 @@ class Tower : public Entity {
         // Where are the tower's guns pointed at (also gives direction for the bullet)
         float direction_;
         // Some kind of container for enemies in range - this could also be a function that is called every tick
-        std::vector<Enemy> enemies_in_range_;
-        float reload_speed_;
+        std::vector<Enemy> enemiesInRange_;
+        float reloadSpeed_;
+
         Bullet::Type bulletType_;
+        // bool isShooting_; not needed?
+        sf::Time countdown_;
+        CommandQueue commands_;
+        Command shootCommand_;
 };

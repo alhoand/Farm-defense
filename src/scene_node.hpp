@@ -27,6 +27,7 @@ public:
     void                    OnCommand(const Command& command, sf::Time dt);
     sf::Transform           GetWorldTransform() const;
     sf::Vector2f            GetWorldPosition() const;
+
     void                    CheckNodeCollision(SceneNode& node, std::set<Pair>& collisionPairs);
     void                    CheckSceneCollision(SceneNode& sceneGraph, std::set<Pair>& collisionPairs);
     virtual bool            IsDestroyed() const;
@@ -35,15 +36,17 @@ public:
     virtual sf::FloatRect   GetBoundingRect() const;
 
 private:
-    virtual void UpdateCurrent(sf::Time dt);
-    void UpdateChildren(sf::Time dt);
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states)  const override;
-    virtual void Draw(sf::RenderTarget& target, sf::RenderStates states) const final;
-    virtual void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
-    void DrawChildren(sf::RenderTarget& target, sf::RenderStates states) const;
+    virtual void    UpdateCurrent(sf::Time dt);
+    void            UpdateChildren(sf::Time dt);
+    virtual void    draw(sf::RenderTarget& target, sf::RenderStates states)  const override;
+    virtual void    Draw(sf::RenderTarget& target, sf::RenderStates states) const final;
+    virtual void    DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+    void            DrawChildren(sf::RenderTarget& target, sf::RenderStates states) const;
+
 
     std::vector<Ptr> children_;
     SceneNode* parent_;
 };
 
 bool Collision(const SceneNode& lhs, const SceneNode& rhs);
+
