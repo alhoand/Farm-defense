@@ -15,11 +15,18 @@ Application::Application()
     viewOffset_(sf::Vector2f(0.f, 0.f)),
     textures_(),
     fonts_(),
+    statisticsText_(),
     player_(window_, viewOffset_),
     stateStack_(State::Context(window_, textures_, fonts_, player_, viewOffset_))
     { 
         fonts_.Load(Fonts::ID::Title, "../media/fonts/Lato-Regular.ttf");
-        textures_.Load(Textures::ID::TitleBackground, "../media/textures/otaniemi.jpg");
+        fonts_.Load(Fonts::ID::Main,  "../media/fonts/Lato-Regular.ttf");
+        
+        textures_.Load(Textures::ID::TitleBackground,   "../media/textures/otaniemi.jpg");
+        textures_.Load(Textures::ID::ButtonNormal,      "../media/textures/ButtonNormal.png");
+	    textures_.Load(Textures::ID::ButtonSelected,	"../media/textures/ButtonSelected.png");
+	    textures_.Load(Textures::ID::ButtonPressed,		"../media/textures/ButtonPressed.png");
+
         RegisterStates();
         stateStack_.PushState(States::ID::Title);
     }
@@ -27,8 +34,9 @@ Application::Application()
 
 void Application::RegisterStates() {
     stateStack_.RegisterState<TitleState>(States::ID::Title);
-    //stateStack_.RegisterState<MenuState>(States::ID::Menu);
+    stateStack_.RegisterState<MenuState>(States::ID::Menu);
     stateStack_.RegisterState<GameState>(States::ID::Game);
+    //stateStack_.registerState<PauseState>(States::ID::Pause);
 }
 
 void Application::Run() {

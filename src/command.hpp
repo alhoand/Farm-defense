@@ -2,6 +2,7 @@
 
 #include <SFML/System/Time.hpp>
 #include <functional>
+#include <cassert>     
 #include "scene_node.hpp"
 #include "category.hpp"
 #include <cassert>
@@ -14,8 +15,6 @@ struct Command {
     unsigned int category_;
 };
 
-// Helper function template for downcasting SceneNodes to GameObjects such as Tower.
-// Used when giving commands to game objects
 template <typename GameObject, typename Function>
 std::function<void(SceneNode&, sf::Time)> DerivedAction(Function fn) {
     return [=] (SceneNode& node, sf::Time dt) {
@@ -24,5 +23,5 @@ std::function<void(SceneNode&, sf::Time)> DerivedAction(Function fn) {
         // call the function given as parameter and forward the derived class
         fn(static_cast<GameObject&>(node), dt);
     };
-};
+}
 

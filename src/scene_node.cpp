@@ -10,18 +10,6 @@ void SceneNode::AttachChild(Ptr node) {
 
 }
 
-SceneNode::Ptr SceneNode::DetachChild(const SceneNode& node) {
-    auto found = std::find_if(children_.begin(), children_.end(), 
-        [&] (Ptr &p) {
-            return p.get() == &node;
-        });
-    assert(found != children_.end()); 
-    Ptr result = std::move(*found); // result takes ownership of the child
-    result->parent_ = nullptr; // makes the child's parent a nullptr
-    children_.erase(found); // removes the child from its parent
-    return result;
-}
-
 void SceneNode::Update(sf::Time dt) {
     UpdateCurrent(dt);
     UpdateChildren(dt);
@@ -37,6 +25,33 @@ void SceneNode::UpdateChildren(sf::Time dt) {
     }
 }
 
+// Iterative version
+sf::Transform SceneNode::GetWorldTransform() const {
+    sf::Transform transform = sf::Transform::Identity;
+    for (const SceneNode* node = this; node != nullptr; node = node->parent_) {
+        transform = node->getTransform() * transform; // This accumulates the transform
+    }
+    return transform;
+}
+
+
+// The absolute position of the SceneNode in the game field
+sf::Vector2f SceneNode::GetWorldPosition() const {
+    return GetWorldTransform() * sf::Vector2f();
+}
+
+
+SceneNode::Ptr SceneNode::DetachChild(const SceneNode& node) {
+    auto found = std::find_if(children_.begin(), children_.end(), 
+        [&] (Ptr &p) {
+            return p.get() == &node;
+        });
+    assert(found != children_.end()); 
+    Ptr result = std::move(*found); // result takes ownership of the child
+    result->parent_ = nullptr; // makes the child's parent a nullptr
+    children_.erase(found); // removes the child from its parent
+    return result; // result is 
+}
 
 void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     Draw(target, states);
@@ -58,22 +73,7 @@ void SceneNode::DrawChildren(sf::RenderTarget &target, sf::RenderStates states) 
     }
 }
 
-// Iterative version
-sf::Transform SceneNode::GetWorldTransform() const {
-    sf::Transform transform = sf::Transform::Identity;
-    for (const SceneNode* node = this; node != nullptr; node = node->parent_) {
-        transform = node->getTransform() * transform; // This accumulates the transform
-    }
-    return transform;
-}
-
-
-// The absolute position of the SceneNode in the game field
-sf::Vector2f SceneNode::GetWorldPosition() const {
-    return GetWorldTransform() * sf::Vector2f();
-}
-
-
+//
 unsigned int SceneNode::GetCategory() const {
     return Category::Scene; // By default every scene node belongs to Scene-category
 }
@@ -87,6 +87,7 @@ void SceneNode::OnCommand(const Command &command, sf::Time dt) {
     // 1000 & 0100 -> 0000 = 0 = false
     if (command.category_ & GetCategory()) { 
         command.action_(*this, dt);
+        //this->accelerate(2.f, 3.f);
     }
     for (const Ptr &child : children_) {
         child->OnCommand(command, dt);

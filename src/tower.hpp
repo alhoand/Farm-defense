@@ -2,7 +2,6 @@
 
 //Initial header file for abstract tower class
 #include "scene_node.hpp"
-#include "position.hpp"
 #include "bullet.hpp"
 #include "category.hpp"
 #include "entity.hpp"
@@ -29,7 +28,7 @@ class Tower : public Entity {
         // Tower(Position p);
         
         // The constructor for now. Most of the parameters should be given automatically
-        Tower(Type type, const TextureHolder &textures, Position position, int range, int reload_speed, Bullet bullet);
+        Tower(Type type, const TextureHolder &textures, int range, int reload_speed, Bullet bullet);
 
         //Destructor
         virtual ~Tower() { };
@@ -68,7 +67,7 @@ class Tower : public Entity {
         Tower::Type type_;
         int range_;
         sf::Sprite sprite_;
-        Position position_;
+        //Position position_;
         //enemies_in_range_;
         int reload_speed_;
         Bullet bullet_;

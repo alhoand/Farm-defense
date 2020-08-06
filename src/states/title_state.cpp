@@ -28,13 +28,13 @@ bool TitleState::Update(sf::Time dt) {
 }
 
 bool TitleState::HandleEvent(const sf::Event &event) {
-    
-    if (event.type == sf::Event::KeyReleased) {
-        std::cout << "A key was pressed" << std::endl;
-        RequestStackPop();
-        RequestStackPush(States::ID::Game); // Goes to game directly
-    }
-    return true;
+	if (event.type == sf::Event::KeyReleased)
+	{
+		RequestStackPop();
+		RequestStackPush(States::ID::Menu);
+	}
+
+	return true;
 }
 
 void TitleState::Draw() {

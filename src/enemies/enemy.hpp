@@ -6,6 +6,8 @@
 #include "../bullet.hpp"
 #include "../entity.hpp"
 #include "../resource_identifiers.hpp"
+
+
 /*  ***TODO***
 * - all return values are void, to be changed for right ones
  - Intregrate the path to work with sfml vectors 
@@ -13,11 +15,14 @@
 
 class Enemy : public Entity {
     public:
-        enum class Type {
+        //Enemy types
+        enum Type {
             Fire,
             Water,
-            Leaf
+            Leaf,
+            TypeCount //enumerators are indexed so last one tells the count of previous ones 
         };
+    public:
         //Constructors
         Enemy();
             
@@ -25,27 +30,24 @@ class Enemy : public Entity {
 
         //TODO: Integrate path with sfml 
 
-       /* Enemy(int hp, int speed, std::vector<Position*> path)
-            : hitpoints_(hp), speed_(speed), path_(path) 
-            {
-                position_ = path_[0];
-            } 
-        */
+        //virtual void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-        virtual void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
-
+        void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 
         // TODO: integrate path with sfml 
-        virtual ~Enemy() {
-        /*    for (auto it = path_.begin(); it != path_.end(); it++) {
-                delete *it;
-            }*/
-        }
+        /* virtual ~Enemy() {
+            }
+        } */
 
         //Take hit from a bullet
-        virtual void TakeHit(Bullet bullet);
+//        virtual void TakeHit(Bullet bullet);
+        void TakeHit(Bullet bullet);
+        unsigned int GetCategory() const;
 
-        unsigned int GetCategory() const override;
+        //unsigned int GetCategory() const override;
+
+    private:
+        void updateMovementPattern(sf::Time dt);
 
     protected:
 
@@ -65,10 +67,12 @@ class Enemy : public Entity {
 
         Textures::ID ToTextureID(Enemy::Type type);
 
+        
+
         Type type_;
         sf::Sprite sprite_;
+        float travelledDistance_;
+		std::size_t directionIndex_;
         int hitpoints_;
         int speed_;
-        std::vector<Position*> path_;
-        Position* position_;
 };

@@ -1,12 +1,14 @@
 #pragma once
 #include "resource_holder.hpp"
+
 namespace sf {
     class Texture;
     class Font;
 }
 
+
 namespace Textures {
-    enum class ID {
+    enum ID {
         Fire,
         Leaf,
         Water,
@@ -15,18 +17,23 @@ namespace Textures {
         WaterTower,
         LeafTower,
         Path,
-        TitleBackground
+        TitleScreen,
+        TitleBackground,
+        ButtonNormal,
+        ButtonSelected,
+        ButtonPressed
     };
 }
 
 namespace Fonts {
-    enum class ID {
-        Title,
-        Main,
-        Game
-    };
+	enum ID {
+		Main,
+        Title
+	};
 }
 
-typedef ResourceHolder<sf::Texture, Textures::ID> TextureHolder; 
+template <typename Resource, typename Identifier>
+class ResourceHolder;
 
-typedef ResourceHolder<sf::Font, Fonts::ID> FontHolder;
+typedef ResourceHolder<sf::Texture, Textures::ID> TextureHolder;
+typedef ResourceHolder<sf::Font, Fonts::ID>			FontHolder;

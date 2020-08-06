@@ -21,10 +21,13 @@ public:
 private:
     sf::RenderWindow window_;
     sf::Vector2f viewOffset_;
+
+     sf::Text	statisticsText_;
+
     TextureHolder textures_;
     FontHolder fonts_;
     Player player_;
     StateStack stateStack_;
-
+   
 
 };

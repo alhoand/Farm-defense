@@ -4,13 +4,12 @@
 #include <iostream>
 
 #include "enemy.hpp"
-#include "../position.hpp"
 #include "../bullet.hpp"
 
 class TestEnemy : public Enemy {
     public:
         //Constructor
-        TestEnemy(std::vector<Position*> path) 
+        TestEnemy() 
             : Enemy() 
             {
                 std::cout << "New enemy created!" << std::endl;

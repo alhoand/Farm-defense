@@ -19,8 +19,7 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	{ 
 		LoadTextures();
 		BuildScene();
-		//gameFieldView_.setCenter(gameFieldBounds_.left + gameFieldBounds_.width - gameFieldView_.getSize().x/2.f, gameFieldBounds_.top + (gameFieldBounds_.height + viewOffset_.y)/2.f);
-		gameFieldView_.setCenter((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, gameFieldBounds_.top + (gameFieldBounds_.height)/2.f);
+		gameFieldView_.setCenter(gameFieldBounds_.left + (gameFieldBounds_.width + viewOffset_.x)/2.f, gameFieldBounds_.top + (gameFieldBounds_.height + viewOffset_.y)/2.f);
 	}
 
 
@@ -42,6 +41,7 @@ void GameField::LoadTextures() {
 	textures_.Load(Textures::ID::Leaf, "../media/textures/cat.png");
 	textures_.Load(Textures::ID::Grass, "../media/textures/grass.jpg");
 	textures_.Load(Textures::ID::FireTower, "../media/textures/tower.png");
+	
 }
 
 void GameField::BuildScene() {
@@ -60,14 +60,18 @@ void GameField::BuildScene() {
 	std::unique_ptr<SpriteNode> backgroundSprite(new SpriteNode(texture, textureRect));
 	backgroundSprite->setPosition(gameFieldBounds_.left, gameFieldBounds_.top);
 	sceneLayers_[Background]->AttachChild(std::move(backgroundSprite));
-	std::unique_ptr<Ghost> towerSideBarSprite(new Ghost(Tower::Type::Fire, textures_, sf::Vector2f(300.f, 300.f)));
-	sceneLayers_[Air]->AttachChild(std::move(towerSideBarSprite));
+
 
 	//Initialize two enemies
 	std::unique_ptr<Enemy> firstEnemy(new Enemy(Enemy::Type::Fire, textures_, 50, enemySpeed_));
 	firstEnemy_ = firstEnemy.get();
 	firstEnemy_->setPosition(spawnPosition_);
+
+	std::cout << "DEBUG: spawn position:" << firstEnemy_->getPosition().x << "," << firstEnemy_->getPosition().y << std::endl;
+
 	firstEnemy_->SetVelocity(enemySpeed_, 0.f);
+	std::cout << "DEBUG: initial velocity: " << firstEnemy_->GetVelocity().x << "," << firstEnemy_->GetVelocity().y << std::endl;
+ 
 	sceneLayers_[Ground] -> AttachChild(std::move(firstEnemy));
 
 	std::unique_ptr<Enemy> secondEnemy(new Enemy(Enemy::Type::Leaf, textures_, 50, enemySpeed_));
@@ -76,13 +80,11 @@ void GameField::BuildScene() {
 
 	//Initialize a tower that can be moved with hard-coded bullet
 	// TODO: make bullets work
-	std::unique_ptr<Tower> firstTower(new Tower(Tower::Type::Fire, textures_, Position(0,0), 50, 30, Bullet(BulletType::Fire, Position(0,0), 5, 5)));
+	std::unique_ptr<Tower> firstTower(new Tower(Tower::Type::Fire, textures_, 50, 30, Bullet(BulletType::Fire, 5, 5)));
 	firstTower_ = firstTower.get();
 	firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
 	firstTower_->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f);
 	sceneLayers_[Ground] -> AttachChild(std::move(firstTower));
-
-
 
 
 }
