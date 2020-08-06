@@ -11,7 +11,8 @@
 static const sf::Time timePerFrame = sf::seconds(1.f / 60.f);
 
 Application::Application()
-    : window_(sf::VideoMode(1280,720), "Tower Defense", sf::Style::Close),
+    //: window_(sf::VideoMode(1280,720), "Tower Defense", sf::Style::Close),
+    : window_(sf::VideoMode::getFullscreenModes()[0], "Tower Defense", sf::Style::Default),
     viewOffset_(sf::Vector2f(0.f, 0.f)),
     textures_(),
     fonts_(),
@@ -20,6 +21,7 @@ Application::Application()
     stateStack_(State::Context(window_, textures_, fonts_, player_, viewOffset_))
     { 
         window_.setFramerateLimit(60);
+        window_.setPosition(sf::Vector2i(0.f, 30.f)); //sets position so title bar is at the top of screen
         
         fonts_.Load(Fonts::ID::Title, "../media/fonts/Lato-Regular.ttf");
         fonts_.Load(Fonts::ID::Main,  "../media/fonts/Lato-Regular.ttf");
