@@ -34,7 +34,7 @@ Bullet::Bullet(Type type, int damage, int damage_duration, const TextureHolder& 
     }
 
 Bullet::Bullet(Type type, const TextureHolder& textures)
-    : type_(type), sprite_(textures.Get(ToTextureID(type))), targetDirection_(),
+    : Entity(1), type_(type), sprite_(textures.Get(ToTextureID(type))), targetDirection_(),
       damage_(), damage_duration_() {
         sf::FloatRect bounds = sprite_.getLocalBounds();
         sprite_.setOrigin(bounds.width/2.f, bounds.height/2.f);
