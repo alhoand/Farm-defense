@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ENEMY_HPP
+#define ENEMY_HPP
 
 //Initial header file for abstract enemy class
 #include <vector>
@@ -43,6 +44,7 @@ class Enemy : public Entity {
 //        virtual void TakeHit(Bullet bullet);
         void TakeHit(Bullet bullet);
         unsigned int GetCategory() const;
+        virtual sf::FloatRect getBoundingRect() const;
 
         //unsigned int GetCategory() const override;
 
@@ -76,3 +78,5 @@ class Enemy : public Entity {
         int hitpoints_;
         int speed_;
 };
+
+#endif // ENEMY_HPP
