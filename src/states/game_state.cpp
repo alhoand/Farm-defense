@@ -22,6 +22,9 @@ bool GameState::HandleEvent(const sf::Event& event) {
     CommandQueue& commands = gameField_.GetCommandQueue();
     player_.HandleEvent(event, commands);
 
+    if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P)
+		RequestStackPush(States::ID::Pause);
+
     return true;
 }
 

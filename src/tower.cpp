@@ -1,7 +1,6 @@
 //TODO class implementation here
 #include "tower.hpp"
 
-
 Tower::Tower(Tower::Type type, const TextureHolder &textures, int range, int reloadSpeed, Bullet::Type bulletType, CommandQueue& commands)
     : type_(type), sprite_(textures.Get(ToTextureID(type))), range_(range), direction_(0),
       reloadSpeed_(reloadSpeed), bulletType_(bulletType), countdown_(sf::Time::Zero), commands_(commands), shootCommand_() {

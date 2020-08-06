@@ -1,11 +1,14 @@
 #pragma once
 
-#include <memory>
-#include <vector>
 #include <SFML/Graphics.hpp>
 #include "category.hpp"
 #include "command.hpp"
+
+#include <memory>
+#include <vector>
+#include <set>
 #include <iostream>
+#include <utility>
 
 
 struct Command;
@@ -14,8 +17,9 @@ struct Command;
 class SceneNode : public sf::Drawable, public sf::Transformable, private sf::NonCopyable {
 public:
     typedef std::unique_ptr<SceneNode> Ptr;
+    typedef std::pair<SceneNode*, SceneNode*> Pair;
 
-                            SceneNode();
+    SceneNode();
     void                    AttachChild(Ptr node);
     Ptr                     DetachChild(const SceneNode& node);
     void                    Update(sf::Time dt);
@@ -23,6 +27,13 @@ public:
     void                    OnCommand(const Command& command, sf::Time dt);
     sf::Transform           GetWorldTransform() const;
     sf::Vector2f            GetWorldPosition() const;
+
+    void                    CheckNodeCollision(SceneNode& node, std::set<Pair>& collisionPairs);
+    void                    CheckSceneCollision(SceneNode& sceneGraph, std::set<Pair>& collisionPairs);
+    virtual bool            IsDestroyed() const;
+    virtual bool			IsMarkedForRemoval() const;
+    void					RemoveWrecks();
+    virtual sf::FloatRect   GetBoundingRect() const;
 
 private:
     virtual void    UpdateCurrent(sf::Time dt);
@@ -32,6 +43,10 @@ private:
     virtual void    DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
     void            DrawChildren(sf::RenderTarget& target, sf::RenderStates states) const;
 
-    std::vector<Ptr>    children_;
-    SceneNode*          parent_;
+
+    std::vector<Ptr> children_;
+    SceneNode* parent_;
 };
+
+bool Collision(const SceneNode& lhs, const SceneNode& rhs);
+

@@ -19,6 +19,9 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
             });
         commands.Push(output);
     }
+    else if (event.key.code == sf::Keyboard::P){
+        //RequestStackPush(States::ID::Pause);
+    }
 
 }
 //Adapted from the SFML Game Development-book

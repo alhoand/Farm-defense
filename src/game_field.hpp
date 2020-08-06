@@ -15,6 +15,7 @@
 #include "resource_identifiers.hpp"
 #include "scene_node.hpp"
 #include "command.hpp"
+#include "category.hpp"
 
 #include <SFML/System/NonCopyable.hpp>
 #include "SFML/Graphics.hpp"
@@ -49,6 +50,7 @@ class GameField : private sf::NonCopyable {
     private:
         void LoadTextures();
         void BuildScene();
+        void HandleCollisions();
 
         enum Layer {
             Background,

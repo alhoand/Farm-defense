@@ -26,11 +26,14 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 void GameField::Update(sf::Time dt) {
 	//std::cout << "updating game field" << std::endl;
 
+	
 	// Forwards the commands to the scene graph
 	while(!commandQueue_.IsEmpty()) {
 		sceneGraph_.OnCommand(commandQueue_.Pop(), dt);
 	}
 
+	HandleCollisions();
+	sceneGraph_.RemoveWrecks();
 
 	sceneGraph_.Update(dt);
 }
@@ -89,6 +92,47 @@ void GameField::BuildScene() {
 
 
 }
+
+bool MatchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2)
+{
+	unsigned int category1 = colliders.first->GetCategory();
+	unsigned int category2 = colliders.second->GetCategory();
+
+	// Make sure first pair entry has category type1 and second has type2
+	if (type1 & category1 && type2 & category2)
+	{
+		return true;
+	}
+	else if (type1 & category2 && type2 & category1)
+	{
+		std::swap(colliders.first, colliders.second);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+void GameField::HandleCollisions()
+{
+	std::set<SceneNode::Pair> collisionPairs;
+	sceneGraph_.CheckSceneCollision(sceneGraph_, collisionPairs);
+
+	for(SceneNode::Pair pair : collisionPairs)
+	{
+		if (MatchesCategories(pair, Category::Enemy, Category::Bullet))
+		{
+			auto& enemy = static_cast<Enemy&>(*pair.first);
+			auto& bullet = static_cast<Bullet&>(*pair.second);
+
+			// Apply projectile damage to aircraft, destroy projectile
+			enemy.Damage(bullet.GetDamage());
+			bullet.Destroy();
+		}
+	}
+}
+
 
 void GameField::Draw() {
 	window_.setView(gameFieldView_);
