@@ -1,4 +1,5 @@
 #include "state.hpp"
+#include "../container.hpp"
 #include <SFML/Graphics.hpp>
 
 class PauseState : public State {
@@ -12,4 +13,5 @@ class PauseState : public State {
         sf::Sprite backgroundSprite_;
         sf::Text pausedText_;
         sf::Text instructionText_;
+        GUI::Container  GUIContainer_;
 };

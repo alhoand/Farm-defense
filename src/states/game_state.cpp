@@ -1,12 +1,26 @@
 #include "game_state.hpp"
+#include "../button.hpp"
 
-GameState::GameState(StateStack& stack, Context context) 
-            : State(stack, context),
-             gameField_(*context.window_, context.viewOffset_),
-             player_(*context.player_) { }
+GameState::GameState(StateStack& stack, Context context) :
+    State(stack, context),
+    gameField_(*context.window_, context.viewOffset_),
+    player_(*context.player_),
+    GUIContainer_(context)
+    { 
+        auto pauseButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_);
+        pauseButton->setPosition(10, 10);
+        pauseButton->SetText("Pause");
+        pauseButton->SetCallback([this] ()
+	{
+		RequestStackPush(States::ID::Pause);
+	});
+    GUIContainer_.Pack(pauseButton);
+    }
 
 void GameState::Draw() {
     gameField_.Draw(); // calls the gamefield to draw everything
+    sf::RenderWindow& window = *GetContext().window_;
+    window.draw(GUIContainer_);
 }
 
 bool GameState::Update(sf::Time dt) {
@@ -25,6 +39,7 @@ bool GameState::HandleEvent(const sf::Event& event) {
     if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P))
 		RequestStackPush(States::ID::Pause);
 
+    GUIContainer_.HandleEvent(event);
     return true;
 }
 

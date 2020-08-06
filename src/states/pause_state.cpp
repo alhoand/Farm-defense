@@ -1,9 +1,15 @@
 #include "pause_state.hpp"
 #include "../resource_holder.hpp"
+#include "../button.hpp"
 #include <cmath>
 
-PauseState::PauseState(StateStack& stack, Context context)
-: State(stack, context), backgroundSprite_(), pausedText_(), instructionText_() {
+PauseState::PauseState(StateStack& stack, Context context): 
+	State(stack, context), 
+	backgroundSprite_(), 
+	pausedText_(), 
+	instructionText_(), 
+	GUIContainer_(context)
+	{
 	sf::Font& font = context.fonts_->Get(Fonts::Main);
 	sf::Vector2f viewSize = context.window_->getView().getSize();
 
@@ -13,19 +19,36 @@ PauseState::PauseState(StateStack& stack, Context context)
 	
 	//center origin of text
 	sf::FloatRect bounds = pausedText_.getLocalBounds();
-	pausedText_.setOrigin(::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top + bounds.height / 2.f));
-	
+	pausedText_.setOrigin(::floor(bounds.left + bounds.width / 2.f), std::floor(50 + bounds.top + bounds.height / 2.f));
 	pausedText_.setPosition(0.5f * viewSize.x, 0.4f * viewSize.y);
 
-	instructionText_.setFont(font);
-	instructionText_.setString("(Press Backspace to return to the main menu)");	
+	auto resumeButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_);
+	resumeButton->setPosition(10, 10);
+	resumeButton->SetText("Resume");
+	resumeButton->SetCallback([this] ()
+	{
+		RequestStackPop();
+	});
+	GUIContainer_.Pack(resumeButton);
 
-	//center instruction text
-	bounds = instructionText_.getLocalBounds();
-	instructionText_.setOrigin(::floor(bounds.left + bounds.width / 2.f), std::floor(bounds.top + bounds.height / 2.f));
+	auto menuButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_);
+	menuButton->setPosition(550, 300);
+	menuButton->SetText("Menu");
+	menuButton->SetCallback([this] ()
+	{
+		RequestStateClear();
+        RequestStackPush(States::ID::Menu);
+	});
+	GUIContainer_.Pack(menuButton);
 
-
-	instructionText_.setPosition(0.5f * viewSize.x, 0.6f * viewSize.y);
+	auto quitButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_);
+	quitButton->setPosition(550, 400);
+	quitButton->SetText("Ragequit");
+	quitButton->SetCallback([this] ()
+	{
+		RequestStateClear();
+	});
+	GUIContainer_.Pack(quitButton);
 }
 
 void PauseState::Draw() {
@@ -38,7 +61,7 @@ void PauseState::Draw() {
 
     window.draw(backgroundShape);
     window.draw(pausedText_);
-    window.draw(instructionText_);
+    window.draw(GUIContainer_);
 }
 
 bool PauseState::Update(sf::Time) {
@@ -46,6 +69,9 @@ bool PauseState::Update(sf::Time) {
 }
 
 bool PauseState::HandleEvent(const sf::Event& event) {
+	
+	GUIContainer_.HandleEvent(event);
+	
 	if (event.type != sf::Event::KeyPressed)
 		return false;
 
@@ -60,5 +86,8 @@ bool PauseState::HandleEvent(const sf::Event& event) {
         RequestStateClear();
         RequestStackPush(States::ID::Menu);
     }
+
+	
+
     return false;
 }

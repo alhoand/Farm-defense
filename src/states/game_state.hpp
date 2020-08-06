@@ -1,10 +1,9 @@
 #pragma once
 
-
 #include "../game_field.hpp"
 #include "../player.hpp"
 #include "state.hpp"
-
+#include "../container.hpp"
 
 class GameState : public State {
 public:
@@ -16,5 +15,5 @@ public:
 private:
     GameField gameField_;
     Player& player_;
-
+    GUI::Container GUIContainer_;
 };
