@@ -8,7 +8,6 @@
 
 #include <vector>
 
-class Enemy;
 
 struct Direction
 {
@@ -22,6 +21,7 @@ struct Direction
 	float distance;
 };
 
+//hitpoints and speed are in datatable and enemy class, check if this is necessary
 struct EnemyData
 {
 	int								hitpoints;

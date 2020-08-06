@@ -1,41 +1,47 @@
 #pragma once
 
-#include "position.hpp"
+#include "entity.hpp"
+#include "resource_identifiers.hpp"
 
 /*  ***TODO***
 * - all return values are void, to be changed for right ones
 */
 
 //Example of different bullet types, used if bullet is not an abstract class.
-enum BulletType {
-    Ice,
-    Fire,
-    Wood,
-};
+
 
 //First implementation of Bullet class
-class Bullet {
+class Bullet : public Entity {
+    public:
+        enum Type 
+        {
+            Ice,
+            FireBullet,
+            Wood,
+            TypeCount
+        };
+
     public:
         //Constructor for now
-        Bullet(BulletType type, Position position, int damage, int damage_duration) 
-            : type_(type), position_(position), damage_(damage), damage_duration_(damage_duration) {} 
+        Bullet(Type type, int damage, int damage_duration, const TextureHolder& textures);
 
         //Destructor, only needed if abstract class
         //virtual ~Bullet() {};
 
-        //Update the state of the bullet, should be virtual if class is abstract
-        void Update();
-
         //could also return damage duration, depends on how the hit to enemy is implemented
-        int GetDamage() {
-            return damage_;
-        };
+        int GetDamage() const;
+
+        virtual sf::FloatRect GetBoundingRect() const;
 
         //More getter functions, and some way to destroy bullet when it hits an enemy
-
+    private:
+        virtual void UpdateCurrent(sf::Time dt);
+        virtual void DrawCurrent(sf::RenderTarget& target,sf::RenderStates states) const;
+        Textures::ID ToTextureID(Bullet::Type type);
     protected:
-        BulletType type_;
-        Position position_;
+        Type type_;
+        sf::Sprite sprite_;
+        sf::Vector2f targetDirection_;
         int damage_;
         int damage_duration_;
 };
