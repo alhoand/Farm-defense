@@ -18,7 +18,7 @@ bool Label::IsSelectable() const
 }
 
 sf::FloatRect Label::GetGlobalBounds(){
-	text_.getGlobalBounds();
+	return text_.getGlobalBounds();
 }
 
 void Label::HandleEvent(const sf::Event&)

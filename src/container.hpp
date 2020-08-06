@@ -1,4 +1,5 @@
 #include "component.hpp"
+#include "states/state.hpp"
 
 #include <vector>
 #include <memory>
@@ -37,6 +38,7 @@ class Container : public Component
     private:
         std::vector<Component::Ptr>		children_;
         int								selectedChild_;
+        //State::Context                  context_;
 };
 
 }

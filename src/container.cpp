@@ -6,6 +6,7 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
+#include <iostream>
 
 namespace GUI
 {
@@ -13,15 +14,13 @@ namespace GUI
 Container::Container()
 : children_()
 , selectedChild_(-1)
+//, context_(context)
 {
 }
 
 void Container::Pack(Component::Ptr component)
 {
 	children_.push_back(component);
-
-	if (!HasSelection() && component->IsSelectable())
-		Select(children_.size() - 1);
 }
 
 bool Container::IsSelectable() const
@@ -38,26 +37,27 @@ void Container::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 	for(const Component::Ptr& child: children_)
 		target.draw(*child, states);
 }
-
+/*
 void Container::HandleEvent(const sf::Event& event)
 {
 	if(event.type == sf::Event::MouseMoved){
 		int n = 0;
-		while(n < children_.size()){
-			if(children_[n]->GetGlobalBounds().contains(event.mouseMove.x, event.mouseMove.y)){
+		for(const Component::Ptr& child: children_){
+			if(child->GetGlobalBounds().contains(sf::Vector2f(sf::Vector2i(event.mouseMove.x, event.mouseMove.y)))){
 				selectedChild_ = n;
-				children_[n]->Select();
+				child->Select();
+				std::cout << "jiihaa" << std::endl;
 				return;
 			}
 			else
 			{
-				children_[n]->Deselect();
+				child->Deselect();
 			}
 			n++;
 		}
 		selectedChild_ = -1;
 	}
-}
+}*/
 
 bool Container::HasSelection() const
 {
@@ -66,7 +66,6 @@ bool Container::HasSelection() const
 
 
 
-/*
 void Container::HandleEvent(const sf::Event& event)
 {
     // If we have selected a child then give it events
@@ -136,5 +135,5 @@ void Container::SelectPrevious()
 	// Select that component
 	Select(prev);
 }
-*/
+
 }
