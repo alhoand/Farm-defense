@@ -1,5 +1,3 @@
-//enemy class implementation
-
 #include "enemy.hpp"
 #include "../utility.hpp"
 #include "../data_tables.hpp"
@@ -95,8 +93,6 @@ void Enemy::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 * Long lasting damage implementation
 */
 void Enemy::UpdateCurrent(sf::Time dt) {
-
-    std::cout << "Updating enemy" <<std::endl;
     updateMovementPattern(dt);
     Entity::UpdateCurrent(dt); // Apply velocity
 
@@ -122,8 +118,6 @@ sf::FloatRect Enemy::getBoundingRect() const
 //Enemy movement pattern
 void Enemy::updateMovementPattern(sf::Time dt)
 {
-    std::cout << "DEBUG: updating enemy movement pattern" << std::endl;
-
 	const std::vector<Direction>& path = Table[type_].path;
 
 	if (!path.empty())
@@ -134,16 +128,14 @@ void Enemy::updateMovementPattern(sf::Time dt)
 			directionIndex_ = (directionIndex_ + 1) % path.size();
 			travelledDistance_ = 0.f;
 		}
-        std::cout << "DEBUG:" << directionIndex_ << ", " << travelledDistance_ << std::endl;
 
-		float radians = toRadian(path[directionIndex_].angle); // helper function toRadian?
+		float radians = toRadian(path[directionIndex_].angle); 
 		float vx = speed_ * std::cos(radians);
 		float vy = speed_ * std::sin(radians);
 
-		SetVelocity(vx, vy); //entity
+		SetVelocity(vx, vy); //entity function
 
 		travelledDistance_ += speed_ * dt.asSeconds();
 	}
 
-    std::cout << "Checking velocity after update" << GetVelocity().x << "," << GetVelocity().y << std::endl;
 }
