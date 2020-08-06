@@ -19,11 +19,13 @@ Application::Application()
     player_(window_, viewOffset_),
     stateStack_(State::Context(window_, textures_, fonts_, player_, viewOffset_))
     { 
+        window_.setFramerateLimit(60);
+        
         fonts_.Load(Fonts::ID::Title, "../media/fonts/Lato-Regular.ttf");
         fonts_.Load(Fonts::ID::Main,  "../media/fonts/Lato-Regular.ttf");
         
         textures_.Load(Textures::ID::logo,              "../media/textures/titleLogo.png");
-        textures_.Load(Textures::ID::TitleBackground,   "../media/textures/lehma.png");
+        textures_.Load(Textures::ID::TitleBackground,   "../media/textures/tausta.jpg");
         textures_.Load(Textures::ID::ButtonNormal,      "../media/textures/ButtonNormal.png");
 	    textures_.Load(Textures::ID::ButtonSelected,	"../media/textures/ButtonSelected.png");
 	    textures_.Load(Textures::ID::ButtonPressed,		"../media/textures/ButtonPressed.png");
