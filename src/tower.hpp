@@ -29,7 +29,7 @@ class Tower : public Entity {
         
         // The constructor for now. Most of the parameters should be given automatically, 
         // depending on type (inherited class)
-        Tower(Type type, const TextureHolder &textures, int range, int reload_speed, Bullet bullet);
+        Tower(Type type, const TextureHolder &textures, int range, int reload_speed, Bullet::Type bullet_type);
 
         //Destructor
         virtual ~Tower() { };
@@ -71,5 +71,5 @@ class Tower : public Entity {
         //Position position_;
         //enemies_in_range_;
         int reload_speed_;
-        Bullet bullet_;
+        Bullet::Type bulletType_;
 };
