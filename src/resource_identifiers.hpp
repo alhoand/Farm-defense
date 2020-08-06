@@ -19,6 +19,7 @@ namespace Textures {
         Path,
         TitleScreen,
         TitleBackground,
+        logo,
         ButtonNormal,
         ButtonSelected,
         ButtonPressed

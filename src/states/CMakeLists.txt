@@ -4,6 +4,8 @@ target_sources(TowerDefense
 	state.cpp
 	title_state.hpp
 	title_state.cpp
+	pause_state.cpp
+	pause_state.hpp
 	menu_state.hpp
 	menu_state.cpp
 	game_state.hpp

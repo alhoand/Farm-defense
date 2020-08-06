@@ -14,6 +14,8 @@ MenuState::MenuState(StateStack& stack, Context context)
 {
 	sf::Texture& texture = context.textures_->Get(Textures::ID::TitleBackground);
 	backgroundSprite_.setTexture(texture);
+	logoSprite_.setTexture(context.textures_->Get(Textures::ID::logo));
+	logoSprite_.setPosition(120,50);
 	auto playButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_);
 	playButton->setPosition(100, 250);
 	playButton->SetText("Play");
@@ -49,6 +51,7 @@ void MenuState::Draw()
 	window.setView(window.getDefaultView());
 
 	window.draw(backgroundSprite_);
+	window.draw(logoSprite_);
 	window.draw(GUIContainer_);
 }
 

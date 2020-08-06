@@ -5,12 +5,13 @@
 #include "states/title_state.hpp"
 #include "states/game_state.hpp"
 #include "states/menu_state.hpp"
+#include "states/pause_state.hpp"
 #include <iostream>
 
 static const sf::Time timePerFrame = sf::seconds(1.f / 60.f);
 
 Application::Application()
-    : window_(sf::VideoMode(1024,768), "Tower Defense", sf::Style::Close),
+    : window_(sf::VideoMode(1280,720), "Tower Defense", sf::Style::Close),
     viewOffset_(sf::Vector2f(0.f, 0.f)),
     textures_(),
     fonts_(),
@@ -21,7 +22,8 @@ Application::Application()
         fonts_.Load(Fonts::ID::Title, "../media/fonts/Lato-Regular.ttf");
         fonts_.Load(Fonts::ID::Main,  "../media/fonts/Lato-Regular.ttf");
         
-        textures_.Load(Textures::ID::TitleBackground,   "../media/textures/otaniemi.jpg");
+        textures_.Load(Textures::ID::logo,              "../media/textures/titleLogo.png");
+        textures_.Load(Textures::ID::TitleBackground,   "../media/textures/lehma.png");
         textures_.Load(Textures::ID::ButtonNormal,      "../media/textures/ButtonNormal.png");
 	    textures_.Load(Textures::ID::ButtonSelected,	"../media/textures/ButtonSelected.png");
 	    textures_.Load(Textures::ID::ButtonPressed,		"../media/textures/ButtonPressed.png");
@@ -34,7 +36,7 @@ void Application::RegisterStates() {
     stateStack_.RegisterState<TitleState>(States::ID::Title);
     stateStack_.RegisterState<MenuState>(States::ID::Menu);
     stateStack_.RegisterState<GameState>(States::ID::Game);
-    //stateStack_.registerState<PauseState>(States::ID::Pause);
+    stateStack_.RegisterState<PauseState>(States::ID::Pause);
 }
 
 void Application::Run() {
