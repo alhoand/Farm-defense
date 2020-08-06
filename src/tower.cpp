@@ -28,6 +28,8 @@ unsigned int Tower::GetCategory() const {
     return Category::Tower;
 }
 
+// Function for drawing the tower
+// TODO: make use of direction_, rotation of the tower
 void Tower::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(sprite_, states);
 }

@@ -30,8 +30,18 @@ struct EnemyData
 	std::vector<Direction>			path;
 };
 
-
 //initializer
 std::vector<EnemyData>	initializeEnemyData();
+
+struct TowerData {
+    int range;
+    // float direction - this changes, maybe not needed here
+    float reload_speed;
+    Bullet bullet;
+	// float speed - this could be default for all types
+};
+
+//initializer
+std::vector<TowerData>	initializeTowerData();
 
 #endif // DATATABLES_HPP

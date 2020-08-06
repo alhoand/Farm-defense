@@ -1,5 +1,6 @@
 #include "data_tables.hpp"
 #include "enemies/enemy.hpp"
+#include "tower.hpp"
 
 //hardcoded path for enemies
 /*
@@ -21,4 +22,18 @@ std::vector<EnemyData> initializeEnemyData()
 	return data;
 }*/
 
+/*
+std::vector<TowerData> initializeTowerData() {
+	std::vector<TowerData> data(Tower::TypeCount);
 
+	data[Tower::Fire].range = 50;
+    data[Tower::Fire].reload_speed = 0.5;
+    data[Tower::Fire].bullet = Bullet::Fire;
+
+    // TODO
+    //   add rest of the enemy types
+    
+
+	return data;
+}
+*/
