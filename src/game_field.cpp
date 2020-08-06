@@ -1,6 +1,7 @@
 
 #include "game_field.hpp"
 #include <iostream> // for debugging
+#include <SFML/System/Time.hpp>
 
 
 GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
@@ -11,11 +12,14 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	 gameFieldBounds_(0.f, 0.f, // x and y of the game field
 	 				gameFieldView_.getSize().x + viewOffset_.x, //world width is a bit bigger than the view's width
 					gameFieldView_.getSize().y + viewOffset_.y), // world height is same as view's height
-	 spawnPosition_(gameFieldBounds_.left,
+	 spawnPosition_(gameFieldBounds_.left + 100,
 	 				 (gameFieldBounds_.top + gameFieldBounds_.height)/3.f),
 	enemySpeed_(50.f),
 	firstEnemy_(),
-	firstTower_()
+	firstTower_(),
+	spawnCountdown_(sf::Time::Zero),
+	spawnInterval_(5),
+	leftToSpawn_(15)
 	{ 
 		LoadTextures();
 		BuildScene();
@@ -34,6 +38,7 @@ void GameField::Update(sf::Time dt) {
 
 	HandleCollisions();
 	sceneGraph_.RemoveWrecks();
+	SpawnEnemies(dt);
 
 	sceneGraph_.Update(dt);
 }
@@ -131,6 +136,26 @@ void GameField::HandleCollisions()
 			bullet.Destroy();
 		}
 	}
+}
+
+void GameField::SpawnEnemies(sf::Time dt) {
+
+	if (spawnCountdown_ <= sf::Time::Zero && leftToSpawn_ > 0) //TODO leftToSpawn someway better
+    {
+        spawnCountdown_ += sf::seconds(spawnInterval_);
+		leftToSpawn_--;
+
+		std::unique_ptr<Enemy> newEnemy(new Enemy(Enemy::Type::Fire, textures_, 50, enemySpeed_));
+		newEnemy->setPosition(spawnPosition_);
+		newEnemy->SetVelocity(enemySpeed_, 0.f);
+		sceneLayers_[Ground] -> AttachChild(std::move(newEnemy));
+
+    }
+    else if (leftToSpawn_ > 0)
+    {
+        spawnCountdown_ -= dt;
+    }
+
 }
 
 

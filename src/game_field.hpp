@@ -51,6 +51,7 @@ class GameField : private sf::NonCopyable {
         void LoadTextures();
         void BuildScene();
         void HandleCollisions();
+        void SpawnEnemies(sf::Time dt);
 
         enum Layer {
             Background,
@@ -59,18 +60,24 @@ class GameField : private sf::NonCopyable {
             LayerCount
         };
 
-        sf::RenderWindow& window_;
-        sf::Vector2f viewOffset_;
-        sf::View gameFieldView_;
-        TextureHolder textures_;
-        SceneNode sceneGraph_;
+        sf::RenderWindow&   window_;
+        sf::Vector2f        viewOffset_;
+        sf::View            gameFieldView_;
+        TextureHolder       textures_;
+        SceneNode           sceneGraph_;
         std::array<SceneNode*, LayerCount> sceneLayers_;
-        sf::FloatRect gameFieldBounds_;
-        sf::Vector2f spawnPosition_;
-        CommandQueue commandQueue_;
-        float enemySpeed_;
+        sf::FloatRect       gameFieldBounds_;
+        sf::Vector2f        spawnPosition_;
+        CommandQueue        commandQueue_;
+        float               enemySpeed_;
         //std::list<Tower*> towers_;
-        Enemy* firstEnemy_;
-        Tower* firstTower_;
+        Enemy*              firstEnemy_;
+        Tower*              firstTower_;
         //std::list<Bullet*> bullets_;
+        sf::Time            spawnCountdown_ ;
+        int                 spawnInterval_;
+        int                 leftToSpawn_; //initial, could change for better
+
+        /* sf::Time            timeSinceLastSpawn_;
+        sf::Time            spawnTime_; */
 };
