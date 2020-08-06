@@ -1,6 +1,11 @@
 #include "scene_node.hpp"
 #include "command.hpp"
+
+#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
+
 #include <cassert>
+#include <set>
 
 SceneNode::SceneNode() : children_(), parent_(nullptr) { }
 
@@ -36,8 +41,45 @@ sf::Transform SceneNode::GetWorldTransform() const {
 
 
 // The absolute position of the SceneNode in the game field
-sf::Vector2f SceneNode::GetWorldPosition() const {
+sf::Vector2f SceneNode::GetWorldPosition() const 
+{
     return GetWorldTransform() * sf::Vector2f();
+}
+
+
+void SceneNode::CheckNodeCollision(SceneNode& node, std::set<Pair>& collisionPairs)
+{
+	if (this != &node && Collision(*this, node) && !IsDestroyed() && !node.IsDestroyed())
+    {
+		collisionPairs.insert(std::minmax(this, &node));
+    }
+
+	for(Ptr& child : children_)
+    {
+        child->CheckNodeCollision(node, collisionPairs);
+    }		
+}
+
+void SceneNode::CheckSceneCollision(SceneNode& sceneGraph, std::set<Pair>& collisionPairs)
+{
+	CheckNodeCollision(sceneGraph, collisionPairs);
+
+	for(Ptr& child : sceneGraph.children_)
+    {
+        CheckSceneCollision(*child, collisionPairs);
+    }
+		
+}
+
+bool SceneNode::IsDestroyed() const 
+{   
+    //default case
+    return false;
+}
+
+sf::FloatRect SceneNode::GetBoundingRect() const 
+{
+    return sf::FloatRect();
 }
 
 
@@ -73,6 +115,7 @@ void SceneNode::DrawChildren(sf::RenderTarget &target, sf::RenderStates states) 
     }
 }
 
+
 //
 unsigned int SceneNode::GetCategory() const {
     return Category::Scene; // By default every scene node belongs to Scene-category
@@ -92,5 +135,11 @@ void SceneNode::OnCommand(const Command &command, sf::Time dt) {
     for (const Ptr &child : children_) {
         child->OnCommand(command, dt);
     }
+}
+
+bool Collision(const SceneNode& lhs, const SceneNode& rhs) 
+{
+    return lhs.GetBoundingRect()
+              .intersects(rhs.GetBoundingRect());
 }
 

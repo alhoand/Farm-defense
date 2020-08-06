@@ -15,7 +15,8 @@ Textures::ID Tower::ToTextureID(Tower::Type type) {
 }
 
 Tower::Tower(Tower::Type type, const TextureHolder &textures, int range, int reload_speed, Bullet::Type bullet_type)
-        : type_(Type::Fire),
+        : Entity(1),
+            type_(Type::Fire),
             sprite_(textures.Get(ToTextureID(type))), 
             range_(range),
             reload_speed_(reload_speed),

@@ -35,6 +35,8 @@ class Bullet : public Entity {
 
         virtual sf::FloatRect GetBoundingRect() const;
 
+        unsigned int GetCategory() const;
+
         //More getter functions, and some way to destroy bullet when it hits an enemy
     private:
         virtual void UpdateCurrent(sf::Time dt);
