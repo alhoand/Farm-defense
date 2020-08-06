@@ -30,7 +30,7 @@ class Tower : public Entity {
         
         // The constructor for now. Most of the parameters should be given automatically, 
         // depending on type (inherited class)
-        Tower(Type type, const TextureHolder &textures, int range, int reload_speed, Bullet bullet);
+        Tower(Type type, const TextureHolder &textures, int range, int reload_speed, Bullet::Type bullet_type);
 
         //Destructor
         virtual ~Tower() { };
@@ -71,10 +71,17 @@ class Tower : public Entity {
         // Range of fire in units
         int range_;
         sf::Sprite sprite_;
+<<<<<<< HEAD
         // Where are the tower's guns pointed at (also gives direction for the bullet)
         float direction_;
         // Some kind of container for enemies in range - this could also be a function that is called every tick
         std::vector<Enemy> enemies_in_range_;
         float reload_speed_;
         Bullet bullet_;
+=======
+        //Position position_;
+        //enemies_in_range_;
+        int reload_speed_;
+        Bullet::Type bulletType_;
+>>>>>>> upstream/master
 };
