@@ -3,9 +3,9 @@
 //Initial header file for abstract enemy class
 #include <vector>
 
-#include "bullet.hpp"
-#include "entity.hpp"
-#include "resource_identifiers.hpp"
+#include "../bullet.hpp"
+#include "../entity.hpp"
+#include "../resource_identifiers.hpp"
 
 
 /*  ***TODO***
@@ -75,6 +75,4 @@ class Enemy : public Entity {
 		std::size_t directionIndex_;
         int hitpoints_;
         int speed_;
-        std::vector<Position*> path_;
-        Position* position_;
 };

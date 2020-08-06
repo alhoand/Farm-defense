@@ -3,8 +3,7 @@
 #include <vector>
 #include <iostream>
 
-#include "../enemy.hpp"
-#include "../position.hpp"
+#include "enemy.hpp"
 #include "../bullet.hpp"
 
 class TestEnemy : public Enemy {

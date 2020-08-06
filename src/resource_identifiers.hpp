@@ -18,12 +18,17 @@ namespace Textures {
         LeafTower,
         Path,
         TitleScreen,
+        TitleBackground,
+        ButtonNormal,
+        ButtonSelected,
+        ButtonPressed
     };
 }
 
 namespace Fonts {
 	enum ID {
 		Main,
+        Title
 	};
 }
 

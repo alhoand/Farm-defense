@@ -1,34 +1,33 @@
-#include "resource_holder.hpp"
-#include "resource_identifiers.hpp"
-#include "player.hpp"
-#include "state_stack.hpp"
-
+#pragma once
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Window/Event.hpp>
+#include "resource_holder.hpp"
+#include "resource_identifiers.hpp"
+#include "state_identifiers.hpp"
+#include "state_stack.hpp"
+#include "player.hpp"
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/System/Vector2.hpp>
 
 class Application {
-    public:
-        Application();
-        void Run();
+public:
+    Application();
+    void RegisterStates();
+    void ProcessInput();
+    void Render();
+    void Run();
+    void Update(sf::Time dt);
+private:
+    sf::RenderWindow window_;
+    sf::Vector2f viewOffset_;
 
-    private:
-        void RegisterStates();
-        void ProcessInput();
-        void Update(sf::Time dt);
-        void Render();
-        void UpdateStatistics(sf::Time dt);
+     sf::Text	statisticsText_;
 
-        static const sf::Time	TimePerFrame;
+    TextureHolder textures_;
+    FontHolder fonts_;
+    Player player_;
+    StateStack stateStack_;
+   
 
-		sf::RenderWindow		window_;
-		TextureHolder			textures_;
-	  	FontHolder				fonts_;
-		Player					player_;
-
-		StateStack				stateStack_;
-
-		sf::Text				statisticsText_;
-		sf::Time				statisticsUpdateTime_;
-		std::size_t				statisticsNumFrames_;
 };

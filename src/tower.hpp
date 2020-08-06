@@ -2,7 +2,6 @@
 
 //Initial header file for abstract tower class
 #include "scene_node.hpp"
-#include "position.hpp"
 #include "bullet.hpp"
 #include "category.hpp"
 #include "entity.hpp"
@@ -30,7 +29,7 @@ class Tower : public Entity {
         
         // The constructor for now. Most of the parameters should be given automatically, 
         // depending on type (inherited class)
-        Tower(Type type, const TextureHolder &textures, Position position, int range, int reload_speed, Bullet bullet);
+        Tower(Type type, const TextureHolder &textures, int range, int reload_speed, Bullet bullet);
 
         //Destructor
         virtual ~Tower() { };
@@ -52,8 +51,8 @@ class Tower : public Entity {
         // Getter of permission to move
         bool CanMove() const;
 
-        // Sets if the tower is moving at the moment, i.e., is it being moved by the player
-        // returns true if setting the state was succesful
+        // Sets the tower moving with state=true, stops with state=false.
+        // Returns true if setting was succesful
         bool SetMoveState(bool state);
 
         // Getter that tells if the tower is being moved by the player
@@ -61,15 +60,15 @@ class Tower : public Entity {
 
         virtual sf::FloatRect GetBoundingRect() const;
 
+        static Textures::ID ToTextureID(Type type);
+
+
     protected:
         // Helper that makes textures::ID-types from Tower::Types
-        Textures::ID ToTextureID(Type type);
         Tower::Type type_;
         int range_;
         sf::Sprite sprite_;
-        bool canMove_;
-        bool isMoving_;
-        Position position_;
+        //Position position_;
         //enemies_in_range_;
         int reload_speed_;
         Bullet bullet_;

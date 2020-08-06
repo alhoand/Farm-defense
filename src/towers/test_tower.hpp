@@ -7,7 +7,7 @@
 
 class TestTower: public Tower {
 	public:
-		TestTower(Position p): Tower() { }
+		TestTower(): Tower() { }
 
 		virtual ~TestTower() { }
 		

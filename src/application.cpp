@@ -1,90 +1,83 @@
 #include "application.hpp"
-#include "utility.hpp"
-#include "state.hpp"
+#include "states/state.hpp"
 #include "state_identifiers.hpp"
-#include "title_state.hpp"
-#include "game_state.hpp"
-#include "menu_state.hpp"
-#include "pause_state.hpp"
+#include <SFML/System/Time.hpp>
+#include "states/title_state.hpp"
+#include "states/game_state.hpp"
+#include "states/menu_state.hpp"
+#include <iostream>
 
-/* Application::Application()
-: window_(sf::VideoMode(640, 480), "States", sf::Style::Close), textures_(), fonts_(), player_(),
-  stateStack_(State::Context(window_, textures_, fonts_, player_)), statisticsText_(), 
-  statisticsUpdateTime_(), statisticsNumFrames_(0) {
-	window_.setKeyRepeatEnabled(false);
+static const sf::Time timePerFrame = sf::seconds(1.f / 60.f);
 
-	fonts_.Load(Fonts::Main, "Media/Sansation.ttf");
-	textures_.Load(Textures::ID::TitleScreen, "Media/Textures/TitleScreen.png");
+Application::Application()
+    : window_(sf::VideoMode(1024,768), "Tower Defense", sf::Style::Close),
+    viewOffset_(sf::Vector2f(0.f, 0.f)),
+    textures_(),
+    fonts_(),
+    statisticsText_(),
+    player_(window_, viewOffset_),
+    stateStack_(State::Context(window_, textures_, fonts_, player_, viewOffset_))
+    { 
+        fonts_.Load(Fonts::ID::Title, "../media/fonts/Lato-Regular.ttf");
+        fonts_.Load(Fonts::ID::Main,  "../media/fonts/Lato-Regular.ttf");
+        
+        textures_.Load(Textures::ID::TitleBackground,   "../media/textures/otaniemi.jpg");
+        textures_.Load(Textures::ID::ButtonNormal,      "../media/textures/ButtonNormal.png");
+	    textures_.Load(Textures::ID::ButtonSelected,	"../media/textures/ButtonSelected.png");
+	    textures_.Load(Textures::ID::ButtonPressed,		"../media/textures/ButtonPressed.png");
 
-	statisticsText_.setFont(fonts_.Get(Fonts::Main));
-	statisticsText_.setPosition(5.f, 5.f);
-	statisticsText_.setCharacterSize(10u);
-
-	RegisterStates();
-	stateStack_.PushState(States::ID::Title);
-}
-*/
-
-void Application::Run() {
-	sf::Clock clock;
-	sf::Time timeSinceLastUpdate = sf::Time::Zero;
-
-	while (window_.isOpen()) {
-		sf::Time dt = clock.restart();
-		timeSinceLastUpdate += dt;
-		while (timeSinceLastUpdate > TimePerFrame) {
-			timeSinceLastUpdate -= TimePerFrame;
-			ProcessInput();
-			Update(TimePerFrame);
-
-			// Check inside this loop, because stack might be empty before update() call
-			if (stateStack_.IsEmpty())
-				window_.close();
-		}
-
-		UpdateStatistics(dt);
-		Render();
-	}
-}
+        RegisterStates();
+        stateStack_.PushState(States::ID::Title);
+    }
 
 void Application::RegisterStates() {
     stateStack_.RegisterState<TitleState>(States::ID::Title);
     stateStack_.RegisterState<MenuState>(States::ID::Menu);
     stateStack_.RegisterState<GameState>(States::ID::Game);
-    stateStack_.RegisterState<PauseState>(States::ID::Pause);
+    //stateStack_.registerState<PauseState>(States::ID::Pause);
+}
+
+void Application::Run() {
+    sf::Clock clock;
+    sf::Time timeSinceLastUpdate = sf::Time::Zero;
+    
+    while (window_.isOpen()) {
+        sf::Time dt = clock.restart();
+        timeSinceLastUpdate += dt;
+        //ProcessInput();
+        while (timeSinceLastUpdate > timePerFrame) {
+            timeSinceLastUpdate -= timePerFrame;
+            ProcessInput();
+            Update(timePerFrame);
+
+            if(stateStack_.IsEmpty()) {
+                window_.close();
+            }
+        }
+        Render();
+    }
 }
 
 void Application::ProcessInput() {
     sf::Event event;
     while (window_.pollEvent(event)) {
         stateStack_.HandleEvent(event);
-    }
 
-    // if (event.type == sf::Event::Closed)
-	// window_.close();
+        if (event.type == sf::Event::Closed)
+			window_.close();
+    }
 }
 
 void Application::Update(sf::Time dt) {
+    //std::cout << "The state stack was updated" << std::endl;
     stateStack_.Update(dt);
 }
 
 void Application::Render() {
-	// window_.clear();
-
-	stateStack_.Draw();
-
-	// window_.setView(window_.GetDefaultView());
-	// window.Draw(statisticsText_);
-
-	// window_.display();
-}
-
-void Application::UpdateStatistics(sf::Time dt) {
-	statisticsUpdateTime_ += dt;
-	statisticsNumFrames_ += 1;
-	if (statisticsUpdateTime_ >= sf::seconds(1.0f)){
-		statisticsText_.setString("FPS: " + toString(statisticsNumFrames_));
-		statisticsUpdateTime_ -= sf::seconds(1.0f);
-		statisticsNumFrames_ = 0;
-	}
+    window_.clear();
+    stateStack_.Draw();
+    
+    window_.setView(window_.getDefaultView()); // not necessary right now 
+    window_.display();
+    
 }
