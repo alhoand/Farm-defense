@@ -1,4 +1,4 @@
-#include <game_state.hpp>
+#include "game_state.hpp"
 
 GameState::GameState(StateStack& stack, Context context)
 : State(stack, context), gameField_(*context.window), player_(*context.player) { }

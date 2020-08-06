@@ -14,18 +14,15 @@ Textures::ID Tower::ToTextureID(Tower::Type type) {
     }
 }
 
-Tower::Tower(Tower::Type type, const TextureHolder &textures, Position p, int range, int reload_speed, Bullet bullet)
+Tower::Tower(Tower::Type type, const TextureHolder &textures, int range, int reload_speed, Bullet bullet)
         : type_(Type::Fire),
             sprite_(textures.Get(ToTextureID(type))), 
             range_(range),
-            canMove_(true),
-            isMoving_(false),
-            position_(p),
             reload_speed_(reload_speed),
             bullet_(bullet) { }
 
 // Default constructor with hard-coded values for hitpoints and bullet for testing
-Tower::Tower() : type_(Tower::Type::Fire), range_(5), canMove_(true), isMoving_(false), position_(0, 0), bullet_(BulletType::Fire, Position(0, 0), 5, 5) { }
+Tower::Tower() : type_(Tower::Type::Fire), range_(5), bullet_(BulletType::Fire,  5, 5) { }
 
 unsigned int Tower::GetCategory() const {
     return Category::Tower;
@@ -33,29 +30,6 @@ unsigned int Tower::GetCategory() const {
 
 void Tower::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(sprite_, states);
-}
-
-    // Sets the permission for the tower to move
-void Tower::SetMovePermission(bool permissionToMove) {
-    canMove_ = permissionToMove;
-}
-    
-    // Getter of permission to move
-bool Tower::CanMove() const {
-    return canMove_;
-}
-
-bool Tower::SetMoveState(bool state) {
-    if (canMove_) {
-        isMoving_ = state;
-        return true;
-    }else{
-        return false;
-    }
-}
-
-bool Tower::IsMoving() const {
-    return isMoving_;
 }
 
 sf::FloatRect Tower::GetBoundingRect() const {

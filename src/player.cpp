@@ -1,42 +1,22 @@
 #include "player.hpp"
-#include "tower.hpp"
+#include "ghost.hpp"
 
 
 Player::Player(sf::RenderWindow& window, sf::Vector2f viewOffset) : window_(window), viewOffset_(viewOffset) { }
+// Player::Player(sf::RenderWindow& window) : window_(window), viewOffset_() { }
 
-
-// This is adapted from SFML Game Development-book
+// Adapted from SFML Game Development-book
 void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
     if (event.type == sf::Event::MouseButtonPressed) {
+        sf::Vector2f mouse = window_.mapPixelToCoords(sf::Mouse::getPosition(window_));
         Command output;
         std::cout << "Mouse pressed" << std::endl;
-        sf::Vector2i mouseInt = sf::Mouse::getPosition(window_);
-        sf::Vector2f mouse(mouseInt.x + viewOffset_.x, mouseInt.y + viewOffset_.y);
-
-        output.category_ = Category::Tower;
-        output.action_ = DerivedAction<Tower>(
-            [=] (Tower& tower, sf::Time dt) {
-                sf::FloatRect bounds = tower.GetBoundingRect();
-                std::cout << "tower bounds height: " << bounds.height << " width: " << bounds.width << std::endl;
-                std::cout << "tower pos x: " << tower.getPosition().x << " y: " << tower.getPosition().y << std::endl;
-                std::cout << "mouse pos x: " << mouse.x << " y: " << mouse.y << std::endl;
-
-                // If the mouse is on the sprite and the tower is permitted to move
-                if (bounds.contains(mouse) && tower.CanMove()) {
-                    std::cout << "mouse in bounds" << std::endl;
-                    std::cout << "tower can move" << std::endl;
-                    if (!tower.IsMoving()){
-                        // This origin part is adapted from https://gamedev.stackexchange.com/questions/97060/moving-a-sprite-using-mouse-in-sfml-setorigin-logic-needed
-                        tower.setOrigin(mouse.x - (tower.getPosition().x - tower.getOrigin().x),
-                                        mouse.y - (tower.getPosition().y - tower.getOrigin().y));
-                        tower.SetMoveState(true); // Set the tower to follow the mouse
-                        std::cout << "tower was set moving..." << std::endl;
-                    } else {
-                        tower.SetMoveState(false); // "Set the tower to stay put"
-                        std::cout << "tower was set to not move anymore" << std::endl;
-                    }
-                }
-        });
+  //      sf::Vector2i mouseInt = sf::Mouse::getPosition(window_);
+  //      sf::Vector2f mouse(mouseInt.x + viewOffset_.x, mouseInt.y + viewOffset_.y);
+        output.category_ = Category::Ghost;
+        output.action_ = DerivedAction<Ghost>(
+            [=] (Ghost& ghost, sf::Time dt) {
+            });
         commands.Push(output);
     }
 
@@ -45,16 +25,39 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
 void Player::HandleRealtimeInput(CommandQueue& commands) {
     Command output;
     //sf::Vector2f mouse = sf::Vector2f(sf::Mouse::getPosition(window_));
-    sf::Vector2i mouseInt = sf::Mouse::getPosition(window_);
-    sf::Vector2f mouse(mouseInt.x + viewOffset_.x, mouseInt.y + viewOffset_.y);
-    output.category_ = Category::Tower;
-    output.action_ = DerivedAction<Tower>(
-        [=] (Tower& tower, sf::Time dt) {
-            if (tower.CanMove() && tower.IsMoving()) {
-                std::cout << tower.getPosition().x << ","<< tower.getPosition().y << std::endl;
-                tower.setPosition(mouse);
+    sf::Vector2f mouse = window_.mapPixelToCoords(sf::Mouse::getPosition(window_));
+ //  sf::Vector2f mouse(mouseInt.x + viewOffset_.x, mouseInt.y + viewOffset_.y);
+    output.category_ = Category::Ghost;
+    output.action_ = DerivedAction<Ghost>(
+        [=] (Ghost& ghost, sf::Time dt) {
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+                sf::FloatRect bounds = ghost.GetBounds();
+                if (bounds.contains(mouse)) {
+                    if (!ghost.GetClicked()){
+                        ghost.setOrigin(mouse.x - (ghost.getPosition().x - ghost.getOrigin().x),
+                                        mouse.y - (ghost.getPosition().y, ghost.getOrigin().y));
+                        ghost.SetClicked(true);
+                    }
+                }
+                if (ghost.GetClicked()) {
+                    ghost.setPosition(mouse);
+                }
+            }else{
+                ghost.SetClicked(false);
             }
         }
     );
     commands.Push(output);
 }
+
+            /*
+                if (bounds.contains(mouse)){
+                    if (tower.SetMoveState(true)){
+                        tower.setOrigin(mouse.x - (tower.getPosition().x - tower.getOrigin().x),
+                                        mouse.y - (tower.getPosition().y - tower.getOrigin().y));
+                        std::cout << "tower was set moving..." << std::endl;
+                    }else{
+                        tower.SetMoveState(false);
+                        std::cout << "tower was set to not move anymore" << std::endl;
+                    }
+                }*/

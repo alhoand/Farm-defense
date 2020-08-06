@@ -3,6 +3,8 @@
 #include "entity.hpp"
 #include "resource_identifiers.hpp"
 
+#include <SFML/Graphics/Sprite.hpp>
+
 /*  ***TODO***
 * - all return values are void, to be changed for right ones
 */
@@ -38,6 +40,7 @@ class Bullet : public Entity {
         virtual void UpdateCurrent(sf::Time dt);
         virtual void DrawCurrent(sf::RenderTarget& target,sf::RenderStates states) const;
         Textures::ID ToTextureID(Bullet::Type type);
+        
     protected:
         Type type_;
         sf::Sprite sprite_;

@@ -1,6 +1,6 @@
-#include <state.hpp>
-#include <game_field.hpp>
-#include <player.hpp>
+#include "state.hpp"
+#include "game_field.hpp"
+#include "player.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>

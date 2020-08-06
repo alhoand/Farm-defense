@@ -1,6 +1,8 @@
 #include "data_tables.hpp"
+#include "enemies/enemy.hpp"
 
 //hardcoded path for enemies
+/*
 std::vector<EnemyData> initializeEnemyData()
 {
     //DEBUG
@@ -27,9 +29,9 @@ std::vector<EnemyData> initializeEnemyData()
 
     /*TODO
     * add rest of the enemy types
-    */
+    
 
 	return data;
-}
+}*/
 
 

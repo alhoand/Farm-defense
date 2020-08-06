@@ -4,9 +4,9 @@
 //Initial header file for abstract enemy class
 #include <vector>
 
-#include "bullet.hpp"
-#include "entity.hpp"
-#include "resource_identifiers.hpp"
+#include "../bullet.hpp"
+#include "../entity.hpp"
+#include "../resource_identifiers.hpp"
 
 
 /*  ***TODO***

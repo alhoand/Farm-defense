@@ -1,12 +1,11 @@
 #include<iostream>
 #include<vector>
 #include <SFML/Graphics.hpp>
+#include "application.hpp"
 #include "game_field.hpp"
-#include "game.hpp"
 #include "tower.hpp"
-#include "enemy.hpp"
+#include "enemies/enemy.hpp"
 #include "bullet.hpp"
-#include "position.hpp"
 #include "towers/test_tower.hpp"
 #include "enemies/test_enemy.hpp"
 
@@ -16,11 +15,11 @@ int main(){
     try {
 
 
-        Position pos = Position(1,2);   
-        std::cout << pos << std::endl;
+        //Position pos = Position(1,2);   
+        //std::cout << pos << std::endl;
     
-        TestTower testi(Position(1,2));
-        
+        //TestTower testi(Position(1,2));
+        /*
         std::cout << "Testing tower" << std::endl;
         testi.Shoot();
         testi.Update();
@@ -30,10 +29,10 @@ int main(){
         std::vector<Position*> path1;
         Position* p1 = new Position(1,1);
         path1.push_back(p1);
-        std::cout << *p1 << std::endl;
+        std::cout << *p1 << std::endl;*/
        //  TestEnemy* enemy1 = new TestEnemy(path1);
-        Game game;
-        game.Run();
+        Application app;
+        app.Run();
     } catch (std::exception& e) {
         std::cout << "\nEXCEPTION: " << e.what() << std::endl;
     }

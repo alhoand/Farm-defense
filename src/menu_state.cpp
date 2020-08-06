@@ -1,6 +1,6 @@
-#include <menu_state.hpp>
-#include <utility.hpp>
-#include <resource_holder.hpp>
+#include "menu_state.hpp"
+#include "utility.hpp"
+#include "resource_holder.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/View.hpp>

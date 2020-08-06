@@ -1,8 +1,8 @@
 //enemy class implementation
 
 #include "enemy.hpp"
-#include "data_tables.hpp"
-#include "utility.hpp"
+#include "../utility.hpp"
+#include "../data_tables.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>

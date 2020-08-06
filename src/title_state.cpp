@@ -1,6 +1,6 @@
-#include <title_state.hpp>
-#include <utility.hpp>
-#include <resource_holder.hpp>
+#include "title_state.hpp"
+#include "utility.hpp"
+#include "resource_holder.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 

@@ -1,4 +1,6 @@
 target_sources(TowerDefense
     PRIVATE
-        test_enemy.hpp
+        enemy.hpp
+	enemy.cpp
+	test_enemy.hpp
 )
