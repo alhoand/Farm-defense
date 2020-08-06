@@ -26,11 +26,14 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 void GameField::Update(sf::Time dt) {
 	//std::cout << "updating game field" << std::endl;
 
+	
 	// Forwards the commands to the scene graph
 	while(!commandQueue_.IsEmpty()) {
 		sceneGraph_.OnCommand(commandQueue_.Pop(), dt);
 	}
 
+	HandleCollisions();
+	sceneGraph_.RemoveWrecks();
 
 	sceneGraph_.Update(dt);
 }
