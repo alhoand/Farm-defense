@@ -73,7 +73,9 @@ void GameField::BuildScene() {
 	//Initialize two enemies
 	std::unique_ptr<Enemy> firstEnemy(new Enemy(Enemy::Type::Fire, textures_, 50, enemySpeed_));
 	firstEnemy_ = firstEnemy.get();
+	firstEnemy_->setOrigin(firstEnemy_->GetBoundingRect().width/2, firstEnemy_->GetBoundingRect().height/2);
 	firstEnemy_->setPosition(spawnPosition_);
+	firstEnemy_->setScale(0.5f, 0.5f);
 
 	std::cout << "DEBUG: spawn position:" << firstEnemy_->getPosition().x << "," << firstEnemy_->getPosition().y << std::endl;
 
@@ -81,10 +83,11 @@ void GameField::BuildScene() {
 	std::cout << "DEBUG: initial velocity: " << firstEnemy_->GetVelocity().x << "," << firstEnemy_->GetVelocity().y << std::endl;
  
 	sceneLayers_[Ground] -> AttachChild(std::move(firstEnemy));
-
-	std::unique_ptr<Enemy> secondEnemy(new Enemy(Enemy::Type::Leaf, textures_, 50, enemySpeed_));
-	secondEnemy->setPosition(-300.f, 0.f); // position relative to the first enemy
-	firstEnemy_ -> AttachChild(std::move(secondEnemy));
+// This is secon enemy is unnecessary at the moment. The wild behaviour of the second enemy may have been caused by
+// it being a child of the first enemy.
+//	std::unique_ptr<Enemy> secondEnemy(new Enemy(Enemy::Type::Leaf, textures_, 50, enemySpeed_));
+//	secondEnemy->setPosition(-20.f, 0.f); // position relative to the first enemy
+//	sceneLayers_[Ground] -> AttachChild(std::move(secondEnemy));
 
 	//Initialize a tower that can be moved with hard-coded bullet
 	// TODO: make bullets work
@@ -132,7 +135,10 @@ void GameField::HandleCollisions()
 
 			// Apply bullet damage to enemy, destroy bullet
 			enemy.Damage(bullet.GetDamage());
+			std::cout << "HP now: " << enemy.GetHitpoints() << std::endl;
 			bullet.Destroy();
+
+			//std::cout << "Collision occurred on enemy: " << enemy.Get<< std::endl;
 		}
 	}
 }
@@ -146,9 +152,11 @@ void GameField::SpawnEnemies(sf::Time dt) {
 		//alternative way and probably better in actual game, change spawnInterval to spawnRate to make spawnrate under 1 sec
 		//spawnCountdown_ += sf::seconds(1.f / (spawnRate_+1));
 		leftToSpawn_--;
-
+	
 		std::unique_ptr<Enemy> newEnemy(new Enemy(Enemy::Type::Fire, textures_, 50, enemySpeed_));
+		newEnemy->setOrigin(newEnemy->GetBoundingRect().width/2, newEnemy->GetBoundingRect().height/2);
 		newEnemy->setPosition(spawnPosition_);
+		newEnemy->setScale(0.5f, 0.5f);
 		newEnemy->SetVelocity(enemySpeed_, 0.f);
 		sceneLayers_[Ground] -> AttachChild(std::move(newEnemy));
     }

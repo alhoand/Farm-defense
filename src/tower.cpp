@@ -2,7 +2,7 @@
 #include "tower.hpp"
 
 namespace {
-	const std::vector<TowerData> table = initializeTowerData();
+	const std::vector<TowerData> table = InitializeTowerData();
 }
 
 Tower::Tower(Tower::Type type, const TextureHolder &textures, int range, int reloadTime, Bullet::Type bulletType, CommandQueue& commands)

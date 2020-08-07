@@ -64,7 +64,7 @@ class Tower : public Entity {
         // Getter that tells if the tower is being moved by the player
         bool IsMoving() const;
 
-        virtual sf::FloatRect GetBoundingRect() const;
+        virtual sf::FloatRect GetBoundingRect() const override;
 
         static Textures::ID ToTextureID(Type type);
 

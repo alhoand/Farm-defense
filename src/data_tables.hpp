@@ -31,7 +31,7 @@ struct EnemyData
 };
 
 //initializer
-std::vector<EnemyData>	initializeEnemyData();
+std::vector<EnemyData>	InitializeEnemyData();
 
 struct TowerData {
     int range;
@@ -40,7 +40,7 @@ struct TowerData {
 };
 
 //initializer
-std::vector<TowerData>	initializeTowerData();
+std::vector<TowerData>	InitializeTowerData();
 
 struct BulletData {
     float           speed;
@@ -49,6 +49,6 @@ struct BulletData {
 };
 
 //initializer
-std::vector<BulletData>	initializeBulletData();
+std::vector<BulletData>	InitializeBulletData();
 
 #endif // DATATABLES_HPP

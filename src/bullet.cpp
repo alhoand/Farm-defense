@@ -2,7 +2,7 @@
 #include "entity.hpp"
 #include "resource_holder.hpp"
 #include "category.hpp"
-
+#include "data_tables.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 
@@ -34,6 +34,11 @@ Textures::ID Bullet::ToTextureID(Bullet::Type type) {
     }
 */
 
+namespace
+{
+	const std::vector<BulletData> Table = InitializeBulletData();
+}
+
 Bullet::Bullet(Type type, const TextureHolder& textures)
     : Entity(1), type_(type), sprite_(textures.Get(ToTextureID(type))),
       speed_(), damage_(), damage_duration_() {
@@ -47,7 +52,7 @@ float Bullet::GetSpeed() const {
 
         //could also return damage duration, depends on how the hit to enemy is implemented
 int Bullet::GetDamage() const {
-    return damage_;
+    return Table[type_].damage;
 }
 
 sf::FloatRect Bullet::GetBoundingRect() const 

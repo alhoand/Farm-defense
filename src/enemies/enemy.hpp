@@ -33,20 +33,20 @@ class Enemy : public Entity {
 
         //virtual void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-        void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+        void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 
         // TODO: integrate path with sfml 
         /* virtual ~Enemy() {
             }
         } */
 
-        unsigned int GetCategory() const;
-        virtual sf::FloatRect getBoundingRect() const;
+        unsigned int GetCategory() const override;
+        virtual sf::FloatRect GetBoundingRect() const override;
 
         //unsigned int GetCategory() const override;
 
     private:
-        void updateMovementPattern(sf::Time dt);
+        void UpdateMovementPattern(sf::Time dt);
 
     protected:
 
