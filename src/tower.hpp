@@ -40,11 +40,8 @@ class Tower : public Entity {
         //Update the state of the tower, should be virtual
         virtual void UpdateCurrent(sf::Time dt) override;
 
-        //Shoot an enemy, should be virtual
-        // virtual void Shoot();
-
         // Helper function
-        void CheckShoot(sf::Time dt);
+        void Shoot(sf::Time dt);
 
         virtual unsigned int GetCategory() const override;
 
@@ -78,7 +75,7 @@ class Tower : public Entity {
         float direction_;
         // Some kind of container for enemies in range - this could also be a function that is called every tick
         std::vector<Enemy> enemiesInRange_;
-        float reloadSpeed_;
+        float reloadTime_;
 
         Bullet::Type bulletType_;
         // bool isShooting_; not needed?

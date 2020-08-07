@@ -1,11 +1,12 @@
 //TODO class implementation here
 #include "tower.hpp"
 
-Tower::Tower(Tower::Type type, const TextureHolder &textures, int range, int reloadSpeed, Bullet::Type bulletType, CommandQueue& commands)
+Tower::Tower(Tower::Type type, const TextureHolder &textures, int range, int reloadTime, Bullet::Type bulletType, CommandQueue& commands)
     : Entity(1), type_(type), sprite_(textures.Get(ToTextureID(type))), range_(range), direction_(0),
-      reloadSpeed_(reloadSpeed), bulletType_(bulletType), countdown_(sf::Time::Zero), commands_(commands), shootCommand_() {
-        shootCommand_.category_ = Category::Scene;
+      reloadTime_(reloadTime), bulletType_(bulletType), countdown_(sf::Time::Zero), commands_(commands), shootCommand_() {
+        shootCommand_.category_ = Category::Scene | Category::Bullet;
         shootCommand_.action_ = [this, &textures] (SceneNode& node, sf::Time) {
+            std::cout << "Trying to execute commands" << std::endl;
             CreateBullet(node, Bullet::Type::FireBullet, 200.f, 200.f, textures);
         };
     }
@@ -30,25 +31,19 @@ void Tower::CreateBullet(SceneNode& node, Bullet::Type type, float xOffset, floa
 
 //Update the state of the tower, should be virtual
 void Tower::UpdateCurrent(sf::Time dt) {
-    std::cout << "Updating tower" <<std::endl;
-    CheckShoot(dt);
+    // std::cout << "Updating tower" <<std::endl;
+    Shoot(dt);
     Entity::UpdateCurrent(dt);
 }
 
-//Shoot an enemy, should be virtual
-/* void Tower::Shoot() {
-    isShooting_ = true;
-} */
-
-
-void Tower::CheckShoot(sf::Time dt) {
-    std::cout << "Checking if tower can shoot" << std::endl;
+void Tower::Shoot(sf::Time dt) {
+    // std::cout << "Checking if tower can shoot" << std::endl;
     if (countdown_ <= sf::Time::Zero) {
-        std::cout << "It can! Hurrah! " << std::endl;
         commands_.Push(shootCommand_);
-        countdown_ += sf::seconds(1.f * reloadSpeed_);
+        std::cout << "It can! Hurrah! " << std::endl;
+        countdown_ += sf::seconds(1.f * reloadTime_);
     } else if (countdown_ > sf::Time::Zero) {
-        std::cout << "It cannot :(" << std::endl;
+        // std::cout << "It cannot :(" << std::endl;
         countdown_ -= dt;
     }
 }

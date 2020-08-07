@@ -145,6 +145,7 @@ void SceneNode::OnCommand(const Command &command, sf::Time dt) {
     // 0010 & 0010 -> 0010 = 2 = true
     // 1101 & 0100 -> 0100 = 4 = true
     // 1000 & 0100 -> 0000 = 0 = false
+    if (command.category_ & Category::Bullet) std::cout << "Trying to execute command" << std::endl;
     if (command.category_ & GetCategory()) { 
         command.action_(*this, dt);
         //this->accelerate(2.f, 3.f);
