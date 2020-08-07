@@ -28,8 +28,6 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 
 
 void GameField::Update(sf::Time dt) {
-	//std::cout << "updating game field" << std::endl;
-
 	
 	// Forwards the commands to the scene graph
 	while(!commandQueue_.IsEmpty()) {
@@ -89,7 +87,7 @@ void GameField::BuildScene() {
 
 	//Initialize a tower that can be moved with hard-coded bullet
 	// TODO: make bullets work
-	std::unique_ptr<Tower> firstTower(new Tower(Tower::Type::Fire, textures_, 50, 30, Bullet::Type::FireBullet, commandQueue_));
+	std::unique_ptr<Tower> firstTower(new Tower(Tower::Type::Fire, textures_, 50, 1, Bullet::Type::FireBullet, commandQueue_));
 	firstTower_ = firstTower.get();
 	firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
 	firstTower_->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f);
@@ -131,25 +129,27 @@ void GameField::HandleCollisions()
 			auto& enemy = static_cast<Enemy&>(*pair.first);
 			auto& bullet = static_cast<Bullet&>(*pair.second);
 
-			// Apply projectile damage to aircraft, destroy projectile
+			// Apply bullet damage to enemy, destroy bullet
 			enemy.Damage(bullet.GetDamage());
 			bullet.Destroy();
 		}
 	}
 }
 
+//Spawns only one type of enemies and spawnInterval is constant
 void GameField::SpawnEnemies(sf::Time dt) {
 
 	if (spawnCountdown_ <= sf::Time::Zero && leftToSpawn_ > 0) //TODO leftToSpawn someway better
     {
         spawnCountdown_ += sf::seconds(spawnInterval_);
+		//alternative way and probably better in actual game, change spawnInterval to spawnRate to make spawnrate under 1 sec
+		//spawnCountdown_ += sf::seconds(1.f / (spawnRate_+1));
 		leftToSpawn_--;
 
 		std::unique_ptr<Enemy> newEnemy(new Enemy(Enemy::Type::Fire, textures_, 50, enemySpeed_));
 		newEnemy->setPosition(spawnPosition_);
 		newEnemy->SetVelocity(enemySpeed_, 0.f);
 		sceneLayers_[Ground] -> AttachChild(std::move(newEnemy));
-
     }
     else if (leftToSpawn_ > 0)
     {
@@ -169,6 +169,4 @@ CommandQueue& GameField::GetCommandQueue() {
 	return commandQueue_;
 }
 
-/*void GameField::AddTower(Tower* t){
-	towers_.push_back(t);
-}*/
+
