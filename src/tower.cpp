@@ -4,10 +4,9 @@
 Tower::Tower(Tower::Type type, const TextureHolder &textures, int range, int reloadTime, Bullet::Type bulletType, CommandQueue& commands)
     : Entity(1), type_(type), sprite_(textures.Get(ToTextureID(type))), range_(range), direction_(0),
       reloadTime_(reloadTime), bulletType_(bulletType), countdown_(sf::Time::Zero), commands_(commands), shootCommand_() {
-        shootCommand_.category_ = Category::Scene | Category::Bullet;
+        shootCommand_.category_ = Category::Scene;
         shootCommand_.action_ = [this, &textures] (SceneNode& node, sf::Time) {
-            std::cout << "Trying to execute commands" << std::endl;
-            CreateBullet(node, Bullet::Type::FireBullet, 200.f, 200.f, textures);
+            CreateBullet(node, Bullet::Type::FireBullet, 0.0f, 0.0f, textures);
         };
     }
 
@@ -21,8 +20,8 @@ void Tower::CreateBullet(SceneNode& node, Bullet::Type type, float xOffset, floa
 
     std::unique_ptr<Bullet> bullet(new Bullet(type, textures));
 
-    sf::Vector2f offset(xOffset * sprite_.getGlobalBounds().width, yOffset * sprite_.getGlobalBounds().height);
-    sf::Vector2f velocity(0, 50.f);
+    sf::Vector2f offset(sprite_.getGlobalBounds().width / 2.f, sprite_.getGlobalBounds().height / 2.f);
+    sf::Vector2f velocity(0.0f, 100.0f);
 
     bullet->setPosition(GetWorldPosition() + offset);
     bullet->SetVelocity(velocity);
@@ -33,7 +32,7 @@ void Tower::CreateBullet(SceneNode& node, Bullet::Type type, float xOffset, floa
 void Tower::UpdateCurrent(sf::Time dt) {
     // std::cout << "Updating tower" <<std::endl;
     Shoot(dt);
-    Entity::UpdateCurrent(dt);
+    // Entity::UpdateCurrent(dt);
 }
 
 void Tower::Shoot(sf::Time dt) {

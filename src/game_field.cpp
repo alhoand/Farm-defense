@@ -14,6 +14,7 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 					gameFieldView_.getSize().y + viewOffset_.y), // world height is same as view's height
 	 spawnPosition_(gameFieldBounds_.left + 100,
 	 				 (gameFieldBounds_.top + gameFieldBounds_.height)/3.f),
+	commandQueue_(),
 	enemySpeed_(50.f),
 	firstEnemy_(),
 	firstTower_(),
@@ -87,7 +88,7 @@ void GameField::BuildScene() {
 
 	//Initialize a tower that can be moved with hard-coded bullet
 	// TODO: make bullets work
-	std::unique_ptr<Tower> firstTower(new Tower(Tower::Type::Fire, textures_, 50, 1, Bullet::Type::FireBullet, commandQueue_));
+	std::unique_ptr<Tower> firstTower(new Tower(Tower::Type::Fire, textures_, 50, 5, Bullet::Type::FireBullet, commandQueue_));
 	firstTower_ = firstTower.get();
 	firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
 	firstTower_->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f);

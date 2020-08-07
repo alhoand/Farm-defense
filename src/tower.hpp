@@ -80,6 +80,6 @@ class Tower : public Entity {
         Bullet::Type bulletType_;
         // bool isShooting_; not needed?
         sf::Time countdown_;
-        CommandQueue commands_;
+        CommandQueue& commands_;
         Command shootCommand_;
 };
