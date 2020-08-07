@@ -23,6 +23,8 @@ class Button : public Component
 
 	public:
 								Button(const FontHolder& fonts, const TextureHolder& textures);
+                                Button(const FontHolder& fonts, const TextureHolder& textures, Textures::ID normal, Textures::ID selected);
+                                Button(const FontHolder& fonts, const TextureHolder& textures, Textures::ID normal, Textures::ID selected, Textures::ID pressed);
 
         void					SetCallback(Callback callback);
         void					SetText(const std::string& text);
