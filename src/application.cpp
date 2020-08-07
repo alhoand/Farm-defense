@@ -28,9 +28,14 @@ Application::Application()
         
         textures_.Load(Textures::ID::logo,              "../media/textures/titleLogo.png");
         textures_.Load(Textures::ID::TitleBackground,   "../media/textures/tausta.jpg");
-        textures_.Load(Textures::ID::ButtonNormal,      "../media/textures/plankNormal.png");
-	    textures_.Load(Textures::ID::ButtonSelected,	"../media/textures/plankSelected.png");
-	    textures_.Load(Textures::ID::ButtonPressed,		"../media/textures/plankPressed.png");
+        textures_.Load(Textures::ID::ButtonNormal,      "../media/textures/buttonNormal.png");
+	    textures_.Load(Textures::ID::ButtonSelected,	"../media/textures/buttonSelected.png");
+	    textures_.Load(Textures::ID::ButtonPressed,		"../media/textures/buttonPressed.png");
+        textures_.Load(Textures::ID::PlankNormal,      "../media/textures/plankNormal.png");
+	    textures_.Load(Textures::ID::PlankSelected,	    "../media/textures/plankSelected.png");
+	    textures_.Load(Textures::ID::PlankPressed,		"../media/textures/plankPressed.png");
+        textures_.Load(Textures::ID::PlankNormal2,      "../media/textures/plankNormal2.png");
+	    textures_.Load(Textures::ID::PlankSelected2,	"../media/textures/plankSelected2.png");
 
         RegisterStates();
         stateStack_.PushState(States::ID::Title);
