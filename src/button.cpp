@@ -18,6 +18,7 @@ Button::Button(const FontHolder& fonts, const TextureHolder& textures)
 , isToggle_(false)
 {
 	sprite_.setTexture(normalTexture_);
+	//sprite_.setScale(0.3,0.3);
 
 	sf::FloatRect bounds = sprite_.getLocalBounds();
 	text_.setPosition(bounds.width / 2.f, bounds.height / 2.f);

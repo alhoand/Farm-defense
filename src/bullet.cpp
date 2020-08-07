@@ -10,18 +10,18 @@
 
 Textures::ID Bullet::ToTextureID(Bullet::Type type) {
     switch (type) {
-        case Bullet::Type::Ice:
-            return Textures::ID::Ice;
+        case Bullet::Type::IceBullet:
+            return Textures::ID::IceBullet;
         case Bullet::Type::FireBullet:
             return Textures::ID::FireBullet;
-        case Bullet::Type::Wood:
-            return Textures::ID::Wood;
+        case Bullet::Type::WoodBullet:
+            return Textures::ID::WoodBullet;
         default: 
-            return Textures::ID::Ice;
+            return Textures::ID::FireBullet;
     }
 }
 
-Bullet::Bullet(Type type, int damage, int damage_duration, const TextureHolder& textures)
+/* Bullet::Bullet(Type type, int damage, int damage_duration, const TextureHolder& textures)
     : Entity(1),
         type_(type), 
         sprite_(textures.Get(ToTextureID(type))),
@@ -32,13 +32,18 @@ Bullet::Bullet(Type type, int damage, int damage_duration, const TextureHolder& 
         sf::FloatRect bounds = sprite_.getLocalBounds();
         sprite_.setOrigin(bounds.width/2.f, bounds.height/2.f);
     }
+*/
 
 Bullet::Bullet(Type type, const TextureHolder& textures)
-    : Entity(1), type_(type), sprite_(textures.Get(ToTextureID(type))), targetDirection_(),
-      damage_(), damage_duration_() {
+    : Entity(1), type_(type), sprite_(textures.Get(ToTextureID(type))),
+      speed_(), damage_(), damage_duration_() {
         sf::FloatRect bounds = sprite_.getLocalBounds();
         sprite_.setOrigin(bounds.width/2.f, bounds.height/2.f);
     }
+
+float Bullet::GetSpeed() const {
+    return speed_;
+}
 
         //could also return damage duration, depends on how the hit to enemy is implemented
 int Bullet::GetDamage() const {
