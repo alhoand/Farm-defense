@@ -8,8 +8,8 @@
 namespace GUI
 {
 
-Button::Button(const FontHolder& fonts, const TextureHolder& textures)
-: callback_()
+Button::Button(const FontHolder& fonts, const TextureHolder& textures):
+  callback_()
 , normalTexture_(textures.Get(Textures::ID::ButtonNormal))
 , selectedTexture_(textures.Get(Textures::ID::ButtonSelected))
 , pressedTexture_(textures.Get(Textures::ID::ButtonPressed))
@@ -18,8 +18,34 @@ Button::Button(const FontHolder& fonts, const TextureHolder& textures)
 , isToggle_(false)
 {
 	sprite_.setTexture(normalTexture_);
-	//sprite_.setScale(0.3,0.3);
+	sf::FloatRect bounds = sprite_.getLocalBounds();
+	text_.setPosition(bounds.width / 2.f, bounds.height / 2.f);
+}
 
+Button::Button(const FontHolder& fonts, const TextureHolder& textures, Textures::ID normal, Textures::ID selected) :
+  callback_()
+, normalTexture_(textures.Get(normal))
+, selectedTexture_(textures.Get(selected))
+, pressedTexture_(textures.Get(Textures::ID::ButtonPressed))
+, sprite_()
+, text_("", fonts.Get(Fonts::ID::Main), 16)
+, isToggle_(false)
+{
+	sprite_.setTexture(normalTexture_);
+	sf::FloatRect bounds = sprite_.getLocalBounds();
+	text_.setPosition(bounds.width / 2.f, bounds.height / 2.f);
+}
+
+Button::Button(const FontHolder& fonts, const TextureHolder& textures, Textures::ID normal, Textures::ID selected, Textures::ID pressed) :
+  callback_()
+, normalTexture_(textures.Get(normal))
+, selectedTexture_(textures.Get(selected))
+, pressedTexture_(textures.Get(pressed))
+, sprite_()
+, text_("", fonts.Get(Fonts::ID::Main), 16)
+, isToggle_(false)
+{
+	sprite_.setTexture(normalTexture_);
 	sf::FloatRect bounds = sprite_.getLocalBounds();
 	text_.setPosition(bounds.width / 2.f, bounds.height / 2.f);
 }

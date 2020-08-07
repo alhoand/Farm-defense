@@ -1,5 +1,6 @@
 #include "game_state.hpp"
 #include "../button.hpp"
+#include "../resource_identifiers.hpp"
 
 GameState::GameState(StateStack& stack, Context context) :
     State(stack, context),
