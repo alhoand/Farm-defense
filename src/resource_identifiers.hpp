@@ -25,7 +25,12 @@ namespace Textures {
         logo,
         ButtonNormal,
         ButtonSelected,
-        ButtonPressed
+        ButtonPressed,
+        PlankNormal,
+        PlankSelected,
+        PlankPressed,
+        PlankNormal2,
+        PlankSelected2,
     };
 }
 
