@@ -32,7 +32,7 @@ public:
     void                    CheckNodeCollision(SceneNode& node, std::set<Pair>& collisionPairs);
     void                    CheckSceneCollision(SceneNode& sceneGraph, std::set<Pair>& collisionPairs);
     virtual bool            IsDestroyed() const;
-    virtual bool			IsMarkedForRemoval() const;
+    virtual bool            IsMarkedForRemoval() const;
     void					RemoveWrecks();
     virtual sf::FloatRect   GetBoundingRect() const;
 
