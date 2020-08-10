@@ -2,6 +2,7 @@
 #include "game_field.hpp"
 #include <iostream> // for debugging
 #include <SFML/System/Time.hpp>
+#include <cassert>
 
 
 GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
@@ -141,6 +142,12 @@ void GameField::HandleCollisions()
 			//std::cout << "Collision occurred on enemy: " << enemy.Get<< std::endl;
 		}
 	}
+}
+
+// Does not handle nullptr so the caller should handle it.
+Tower* GameField::GetActiveTower() const {
+	//assert(Tower::ActiveTower() != nullptr); 
+	return Tower::ActiveTower();
 }
 
 //Spawns only one type of enemies and spawnInterval is constant

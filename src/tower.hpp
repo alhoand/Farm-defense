@@ -8,6 +8,7 @@
 #include "entity.hpp"
 #include "resource_identifiers.hpp"
 #include "command_queue.hpp"
+
 #include "data_tables.hpp"
 
 /*  ***TODO***
@@ -68,6 +69,11 @@ class Tower : public Entity {
 
         static Textures::ID ToTextureID(Type type);
 
+        static Tower* ActiveTower() { return activeTower_; }
+
+        static void ActiveTower(Tower*);
+
+
 
     protected:
         // There is velocity_ in Entity which, in this case, describes the rotational speed
@@ -87,4 +93,6 @@ class Tower : public Entity {
         sf::Time countdown_;
         CommandQueue& commands_;
         Command shootCommand_;
+
+        static Tower* activeTower_;
 };

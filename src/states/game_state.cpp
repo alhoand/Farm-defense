@@ -26,6 +26,10 @@ void GameState::Draw() {
 
 bool GameState::Update(sf::Time dt) {
     gameField_.Update(dt); // updates the gamefield on each tick
+    if (gameField_.GetActiveTower()){
+        std::cout << "Active tower pos :" << gameField_.GetActiveTower()->getPosition().x << ", " << gameField_.GetActiveTower()->getPosition().y << std::endl;
+    }
+    
 
     CommandQueue& commands = gameField_.GetCommandQueue();
 	player_.HandleRealtimeInput(commands);

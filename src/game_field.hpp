@@ -44,6 +44,8 @@ class GameField : private sf::NonCopyable {
 
         CommandQueue& GetCommandQueue();
 
+        Tower* GetActiveTower() const;
+
         //void AddTower(Tower* t); not implemented yet
 
     private:
