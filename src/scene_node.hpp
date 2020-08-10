@@ -20,7 +20,7 @@ public:
     typedef std::unique_ptr<SceneNode> Ptr;
     typedef std::pair<SceneNode*, SceneNode*> Pair;
 
-                            SceneNode();
+                            SceneNode(Category::Type category = Category::None);
     void                    AttachChild(Ptr node);
     Ptr                     DetachChild(const SceneNode& node);
     void                    Update(sf::Time dt, CommandQueue& commands);
@@ -48,6 +48,7 @@ private:
 
     std::vector<Ptr> children_;
     SceneNode* parent_;
+    Category::Type defaultCategory_;
 };
 
 bool Collision(const SceneNode& lhs, const SceneNode& rhs);

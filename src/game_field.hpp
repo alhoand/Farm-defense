@@ -57,8 +57,7 @@ class GameField : private sf::NonCopyable {
 
         enum Layer {
             Background,
-            Ground,
-            Air,
+            Field,
             LayerCount
         };
 

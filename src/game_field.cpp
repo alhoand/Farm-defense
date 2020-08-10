@@ -8,7 +8,7 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	: window_(window),
 	viewOffset_(viewOffset), 
 	 gameFieldView_(window.getDefaultView()),
-	 
+	 sceneGraph_(),
 	 gameFieldBounds_(0.f, 0.f, // x and y of the game field
 	 				gameFieldView_.getSize().x + viewOffset_.x, //world width is a bit bigger than the view's width
 					gameFieldView_.getSize().y + viewOffset_.y), // world height is same as view's height
@@ -57,7 +57,9 @@ void GameField::LoadTextures() {
 void GameField::BuildScene() {
 	// Initialize all the scene layers, i.e., the SceneNodes that are rendered together
 	for (std::size_t i = 0; i < LayerCount; i++) {
-		SceneNode::Ptr layer(new SceneNode());
+		Category::Type category = (i == Field) ? Category::Scene : Category::None;
+
+		SceneNode::Ptr layer(new SceneNode(category));
 		sceneLayers_[i] = layer.get();
 		sceneGraph_.AttachChild(std::move(layer));
 	}
@@ -84,7 +86,7 @@ void GameField::BuildScene() {
 	firstEnemy_->SetVelocity(enemySpeed_, 0.f);
 	std::cout << "DEBUG: initial velocity: " << firstEnemy_->GetVelocity().x << "," << firstEnemy_->GetVelocity().y << std::endl;
  
-	sceneLayers_[Ground] -> AttachChild(std::move(firstEnemy));
+	sceneLayers_[Field] -> AttachChild(std::move(firstEnemy));
 // This is secon enemy is unnecessary at the moment. The wild behaviour of the second enemy may have been caused by
 // it being a child of the first enemy.
 //	std::unique_ptr<Enemy> secondEnemy(new Enemy(Enemy::Type::Leaf, textures_, 50, enemySpeed_));
@@ -97,7 +99,7 @@ void GameField::BuildScene() {
 	firstTower_ = firstTower.get();
 	firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
 	firstTower_->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f);
-	sceneLayers_[Ground] -> AttachChild(std::move(firstTower));
+	sceneLayers_[Field] -> AttachChild(std::move(firstTower));
 
 
 }
@@ -157,6 +159,7 @@ void GameField::SpawnEnemies(sf::Time dt) {
         spawnCountdown_ += sf::seconds(spawnInterval_);
 		//alternative way and probably better in actual game, change spawnInterval to spawnRate to make spawnrate under 1 sec
 		//spawnCountdown_ += sf::seconds(1.f / (spawnRate_+1));
+
 		if (--leftToSpawn_ %2)
 		{
 			std::unique_ptr<Enemy> newEnemy(new Enemy(Enemy::Type::Leaf, textures_, 50, enemySpeed_));
@@ -164,7 +167,7 @@ void GameField::SpawnEnemies(sf::Time dt) {
 			newEnemy->setPosition(spawnPosition_);
 			newEnemy->setScale(2.f, 2.f);
 			newEnemy->SetVelocity(enemySpeed_, 0.f);
-			sceneLayers_[Ground] -> AttachChild(std::move(newEnemy));
+			sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
 		} else
 		{
 			std::unique_ptr<Enemy> newEnemy(new Enemy(Enemy::Type::Fire, textures_, 50, enemySpeed_));
@@ -172,9 +175,8 @@ void GameField::SpawnEnemies(sf::Time dt) {
 			newEnemy->setPosition(spawnPosition_);
 			newEnemy->setScale(0.5f, 0.5f);
 			newEnemy->SetVelocity(enemySpeed_, 0.f);
-			sceneLayers_[Ground] -> AttachChild(std::move(newEnemy));
+			sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
 		}
-		
     }
     else if (leftToSpawn_ > 0)
     {

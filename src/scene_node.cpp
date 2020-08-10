@@ -9,7 +9,7 @@
 #include <set>
 #include <algorithm>
 
-SceneNode::SceneNode() : children_(), parent_(nullptr) { }
+SceneNode::SceneNode(Category::Type category) : children_(), parent_(nullptr), defaultCategory_(category) { }
 
 void SceneNode::AttachChild(Ptr node) {
     node->parent_ = this;
@@ -135,7 +135,7 @@ void SceneNode::DrawChildren(sf::RenderTarget &target, sf::RenderStates states) 
 
 //
 unsigned int SceneNode::GetCategory() const {
-    return Category::Scene; // By default every scene node belongs to Scene-category
+    return defaultCategory_; // By default every scene node belongs to Scene-category
 }
 
 // From the sfml game development -book
@@ -148,10 +148,10 @@ void SceneNode::OnCommand(const Command &command, sf::Time dt) {
     if (command.category_ & GetCategory()) { 
         command.action_(*this, dt);
         //this->accelerate(2.f, 3.f);
-    }
-    for (const Ptr &child : children_) {
-        child->OnCommand(command, dt);
-    }
+    } 
+        for (const Ptr &child : children_) {
+            child->OnCommand(command, dt);
+        }
 }
 
 bool Collision(const SceneNode& lhs, const SceneNode& rhs) 
