@@ -18,8 +18,8 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	enemySpeed_(50.f),
 	firstEnemy_(),
 	firstTower_(),
-	spawnCountdown_(sf::Time::Zero),
-	spawnInterval_(5),
+	spawnCountdown_(sf::seconds(5)),
+	spawnInterval_(5), //this should maybe be a parameter
 	leftToSpawn_(15)
 	{ 
 		LoadTextures();
@@ -82,9 +82,9 @@ void GameField::BuildScene() {
  
 	sceneLayers_[Ground] -> AttachChild(std::move(firstEnemy));
 
-	std::unique_ptr<Enemy> secondEnemy(new Enemy(Enemy::Type::Leaf, textures_, 50, enemySpeed_));
+	/* std::unique_ptr<Enemy> secondEnemy(new Enemy(Enemy::Type::Leaf, textures_, 50, enemySpeed_));
 	secondEnemy->setPosition(-300.f, 0.f); // position relative to the first enemy
-	firstEnemy_ -> AttachChild(std::move(secondEnemy));
+	firstEnemy_ -> AttachChild(std::move(secondEnemy)); */
 
 	//Initialize a tower that can be moved with hard-coded bullet
 	// TODO: make bullets work
@@ -105,10 +105,12 @@ bool MatchesCategories(SceneNode::Pair& colliders, Category::Type type1, Categor
 	// Make sure first pair entry has category type1 and second has type2
 	if (type1 & category1 && type2 & category2)
 	{
+		std::cout << "matching category found" << std::endl;
 		return true;
 	}
 	else if (type1 & category2 && type2 & category1)
 	{
+		std::cout << "matching category found" << std::endl;
 		std::swap(colliders.first, colliders.second);
 		return true;
 	}
@@ -125,8 +127,10 @@ void GameField::HandleCollisions()
 
 	for(SceneNode::Pair pair : collisionPairs)
 	{
+		//std::cout << pair.first->GetCategory() << "," << pair.second->GetCategory() << std::endl;
 		if (MatchesCategories(pair, Category::Enemy, Category::Bullet))
 		{
+			std::cout << "Collision happened!!!" << std::endl;
 			auto& enemy = static_cast<Enemy&>(*pair.first);
 			auto& bullet = static_cast<Bullet&>(*pair.second);
 
@@ -147,10 +151,18 @@ void GameField::SpawnEnemies(sf::Time dt) {
 		//spawnCountdown_ += sf::seconds(1.f / (spawnRate_+1));
 		leftToSpawn_--;
 
-		std::unique_ptr<Enemy> newEnemy(new Enemy(Enemy::Type::Fire, textures_, 50, enemySpeed_));
-		newEnemy->setPosition(spawnPosition_);
-		newEnemy->SetVelocity(enemySpeed_, 0.f);
-		sceneLayers_[Ground] -> AttachChild(std::move(newEnemy));
+		if (leftToSpawn_%2) {
+			std::unique_ptr<Enemy> newEnemy(new Enemy(Enemy::Type::Fire, textures_, 50, enemySpeed_));
+			newEnemy->setPosition(spawnPosition_);
+			newEnemy->SetVelocity(enemySpeed_, 0.f);
+			sceneLayers_[Ground] -> AttachChild(std::move(newEnemy));
+		} else {
+			std::unique_ptr<Enemy> newEnemy(new Enemy(Enemy::Type::Leaf, textures_, 50, enemySpeed_));
+			newEnemy->setPosition(spawnPosition_);
+			newEnemy->SetVelocity(enemySpeed_, 0.f);
+			sceneLayers_[Ground] -> AttachChild(std::move(newEnemy));
+		}
+
     }
     else if (leftToSpawn_ > 0)
     {

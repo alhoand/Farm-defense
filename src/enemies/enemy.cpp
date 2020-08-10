@@ -93,11 +93,13 @@ void Enemy::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 * Long lasting damage implementation
 */
 void Enemy::UpdateCurrent(sf::Time dt) {
-    updateMovementPattern(dt);
-    Entity::UpdateCurrent(dt); // Apply velocity
+    // Apply velocity
 
-    if (GetHitpoints() > 0) {
+    if (GetHitpoints() > 0) 
+    {
         //move enemy or game lost
+        updateMovementPattern(dt);
+        Entity::UpdateCurrent(dt); 
     } else {
         //indicate game field somehow that enemy is dead
     }
@@ -124,7 +126,6 @@ void Enemy::updateMovementPattern(sf::Time dt)
 	{
 		if (travelledDistance_ > path[directionIndex_].distance)
 		{
-            std::cout << "changing direction" << std::endl;
 			directionIndex_ = (directionIndex_ + 1) % path.size();
 			travelledDistance_ = 0.f;
 		}
