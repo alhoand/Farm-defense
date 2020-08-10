@@ -29,6 +29,8 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 
 
 void GameField::Update(sf::Time dt) {
+
+	DestroyEntitiesOutsideView();
 	
 	// Forwards the commands to the scene graph
 	while(!commandQueue_.IsEmpty()) {
@@ -190,6 +192,37 @@ void GameField::Draw() {
 
 CommandQueue& GameField::GetCommandQueue() {
 	return commandQueue_;
+}
+
+void GameField::DestroyEntitiesOutsideView()
+{
+	Command command;
+	command.category_ = Category::Bullet | Category::Enemy;
+	command.action_ = DerivedAction<Entity>([this] (Entity& e, sf::Time)
+	{
+		if (!GetGamefieldBounds().intersects(e.GetBoundingRect()))
+		{
+			std::cout << "destroying enemy or bullet outside gamefield" << std::endl;
+			e.Destroy();
+		}	
+	});
+
+	commandQueue_.Push(command);
+}
+
+sf::FloatRect GameField::GetViewBounds() const
+{
+	return sf::FloatRect(gameFieldView_.getCenter() - gameFieldView_.getSize() / 2.f, gameFieldView_.getSize());
+}
+
+sf::FloatRect GameField::GetGamefieldBounds() const
+{
+	// Return view bounds + some area at top, where enemies spawn
+	sf::FloatRect bounds = GetViewBounds();
+	bounds.top -= 100.f;
+	bounds.height += 100.f;
+
+	return bounds;
 }
 
 

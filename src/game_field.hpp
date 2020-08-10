@@ -51,6 +51,9 @@ class GameField : private sf::NonCopyable {
         void BuildScene();
         void HandleCollisions();
         void SpawnEnemies(sf::Time dt);
+        void DestroyEntitiesOutsideView();
+        sf::FloatRect GetViewBounds() const;
+        sf::FloatRect GetGamefieldBounds() const;
 
         enum Layer {
             Background,

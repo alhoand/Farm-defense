@@ -3,8 +3,8 @@
 #include "tower.hpp"
 #include "bullet.hpp"
 
-//hardcoded path for enemies
-
+//hardcoded path which is same fo all enemies
+//TODO add rest of the enemies
 std::vector<EnemyData> InitializeEnemyData()
 {
     //DEBUG
@@ -29,14 +29,6 @@ std::vector<EnemyData> InitializeEnemyData()
 		data[type].path.push_back(Direction(-90.f, 200.f));
 	}
 
-	 
-/* 	data[Enemy::Leaf].path.push_back(Direction(0.f, 400.f));
-	data[Enemy::Leaf].path.push_back(Direction(+90.f, 500.f));
-	data[Enemy::Leaf].path.push_back(Direction(0.f, 450.f));
-    data[Enemy::Leaf].path.push_back(Direction(-90.f, 200.f)); */
-
-    // TODO
-    //   add rest of the enemy types
 
 	return data;
 }
