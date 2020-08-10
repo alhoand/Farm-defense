@@ -27,8 +27,6 @@ target_sources(TowerDefense
 	game.hpp
     game_field.cpp
     game_field.hpp
-    ghost.cpp
-    ghost.hpp
 	label.cpp
 	label.hpp
 	main.cpp
