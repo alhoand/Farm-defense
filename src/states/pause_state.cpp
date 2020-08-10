@@ -2,6 +2,7 @@
 #include "../resource_holder.hpp"
 #include "../button.hpp"
 #include <cmath>
+#include "../sprite_location_identifiers.hpp"
 
 PauseState::PauseState(StateStack& stack, Context context): 
 	State(stack, context), 
@@ -22,7 +23,7 @@ PauseState::PauseState(StateStack& stack, Context context):
 	pausedText_.setOrigin(::floor(bounds.left + bounds.width / 2.f), std::floor(50 + bounds.top + bounds.height / 2.f));
 	pausedText_.setPosition(0.5f * viewSize.x, 0.4f * viewSize.y);
 
-	auto resumeButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_,Textures::ID::ResumeButtonNormal,Textures::ID::ResumeButtonSelected);
+	auto resumeButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_,sf::IntRect(163,0,55,53),sf::IntRect(54,0,55,53));
 	resumeButton->setPosition(10, 10);
 	resumeButton->SetCallback([this] ()
 	{

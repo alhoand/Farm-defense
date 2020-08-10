@@ -1,6 +1,7 @@
 #include "game_state.hpp"
 #include "../button.hpp"
 #include "../resource_identifiers.hpp"
+#include "../sprite_location_identifiers.hpp"
 
 GameState::GameState(StateStack& stack, Context context) :
     State(stack, context),
@@ -8,7 +9,7 @@ GameState::GameState(StateStack& stack, Context context) :
     player_(*context.player_),
     GUIContainer_(context)
     { 
-        auto pauseButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_,Textures::ID::PauseButtonNormal,Textures::ID::PauseButtonSelected);
+        auto pauseButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, sf::IntRect(108,0,55,53),sf::IntRect(0,0,55,54));
         pauseButton->setPosition(10, 10);
         pauseButton->SetCallback([this] ()
 	{

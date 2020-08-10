@@ -23,18 +23,7 @@ namespace Textures {
         TitleScreen,
         TitleBackground,
         logo,
-        ButtonNormal,
-        ButtonSelected,
-        ButtonPressed,
-        PlankNormal,
-        PlankSelected,
-        PlankPressed,
-        PlankNormal2,
-        PlankSelected2,
-		ResumeButtonNormal,
-		ResumeButtonSelected,
-		PauseButtonNormal,
-		PauseButtonSelected
+        Buttons
     };
 }
 

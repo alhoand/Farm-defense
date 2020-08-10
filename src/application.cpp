@@ -28,19 +28,7 @@ Application::Application()
         
         textures_.Load(Textures::ID::logo,              "../media/textures/titleLogo.png");
         textures_.Load(Textures::ID::TitleBackground,   "../media/textures/tausta.jpg");
-        textures_.Load(Textures::ID::ButtonNormal,      "../media/textures/buttonNormal.png");
-	    textures_.Load(Textures::ID::ButtonSelected,	"../media/textures/buttonSelected.png");
-	    textures_.Load(Textures::ID::ButtonPressed,		"../media/textures/buttonPressed.png");
-        textures_.Load(Textures::ID::PlankNormal,      "../media/textures/plankNormal.png");
-	    textures_.Load(Textures::ID::PlankSelected,	    "../media/textures/plankSelected.png");
-	    textures_.Load(Textures::ID::PlankPressed,		"../media/textures/plankPressed.png");
-        textures_.Load(Textures::ID::PlankNormal2,      "../media/textures/plankNormal2.png");
-	    textures_.Load(Textures::ID::PlankSelected2,	"../media/textures/plankSelected2.png");
-		
-		textures_.Load(Textures::ID::PauseButtonNormal,	"../media/textures/pauseButtonNormal.png");
-		textures_.Load(Textures::ID::PauseButtonSelected,	"../media/textures/pauseButtonSelected.png");
-		textures_.Load(Textures::ID::ResumeButtonNormal,	"../media/textures/resumeButtonNormal.png");
-		textures_.Load(Textures::ID::ResumeButtonSelected,	"../media/textures/resumeButtonSelected.png");
+        textures_.Load(Textures::ID::Buttons,      "../media/textures/buttons.png");
 		
 
         RegisterStates();

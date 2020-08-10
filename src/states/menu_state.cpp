@@ -18,7 +18,7 @@ MenuState::MenuState(StateStack& stack, Context context)
 	backgroundSprite_.setTexture(texture);
 	logoSprite_.setTexture(context.textures_->Get(Textures::ID::logo));
 	logoSprite_.setPosition(120,50);
-	auto playButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_,Textures::ID::PlankNormal,Textures::ID::PlankSelected);
+	auto playButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_,sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
 	playButton->setPosition(100, 250);
 	playButton->SetText("Play");
 	playButton->SetCallback([this] ()
@@ -34,7 +34,7 @@ MenuState::MenuState(StateStack& stack, Context context)
 	{
 		RequestStackPush(States::ID::Settings);
 	});*/
-	auto exitButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_,Textures::ID::PlankNormal2,Textures::ID::PlankSelected2);
+	auto exitButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_,sf::IntRect(200,104,200,88),sf::IntRect(200,192,200,88));
 	exitButton->setPosition(100, 350);
 	exitButton->SetText("Exit");
 	exitButton->SetCallback([this] ()

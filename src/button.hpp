@@ -23,8 +23,8 @@ class Button : public Component
 
 	public:
 								Button(const FontHolder& fonts, const TextureHolder& textures);
-                                Button(const FontHolder& fonts, const TextureHolder& textures, Textures::ID normal, Textures::ID selected);
-                                Button(const FontHolder& fonts, const TextureHolder& textures, Textures::ID normal, Textures::ID selected, Textures::ID pressed);
+                                Button(const FontHolder& fonts, const TextureHolder& textures, sf::IntRect normalTexturePos, sf::IntRect selectedTexturePos);
+                                //Button(const FontHolder& fonts, const TextureHolder& textures, Textures::ID normal, Textures::ID selected, Textures::ID pressed);
 
         void					SetCallback(Callback callback);
         void					SetText(const std::string& text);
@@ -51,9 +51,10 @@ class Button : public Component
 
     private:
         Callback				callback_;
-        const sf::Texture&		normalTexture_;
-        const sf::Texture&		selectedTexture_;
-        const sf::Texture&		pressedTexture_;
+        const sf::Texture&		texture_;
+        sf::IntRect             normalTextureRect_;
+        sf::IntRect             selectedTextureRect_;
+        sf::IntRect             pressedTextureRect_;
         sf::Sprite				sprite_;
         sf::Text				text_;
         bool					isToggle_;
