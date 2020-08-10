@@ -21,7 +21,7 @@ int Entity::GetHitpoints() const
 }
 
 // Makes the entity move with sfml move function
-void Entity::UpdateCurrent(sf::Time dt) {
+void Entity::UpdateCurrent(sf::Time dt, CommandQueue&) {
     move(velocity_ * dt.asSeconds());
 }
 

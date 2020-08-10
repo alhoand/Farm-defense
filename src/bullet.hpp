@@ -43,7 +43,7 @@ class Bullet : public Entity {
 
         //More getter functions, and some way to destroy bullet when it hits an enemy
     private:
-        virtual void UpdateCurrent(sf::Time dt);
+        virtual void UpdateCurrent(sf::Time dt, CommandQueue& commands);
         virtual void DrawCurrent(sf::RenderTarget& target,sf::RenderStates states) const;
         Textures::ID ToTextureID(Bullet::Type type);
         

@@ -7,12 +7,7 @@
 #include "../bullet.hpp"
 #include "../entity.hpp"
 #include "../resource_identifiers.hpp"
-
-
-/*  ***TODO***
-* - all return values are void, to be changed for right ones
- - Intregrate the path to work with sfml vectors 
-*/
+#include "../command_queue.hpp"
 
 class Enemy : public Entity {
     public:
@@ -27,52 +22,28 @@ class Enemy : public Entity {
         //Constructors
         Enemy();
             
-        Enemy(Type type, const TextureHolder &textures, int hp, int speed);
-
-        //TODO: Integrate path with sfml 
-
-        //virtual void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
+        Enemy(Type type, const TextureHolder &textures, int hp, int speed, float travelledDistance = 0.f, int directionIndex = 0);
 
         void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-        // TODO: integrate path with sfml 
-        /* virtual ~Enemy() {
-            }
-        } */
-
         unsigned int GetCategory() const override;
         virtual sf::FloatRect GetBoundingRect() const override;
-
-        //unsigned int GetCategory() const override;
-
-    private:
-        void UpdateMovementPattern(sf::Time dt);
+        bool IsMarkedForRemoval() const override;
 
     protected:
-
-        //Update the state of enemy, should return something!
-        /* Possible cases:
-        * 1. enemy is alive (hp > 0) 
-        *   - and not at the end of the path
-        *   => move enemy forward (change position) 
-        *   - and it is at the end of the path)
-            => game lost
-        * 2. enemy is dead (hp <= 0)
-        *  => return something to indicate enemy should be deleted from the game field
-        * TODO:
-        * Long lasting damage implementation
-        */
-        virtual void UpdateCurrent(sf::Time dt) override;
+        void UpdateMovementPattern(sf::Time dt);
+        virtual void UpdateCurrent(sf::Time dt, CommandQueue& commands) override;
+        void CheckDestroyAbility(Enemy::Type type, CommandQueue& commands);
 
         Textures::ID ToTextureID(Enemy::Type type);
-
-        
 
         Type type_;
         sf::Sprite sprite_;
         float travelledDistance_;
 		std::size_t directionIndex_;
         int speed_;
+        bool isMarkedForRemoval_;
+        Command spawnFireEnemyCommand_;
 };
 
 #endif // ENEMY_HPP

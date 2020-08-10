@@ -15,23 +15,26 @@ std::vector<EnemyData> InitializeEnemyData()
 	data[Enemy::Fire].hitpoints = 50;
 	data[Enemy::Fire].speed = 50.f;
 	data[Enemy::Fire].texture = Textures::Fire;
-	data[Enemy::Fire].path.push_back(Direction(0.f, 400.f));
-	data[Enemy::Fire].path.push_back(Direction(+90.f, 500.f));
-	data[Enemy::Fire].path.push_back(Direction(0.f, 450.f));
-    data[Enemy::Fire].path.push_back(Direction(-90.f, 200.f));
 
-    data[Enemy::Leaf].hitpoints = 50;
+	data[Enemy::Leaf].hitpoints = 50;
 	data[Enemy::Leaf].speed = 50.f;
 	data[Enemy::Leaf].texture = Textures::Fire;
-	data[Enemy::Leaf].path.push_back(Direction(0.f, 400.f));
+
+	for (auto i = 0; i < Enemy::TypeCount - 1; i++)
+	{
+		data[i].path.push_back(Direction(0.f, 400.f));
+		data[i].path.push_back(Direction(+90.f, 500.f));
+		data[i].path.push_back(Direction(0.f, 450.f));
+		data[i].path.push_back(Direction(-90.f, 200.f));
+	}
+	 
+/* 	data[Enemy::Leaf].path.push_back(Direction(0.f, 400.f));
 	data[Enemy::Leaf].path.push_back(Direction(+90.f, 500.f));
 	data[Enemy::Leaf].path.push_back(Direction(0.f, 450.f));
-    data[Enemy::Leaf].path.push_back(Direction(-90.f, 200.f));
-
+    data[Enemy::Leaf].path.push_back(Direction(-90.f, 200.f)); */
 
     // TODO
     //   add rest of the enemy types
-    
 
 	return data;
 }

@@ -17,7 +17,7 @@ public:
     void                Damage(int damage);
 
 protected: 
-    virtual void        UpdateCurrent(sf::Time dt);
+    virtual void        UpdateCurrent(sf::Time dt, CommandQueue&);
 private:
     sf::Vector2f        velocity_;
     int                 hitpoints_;

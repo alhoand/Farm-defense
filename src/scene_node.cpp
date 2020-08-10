@@ -1,5 +1,6 @@
 #include "scene_node.hpp"
 #include "command.hpp"
+#include "command_queue.hpp"
 
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -16,18 +17,18 @@ void SceneNode::AttachChild(Ptr node) {
 
 }
 
-void SceneNode::Update(sf::Time dt) {
-    UpdateCurrent(dt);
-    UpdateChildren(dt);
+void SceneNode::Update(sf::Time dt, CommandQueue& commands) {
+    UpdateCurrent(dt, commands);
+    UpdateChildren(dt, commands);
 }
 
-void SceneNode::UpdateCurrent(sf::Time dt) {
+void SceneNode::UpdateCurrent(sf::Time, CommandQueue&) {
     //do nothing
 }
 
-void SceneNode::UpdateChildren(sf::Time dt) {
+void SceneNode::UpdateChildren(sf::Time dt, CommandQueue& commands) {
     for (Ptr &child : children_) {
-        child->Update(dt);
+        child->Update(dt, commands);
     }
 }
 
@@ -96,9 +97,6 @@ sf::FloatRect SceneNode::GetBoundingRect() const
 {
     return sf::FloatRect();
 }
-
-
-
 
 SceneNode::Ptr SceneNode::DetachChild(const SceneNode& node) {
     auto found = std::find_if(children_.begin(), children_.end(), 

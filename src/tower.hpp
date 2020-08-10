@@ -43,10 +43,10 @@ class Tower : public Entity {
         virtual void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 
         //Update the state of the tower, should be virtual
-        virtual void UpdateCurrent(sf::Time dt) override;
+        virtual void UpdateCurrent(sf::Time dt, CommandQueue& commands) override;
 
         // Helper function
-        void Shoot(sf::Time dt);
+        void Shoot(sf::Time dt, CommandQueue& commands);
 
         virtual unsigned int GetCategory() const override;
 

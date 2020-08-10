@@ -1,6 +1,7 @@
 #include "enemy.hpp"
 #include "../utility.hpp"
 #include "../data_tables.hpp"
+#include "../command_queue.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
@@ -11,35 +12,6 @@
 // Associates enemies with the corresponding textures
 // Textures are images that live on the graphics card
 
-//this function should be in data_tables.cpp
-/*
-std::vector<EnemyData> initializeEnemyData()
-{
-    std::cout << "DEBUG: Initializing enemy data" << std::endl; 
-
-	std::vector<EnemyData> data(Enemy::TypeCount);
-
-	data[Enemy::Fire].hitpoints = 50;
-	data[Enemy::Fire].speed = 50.f;
-	data[Enemy::Fire].texture = Textures::Fire;
-	data[Enemy::Fire].path.push_back(Direction(0.f, 400.f));
-	data[Enemy::Fire].path.push_back(Direction(+90.f, 200.f));
-	data[Enemy::Fire].path.push_back(Direction(0.f, 400.f));
-    data[Enemy::Fire].path.push_back(Direction(-90.f, 200.f));
-
-    data[Enemy::Leaf].hitpoints = 50;
-	data[Enemy::Leaf].speed = 50.f;
-	data[Enemy::Leaf].texture = Textures::Fire;
-	data[Enemy::Leaf].path.push_back(Direction(0.f, 400.f));
-	data[Enemy::Leaf].path.push_back(Direction(+90.f, 200.f));
-	data[Enemy::Leaf].path.push_back(Direction(0.f, 400.f));
-    data[Enemy::Leaf].path.push_back(Direction(-90.f, 200.f));
-
-
-	return data;
-}*/
-
-//should work like this but doesn't
 namespace
 {
 	const std::vector<EnemyData> Table = InitializeEnemyData();
@@ -59,14 +31,27 @@ Textures::ID Enemy::ToTextureID(Enemy::Type type) {
 }
 
 // Constructor that works with SFML
-Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, int hp, int speed)
-    : Entity(hp),
+Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, int hp, int speed, float travelledDistance, int directionIndex)
+    : Entity(Table[type].hitpoints),
         type_(type), 
         sprite_(textures.Get(ToTextureID(type))),
-        travelledDistance_(0.f), 
-        directionIndex_(0),
-        speed_(speed)
+        travelledDistance_(travelledDistance), 
+        directionIndex_(directionIndex),
+        speed_(Table[type].speed),
+        isMarkedForRemoval_(false)
     { 
+        spawnFireEnemyCommand_.category_ = Category::Scene;
+        spawnFireEnemyCommand_.action_ = [this, &textures] (SceneNode& node, sf::Time) 
+        {
+            std::unique_ptr<Enemy> newEnemy(new Enemy(Type::Fire, textures, Table[Enemy::Fire].hitpoints, Table[Enemy::Fire].speed, travelledDistance_, directionIndex_));
+		    newEnemy->setOrigin(newEnemy->GetBoundingRect().width/2, newEnemy->GetBoundingRect().height/2);
+		    newEnemy->setPosition(this->GetWorldPosition());
+		    newEnemy->setScale(0.5f, 0.5f);
+		    newEnemy->SetVelocity(this->speed_, 0.f);
+		    //sceneLayers_[Ground]->AttachChild(std::move(newEnemy)); ei toimi, käytä node???
+
+        };
+
         sf::FloatRect bounds = sprite_.getLocalBounds();
         sprite_.setOrigin(bounds.width/2.f, bounds.height/2.f);
     }
@@ -81,7 +66,7 @@ void Enemy::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 }
 
 
-//Update the state of enemy, should return something!
+//Update the state of enemy
 /* Possible cases:
 * 1. enemy is alive (hp > 0) 
 *   - and not at the end of the path
@@ -93,16 +78,25 @@ void Enemy::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 * TODO:
 * Long lasting damage implementation
 */
-void Enemy::UpdateCurrent(sf::Time dt) {
- // Apply velocity
+void Enemy::UpdateCurrent(sf::Time dt, CommandQueue& commands) {
 
-    if (GetHitpoints() > 0) 
+    if (IsDestroyed())
+	{
+		CheckDestroyAbility(type_, commands);
+
+		isMarkedForRemoval_ = true;
+		return;
+	}
+    //move enemy or game lost
+    UpdateMovementPattern(dt);
+    Entity::UpdateCurrent(dt, commands); 
+}
+
+void Enemy::CheckDestroyAbility(Enemy::Type type, CommandQueue& commands)
+{
+    if (type == Enemy::Leaf) 
     {
-        //move enemy or game lost
-        UpdateMovementPattern(dt);
-        Entity::UpdateCurrent(dt); 
-    } else {
-        //indicate game field somehow that enemy is dead
+        commands.Push(spawnFireEnemyCommand_);
     }
 }
 
@@ -138,4 +132,9 @@ void Enemy::UpdateMovementPattern(sf::Time dt)
 		travelledDistance_ += speed_ * dt.asSeconds();
 	}
 
+}
+
+// initialized false, can be changed later
+bool Enemy::IsMarkedForRemoval() const {
+    return isMarkedForRemoval_;
 }

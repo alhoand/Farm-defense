@@ -5,9 +5,10 @@ namespace {
 	const std::vector<TowerData> table = InitializeTowerData();
 }
 
+//TODO delete commandqueue from parameters
 Tower::Tower(Tower::Type type, const TextureHolder &textures, int range, int reloadTime, Bullet::Type bulletType, CommandQueue& commands)
     : Entity(1), type_(type), sprite_(textures.Get(ToTextureID(type))), range_(range),
-      reloadTime_(reloadTime), bulletType_(bulletType), countdown_(sf::Time::Zero), commands_(commands), shootCommand_() {
+      reloadTime_(reloadTime), bulletType_(bulletType), countdown_(sf::seconds(reloadTime)), commands_(commands), shootCommand_() {
         shootCommand_.category_ = Category::Scene;
         shootCommand_.action_ = [this, &textures] (SceneNode& node, sf::Time) {
             CreateBullet(node, Bullet::Type::FireBullet, textures);
@@ -48,17 +49,17 @@ void Tower::CreateBullet(SceneNode& node, Bullet::Type type, const TextureHolder
 }
 
 //Update the state of the tower, should be virtual
-void Tower::UpdateCurrent(sf::Time dt) {
+void Tower::UpdateCurrent(sf::Time dt, CommandQueue& commands) {
     // std::cout << "Updating tower" <<std::endl;
-    Shoot(dt);
+    Shoot(dt, commands);
     // Entity::UpdateCurrent(dt);
 }
 
-void Tower::Shoot(sf::Time dt) {
+void Tower::Shoot(sf::Time dt, CommandQueue& commands) {
     // std::cout << "Checking if tower can shoot" << std::endl;
     if (countdown_ <= sf::Time::Zero) {
-        commands_.Push(shootCommand_);
         std::cout << "It can! Hurrah! " << std::endl;
+        commands.Push(shootCommand_);
         countdown_ += sf::seconds(1.f * reloadTime_);
     } else if (countdown_ > sf::Time::Zero) {
         // std::cout << "It cannot :(" << std::endl;

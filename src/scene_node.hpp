@@ -12,6 +12,7 @@
 
 
 struct Command;
+class CommandQueue;
 
 // Represents a transformable and drawable node in a scene graph
 class SceneNode : public sf::Drawable, public sf::Transformable, private sf::NonCopyable {
@@ -19,10 +20,10 @@ public:
     typedef std::unique_ptr<SceneNode> Ptr;
     typedef std::pair<SceneNode*, SceneNode*> Pair;
 
-    SceneNode();
+                            SceneNode();
     void                    AttachChild(Ptr node);
     Ptr                     DetachChild(const SceneNode& node);
-    void                    Update(sf::Time dt);
+    void                    Update(sf::Time dt, CommandQueue& commands);
     virtual unsigned int    GetCategory() const;
     void                    OnCommand(const Command& command, sf::Time dt);
     sf::Transform           GetWorldTransform() const;
@@ -37,8 +38,8 @@ public:
 
 private:
     void			DrawBoundingRect(sf::RenderTarget& target, sf::RenderStates states) const;
-    virtual void    UpdateCurrent(sf::Time dt);
-    void            UpdateChildren(sf::Time dt);
+    virtual void    UpdateCurrent(sf::Time dt, CommandQueue& commands);
+    void            UpdateChildren(sf::Time dt, CommandQueue& commands);
     virtual void    draw(sf::RenderTarget& target, sf::RenderStates states)  const override;
     virtual void    Draw(sf::RenderTarget& target, sf::RenderStates states) const final;
     virtual void    DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;

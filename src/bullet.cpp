@@ -60,9 +60,9 @@ sf::FloatRect Bullet::GetBoundingRect() const
 	return GetWorldTransform().transformRect(sprite_.getGlobalBounds());
 }
 
-void Bullet::UpdateCurrent(sf::Time dt)
+void Bullet::UpdateCurrent(sf::Time dt,CommandQueue& commands)
 {
-    Entity::UpdateCurrent(dt);
+    Entity::UpdateCurrent(dt, commands);
 }
 
 void Bullet::DrawCurrent(sf::RenderTarget& target,sf::RenderStates states) const

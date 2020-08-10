@@ -39,7 +39,7 @@ void GameField::Update(sf::Time dt) {
 	sceneGraph_.RemoveWrecks();
 	SpawnEnemies(dt);
 
-	sceneGraph_.Update(dt);
+	sceneGraph_.Update(dt, commandQueue_);
 }
 
 void GameField::LoadTextures() {
