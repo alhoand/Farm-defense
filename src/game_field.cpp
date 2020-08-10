@@ -155,14 +155,24 @@ void GameField::SpawnEnemies(sf::Time dt) {
         spawnCountdown_ += sf::seconds(spawnInterval_);
 		//alternative way and probably better in actual game, change spawnInterval to spawnRate to make spawnrate under 1 sec
 		//spawnCountdown_ += sf::seconds(1.f / (spawnRate_+1));
-		leftToSpawn_--;
-	
-		std::unique_ptr<Enemy> newEnemy(new Enemy(Enemy::Type::Fire, textures_, 50, enemySpeed_));
-		newEnemy->setOrigin(newEnemy->GetBoundingRect().width/2, newEnemy->GetBoundingRect().height/2);
-		newEnemy->setPosition(spawnPosition_);
-		newEnemy->setScale(0.5f, 0.5f);
-		newEnemy->SetVelocity(enemySpeed_, 0.f);
-		sceneLayers_[Ground] -> AttachChild(std::move(newEnemy));
+		if (--leftToSpawn_ %2)
+		{
+			std::unique_ptr<Enemy> newEnemy(new Enemy(Enemy::Type::Leaf, textures_, 50, enemySpeed_));
+			newEnemy->setOrigin(newEnemy->GetBoundingRect().width/2, newEnemy->GetBoundingRect().height/2);
+			newEnemy->setPosition(spawnPosition_);
+			newEnemy->setScale(2.f, 2.f);
+			newEnemy->SetVelocity(enemySpeed_, 0.f);
+			sceneLayers_[Ground] -> AttachChild(std::move(newEnemy));
+		} else
+		{
+			std::unique_ptr<Enemy> newEnemy(new Enemy(Enemy::Type::Fire, textures_, 50, enemySpeed_));
+			newEnemy->setOrigin(newEnemy->GetBoundingRect().width/2, newEnemy->GetBoundingRect().height/2);
+			newEnemy->setPosition(spawnPosition_);
+			newEnemy->setScale(0.5f, 0.5f);
+			newEnemy->SetVelocity(enemySpeed_, 0.f);
+			sceneLayers_[Ground] -> AttachChild(std::move(newEnemy));
+		}
+		
     }
     else if (leftToSpawn_ > 0)
     {

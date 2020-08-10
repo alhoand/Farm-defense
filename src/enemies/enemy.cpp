@@ -43,12 +43,13 @@ Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, int hp, int speed,
         spawnFireEnemyCommand_.category_ = Category::Scene;
         spawnFireEnemyCommand_.action_ = [this, &textures] (SceneNode& node, sf::Time) 
         {
+            std::cout <<"trying to spawn new enemy" << std::endl;
             std::unique_ptr<Enemy> newEnemy(new Enemy(Type::Fire, textures, Table[Enemy::Fire].hitpoints, Table[Enemy::Fire].speed, travelledDistance_, directionIndex_));
 		    newEnemy->setOrigin(newEnemy->GetBoundingRect().width/2, newEnemy->GetBoundingRect().height/2);
 		    newEnemy->setPosition(this->GetWorldPosition());
-		    newEnemy->setScale(0.5f, 0.5f);
+            newEnemy->setScale(0.25f, 0.25f);
 		    newEnemy->SetVelocity(this->speed_, 0.f);
-		    //sceneLayers_[Ground]->AttachChild(std::move(newEnemy)); ei toimi, käytä node???
+		    node.AttachChild(std::move(newEnemy));
 
         };
 
