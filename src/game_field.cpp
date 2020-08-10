@@ -18,8 +18,8 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	enemySpeed_(50.f),
 	firstEnemy_(),
 	firstTower_(),
-	spawnCountdown_(sf::Time::Zero),
-	spawnInterval_(5),
+	spawnCountdown_(sf::seconds(5)),
+	spawnInterval_(5), //this should maybe be a parameter
 	leftToSpawn_(15)
 	{ 
 		LoadTextures();
@@ -108,10 +108,12 @@ bool MatchesCategories(SceneNode::Pair& colliders, Category::Type type1, Categor
 	// Make sure first pair entry has category type1 and second has type2
 	if (type1 & category1 && type2 & category2)
 	{
+		std::cout << "matching category found" << std::endl;
 		return true;
 	}
 	else if (type1 & category2 && type2 & category1)
 	{
+		std::cout << "matching category found" << std::endl;
 		std::swap(colliders.first, colliders.second);
 		return true;
 	}
@@ -128,8 +130,10 @@ void GameField::HandleCollisions()
 
 	for(SceneNode::Pair pair : collisionPairs)
 	{
+		//std::cout << pair.first->GetCategory() << "," << pair.second->GetCategory() << std::endl;
 		if (MatchesCategories(pair, Category::Enemy, Category::Bullet))
 		{
+			std::cout << "Collision happened!!!" << std::endl;
 			auto& enemy = static_cast<Enemy&>(*pair.first);
 			auto& bullet = static_cast<Bullet&>(*pair.second);
 
