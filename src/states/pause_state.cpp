@@ -22,9 +22,8 @@ PauseState::PauseState(StateStack& stack, Context context):
 	pausedText_.setOrigin(::floor(bounds.left + bounds.width / 2.f), std::floor(50 + bounds.top + bounds.height / 2.f));
 	pausedText_.setPosition(0.5f * viewSize.x, 0.4f * viewSize.y);
 
-	auto resumeButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_);
+	auto resumeButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_,Textures::ID::ResumeButtonNormal,Textures::ID::ResumeButtonSelected);
 	resumeButton->setPosition(10, 10);
-	resumeButton->SetText("Resume");
 	resumeButton->SetCallback([this] ()
 	{
 		RequestStackPop();

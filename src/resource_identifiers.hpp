@@ -31,6 +31,10 @@ namespace Textures {
         PlankPressed,
         PlankNormal2,
         PlankSelected2,
+		ResumeButtonNormal,
+		ResumeButtonSelected,
+		PauseButtonNormal,
+		PauseButtonSelected
     };
 }
 

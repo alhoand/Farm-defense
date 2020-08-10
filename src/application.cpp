@@ -36,6 +36,12 @@ Application::Application()
 	    textures_.Load(Textures::ID::PlankPressed,		"../media/textures/plankPressed.png");
         textures_.Load(Textures::ID::PlankNormal2,      "../media/textures/plankNormal2.png");
 	    textures_.Load(Textures::ID::PlankSelected2,	"../media/textures/plankSelected2.png");
+		
+		textures_.Load(Textures::ID::PauseButtonNormal,	"../media/textures/pauseButtonNormal.png");
+		textures_.Load(Textures::ID::PauseButtonSelected,	"../media/textures/pauseButtonSelected.png");
+		textures_.Load(Textures::ID::ResumeButtonNormal,	"../media/textures/resumeButtonNormal.png");
+		textures_.Load(Textures::ID::ResumeButtonSelected,	"../media/textures/resumeButtonSelected.png");
+		
 
         RegisterStates();
         stateStack_.PushState(States::ID::Title);

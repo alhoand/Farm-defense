@@ -8,9 +8,8 @@ GameState::GameState(StateStack& stack, Context context) :
     player_(*context.player_),
     GUIContainer_(context)
     { 
-        auto pauseButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_);
+        auto pauseButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_,Textures::ID::PauseButtonNormal,Textures::ID::PauseButtonSelected);
         pauseButton->setPosition(10, 10);
-        pauseButton->SetText("Pause");
         pauseButton->SetCallback([this] ()
 	{
 		RequestStackPush(States::ID::Pause);
