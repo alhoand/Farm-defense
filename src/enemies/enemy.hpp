@@ -22,7 +22,7 @@ class Enemy : public Entity {
         //Constructors
         Enemy();
             
-        Enemy(Type type, const TextureHolder &textures, int hp, int speed, float travelledDistance = 0.f, int directionIndex = 0);
+        Enemy(Type type, const TextureHolder &textures, float travelledDistance = 0.f, int directionIndex = 0);
 
         void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 

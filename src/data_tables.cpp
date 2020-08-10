@@ -16,9 +16,9 @@ std::vector<EnemyData> InitializeEnemyData()
 	data[Enemy::Fire].speed = 50.f;
 	data[Enemy::Fire].texture = Textures::Fire;
 
-	data[Enemy::Leaf].hitpoints = 50;
+	data[Enemy::Leaf].hitpoints = 10;
 	data[Enemy::Leaf].speed = 50.f;
-	data[Enemy::Leaf].texture = Textures::Fire;
+	data[Enemy::Leaf].texture = Textures::Leaf;
 
 	for ( int i = Enemy::Fire; i != Enemy::TypeCount; i++ )
 	{
@@ -28,7 +28,6 @@ std::vector<EnemyData> InitializeEnemyData()
 		data[type].path.push_back(Direction(0.f, 450.f));
 		data[type].path.push_back(Direction(-90.f, 200.f));
 	}
-
 
 	return data;
 }
