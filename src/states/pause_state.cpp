@@ -2,7 +2,7 @@
 #include "../resource_holder.hpp"
 #include "../button.hpp"
 #include <cmath>
-#include "../sprite_location_identifiers.hpp"
+
 
 PauseState::PauseState(StateStack& stack, Context context): 
 	State(stack, context), 
