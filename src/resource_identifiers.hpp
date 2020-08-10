@@ -12,9 +12,9 @@ namespace Textures {
         Fire,
         Leaf,
         Water,
-        Ice,
+        IceBullet,
         FireBullet,
-        Wood,
+        WoodBullet,
         Grass,
         FireTower,
         WaterTower,
@@ -25,7 +25,16 @@ namespace Textures {
         logo,
         ButtonNormal,
         ButtonSelected,
-        ButtonPressed
+        ButtonPressed,
+        PlankNormal,
+        PlankSelected,
+        PlankPressed,
+        PlankNormal2,
+        PlankSelected2,
+		ResumeButtonNormal,
+		ResumeButtonSelected,
+		PauseButtonNormal,
+		PauseButtonSelected
     };
 }
 

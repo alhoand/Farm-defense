@@ -120,6 +120,8 @@ void SceneNode::Draw(sf::RenderTarget &target, sf::RenderStates states) const {
     states.transform *= getTransform();
     DrawCurrent(target, states);
     DrawChildren(target, states);
+
+    DrawBoundingRect(target, states);
 }
 
 void SceneNode::DrawCurrent(sf::RenderTarget &target, sf::RenderStates states) const {
@@ -143,7 +145,7 @@ void SceneNode::OnCommand(const Command &command, sf::Time dt) {
     // This works because all non-zero values are cast to true
     // e.g.
     // 0010 & 0010 -> 0010 = 2 = true
-    // 1101 & 0100 -> 0100 = 4 = true
+    // 1101 & 0100 -> 0100 = 4 = true 
     // 1000 & 0100 -> 0000 = 0 = false
     if (command.category_ & GetCategory()) { 
         command.action_(*this, dt);
@@ -158,5 +160,19 @@ bool Collision(const SceneNode& lhs, const SceneNode& rhs)
 {
     return lhs.GetBoundingRect()
               .intersects(rhs.GetBoundingRect());
+}
+
+void SceneNode::DrawBoundingRect(sf::RenderTarget& target, sf::RenderStates) const
+{
+	sf::FloatRect rect = GetBoundingRect();
+
+	sf::RectangleShape shape;
+	shape.setPosition(sf::Vector2f(rect.left, rect.top));
+	shape.setSize(sf::Vector2f(rect.width, rect.height));
+	shape.setFillColor(sf::Color::Transparent);
+	shape.setOutlineColor(sf::Color::Green);
+	shape.setOutlineThickness(1.f);
+
+	target.draw(shape);
 }
 

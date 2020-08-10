@@ -2,7 +2,7 @@
 #include "entity.hpp"
 #include "resource_holder.hpp"
 #include "category.hpp"
-
+#include "data_tables.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 
@@ -10,14 +10,14 @@
 
 Textures::ID Bullet::ToTextureID(Bullet::Type type) {
     switch (type) {
-        case Bullet::Type::Ice:
-            return Textures::ID::Ice;
+        case Bullet::Type::IceBullet:
+            return Textures::ID::IceBullet;
         case Bullet::Type::FireBullet:
             return Textures::ID::FireBullet;
-        case Bullet::Type::Wood:
-            return Textures::ID::Wood;
+        case Bullet::Type::WoodBullet:
+            return Textures::ID::WoodBullet;
         default: 
-            return Textures::ID::Ice;
+            return Textures::ID::FireBullet;
     }
 }
 
@@ -34,16 +34,25 @@ Textures::ID Bullet::ToTextureID(Bullet::Type type) {
     }
 */
 
+namespace
+{
+	const std::vector<BulletData> Table = InitializeBulletData();
+}
+
 Bullet::Bullet(Type type, const TextureHolder& textures)
-    : Entity(1), type_(type), sprite_(textures.Get(ToTextureID(type))), targetDirection_(),
-      damage_(), damage_duration_() {
+    : Entity(1), type_(type), sprite_(textures.Get(ToTextureID(type))),
+      speed_(), damage_(), damage_duration_() {
         sf::FloatRect bounds = sprite_.getLocalBounds();
         sprite_.setOrigin(bounds.width/2.f, bounds.height/2.f);
     }
 
+float Bullet::GetSpeed() const {
+    return speed_;
+}
+
         //could also return damage duration, depends on how the hit to enemy is implemented
 int Bullet::GetDamage() const {
-    return damage_;
+    return Table[type_].damage;
 }
 
 sf::FloatRect Bullet::GetBoundingRect() const 

@@ -11,7 +11,7 @@
 static const sf::Time timePerFrame = sf::seconds(1.f / 60.f);
 
 Application::Application()
-    : window_(sf::VideoMode(1920,1080), "Tower Defense", sf::Style::Close),
+    : window_(sf::VideoMode(1280,720), "Tower Defense", sf::Style::Close),
     //: window_(sf::VideoMode::getFullscreenModes()[0], "Tower Defense", sf::Style::Default),
     viewOffset_(sf::Vector2f(0.f, 0.f)),
     textures_(),
@@ -28,9 +28,20 @@ Application::Application()
         
         textures_.Load(Textures::ID::logo,              "../media/textures/titleLogo.png");
         textures_.Load(Textures::ID::TitleBackground,   "../media/textures/tausta.jpg");
-        textures_.Load(Textures::ID::ButtonNormal,      "../media/textures/plankNormal.png");
-	    textures_.Load(Textures::ID::ButtonSelected,	"../media/textures/plankSelected.png");
-	    textures_.Load(Textures::ID::ButtonPressed,		"../media/textures/plankPressed.png");
+        textures_.Load(Textures::ID::ButtonNormal,      "../media/textures/buttonNormal.png");
+	    textures_.Load(Textures::ID::ButtonSelected,	"../media/textures/buttonSelected.png");
+	    textures_.Load(Textures::ID::ButtonPressed,		"../media/textures/buttonPressed.png");
+        textures_.Load(Textures::ID::PlankNormal,      "../media/textures/plankNormal.png");
+	    textures_.Load(Textures::ID::PlankSelected,	    "../media/textures/plankSelected.png");
+	    textures_.Load(Textures::ID::PlankPressed,		"../media/textures/plankPressed.png");
+        textures_.Load(Textures::ID::PlankNormal2,      "../media/textures/plankNormal2.png");
+	    textures_.Load(Textures::ID::PlankSelected2,	"../media/textures/plankSelected2.png");
+		
+		textures_.Load(Textures::ID::PauseButtonNormal,	"../media/textures/pauseButtonNormal.png");
+		textures_.Load(Textures::ID::PauseButtonSelected,	"../media/textures/pauseButtonSelected.png");
+		textures_.Load(Textures::ID::ResumeButtonNormal,	"../media/textures/resumeButtonNormal.png");
+		textures_.Load(Textures::ID::ResumeButtonSelected,	"../media/textures/resumeButtonSelected.png");
+		
 
         RegisterStates();
         stateStack_.PushState(States::ID::Title);

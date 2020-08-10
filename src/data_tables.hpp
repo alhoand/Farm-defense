@@ -9,7 +9,6 @@
 
 #include <vector>
 
-
 struct Direction
 {
 	Direction(float angle, float distance)
@@ -32,17 +31,24 @@ struct EnemyData
 };
 
 //initializer
-std::vector<EnemyData>	initializeEnemyData();
+std::vector<EnemyData>	InitializeEnemyData();
 
 struct TowerData {
     int range;
-    // float direction - this changes, maybe not needed here
-    float reload_speed;
-    Bullet bullet;
-	// float speed - this could be default for all types
+    float reloadTime;
+    unsigned int bulletType;
 };
 
 //initializer
-std::vector<TowerData>	initializeTowerData();
+std::vector<TowerData>	InitializeTowerData();
+
+struct BulletData {
+    float           speed;
+    int             damage;
+    int             damageDuration;
+};
+
+//initializer
+std::vector<BulletData>	InitializeBulletData();
 
 #endif // DATATABLES_HPP

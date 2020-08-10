@@ -12,6 +12,7 @@
 // Textures are images that live on the graphics card
 
 //this function should be in data_tables.cpp
+/*
 std::vector<EnemyData> initializeEnemyData()
 {
     std::cout << "DEBUG: Initializing enemy data" << std::endl; 
@@ -36,12 +37,12 @@ std::vector<EnemyData> initializeEnemyData()
 
 
 	return data;
-}
+}*/
 
 //should work like this but doesn't
 namespace
 {
-	const std::vector<EnemyData> Table = initializeEnemyData();
+	const std::vector<EnemyData> Table = InitializeEnemyData();
 }
 
 Textures::ID Enemy::ToTextureID(Enemy::Type type) {
@@ -93,32 +94,30 @@ void Enemy::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 * Long lasting damage implementation
 */
 void Enemy::UpdateCurrent(sf::Time dt) {
-    // Apply velocity
+ // Apply velocity
 
     if (GetHitpoints() > 0) 
     {
         //move enemy or game lost
-        updateMovementPattern(dt);
+        UpdateMovementPattern(dt);
         Entity::UpdateCurrent(dt); 
     } else {
         //indicate game field somehow that enemy is dead
     }
 }
 
-
-
 unsigned int Enemy::GetCategory() const 
 {
     return Category::Enemy;
 } 
 
-sf::FloatRect Enemy::getBoundingRect() const
+sf::FloatRect Enemy::GetBoundingRect() const
 {
 	return GetWorldTransform().transformRect(sprite_.getGlobalBounds());
 }
 
 //Enemy movement pattern
-void Enemy::updateMovementPattern(sf::Time dt)
+void Enemy::UpdateMovementPattern(sf::Time dt)
 {
 	const std::vector<Direction>& path = Table[type_].path;
 
