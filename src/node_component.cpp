@@ -16,7 +16,6 @@ bool SceneNodeComponent::IsSelectable() const
 {
     return false;
 }
-fvc 
 
 void SceneNodeComponent::HandleEvent(const sf::Event&)
 {

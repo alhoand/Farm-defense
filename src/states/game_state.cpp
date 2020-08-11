@@ -1,5 +1,6 @@
 #include "game_state.hpp"
 #include "../button.hpp"
+#include "../node_component.hpp"
 #include "../resource_identifiers.hpp"
 
 GameState::GameState(StateStack& stack, Context context) :
@@ -14,7 +15,11 @@ GameState::GameState(StateStack& stack, Context context) :
 	{
 		RequestStackPush(States::ID::Pause);
 	});
+        auto nodeComponent = std::make_shared<GUI::SceneNodeComponent>(gameField_.GetActiveTower());
+
     GUIContainer_.Pack(pauseButton);
+    GUIContainer_.Pack(nodeComponent);
+    context.GUIComponent_ = nodeComponent;
     }
 
 void GameState::Draw() {
@@ -25,6 +30,9 @@ void GameState::Draw() {
 
 bool GameState::Update(sf::Time dt) {
     gameField_.Update(dt); // updates the gamefield on each tick
+    if (gameField_.GetActiveTower()){
+        std::cout << "Active tower pos :" << gameField_.GetActiveTower()->getPosition().x << ", " << gameField_.GetActiveTower()->getPosition().y << std::endl;
+    }
 
     CommandQueue& commands = gameField_.GetCommandQueue();
 	player_.HandleRealtimeInput(commands);

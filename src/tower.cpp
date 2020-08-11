@@ -1,11 +1,19 @@
 //TODO class implementation here
 #include "tower.hpp"
-
+#include <cassert>
 namespace {
 	const std::vector<TowerData> table = InitializeTowerData();
 }
 
 //TODO delete commandqueue from parameters
+Tower* Tower::activeTower_  = nullptr;
+
+void Tower::ActiveTower(Tower* newActive) 
+{ 
+    assert(newActive != nullptr); 
+    activeTower_ = newActive;
+}
+
 Tower::Tower(Tower::Type type, const TextureHolder &textures, int range, int reloadTime, Bullet::Type bulletType, CommandQueue& commands)
     : Entity(1), type_(type), sprite_(textures.Get(ToTextureID(type))), range_(range),
       reloadTime_(reloadTime), bulletType_(bulletType), countdown_(sf::seconds(reloadTime)), commands_(commands), shootCommand_() {

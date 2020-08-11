@@ -12,6 +12,7 @@ std::vector<EnemyData> InitializeEnemyData()
 
 	std::vector<EnemyData> data(Enemy::TypeCount);
 
+
 	data[Enemy::Fire].hitpoints = 50;
 	data[Enemy::Fire].speed = 50.f;
 	data[Enemy::Fire].texture = Textures::Fire;
