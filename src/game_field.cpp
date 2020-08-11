@@ -163,7 +163,7 @@ void GameField::SpawnEnemies(sf::Time dt) {
 		if (leftToSpawn_-- % 2)
 		{
 			std::unique_ptr<Enemy> newEnemy(new Enemy(Enemy::Type::Leaf, textures_));
-			newEnemy->setOrigin(newEnemy->GetBoundingRect().width/2, newEnemy->GetBoundingRect().height/2);
+			//newEnemy->setOrigin(newEnemy->GetBoundingRect().width/2, newEnemy->GetBoundingRect().height/2);
 			newEnemy->setPosition(spawnPosition_);
 			newEnemy->setScale(2.f, 2.f);
 			newEnemy->SetVelocity(enemySpeed_, 0.f);
@@ -171,7 +171,7 @@ void GameField::SpawnEnemies(sf::Time dt) {
 		} else
 		{
 			std::unique_ptr<Enemy> newEnemy(new Enemy(Enemy::Type::Fire, textures_));
-			newEnemy->setOrigin(newEnemy->GetBoundingRect().width/2, newEnemy->GetBoundingRect().height/2);
+			//newEnemy->setOrigin(newEnemy->GetBoundingRect().width/2, newEnemy->GetBoundingRect().height/2);
 			newEnemy->setPosition(spawnPosition_);
 			newEnemy->setScale(0.5f, 0.5f);
 			newEnemy->SetVelocity(enemySpeed_, 0.f);

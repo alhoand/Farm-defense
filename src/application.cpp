@@ -11,7 +11,7 @@
 static const sf::Time timePerFrame = sf::seconds(1.f / 60.f);
 
 Application::Application()
-    : window_(sf::VideoMode(1280,720), "Tower Defense", sf::Style::Close),
+    : window_(sf::VideoMode(1920,1080), "Tower Defense", sf::Style::Close),
     //: window_(sf::VideoMode::getFullscreenModes()[0], "Tower Defense", sf::Style::Default),
     viewOffset_(sf::Vector2f(0.f, 0.f)),
     textures_(),
