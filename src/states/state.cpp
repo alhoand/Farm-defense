@@ -7,7 +7,8 @@ State::Context::Context(sf::RenderWindow& window, TextureHolder& textures, FontH
         textures_(&textures),
         fonts_(&fonts),
         player_(&player),
-        viewOffset_(viewOffset) { }
+        viewOffset_(viewOffset),
+        GUIComponent_() { }
 
 State::State(StateStack &stateStack, Context context)
         : context_(context), stateStack_(&stateStack) { }

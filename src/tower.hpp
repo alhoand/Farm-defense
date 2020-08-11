@@ -8,7 +8,8 @@
 #include "entity.hpp"
 #include "resource_identifiers.hpp"
 #include "command_queue.hpp"
-
+#include "container.hpp"
+#include "label.hpp"
 #include "data_tables.hpp"
 
 /*  ***TODO***

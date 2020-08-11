@@ -30,6 +30,8 @@ target_sources(TowerDefense
 	label.cpp
 	label.hpp
 	main.cpp
+	node_component.hpp
+	node_component.cpp
 	player.cpp
     player.hpp
 	resource_holder.hpp
@@ -42,5 +44,7 @@ target_sources(TowerDefense
 	state_stack.cpp
 	state_stack.hpp
     tower.cpp
-    tower.hpp 
+    tower.hpp
+	utility.hpp
+	utility.cpp
 )

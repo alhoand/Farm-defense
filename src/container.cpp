@@ -15,11 +15,13 @@ Container::Container(State::Context context)
 : children_()
 , selectedChild_(-1)
 , context_(context)
+, velocity_()
 {
 }
 
 void Container::Pack(Component::Ptr component)
 {
+	component->ChildOf(this); //Stores the container as the parent
 	children_.push_back(component);
 }
 
@@ -32,10 +34,18 @@ void Container::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
 
-	//FOREACH(const Component::Ptr& child, children_)
-	//	target.draw(*child, states);
 	for(const Component::Ptr& child: children_)
 		target.draw(*child, states);
+}
+
+void Container::UpdateCurrent(sf::Time dt) {
+	move(velocity_ * dt.asSeconds());
+}
+
+void Container::UpdateChildren(sf::Time dt)
+{
+	for(const Component::Ptr& child: children_)
+		child->Update(dt);
 }
 
 void Container::HandleEvent(const sf::Event& event)
@@ -76,6 +86,18 @@ void Container::HandleEvent(const sf::Event& event)
 bool Container::HasSelection() const
 {
 	return selectedChild_ >= 0;
+}
+
+void Container::SetVelocity(sf::Vector2f velocity) {
+	velocity_ = velocity;
+}
+
+void Container::SetVelocity(float vx, float vy) {
+	velocity_ = sf::Vector2f(vx, vy);
+}
+
+sf::Vector2f Container::GetVelocity() const {
+	return velocity_;
 }
 
 

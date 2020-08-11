@@ -10,7 +10,7 @@ Tower* Tower::activeTower_  = nullptr;
 void Tower::ActiveTower(Tower* newActive) 
 { 
     assert(newActive != nullptr); 
-    activeTower_ = newActive; 
+    activeTower_ = newActive;
 }
 
 Tower::Tower(Tower::Type type, const TextureHolder &textures, int range, int reloadTime, Bullet::Type bulletType, CommandQueue& commands)
