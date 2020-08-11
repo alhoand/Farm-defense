@@ -1,5 +1,6 @@
 
 #include "game_field.hpp"
+
 #include <iostream> // for debugging
 #include <SFML/System/Time.hpp>
 
@@ -75,9 +76,9 @@ void GameField::BuildScene() {
 
 
 	//Initialize two enemies
-	std::unique_ptr<Enemy> firstEnemy(new Enemy(Enemy::Type::Fire, textures_));
+	std::unique_ptr<Enemy> firstEnemy(new BasicEnemy(textures_, 0.f, 0, 1.f));
 	firstEnemy_ = firstEnemy.get();
-	firstEnemy_->setOrigin(firstEnemy_->GetBoundingRect().width/2, firstEnemy_->GetBoundingRect().height/2);
+	//firstEnemy_->setOrigin(firstEnemy_->GetBoundingRect().width/2, firstEnemy_->GetBoundingRect().height/2);
 	firstEnemy_->setPosition(spawnPosition_);
 	firstEnemy_->setScale(0.5f, 0.5f);
 
@@ -162,7 +163,7 @@ void GameField::SpawnEnemies(sf::Time dt) {
 
 		if (leftToSpawn_-- % 2)
 		{
-			std::unique_ptr<Enemy> newEnemy(new Enemy(Enemy::Type::Leaf, textures_));
+ 			std::unique_ptr<TestEnemy> newEnemy(new TestEnemy(textures_));
 			//newEnemy->setOrigin(newEnemy->GetBoundingRect().width/2, newEnemy->GetBoundingRect().height/2);
 			newEnemy->setPosition(spawnPosition_);
 			newEnemy->setScale(2.f, 2.f);
@@ -170,11 +171,11 @@ void GameField::SpawnEnemies(sf::Time dt) {
 			sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
 		} else
 		{
-			std::unique_ptr<Enemy> newEnemy(new Enemy(Enemy::Type::Fire, textures_));
+			std::unique_ptr<Enemy> newEnemy(new BasicEnemy(textures_));
 			//newEnemy->setOrigin(newEnemy->GetBoundingRect().width/2, newEnemy->GetBoundingRect().height/2);
 			newEnemy->setPosition(spawnPosition_);
 			newEnemy->setScale(0.5f, 0.5f);
-			newEnemy->SetVelocity(enemySpeed_, 0.f);
+			newEnemy->SetVelocity(enemySpeed_, 0.f); //this need to be tought again if we have multiple paths
 			sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
 		}
     }

@@ -1,10 +1,12 @@
 #pragma once
 
-//Initial header file for abstract tower class
+//Initial header file for gamefield class
 #include <list>
 #include <array>
 #include <memory>
 #include "enemies/enemy.hpp"
+#include "enemies/test_enemy.hpp"
+#include "enemies/basic_enemy.hpp"
 #include "tower.hpp"
 #include "bullet.hpp"
 #include "SFML/Graphics.hpp"
@@ -17,7 +19,7 @@
 #include "category.hpp"
 
 #include <SFML/System/NonCopyable.hpp>
-#include "SFML/Graphics.hpp"
+#include <SFML/Graphics.hpp>
 
 /*  ***TODO***
 * 
@@ -79,6 +81,4 @@ class GameField : private sf::NonCopyable {
         int                 spawnInterval_;
         int                 leftToSpawn_; //initial, could change for better
 
-        /* sf::Time            timeSinceLastSpawn_;
-        sf::Time            spawnTime_; */
 };

@@ -43,4 +43,7 @@ target_sources(TowerDefense
 	state_stack.hpp
     tower.cpp
     tower.hpp 
+	utility.cpp
+	utility.hpp
+	utility.inl
 )

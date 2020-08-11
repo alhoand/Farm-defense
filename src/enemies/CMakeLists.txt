@@ -3,4 +3,7 @@ target_sources(TowerDefense
         enemy.hpp
 	enemy.cpp
 	test_enemy.hpp
+    test_enemy.cpp
+    basic_enemy.hpp
+    basic_enemy.cpp
 )

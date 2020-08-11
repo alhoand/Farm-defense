@@ -1,7 +1,5 @@
 #include "enemy.hpp"
 #include "../utility.hpp"
-#include "../data_tables.hpp"
-#include "../command_queue.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
@@ -12,10 +10,10 @@
 // Associates enemies with the corresponding textures
 // Textures are images that live on the graphics card
 
-namespace
+/* namespace
 {
 	const std::vector<EnemyData> Table = InitializeEnemyData();
-}
+} */
 
 Textures::ID Enemy::ToTextureID(Enemy::Type type) {
     switch (type) {
@@ -31,30 +29,22 @@ Textures::ID Enemy::ToTextureID(Enemy::Type type) {
 }
 
 // Constructor that works with SFML
-Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, float travelledDistance, int directionIndex)
-    : Entity(Table[type].hitpoints),
+Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, int hp, float speed, float travelledDistance, int directionIndex, float difficultyLevel)
+    : Entity(hp),
         type_(type), 
         sprite_(textures.Get(ToTextureID(type))),
         travelledDistance_(travelledDistance), 
         directionIndex_(directionIndex),
-        speed_(Table[type].speed),
+        difficultyLevel_(difficultyLevel),
+        speed_(speed),
         isMarkedForRemoval_(false)
+        //dataTable_(Table)
     { 
-        spawnFireEnemyCommand_.category_ = Category::Scene;
-        spawnFireEnemyCommand_.action_ = [this, &textures] (SceneNode& node, sf::Time) 
-        {
-            std::cout <<"spawning a new enemy" << std::endl;
-            std::unique_ptr<Enemy> newEnemy(new Enemy(Type::Fire, textures, travelledDistance_, directionIndex_));
-		    newEnemy->setOrigin(newEnemy->GetBoundingRect().width/2, newEnemy->GetBoundingRect().height/2);
-		    newEnemy->setPosition(this->GetWorldPosition());
-            newEnemy->setScale(0.25f, 0.25f);
-		    newEnemy->SetVelocity( UnitVector(this->GetVelocity()) * Table[Type::Fire].speed ); 
-		    node.AttachChild(std::move(newEnemy));
-
-        };
         sf::FloatRect bounds = sprite_.getLocalBounds();
         sprite_.setOrigin(bounds.width/2.f, bounds.height/2.f);
     }
+
+Enemy::~Enemy() {}
 
 void Enemy::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(sprite_, states);
@@ -77,22 +67,18 @@ void Enemy::UpdateCurrent(sf::Time dt, CommandQueue& commands) {
 
     if (IsDestroyed())
 	{
-		CheckDestroyAbility(type_, commands);
+		CheckDestroyBehaviour(commands);
 
 		isMarkedForRemoval_ = true;
 		return;
 	}
-    //move enemy or game lost
     UpdateMovementPattern(dt);
     Entity::UpdateCurrent(dt, commands); 
 }
 
-void Enemy::CheckDestroyAbility(Enemy::Type type, CommandQueue& commands)
+void Enemy::CheckDestroyBehaviour(CommandQueue&)
 {
-    if (type == Enemy::Leaf) 
-    {
-        commands.Push(spawnFireEnemyCommand_);
-    }
+    // By default do nothing, but different types may have some action here
 }
 
 unsigned int Enemy::GetCategory() const 
@@ -106,7 +92,7 @@ sf::FloatRect Enemy::GetBoundingRect() const
 }
 
 //Enemy movement pattern
-void Enemy::UpdateMovementPattern(sf::Time dt)
+/* void Enemy::UpdateMovementPattern(sf::Time dt)
 {
 	const std::vector<Direction>& path = Table[type_].path;
 
@@ -127,7 +113,7 @@ void Enemy::UpdateMovementPattern(sf::Time dt)
 		travelledDistance_ += speed_ * dt.asSeconds();
 	}
 
-}
+} */
 
 // initialized false, can be changed later
 bool Enemy::IsMarkedForRemoval() const {

@@ -1,11 +1,6 @@
-#ifndef DATATABLES_HPP
-#define DATATABLES_HPP
+#pragma once
 
 #include "resource_identifiers.hpp"
-#include "bullet.hpp"
-
-#include <SFML/System/Time.hpp>
-#include <SFML/Graphics/Color.hpp>
 
 #include <vector>
 
@@ -50,5 +45,3 @@ struct BulletData {
 
 //initializer
 std::vector<BulletData>	InitializeBulletData();
-
-#endif // DATATABLES_HPP
