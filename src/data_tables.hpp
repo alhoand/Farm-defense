@@ -22,11 +22,11 @@ struct EnemyData
 	int								hitpoints;
 	float							speed;
 	Textures::ID					texture;
-	std::vector<Direction>			path;
 };
 
 //initializer
 std::vector<EnemyData>	InitializeEnemyData();
+std::vector<Direction>	InitializeEnemyPath();
 
 struct TowerData {
     int range;

@@ -22,31 +22,29 @@ class Enemy : public Entity {
             TypeCount //enumerators are indexed so last one tells the count of previous ones 
         };
     public:
-        //Constructors
-        //Enemy();
-            
-        Enemy(Type type, const TextureHolder &textures, int hp = 50, float speed=50.f, float travelledDistance = 0.f, int directionIndex = 0, float difficultyLevel = 1);
-        virtual ~Enemy();
+                
+                        Enemy(Type type, const TextureHolder &textures, float difficultyLevel, float travelledDistance, int directionIndex);
+        virtual         ~Enemy();
 
-        void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
-
-        unsigned int GetCategory() const override; // might also be made virtual later, but not now
-        sf::FloatRect GetBoundingRect() const override;
-        bool IsMarkedForRemoval() const override;
+        void            DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
+        unsigned int    GetCategory() const override; // might also be made virtual later, but not now
+        sf::FloatRect   GetBoundingRect() const override;
+        float             GetSpeed() const;
+        bool            IsMarkedForRemoval() const override;
 
     protected:
-        virtual void UpdateMovementPattern(sf::Time dt) = 0; //can be made virtual later, not necessary now
-        void UpdateCurrent(sf::Time dt, CommandQueue& commands) override;
-        virtual void CheckDestroyBehaviour(CommandQueue& commands);
+        virtual void    UpdateMovementPattern(sf::Time dt); //can be made virtual later, not necessary now
+        void            UpdateCurrent(sf::Time dt, CommandQueue& commands) override;
+        virtual void    CheckDestroyBehaviour(CommandQueue& commands);
 
-        Textures::ID ToTextureID(Enemy::Type type);
+        Textures::ID    ToTextureID(Enemy::Type type);
 
-        Type type_;
-        sf::Sprite sprite_;
-        float travelledDistance_;
-		std::size_t directionIndex_;
-        float difficultyLevel_;
-        int speed_;
-        bool isMarkedForRemoval_;
+        Type            type_;
+        sf::Sprite      sprite_;
+        float           travelledDistance_;
+		std::size_t     directionIndex_;
+        float           difficultyLevel_;
+        int             speed_;
+        bool            isMarkedForRemoval_;
         //std::vector<EnemyData> dataTable_;
 };

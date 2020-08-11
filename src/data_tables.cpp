@@ -20,16 +20,19 @@ std::vector<EnemyData> InitializeEnemyData()
 	data[Enemy::Leaf].speed = 50.f;
 	data[Enemy::Leaf].texture = Textures::Leaf;
 
-	for ( int i = Enemy::Fire; i != Enemy::TypeCount; i++ )
-	{
-		Enemy::Type type = static_cast<Enemy::Type>(i);
-		data[type].path.push_back(Direction(0.f, 400.f));
-		data[type].path.push_back(Direction(+90.f, 500.f));
-		data[type].path.push_back(Direction(0.f, 450.f));
-		data[type].path.push_back(Direction(-90.f, 200.f));
-	}
-
 	return data;
+}
+
+std::vector<Direction> InitializeEnemyPath() 
+{
+	std::vector<Direction> path;
+	
+	path.push_back(Direction(0.f, 400.f));
+	path.push_back(Direction(+90.f, 500.f));
+	path.push_back(Direction(0.f, 450.f));
+	path.push_back(Direction(-90.f, 200.f));
+
+	return path;
 }
 
 std::vector<TowerData> InitializeTowerData() {

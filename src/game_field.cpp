@@ -76,7 +76,7 @@ void GameField::BuildScene() {
 
 
 	//Initialize two enemies
-	std::unique_ptr<Enemy> firstEnemy(new BasicEnemy(textures_, 0.f, 0, 1.f));
+	std::unique_ptr<Enemy> firstEnemy(new BasicEnemy(textures_));
 	firstEnemy_ = firstEnemy.get();
 	//firstEnemy_->setOrigin(firstEnemy_->GetBoundingRect().width/2, firstEnemy_->GetBoundingRect().height/2);
 	firstEnemy_->setPosition(spawnPosition_);

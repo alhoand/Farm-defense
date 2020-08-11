@@ -10,10 +10,11 @@
 // Associates enemies with the corresponding textures
 // Textures are images that live on the graphics card
 
-/* namespace
+namespace
 {
 	const std::vector<EnemyData> Table = InitializeEnemyData();
-} */
+    const std::vector<Direction> Path = InitializeEnemyPath();
+}
 
 Textures::ID Enemy::ToTextureID(Enemy::Type type) {
     switch (type) {
@@ -29,14 +30,14 @@ Textures::ID Enemy::ToTextureID(Enemy::Type type) {
 }
 
 // Constructor that works with SFML
-Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, int hp, float speed, float travelledDistance, int directionIndex, float difficultyLevel)
-    : Entity(hp),
+Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, float difficultyLevel, float travelledDistance, int directionIndex)
+    : Entity(Table[type].hitpoints),
         type_(type), 
         sprite_(textures.Get(ToTextureID(type))),
         travelledDistance_(travelledDistance), 
         directionIndex_(directionIndex),
         difficultyLevel_(difficultyLevel),
-        speed_(speed),
+        speed_(Table[type].speed),
         isMarkedForRemoval_(false)
         //dataTable_(Table)
     { 
@@ -92,19 +93,17 @@ sf::FloatRect Enemy::GetBoundingRect() const
 }
 
 //Enemy movement pattern
-/* void Enemy::UpdateMovementPattern(sf::Time dt)
+void Enemy::UpdateMovementPattern(sf::Time dt)
 {
-	const std::vector<Direction>& path = Table[type_].path;
-
-	if (!path.empty())
+	if (!Path.empty())
 	{
-		if (travelledDistance_ > path[directionIndex_].distance)
+		if (travelledDistance_ > Path[directionIndex_].distance)
 		{
-			directionIndex_ = (directionIndex_ + 1) % path.size();
+			directionIndex_ = (directionIndex_ + 1) % Path.size();
 			travelledDistance_ = 0.f;
 		}
 
-		float radians = ToRadian(path[directionIndex_].angle); 
+		float radians = ToRadian(Path[directionIndex_].angle); 
 		float vx = speed_ * std::cos(radians);
 		float vy = speed_ * std::sin(radians);
 
@@ -113,9 +112,14 @@ sf::FloatRect Enemy::GetBoundingRect() const
 		travelledDistance_ += speed_ * dt.asSeconds();
 	}
 
-} */
+} 
 
 // initialized false, can be changed later
 bool Enemy::IsMarkedForRemoval() const {
     return isMarkedForRemoval_;
+}
+
+float Enemy::GetSpeed() const
+{
+    return speed_;
 }
