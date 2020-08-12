@@ -135,10 +135,10 @@ void Tower::CreateBullet(SceneNode& node, const TextureHolder& textures) const {
 
     std::unique_ptr<Bullet> bullet(new Bullet(static_cast<Bullet::Type>(bulletType_), textures));
 
-    sf::Vector2f offset(sprite_.getGlobalBounds().width / 2.f, sprite_.getGlobalBounds().height / 2.f);
+    //sf::Vector2f offset(sprite_.getGlobalBounds().width / 2.f, sprite_.getGlobalBounds().height / 2.f);
     //sf::Vector2f velocity(0.0f, 100.0f);
 
-    bullet->setPosition(GetWorldPosition() + offset);
+    bullet->setPosition(GetWorldPosition());
 
     bullet->SetVelocity(bullet->GetSpeed() * direction_);
     std::cout << "Bullet velocity: " << bullet->GetVelocity().x << ", " << bullet->GetVelocity().y << std::endl;
