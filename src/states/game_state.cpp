@@ -19,7 +19,7 @@ GameState::GameState(StateStack& stack, Context context) :
     std::cout << "Game state constructor started" << std::endl;
         GUIContainer_.Pack(pauseButton);
 
-        GetContext().GUIContainer_->Pack(pauseButton);
+        //GetContext().GUIContainer_->Pack(pauseButton);
         //std::cout << "Guicontainer was in context" << std::endl;
         auto nodeComponent = std::make_shared<GUI::SceneNodeComponent>(nullptr);
         nodeComponent->SetType(GUI::ID::ActiveSceneNode);
@@ -51,9 +51,11 @@ bool GameState::HandleEvent(const sf::Event& event) {
     if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P))
 		RequestStackPush(States::ID::Pause);
 
-    if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::I))
+    if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::I)) {
+        std::cout << "Requested info " << std::endl;
 		RequestStackPush(States::ID::GameUpgradeTowerSideBar);
-
+    }
+        
     GUIContainer_.HandleEvent(event);
     return true;
 }

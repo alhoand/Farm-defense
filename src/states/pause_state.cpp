@@ -11,6 +11,7 @@ PauseState::PauseState(StateStack& stack, Context context):
 	instructionText_(), 
 	GUIContainer_()
 	{
+		//std::cout << "Pause state constructor" << std::endl;
 	sf::Font& font = context.fonts_->Get(Fonts::Main);
 	sf::Vector2f viewSize = context.window_->getView().getSize();
 

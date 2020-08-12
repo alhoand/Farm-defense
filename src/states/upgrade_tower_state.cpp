@@ -36,7 +36,7 @@ UpgradeTowerState::UpgradeTowerState(StateStack& stack, Context context) :
         {
             std::cout << "Tower upgrade button was pressed." << std::endl;
 	    });
-       // std::cout << "Constructor of upgrade tower state" << std::endl;
+        std::cout << "Constructor of upgrade tower state" << std::endl;
         GUIContainer_.Pack(upgradeButton);
         GUI::Component::Ptr temp = GetContext().GUIContainer_->GetChild(GUI::ID::ActiveSceneNode);
        // std::cout << "There was a guicontainer in the context" << std::endl;
@@ -46,7 +46,8 @@ UpgradeTowerState::UpgradeTowerState(StateStack& stack, Context context) :
 
         backgroundShape_.setFillColor(sf::Color(0, 0, 0, 128));
         backgroundShape_.setSize(viewSize_);
-        
+        //auto playPause = std::dynamic_pointer_cast<GUI::Button>(GetContext().GUIContainer_->GetChild(GUI::ID::PlayPause));
+        //GUIContainer_.Pack(playPause);
         GUIContainer_.setPosition(context.window_->getView().getSize().x - viewSize_.x, 0);
        // std::cout << "End of upgradetower constructor" << std::endl;
     }
@@ -104,17 +105,18 @@ bool UpgradeTowerState::HandleEvent(const sf::Event& event) {
 	GUIContainer_.HandleEvent(event);
 	
 	if (event.type != sf::Event::KeyPressed)
-		return false;
+	    return false;
 
     // If I is pressed, return to the game
-	if (sf::Event::KeyPressed && event.key.code == sf::Keyboard::I) {
+	if (sf::Event::KeyPressed && event.key.code == sf::Keyboard::I)
+    {
 		// I pressed, remove itself to return to the game
 		RequestStackPop();
-
+    }
     if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P))
+    {
 		RequestStackPush(States::ID::Pause);
-
 	}
 
-    return true;
+    return false;
 }
