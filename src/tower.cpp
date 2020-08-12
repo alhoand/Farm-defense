@@ -75,10 +75,10 @@ void Tower::UpdateCurrent(sf::Time dt, CommandQueue&) {
 
 void Tower::Shoot(CommandQueue& commands, sf::Vector2f direction) {
     // std::cout << "Checking if tower can shoot" << std::endl;
+    canShoot_ = false;
     direction_ = UnitVector(direction);
     std::cout << "direction in Shoot function: " << direction_.x << ", " << direction_.y << std::endl;
     commands.Push(shootCommand_);
-    canShoot_ = false;
 }
 
 bool Tower::CanShoot() const 

@@ -11,6 +11,7 @@
 TestEnemy::TestEnemy(const TextureHolder& textures, float difficultyLevel, float travelledDistance, int directionIndex)
     : Enemy(Enemy::Leaf, textures, difficultyLevel, travelledDistance, directionIndex)
     { 
+        showDeathAnimation_ = false;
         spawnFireEnemyCommand_.category_ = Category::Scene;
         spawnFireEnemyCommand_.action_ = [this, &textures] (SceneNode& node, sf::Time) 
         {
@@ -20,7 +21,6 @@ TestEnemy::TestEnemy(const TextureHolder& textures, float difficultyLevel, float
             //newEnemy->setScale(0.25f, 0.25f);
 		    newEnemy->SetVelocity( UnitVector(this->GetVelocity()) * newEnemy->GetSpeed() ); 
 		    node.AttachChild(std::move(newEnemy));
-
         };
     }
 
