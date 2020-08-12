@@ -3,12 +3,12 @@
 //Initial header file for abstract enemy class
 #include <vector>
 
-#include "../bullet.hpp"
+//#include "../bullet.hpp"
 #include "../entity.hpp"
 #include "../resource_identifiers.hpp"
 #include "../command_queue.hpp"
 #include "../animation.hpp"
-//#include "../data_tables.hpp"
+#include "../data_tables.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 
