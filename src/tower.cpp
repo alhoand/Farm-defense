@@ -56,12 +56,12 @@ void Tower::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 void Tower::UpdateCurrent(sf::Time dt, CommandQueue&) {
     // std::cout << "Updating tower" <<std::endl;
 
-    //if tower hasn't shot yet (no enemies are in range), do nothing and keep the countdown in zero
-    if (countdown_ <= sf::Time::Zero && !canShoot_) {
+    //if tower hasn't shot yet (no enemies are in range), do nothing and do not reduce countdown
+    if (countdown_ <= sf::Time::Zero) {
         canShoot_ = true;
         std::cout << "It can! Hurrah! " << std::endl;
         countdown_ += sf::seconds(reloadTime_);
-    } else if (countdown_ > sf::Time::Zero) {
+    } else if (countdown_ > sf::Time::Zero  && !canShoot_) {
         // std::cout << "It cannot :(" << std::endl;
         countdown_ -= dt;
     }

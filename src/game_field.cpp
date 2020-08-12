@@ -89,7 +89,7 @@ void GameField::BuildScene() {
 	firstEnemy_ = firstEnemy.get();
 	//firstEnemy_->setOrigin(firstEnemy_->GetBoundingRect().width/2, firstEnemy_->GetBoundingRect().height/2);
 	firstEnemy_->setPosition(spawnPosition_);
-	firstEnemy_->setScale(0.5f, 0.5f);
+	//firstEnemy_->setScale(0.5f, 0.5f);
 
 	std::cout << "DEBUG: spawn position:" << firstEnemy_->getPosition().x << "," << firstEnemy_->getPosition().y << std::endl;
 
