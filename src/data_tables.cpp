@@ -1,7 +1,5 @@
 #include "data_tables.hpp"
-#include "enemies/enemy.hpp"
-#include "tower.hpp"
-#include "bullet.hpp"
+
 
 //hardcoded path which is same fo all enemies
 //TODO add rest of the enemies
@@ -38,15 +36,18 @@ std::vector<Direction> InitializeEnemyPath()
 std::vector<TowerData> InitializeTowerData() {
 	std::vector<TowerData> data(Tower::TypeCount);
 
-	data[Tower::Fire].range = 75;
+	data[Tower::Fire].texture = Textures::FireTower;
+	data[Tower::Fire].range = 250;
     data[Tower::Fire].reloadTime = 1;
     data[Tower::Fire].bulletType = Bullet::FireBullet;
 
-	data[Tower::Water].range = 50;
+	data[Tower::Water].texture = Textures::WaterTower;
+	data[Tower::Water].range = 100;
     data[Tower::Water].reloadTime = 0.5;
     data[Tower::Water].bulletType = Bullet::IceBullet;
 
-	data[Tower::Leaf].range = 30;
+	data[Tower::Leaf].texture = Textures::LeafTower;
+	data[Tower::Leaf].range = 50;
     data[Tower::Leaf].reloadTime = 0.5;
     data[Tower::Leaf].bulletType = Bullet::WoodBullet;
 
