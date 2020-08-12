@@ -7,6 +7,7 @@
 #include "../entity.hpp"
 #include "../resource_identifiers.hpp"
 #include "../command_queue.hpp"
+#include "../animation.hpp"
 //#include "../data_tables.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
@@ -46,4 +47,6 @@ class Enemy : public Entity {
         float           difficultyLevel_;
         int             speed_;
         bool            isMarkedForRemoval_;
+        bool            showDeathAnimation_;
+        Animation       deathAnimation_;
 };

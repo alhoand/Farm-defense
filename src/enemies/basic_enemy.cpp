@@ -10,6 +10,7 @@
 BasicEnemy::BasicEnemy(const TextureHolder& textures, float difficultyLevel, float travelledDistance, int directionIndex)
     : Enemy(Enemy::Fire, textures, difficultyLevel, travelledDistance, directionIndex)
     { 
+        showDeathAnimation_ = true;
     }
 
 // Basic enemy dies immediately when taking hit

@@ -24,7 +24,8 @@ namespace Textures {
         TitleBackground,
         logo,
         Buttons,
-        NoTexture
+        NoTexture,
+        DeathAnimation
     };
 }
 
