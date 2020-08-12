@@ -60,7 +60,7 @@ void GameField::LoadTextures() {
 	textures_.Load(Textures::ID::FireTower, "../media/textures/tower.png");
 	textures_.Load(Textures::ID::FireBullet, "../media/textures/bullet.png");
 	textures_.Load(Textures::ID::NoTexture,      "../media/textures/noTexture.png");
-	
+	textures_.Load(Textures::ID::DeathAnimation,      "../media/textures/deathAnimation.png");
 }
 
 void GameField::BuildScene() {

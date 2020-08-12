@@ -15,7 +15,7 @@ namespace
 	const std::vector<EnemyData> Table = InitializeEnemyData();
     const std::vector<Direction> Path = InitializeEnemyPath();
 }
-
+/*
 Textures::ID Enemy::ToTextureID(Enemy::Type type) {
     switch (type) {
         case Enemy::Type::Fire:
@@ -27,7 +27,7 @@ Textures::ID Enemy::ToTextureID(Enemy::Type type) {
         default: 
             return Textures::ID::Fire;
     }
-}
+}*/
 
 // Constructor that works with SFML
 Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, float difficultyLevel, float travelledDistance, int directionIndex)
@@ -35,20 +35,31 @@ Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, float difficultyLe
         type_(type), 
         //sprite_(textures.Get(ToTextureID(type))),
         sprite_(textures.Get(Textures::ID::NoTexture)),
+        deathAnimation_(textures.Get(Textures::DeathAnimation)),
         travelledDistance_(travelledDistance), 
         directionIndex_(directionIndex),
         difficultyLevel_(difficultyLevel),
         speed_(Table[type].speed),
-        isMarkedForRemoval_(false)
+        isMarkedForRemoval_(false),
+        showDeathAnimation_(false)
     { 
         sf::FloatRect bounds = sprite_.getLocalBounds();
         sprite_.setOrigin(bounds.width/2.f, bounds.height/2.f);
+
+        deathAnimation_.SetFrameSize(sf::Vector2i(187, 201));
+	    deathAnimation_.SetNumFrames(15);
+	    deathAnimation_.SetDuration(sf::seconds(0.35));
+        sf::FloatRect deathAnimationBounds = deathAnimation_.GetLocalBounds();
+        deathAnimation_.setOrigin(deathAnimationBounds.width/2.f, deathAnimationBounds.height/2.f);
     }
 
 Enemy::~Enemy() {}
 
-void Enemy::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const {
-    target.draw(sprite_, states);
+void Enemy::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const{
+	if (IsDestroyed() && showDeathAnimation_)
+		target.draw(deathAnimation_, states);
+	else
+		target.draw(sprite_, states);
 }
 
 
@@ -69,7 +80,7 @@ void Enemy::UpdateCurrent(sf::Time dt, CommandQueue& commands) {
     if (IsDestroyed())
 	{
 		CheckDestroyBehaviour(commands);
-
+        deathAnimation_.Update(dt);
 		isMarkedForRemoval_ = true;
 		return;
 	}
@@ -116,7 +127,7 @@ void Enemy::UpdateMovementPattern(sf::Time dt)
 
 // initialized false, can be changed in derived classes
 bool Enemy::IsMarkedForRemoval() const {
-    return isMarkedForRemoval_;
+    return (isMarkedForRemoval_ && (deathAnimation_.IsFinished() || !showDeathAnimation_));
 }
 
 // Enemy's speed increases according to difficultyLevel
