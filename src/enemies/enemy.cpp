@@ -39,7 +39,6 @@ Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, float difficultyLe
         difficultyLevel_(difficultyLevel),
         speed_(Table[type].speed),
         isMarkedForRemoval_(false)
-        //dataTable_(Table)
     { 
         sf::FloatRect bounds = sprite_.getLocalBounds();
         sprite_.setOrigin(bounds.width/2.f, bounds.height/2.f);
@@ -114,12 +113,13 @@ void Enemy::UpdateMovementPattern(sf::Time dt)
 
 } 
 
-// initialized false, can be changed later
+// initialized false, can be changed in derived classes
 bool Enemy::IsMarkedForRemoval() const {
     return isMarkedForRemoval_;
 }
 
+// Enemy's speed increases according to difficultyLevel
 float Enemy::GetSpeed() const
 {
-    return speed_;
+    return difficultyLevel_ * speed_;
 }

@@ -46,5 +46,4 @@ class Enemy : public Entity {
         float           difficultyLevel_;
         int             speed_;
         bool            isMarkedForRemoval_;
-        //std::vector<EnemyData> dataTable_;
 };
