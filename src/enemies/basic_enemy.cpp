@@ -12,12 +12,12 @@ BasicEnemy::BasicEnemy(const TextureHolder& textures, float difficultyLevel, flo
     { 
         //sprite_ = 
         
-        //showDeathAnimation_ = true;
+        showDeathAnimation_ = true;
         
         movementAnimation_.SetTexture(textures.Get(Textures::ID::Leppis)),
         movementAnimation_.SetFrameSize(sf::Vector2i(150, 175));
 	    movementAnimation_.SetNumFrames(9);
-	    movementAnimation_.SetDuration(sf::seconds(1));
+	    movementAnimation_.SetDuration(sf::seconds(0.5));
         movementAnimation_.SetRepeating(true);
         sf::FloatRect animationBounds = movementAnimation_.GetLocalBounds();
         movementAnimation_.setOrigin(animationBounds.width/2.f, animationBounds.height/2.f);

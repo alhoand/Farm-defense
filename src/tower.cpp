@@ -11,9 +11,11 @@ Tower::Tower(Tower::Type type, const TextureHolder &textures, float range, int r
       reloadTime_(reloadTime), canShoot_(false), bulletType_(bulletType), countdown_(sf::seconds(reloadTime)), //commands_(commands),
       shootCommand_() 
     {
+        sf::FloatRect bounds = sprite_.getLocalBounds();
+        sprite_.setOrigin(bounds.width/2.f, bounds.height/2.f);
         shootCommand_.category_ = Category::Scene;
         shootCommand_.action_ = [this, &textures] (SceneNode& node, sf::Time) {
-            CreateBullet(node, Bullet::Type::FireBullet, textures);
+        CreateBullet(node, Bullet::Type::FireBullet, textures);
         };
     }
 
@@ -42,10 +44,9 @@ void Tower::CreateBullet(SceneNode& node, Bullet::Type type, const TextureHolder
 
     std::unique_ptr<Bullet> bullet(new Bullet(type, textures));
 
-    sf::Vector2f offset(sprite_.getGlobalBounds().width / 2.f, sprite_.getGlobalBounds().height / 2.f);
     //sf::Vector2f velocity(0.0f, 100.0f);
 
-    bullet->setPosition(GetWorldPosition() + offset);
+    bullet->setPosition(GetWorldPosition());
 
     bullet->SetVelocity(bullet->GetSpeed() * direction_);
     std::cout << "Bullet velocity: " << bullet->GetVelocity().x << ", " << bullet->GetVelocity().y << std::endl;
