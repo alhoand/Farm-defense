@@ -25,7 +25,8 @@ namespace Textures {
         logo,
         Buttons,
         NoTexture,
-        DeathAnimation
+        DeathAnimation,
+        Leppis
     };
 }
 

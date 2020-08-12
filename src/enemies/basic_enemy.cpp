@@ -10,7 +10,21 @@
 BasicEnemy::BasicEnemy(const TextureHolder& textures, float difficultyLevel, float travelledDistance, int directionIndex)
     : Enemy(Enemy::Fire, textures, difficultyLevel, travelledDistance, directionIndex)
     { 
-        showDeathAnimation_ = true;
+        //sprite_ = 
+        
+        //showDeathAnimation_ = true;
+        
+        movementAnimation_.SetTexture(textures.Get(Textures::ID::Leppis)),
+        movementAnimation_.SetFrameSize(sf::Vector2i(150, 175));
+	    movementAnimation_.SetNumFrames(9);
+	    movementAnimation_.SetDuration(sf::seconds(1));
+        movementAnimation_.SetRepeating(true);
+        sf::FloatRect animationBounds = movementAnimation_.GetLocalBounds();
+        movementAnimation_.setOrigin(animationBounds.width/2.f, animationBounds.height/2.f);
+        hasMovementAnimation_ = true;
+        
+        sprite_ = movementAnimation_.GetFirstFrame();
+        sprite_.setOrigin(animationBounds.width/2.f, animationBounds.height/2.f);
     }
 
 // Basic enemy dies immediately when taking hit

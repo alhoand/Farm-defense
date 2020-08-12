@@ -30,12 +30,13 @@ class Enemy : public Entity {
         void            DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
         unsigned int    GetCategory() const override; // might also be made virtual later, but not now
         sf::FloatRect   GetBoundingRect() const override;
-        float             GetSpeed() const;
+        float           GetSpeed() const;
         bool            IsMarkedForRemoval() const override;
 
     protected:
         virtual void    UpdateMovementPattern(sf::Time dt); //can be made virtual later, not necessary now
         void            UpdateCurrent(sf::Time dt, CommandQueue& commands) override;
+        void            UpdateMovementAnimation(sf::Time dt);
         virtual void    CheckDestroyBehaviour(CommandQueue& commands);
 
         Textures::ID    ToTextureID(Enemy::Type type);
@@ -48,5 +49,7 @@ class Enemy : public Entity {
         int             speed_;
         bool            isMarkedForRemoval_;
         bool            showDeathAnimation_;
+        bool            hasMovementAnimation_;
         Animation       deathAnimation_;
+        Animation       movementAnimation_;
 };

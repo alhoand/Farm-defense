@@ -36,12 +36,14 @@ Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, float difficultyLe
         //sprite_(textures.Get(ToTextureID(type))),
         sprite_(textures.Get(Textures::ID::NoTexture)),
         deathAnimation_(textures.Get(Textures::DeathAnimation)),
+        movementAnimation_(),
         travelledDistance_(travelledDistance), 
         directionIndex_(directionIndex),
         difficultyLevel_(difficultyLevel),
         speed_(Table[type].speed),
         isMarkedForRemoval_(false),
-        showDeathAnimation_(false)
+        hasMovementAnimation_(false),
+        showDeathAnimation_(true)
     { 
         sf::FloatRect bounds = sprite_.getLocalBounds();
         sprite_.setOrigin(bounds.width/2.f, bounds.height/2.f);
@@ -51,6 +53,7 @@ Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, float difficultyLe
 	    deathAnimation_.SetDuration(sf::seconds(0.35));
         sf::FloatRect deathAnimationBounds = deathAnimation_.GetLocalBounds();
         deathAnimation_.setOrigin(deathAnimationBounds.width/2.f, deathAnimationBounds.height/2.f);
+
     }
 
 Enemy::~Enemy() {}
@@ -58,9 +61,11 @@ Enemy::~Enemy() {}
 void Enemy::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const{
 	if (IsDestroyed() && showDeathAnimation_)
 		target.draw(deathAnimation_, states);
-	else
-		target.draw(sprite_, states);
-}
+	else if (movementAnimation_.GetNumFrames() > 0)
+		target.draw(movementAnimation_, states);
+    else
+        target.draw(sprite_, states);
+}   
 
 
 //Update the state of enemy
@@ -84,6 +89,7 @@ void Enemy::UpdateCurrent(sf::Time dt, CommandQueue& commands) {
 		isMarkedForRemoval_ = true;
 		return;
 	}
+    UpdateMovementAnimation(dt);
     UpdateMovementPattern(dt);
     Entity::UpdateCurrent(dt, commands); 
 }
@@ -124,6 +130,11 @@ void Enemy::UpdateMovementPattern(sf::Time dt)
 	}
 
 } 
+
+void Enemy::UpdateMovementAnimation(sf::Time dt){
+    if(hasMovementAnimation_)
+        movementAnimation_.Update(dt);
+}
 
 // initialized false, can be changed in derived classes
 bool Enemy::IsMarkedForRemoval() const {

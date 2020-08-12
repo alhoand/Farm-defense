@@ -54,6 +54,7 @@ void GameField::LoadTextures() {
 	textures_.Load(Textures::ID::FireBullet, "../media/textures/bullet.png");
 	textures_.Load(Textures::ID::NoTexture,      "../media/textures/noTexture.png");
 	textures_.Load(Textures::ID::DeathAnimation,      "../media/textures/deathAnimation.png");
+	textures_.Load(Textures::ID::Leppis,      "../media/textures/leppakerttu.png");
 }
 
 void GameField::BuildScene() {

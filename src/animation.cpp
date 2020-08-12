@@ -36,6 +36,14 @@ const sf::Texture* Animation::GetTexture() const
 	return sprite_.getTexture();
 }
 
+sf::Sprite Animation::GetFirstFrame() const
+{
+	sf::Sprite sprite;
+	sprite = sprite_;
+	sprite.setTextureRect(sf::IntRect(0,0,frameSize_.x,frameSize_.y));
+	return sprite;
+}
+
 void Animation::SetFrameSize(sf::Vector2i frameSize)
 {
 	frameSize_ = frameSize;
