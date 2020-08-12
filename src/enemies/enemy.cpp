@@ -84,9 +84,14 @@ void Enemy::UpdateCurrent(sf::Time dt, CommandQueue& commands) {
 
     if (IsDestroyed())
 	{
-		CheckDestroyBehaviour(commands);
+		
         deathAnimation_.Update(dt);
-		isMarkedForRemoval_ = true;
+		if((deathAnimation_.IsFinished() || !showDeathAnimation_)){
+            CheckDestroyBehaviour(commands);
+            isMarkedForRemoval_ = true;
+        }
+        
+        
 		return;
 	}
     UpdateMovementAnimation(dt);
@@ -101,6 +106,8 @@ void Enemy::CheckDestroyBehaviour(CommandQueue&)
 
 unsigned int Enemy::GetCategory() const 
 {
+    if(IsDestroyed())
+        return 0;
     return Category::Enemy;
 } 
 
@@ -138,7 +145,7 @@ void Enemy::UpdateMovementAnimation(sf::Time dt){
 
 // initialized false, can be changed in derived classes
 bool Enemy::IsMarkedForRemoval() const {
-    return (isMarkedForRemoval_ && (deathAnimation_.IsFinished() || !showDeathAnimation_));
+    return isMarkedForRemoval_;// && (deathAnimation_.IsFinished() || !showDeathAnimation_));
 }
 
 // Enemy's speed increases according to difficultyLevel

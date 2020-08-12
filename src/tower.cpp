@@ -71,7 +71,7 @@ void Tower::Shoot(CommandQueue& commands, sf::Vector2f direction) {
     canShoot_ = false;
     direction_ = UnitVector(direction);
     std::cout << "direction in Shoot function: " << direction_.x << ", " << direction_.y << std::endl;
-    commands.Push(shootCommand_); 
+    commands.Push(shootCommand_);
 }
 
 unsigned int Tower::GetCategory() const {
