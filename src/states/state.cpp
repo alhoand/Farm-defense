@@ -2,13 +2,16 @@
 #include "../state_stack.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
 
-State::Context::Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, Player& player, sf::Vector2f viewOffset) 
+
+State::Context::Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, Player& player, sf::Vector2f viewOffset, GUI::Container& GUIContainer) 
         : window_(&window),
         textures_(&textures),
         fonts_(&fonts),
         player_(&player),
         viewOffset_(viewOffset),
-        GUIComponent_() { }
+        GUIContainer_(&GUIContainer) 
+        { 
+        }
 
 State::State(StateStack &stateStack, Context context)
         : context_(context), stateStack_(&stateStack) { }

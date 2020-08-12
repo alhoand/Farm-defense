@@ -27,7 +27,9 @@ private:
     TextureHolder textures_;
     FontHolder fonts_;
     Player player_;
+    GUI::Container GUIContainer_;
     StateStack stateStack_;
+    
    
 
 };

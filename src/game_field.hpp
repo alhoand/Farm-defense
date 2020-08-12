@@ -44,7 +44,7 @@ class GameField : private sf::NonCopyable {
 
         CommandQueue& GetCommandQueue();
 
-        Tower* GetActiveTower() const;
+        std::pair<SceneNode*, bool> GetActiveNode() const;
 
         //void AddTower(Tower* t); not implemented yet
 

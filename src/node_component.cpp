@@ -6,11 +6,9 @@
 
 namespace GUI
 {
-
-SceneNodeComponent::SceneNodeComponent(SceneNode* node) :
-node_(nullptr)
-{
-}
+SceneNodeComponent::SceneNodeComponent(SceneNode*) : node_(nullptr) {
+    std::cout << "A new sceneNodeComponent created" << std::endl;
+ }
 
 bool SceneNodeComponent::IsSelectable() const
 {
@@ -33,5 +31,6 @@ void SceneNodeComponent::SetNode(SceneNode* node)
 SceneNode* SceneNodeComponent::GetNode() const {
     return node_;
 }
+
 
 }

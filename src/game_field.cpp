@@ -153,9 +153,26 @@ void GameField::HandleCollisions()
 }
 
 // Does not handle nullptr so the caller should handle it.
-Tower* GameField::GetActiveTower() const {
+std::pair<SceneNode*, bool> GameField::GetActiveNode() const {
 	//assert(Tower::ActiveTower() != nullptr); 
-	return Tower::ActiveTower();
+	//std::cout << "Active returned" << std::endl;
+	if(Tower::ActiveTower())
+	{
+		//std::cout << "Active tower hp: " << Tower::ActiveTower()->GetHitpoints() << std::endl;
+		return { Tower::ActiveTower(), false };
+	}else 
+	{
+		if (Tower::TowerCount() > 0)
+		{
+			return { Tower::ActiveTower(), false };
+		}else
+		{
+			return { Tower::ActiveTower(), true };
+		}
+	}
+
+
+	
 }
 
 //Spawns only one type of enemies and spawnInterval is constant

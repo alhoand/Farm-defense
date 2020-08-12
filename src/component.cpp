@@ -1,10 +1,14 @@
 #include "component.hpp"
+#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
+
 
 namespace GUI
 {
 
 Component::Component()
-: isSelected_(false)
+: type_(GUI::ID::Default)
+, isSelected_(false)
 , isActive_(false)
 , parent_(nullptr)
 {
@@ -63,6 +67,28 @@ sf::Transform Component::GetWorldTransform() const {
 sf::Vector2f Component::GetWorldPosition() const 
 {
     return GetWorldTransform() * sf::Vector2f();
+}
+
+void Component::DrawBoundingRect(sf::RenderTarget& target, sf::RenderStates states) const
+{
+	sf::FloatRect rect = GetGlobalBounds();
+
+	sf::RectangleShape shape;
+	shape.setPosition(sf::Vector2f(rect.left, rect.top));
+	shape.setSize(sf::Vector2f(rect.width, rect.height));
+	shape.setFillColor(sf::Color::Transparent);
+	shape.setOutlineColor(sf::Color::Green);
+	shape.setOutlineThickness(1.f);
+
+	target.draw(shape);
+}
+
+GUI::ID Component::GetType() const {
+	return type_;
+}
+
+void Component::SetType(GUI::ID type) {
+	type_ = type;
 }
 
 }

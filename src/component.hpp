@@ -4,12 +4,15 @@
 #include <SFML/Graphics/Transformable.hpp>
 #include <SFML/System/Time.hpp>
 
+#include "gui_identifiers.hpp"
 #include <memory>
 
 
 namespace sf
 {
 	class Event;
+    class RenderTarget;
+    class RenderStates;
 }
 
 namespace GUI
@@ -40,14 +43,19 @@ class Component : public sf::Drawable, public sf::Transformable, private sf::Non
 
         sf::Vector2f        GetWorldPosition() const;
 
-        virtual sf::FloatRect GetGlobalBounds(){return sf::FloatRect();}
+        virtual sf::FloatRect GetGlobalBounds() const{return sf::FloatRect();}
         virtual void		  HandleEvent(const sf::Event& event) = 0;
+        void			     DrawBoundingRect(sf::RenderTarget& target, sf::RenderStates states) const;
 
+        GUI::ID             GetType() const;
+        void                SetType(GUI::ID type);
 
     private:
+        GUI::ID             type_;
         bool				isSelected_;
         bool				isActive_;
         Component*          parent_;
+
 };
 
 }

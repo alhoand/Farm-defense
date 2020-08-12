@@ -24,7 +24,8 @@ class SceneNodeComponent : public Component
         SceneNode*          GetNode() const;
 
         virtual void		HandleEvent(const sf::Event& event);
-
+        virtual void        draw(sf::RenderTarget& target, sf::RenderStates states) const override
+                            { Draw(target, states); }
 
     private:
         void				Draw(sf::RenderTarget& target, sf::RenderStates states) const;

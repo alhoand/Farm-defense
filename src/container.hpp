@@ -1,7 +1,8 @@
 #pragma once
 
 #include "component.hpp"
-#include "states/state.hpp"
+#include "button.hpp"
+#include "node_component.hpp"
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics.hpp>
 #include <vector>
@@ -18,7 +19,7 @@ class Container : public Component
             
 
 	public:
-							Container(State::Context context);
+							Container();
 
         void				Pack(Component::Ptr component);
 
@@ -30,6 +31,12 @@ class Container : public Component
         void                SetVelocity(sf::Vector2f velocity);
         void                SetVelocity(float vx, float vy);
         sf::Vector2f        GetVelocity() const;
+
+        //std::shared_ptr<GUI::Button>      GetButton(GUI::ID type);
+
+        //std::shared_ptr<GUI::SceneNodeComponent> GetNodeComponent(GUI::ID type);
+
+        Component::Ptr GetChild(GUI::ID type);
 
     private:
         virtual void		draw(sf::RenderTarget& target, sf::RenderStates states) const override{
@@ -49,9 +56,9 @@ class Container : public Component
 
 
     private:
+        
         std::vector<Component::Ptr>		children_;
         int								selectedChild_;
-        State::Context                  context_;
         sf::Vector2f                    velocity_;
 };
 

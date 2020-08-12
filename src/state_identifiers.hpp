@@ -8,6 +8,7 @@ namespace States {
         Game,
         Pause,
 		Settings,
+        GameUpgradeTowerSideBar,
         None
     };
 }

@@ -1,3 +1,4 @@
+#pragma once
 #include "component.hpp"
 #include "resource_identifiers.hpp"
 #include "resource_holder.hpp"
@@ -29,7 +30,7 @@ class Button : public Component
         void					SetCallback(Callback callback);
         void					SetText(const std::string& text);
         void					SetToggle(bool flag);
-        virtual sf::FloatRect           GetGlobalBounds() override;
+        virtual sf::FloatRect   GetGlobalBounds() const override;
 
 
         virtual bool			IsSelectable() const override;

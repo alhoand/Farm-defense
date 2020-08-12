@@ -5,16 +5,16 @@
 #include <SFML/Window/Mouse.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
-
+#include <cassert>
+#include <memory>
 #include <iostream>
 
 namespace GUI
 {
 
-Container::Container(State::Context context)
+Container::Container()
 : children_()
 , selectedChild_(-1)
-, context_(context)
 , velocity_()
 {
 }
@@ -24,6 +24,28 @@ void Container::Pack(Component::Ptr component)
 	component->ChildOf(this); //Stores the container as the parent
 	children_.push_back(component);
 }
+/*
+std::shared_ptr<GUI::Button> Container::GetButton(GUI::ID type) {
+	auto found = std::find_if(children_.begin(), children_.end(),
+		[&] (Ptr& child) {
+			return child.get()->GetType() == type;
+	});
+	assert(found != children_.end());
+	return std::dynamic_pointer_cast<GUI::Button>(*found);
+}*/
+
+
+Component::Ptr Container::GetChild(GUI::ID type) {
+	auto found = std::find_if(children_.begin(), children_.end(),
+		[&] (GUI::Component::Ptr& child) {
+			return child.get()->GetType() == type;
+	});
+	assert(found != children_.end());
+	return *found;
+}
+
+
+
 
 bool Container::IsSelectable() const
 {
@@ -36,6 +58,12 @@ void Container::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 	for(const Component::Ptr& child: children_)
 		target.draw(*child, states);
+	GUI::Component::DrawBoundingRect(target, states);
+}
+
+void Container::Update(sf::Time dt) {
+	UpdateCurrent(dt);
+	UpdateChildren(dt);
 }
 
 void Container::UpdateCurrent(sf::Time dt) {
@@ -44,8 +72,11 @@ void Container::UpdateCurrent(sf::Time dt) {
 
 void Container::UpdateChildren(sf::Time dt)
 {
-	for(const Component::Ptr& child: children_)
+	for(const Component::Ptr& child: children_){
 		child->Update(dt);
+		//std::cout << "Container child global bounds left: (" << child->GetGlobalBounds().left << ", top: " << child->GetGlobalBounds().top << ")" << std::endl;
+	}
+		
 }
 
 void Container::HandleEvent(const sf::Event& event)
@@ -99,7 +130,6 @@ void Container::SetVelocity(float vx, float vy) {
 sf::Vector2f Container::GetVelocity() const {
 	return velocity_;
 }
-
 
 /*
 void Container::HandleEvent(const sf::Event& event)

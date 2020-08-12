@@ -60,8 +60,8 @@ void Button::SetToggle(bool flag)
 	isToggle_ = flag;
 }
 
-sf::FloatRect Button::GetGlobalBounds(){
-	return getTransform().transformRect(sprite_.getGlobalBounds());
+sf::FloatRect Button::GetGlobalBounds() const{
+	return GetWorldTransform().transformRect(sprite_.getGlobalBounds());
 }
 
 bool Button::IsSelectable() const
@@ -123,6 +123,7 @@ void Button::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 	states.transform *= getTransform();
 	target.draw(sprite_, states);
 	target.draw(text_, states);
+	DrawBoundingRect(target, states);
 }
 
 }

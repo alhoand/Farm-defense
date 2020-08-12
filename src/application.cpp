@@ -6,6 +6,7 @@
 #include "states/game_state.hpp"
 #include "states/menu_state.hpp"
 #include "states/pause_state.hpp"
+#include "states/upgrade_tower_state.hpp"
 #include <iostream>
 
 static const sf::Time timePerFrame = sf::seconds(1.f / 60.f);
@@ -18,7 +19,8 @@ Application::Application()
     fonts_(),
     statisticsText_(),
     player_(window_, viewOffset_),
-    stateStack_(State::Context(window_, textures_, fonts_, player_, viewOffset_))
+    GUIContainer_(),
+    stateStack_(State::Context(window_, textures_, fonts_, player_, viewOffset_, GUIContainer_))
     { 
         window_.setFramerateLimit(60);
         window_.setPosition(sf::Vector2i(0.f, 30.f)); //sets position so title bar is at the top of screen
@@ -30,6 +32,8 @@ Application::Application()
         textures_.Load(Textures::ID::TitleBackground,   "../media/textures/tausta.jpg");
         textures_.Load(Textures::ID::Buttons,      "../media/textures/buttons.png");
 		
+        //auto activeNode = std::make_shared<GUI::SceneNodeComponent>(nullptr);
+        //GUIContainer_.Pack(activeNode);
 
         RegisterStates();
         stateStack_.PushState(States::ID::Title);
@@ -39,6 +43,7 @@ void Application::RegisterStates() {
     stateStack_.RegisterState<TitleState>(States::ID::Title);
     stateStack_.RegisterState<MenuState>(States::ID::Menu);
     stateStack_.RegisterState<GameState>(States::ID::Game);
+    stateStack_.RegisterState<UpgradeTowerState>(States::ID::GameUpgradeTowerSideBar);
     stateStack_.RegisterState<PauseState>(States::ID::Pause);
 }
 

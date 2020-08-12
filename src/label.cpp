@@ -1,5 +1,5 @@
 #include "label.hpp"
-
+#include "utility.hpp"
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
@@ -12,13 +12,22 @@ Label::Label(const std::string& text, const FontHolder& fonts)
 {
 }
 
+Label::Label(const std::string& text, const FontHolder& fonts, unsigned int fontSize, Fonts::ID fontType)
+: text_(text, fonts.Get(fontType), fontSize)
+{
+
+}
+void Label::CenterTextOrigin() {
+	CenterOrigin(text_);
+}
+
 bool Label::IsSelectable() const
 {
     return false;
 }
 
-sf::FloatRect Label::GetGlobalBounds(){
-	return text_.getGlobalBounds();
+sf::FloatRect Label::GetGlobalBounds() const{
+	return GetWorldTransform().transformRect(text_.getGlobalBounds());
 }
 
 void Label::HandleEvent(const sf::Event&)
@@ -29,11 +38,15 @@ void Label::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	states.transform *= getTransform();
 	target.draw(text_, states);
+	DrawBoundingRect(target, states);
 }
-
-void Label::SetText(const std::string& text)
+// Sets text of the label element
+// By default centers the text, otherwise set second param false
+void Label::SetText(const std::string& text, bool center)
 {
 	text_.setString(text);
+	if (center)
+		CenterOrigin(text_);
 }
 
 }

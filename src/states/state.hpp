@@ -7,6 +7,10 @@
 #include "../resource_identifiers.hpp"
 #include "../state_identifiers.hpp"
 #include <SFML/System/Vector2.hpp>
+#include "../node_component.hpp"
+#include <map>
+#include "../gui_identifiers.hpp"
+#include "../container.hpp"
 
 namespace sf {
     class RenderWindow;
@@ -23,7 +27,8 @@ public:
                  TextureHolder& textures,
                  FontHolder& fonts_,
                  Player& player,
-                 sf::Vector2f viewOffset
+                 sf::Vector2f viewOffset,
+                 GUI::Container& GUIContainer
         );
 
         sf::RenderWindow* window_;
@@ -31,6 +36,8 @@ public:
         FontHolder* fonts_;
         Player* player_;
         sf::Vector2f viewOffset_;
+        GUI::Container* GUIContainer_;
+        
     };
 
     State(StateStack& stack, Context context);

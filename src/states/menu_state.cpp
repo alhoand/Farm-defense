@@ -12,7 +12,7 @@
 
 MenuState::MenuState(StateStack& stack, Context context)
 : State(stack, context)
-, GUIContainer_(context)
+, GUIContainer_()
 {
 	sf::Texture& texture = context.textures_->Get(Textures::ID::TitleBackground);
 	backgroundSprite_.setTexture(texture);

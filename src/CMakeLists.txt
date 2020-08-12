@@ -27,6 +27,7 @@ target_sources(TowerDefense
 	game.hpp
     game_field.cpp
     game_field.hpp
+	gui_identifiers.hpp
 	label.cpp
 	label.hpp
 	main.cpp

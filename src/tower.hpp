@@ -38,7 +38,7 @@ class Tower : public Entity {
         Tower(Type type, const TextureHolder &textures, int range, int reloadSpeed, Bullet::Type bulletType, CommandQueue& commands);
 
         //Destructor
-        virtual ~Tower() { };
+        virtual ~Tower() { Tower::towerCount_--; };
 
         void CreateBullet(SceneNode& node, Bullet::Type type, const TextureHolder& textures) const;
 
@@ -70,9 +70,11 @@ class Tower : public Entity {
 
         static Textures::ID ToTextureID(Type type);
 
-        static Tower* ActiveTower() { return activeTower_; }
+        static Tower* ActiveTower(); 
 
         static void ActiveTower(Tower*);
+
+        static int TowerCount();
 
 
 
@@ -96,4 +98,5 @@ class Tower : public Entity {
         Command shootCommand_;
 
         static Tower* activeTower_;
+        static int towerCount_;
 };

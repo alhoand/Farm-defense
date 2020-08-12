@@ -8,11 +8,21 @@ namespace {
 //TODO delete commandqueue from parameters
 Tower* Tower::activeTower_  = nullptr;
 
+int Tower::towerCount_ = 0;
+
+
+Tower* Tower::ActiveTower()
+{ 
+    return activeTower_; 
+}
+
 void Tower::ActiveTower(Tower* newActive) 
 { 
     assert(newActive != nullptr); 
     activeTower_ = newActive;
 }
+
+int Tower::TowerCount() { return towerCount_; }
 
 Tower::Tower(Tower::Type type, const TextureHolder &textures, int range, int reloadTime, Bullet::Type bulletType, CommandQueue& commands)
     : Entity(1), type_(type), sprite_(textures.Get(ToTextureID(type))), range_(range),
@@ -21,6 +31,13 @@ Tower::Tower(Tower::Type type, const TextureHolder &textures, int range, int rel
         shootCommand_.action_ = [this, &textures] (SceneNode& node, sf::Time) {
             CreateBullet(node, Bullet::Type::FireBullet, textures);
         };
+        Tower::towerCount_++;
+        std::cout << "towercount: " << Tower::towerCount_ << std::endl;
+        if (Tower::towerCount_ == 1) {
+            Tower::ActiveTower(this);
+            std::cout << "New actvive added" << std::endl;
+        }
+            
     }
 
 /*Tower::Tower(Tower::Type type, const TextureHolder &textures, CommandQueue& commands)
