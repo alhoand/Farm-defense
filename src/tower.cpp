@@ -6,9 +6,11 @@ namespace {
 }
 
 //TODO delete commandqueue from parameters
-Tower::Tower(Tower::Type type, const TextureHolder &textures, int range, int reloadTime, Bullet::Type bulletType, CommandQueue& commands)
+Tower::Tower(Tower::Type type, const TextureHolder &textures, float range, int reloadTime, Bullet::Type bulletType, CommandQueue& commands)
     : Entity(1), type_(type), sprite_(textures.Get(ToTextureID(type))), range_(range),
-      reloadTime_(reloadTime), bulletType_(bulletType), countdown_(sf::seconds(reloadTime)), commands_(commands), shootCommand_() {
+      reloadTime_(reloadTime), canShoot_(false), bulletType_(bulletType), countdown_(sf::seconds(reloadTime)), //commands_(commands),
+      shootCommand_() 
+    {
         shootCommand_.category_ = Category::Scene;
         shootCommand_.action_ = [this, &textures] (SceneNode& node, sf::Time) {
             CreateBullet(node, Bullet::Type::FireBullet, textures);
@@ -41,30 +43,47 @@ void Tower::CreateBullet(SceneNode& node, Bullet::Type type, const TextureHolder
     std::unique_ptr<Bullet> bullet(new Bullet(type, textures));
 
     sf::Vector2f offset(sprite_.getGlobalBounds().width / 2.f, sprite_.getGlobalBounds().height / 2.f);
-    sf::Vector2f velocity(0.0f, 100.0f);
+    //sf::Vector2f velocity(0.0f, 100.0f);
 
     bullet->setPosition(GetWorldPosition() + offset);
-    bullet->SetVelocity(velocity); // direction_ * bullet->GetSpeed());
+
+    bullet->SetVelocity(bullet->GetSpeed() * direction_);
+    std::cout << "Bullet velocity: " << bullet->GetVelocity().x << ", " << bullet->GetVelocity().y << std::endl;
     node.AttachChild(std::move(bullet));
 }
 
 //Update the state of the tower, should be virtual
-void Tower::UpdateCurrent(sf::Time dt, CommandQueue& commands) {
+void Tower::UpdateCurrent(sf::Time dt, CommandQueue&) {
     // std::cout << "Updating tower" <<std::endl;
-    Shoot(dt, commands);
-    // Entity::UpdateCurrent(dt);
-}
 
-void Tower::Shoot(sf::Time dt, CommandQueue& commands) {
-    // std::cout << "Checking if tower can shoot" << std::endl;
-    if (countdown_ <= sf::Time::Zero) {
+    //if tower hasn't shot yet (no enemies are in range), do nothing and keep the countdown in zero
+    if (countdown_ <= sf::Time::Zero && !canShoot_) {
+        canShoot_ = true;
         std::cout << "It can! Hurrah! " << std::endl;
-        commands.Push(shootCommand_);
+        //commands.Push(shootCommand_);
         countdown_ += sf::seconds(1.f * reloadTime_);
     } else if (countdown_ > sf::Time::Zero) {
         // std::cout << "It cannot :(" << std::endl;
         countdown_ -= dt;
     }
+    
+    
+    
+    //Shoot(dt, commands);
+    // Entity::UpdateCurrent(dt);
+}
+
+void Tower::Shoot(CommandQueue& commands, sf::Vector2f direction) {
+    // std::cout << "Checking if tower can shoot" << std::endl;
+    direction_ = UnitVector(direction);
+    std::cout << "direction in Shoot function: " << direction_.x << ", " << direction_.y << std::endl;
+    commands.Push(shootCommand_);
+    canShoot_ = false;
+}
+
+bool Tower::CanShoot() const 
+{
+    return canShoot_;
 }
 
 // This sets the permission for the tower to move
@@ -114,4 +133,9 @@ Textures::ID Tower::ToTextureID(Tower::Type type) {
         default: 
             return Textures::ID::Fire;
     }
+}
+
+float Tower::GetRange() const
+{
+    return range_;
 }

@@ -17,7 +17,7 @@ TestEnemy::TestEnemy(const TextureHolder& textures, float difficultyLevel, float
             std::cout <<"spawning a new enemy" << std::endl;
             std::unique_ptr<Enemy> newEnemy(new BasicEnemy(textures, difficultyLevel_, travelledDistance_, directionIndex_));
 		    newEnemy->setPosition(this->GetWorldPosition());
-            newEnemy->setScale(0.25f, 0.25f);
+            // newEnemy->setScale(0.25f, 0.25f);
 		    newEnemy->SetVelocity( UnitVector(this->GetVelocity()) * newEnemy->GetSpeed() ); 
 		    node.AttachChild(std::move(newEnemy));
 

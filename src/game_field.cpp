@@ -2,6 +2,8 @@
 #include "game_field.hpp"
 
 #include <iostream> // for debugging
+#include <limits>
+
 #include <SFML/System/Time.hpp>
 
 
@@ -21,7 +23,9 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	firstTower_(),
 	spawnCountdown_(sf::seconds(5)),
 	spawnInterval_(5), //this should maybe be a parameter
-	leftToSpawn_(15)
+	leftToSpawn_(15),
+	//shootingTowers_(),
+    activeEnemies_()
 	{ 
 		LoadTextures();
 		BuildScene();
@@ -32,6 +36,9 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 void GameField::Update(sf::Time dt) {
 
 	DestroyEntitiesOutsideView();
+
+	//makes towers shoot
+	MakeTowersShoot();
 	
 	// Forwards the commands to the scene graph
 	while(!commandQueue_.IsEmpty()) {
@@ -89,15 +96,10 @@ void GameField::BuildScene() {
 	std::cout << "DEBUG: initial velocity: " << firstEnemy_->GetVelocity().x << "," << firstEnemy_->GetVelocity().y << std::endl;
  
 	sceneLayers_[Field] -> AttachChild(std::move(firstEnemy));
-// This is secon enemy is unnecessary at the moment. The wild behaviour of the second enemy may have been caused by
-// it being a child of the first enemy.
-//	std::unique_ptr<Enemy> secondEnemy(new Enemy(Enemy::Type::Leaf, textures_, 50, enemySpeed_));
-//	secondEnemy->setPosition(-20.f, 0.f); // position relative to the first enemy
-//	sceneLayers_[Ground] -> AttachChild(std::move(secondEnemy));
 
 	//Initialize a tower that can be moved with hard-coded bullet
 	// TODO: make bullets work
-	std::unique_ptr<Tower> firstTower(new Tower(Tower::Type::Fire, textures_, 50, 5, Bullet::Type::FireBullet, commandQueue_));
+	std::unique_ptr<Tower> firstTower(new Tower(Tower::Type::Fire, textures_, 250.f, 5, Bullet::Type::FireBullet, commandQueue_));
 	firstTower_ = firstTower.get();
 	firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
 	firstTower_->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f);
@@ -228,5 +230,57 @@ sf::FloatRect GameField::GetGamefieldBounds() const
 
 	return bounds;
 }
+
+void GameField::MakeTowersShoot()
+{
+	// Setup command that stores all active enemies to activeEnemies_
+	Command enemyCollector;
+	enemyCollector.category_ = Category::Enemy;
+	enemyCollector.action_ = DerivedAction<Enemy>([this] (Enemy& enemy, sf::Time)
+	{
+		if (!enemy.IsDestroyed())
+			activeEnemies_.push_back(&enemy);
+	});
+
+	Command shootBullets;
+	shootBullets.category_ = Category::Tower; 
+	shootBullets.action_ = DerivedAction<Tower>([this] (Tower& tower, sf::Time)
+	{
+		// Ignore towers that can't shoot right now
+		if (!tower.CanShoot())
+			return;
+
+		float minDistance = std::numeric_limits<float>::max();
+		Enemy* closestEnemy = nullptr;
+
+		// Find closest enemy
+		for(Enemy* enemy : activeEnemies_)
+		{
+			float enemyDistance = Distance(tower, *enemy);
+
+			if (enemyDistance < minDistance && enemyDistance <= tower.GetRange())
+			{
+				closestEnemy = enemy;
+				minDistance = enemyDistance;
+			}
+		}
+
+		if (closestEnemy)
+		{
+			sf::Vector2f direction(closestEnemy->GetWorldPosition() - tower.GetWorldPosition());
+			std::cout << "shooting direction: " << direction.x << ", " << direction.y << std::endl;
+			tower.Shoot(commandQueue_, direction);
+		}
+			
+	});
+
+	// Push commands, reset active enemies
+	commandQueue_.Push(enemyCollector);
+	commandQueue_.Push(shootBullets);
+
+	activeEnemies_.clear();
+
+}
+
 
 

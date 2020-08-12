@@ -1,6 +1,7 @@
 #include "scene_node.hpp"
 #include "command.hpp"
 #include "command_queue.hpp"
+#include "utility.hpp"
 
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -154,11 +155,6 @@ void SceneNode::OnCommand(const Command &command, sf::Time dt) {
         }
 }
 
-bool Collision(const SceneNode& lhs, const SceneNode& rhs) 
-{
-    return lhs.GetBoundingRect()
-              .intersects(rhs.GetBoundingRect());
-}
 
 void SceneNode::DrawBoundingRect(sf::RenderTarget& target, sf::RenderStates) const
 {
@@ -172,5 +168,18 @@ void SceneNode::DrawBoundingRect(sf::RenderTarget& target, sf::RenderStates) con
 	shape.setOutlineThickness(1.f);
 
 	target.draw(shape);
+}
+
+
+bool Collision(const SceneNode& lhs, const SceneNode& rhs) 
+{
+    return lhs.GetBoundingRect()
+              .intersects(rhs.GetBoundingRect());
+}
+
+
+float Distance(const SceneNode& lhs, const SceneNode& rhs)
+{
+	return Length(lhs.GetWorldPosition() - rhs.GetWorldPosition());
 }
 
