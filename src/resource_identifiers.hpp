@@ -23,7 +23,8 @@ namespace Textures {
         TitleScreen,
         TitleBackground,
         logo,
-        Buttons
+        Buttons,
+        NoTexture
     };
 }
 

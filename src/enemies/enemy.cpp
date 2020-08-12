@@ -33,7 +33,8 @@ Textures::ID Enemy::ToTextureID(Enemy::Type type) {
 Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, float difficultyLevel, float travelledDistance, int directionIndex)
     : Entity(Table[type].hitpoints),
         type_(type), 
-        sprite_(textures.Get(ToTextureID(type))),
+        //sprite_(textures.Get(ToTextureID(type))),
+        sprite_(textures.Get(Textures::ID::NoTexture)),
         travelledDistance_(travelledDistance), 
         directionIndex_(directionIndex),
         difficultyLevel_(difficultyLevel),
