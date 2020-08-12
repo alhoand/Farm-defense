@@ -52,6 +52,7 @@ void GameField::LoadTextures() {
 	textures_.Load(Textures::ID::Grass, "../media/textures/grass.jpg");
 	textures_.Load(Textures::ID::FireTower, "../media/textures/tower.png");
 	textures_.Load(Textures::ID::FireBullet, "../media/textures/bullet.png");
+	textures_.Load(Textures::ID::NoTexture,      "../media/textures/noTexture.png");
 	
 }
 
@@ -166,7 +167,7 @@ void GameField::SpawnEnemies(sf::Time dt) {
  			std::unique_ptr<TestEnemy> newEnemy(new TestEnemy(textures_));
 			//newEnemy->setOrigin(newEnemy->GetBoundingRect().width/2, newEnemy->GetBoundingRect().height/2);
 			newEnemy->setPosition(spawnPosition_);
-			newEnemy->setScale(2.f, 2.f);
+			//newEnemy->setScale(2.f, 2.f);
 			newEnemy->SetVelocity(enemySpeed_, 0.f);
 			sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
 		} else
@@ -174,7 +175,7 @@ void GameField::SpawnEnemies(sf::Time dt) {
 			std::unique_ptr<Enemy> newEnemy(new BasicEnemy(textures_));
 			//newEnemy->setOrigin(newEnemy->GetBoundingRect().width/2, newEnemy->GetBoundingRect().height/2);
 			newEnemy->setPosition(spawnPosition_);
-			newEnemy->setScale(0.5f, 0.5f);
+			//newEnemy->setScale(0.5f, 0.5f);
 			newEnemy->SetVelocity(enemySpeed_, 0.f); //this need to be tought again if we have multiple paths
 			sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
 		}

@@ -29,7 +29,7 @@ Application::Application()
         textures_.Load(Textures::ID::logo,              "../media/textures/titleLogo.png");
         textures_.Load(Textures::ID::TitleBackground,   "../media/textures/tausta.jpg");
         textures_.Load(Textures::ID::Buttons,      "../media/textures/buttons.png");
-		
+		textures_.Load(Textures::ID::NoTexture,      "../media/textures/noTexture.png");
 
         RegisterStates();
         stateStack_.PushState(States::ID::Title);
