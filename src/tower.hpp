@@ -9,6 +9,7 @@
 #include "resource_identifiers.hpp"
 #include "command_queue.hpp"
 #include "data_tables.hpp"
+#include "utility.hpp"
 
 /*  ***TODO***
 * - all return values are void, to be changed for right ones
@@ -33,7 +34,7 @@ class Tower : public Entity {
         
         // The constructor for now. Most of the parameters should be given automatically, 
         // depending on type (inherited class)
-        Tower(Type type, const TextureHolder &textures, int range, int reloadSpeed, Bullet::Type bulletType, CommandQueue& commands);
+        Tower(Type type, const TextureHolder &textures, float range, int reloadSpeed, Bullet::Type bulletType, CommandQueue& commands);
 
         //Destructor
         virtual ~Tower() { };
@@ -46,7 +47,7 @@ class Tower : public Entity {
         virtual void UpdateCurrent(sf::Time dt, CommandQueue& commands) override;
 
         // Helper function
-        void Shoot(sf::Time dt, CommandQueue& commands);
+        void Shoot(CommandQueue& commands, sf::Vector2f direction);
 
         virtual unsigned int GetCategory() const override;
 
@@ -56,6 +57,8 @@ class Tower : public Entity {
 
         // Getter of permission to move
         bool CanMove() const;
+
+        bool CanShoot() const;
 
         // Sets the tower moving with state=true, stops with state=false.
         // Returns true if setting was succesful
@@ -67,24 +70,26 @@ class Tower : public Entity {
         virtual sf::FloatRect GetBoundingRect() const override;
 
         static Textures::ID ToTextureID(Type type);
+        float GetRange() const;
 
 
     protected:
         // There is velocity_ in Entity which, in this case, describes the rotational speed
         // Helper that makes textures::ID-types from Tower::Types
-        Tower::Type type_;
+        Tower::Type         type_;
         // Range of fire in units
-        int range_;
-        sf::Sprite sprite_;
-        // Where are the tower's guns pointed at (also gives direction for the bullet)
-        sf::Vector2f direction_;
+        float               range_;
+        sf::Sprite          sprite_;
+        // Where are the tower's guns pointed at (also gives direction for the bullet), should ALWAYS be unit vector
+        sf::Vector2f        direction_;
         // Some kind of container for enemies in range - this could also be a function that is called every tick
-        std::vector<Enemy> enemiesInRange_;
-        float reloadTime_;
+        std::vector<Enemy>  enemiesInRange_;
+        float               reloadTime_;
+        bool                canShoot_;
 
-        Bullet::Type bulletType_;
+        Bullet::Type        bulletType_;
         // bool isShooting_; not needed?
-        sf::Time countdown_;
-        CommandQueue& commands_;
-        Command shootCommand_;
+        sf::Time            countdown_;
+        //CommandQueue&   commands_;
+        Command             shootCommand_;
 };

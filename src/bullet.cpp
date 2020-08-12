@@ -41,7 +41,7 @@ namespace
 
 Bullet::Bullet(Type type, const TextureHolder& textures)
     : Entity(1), type_(type), sprite_(textures.Get(ToTextureID(type))),
-      speed_(), damage_(), damage_duration_() {
+      speed_(Table[type].speed), damage_(), damage_duration_() {
         sf::FloatRect bounds = sprite_.getLocalBounds();
         sprite_.setOrigin(bounds.width/2.f, bounds.height/2.f);
     }
