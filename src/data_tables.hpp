@@ -2,8 +2,8 @@
 
 #include "resource_identifiers.hpp"
 #include "enemies/enemy.hpp"
-#include "tower.hpp"
-#include "bullet.hpp"
+#include "towers/tower.hpp"
+#include "towers/bullet.hpp"
 
 #include <vector>
 
