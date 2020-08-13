@@ -149,7 +149,7 @@ void GameField::HandleCollisions()
 			auto& bullet = static_cast<Bullet&>(*pair.second);
 
 			// Apply bullet damage to enemy, destroy bullet
-			enemy.Damage(bullet.GetDamage());
+			enemy.TakeHit(bullet.GetDamage(), bullet.GetCategory());
 			std::cout << "HP now: " << enemy.GetHitpoints() << std::endl;
 			bullet.Destroy();
 
@@ -246,6 +246,7 @@ sf::FloatRect GameField::GetGamefieldBounds() const
 	return bounds;
 }
 
+// Does both: shoots enemies or slows them down depending on tower category
 void GameField::MakeTowersShoot()
 {
 	// Setup command that stores all active enemies to activeEnemies_
@@ -275,10 +276,10 @@ void GameField::MakeTowersShoot()
 
 			if (enemyDistance <= tower.GetRange())
 			{
-				// Does not work yet, but should be sufficient to slow enemies if tower is certain type
-				/* if (tower.GetType() == Tower::IceTower)
+				// Does not work yet, but should be sufficient to slow enemies if tower is category SlowingTower
+				/* if (tower.GetCategory() == Category::SlowingTower)
 				{
-					enemy.SlowDown();
+					enemy.SlowDown(); //duration?
 					continue;
 				} */
 				if (enemyDistance < minDistance)

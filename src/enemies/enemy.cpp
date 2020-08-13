@@ -119,10 +119,6 @@ sf::FloatRect Enemy::GetBoundingRect() const
 	return GetWorldTransform().transformRect(sprite_.getGlobalBounds());
 }
 
-Enemy::Type Enemy::GetType() const
-{
-    return type_;
-}
 
 //Enemy movement pattern
 void Enemy::UpdateMovementPattern(sf::Time dt)
@@ -178,6 +174,13 @@ void Enemy::SlowDown()
 {
     isSlowedDown_ = true;
 }
+
+// Default case, can be altered in derived classes and take into account the bullet category
+void Enemy::TakeHit(int damage, unsigned int)
+{
+    Damage(damage);
+}
+
 
 float Enemy::DifficultyCoefficient() const
 {

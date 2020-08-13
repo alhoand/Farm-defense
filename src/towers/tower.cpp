@@ -64,8 +64,13 @@ void Tower::Shoot(CommandQueue& commands, sf::Vector2f direction) {
     commands.Push(shootCommand_);
 }
 
+
 unsigned int Tower::GetCategory() const {
-    return Category::Tower;
+    if (type_ == Tower::Water)
+    {
+        return Category::SlowingTower;
+    }
+    return Category::ShootingTower;
 }
 
 

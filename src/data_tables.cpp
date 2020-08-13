@@ -69,7 +69,7 @@ std::vector<BulletData>	InitializeBulletData() {
 	data[Bullet::IceBullet].damage = 1;
 	data[Bullet::IceBullet].damageDuration = 1;
 
-	data[Bullet::IceBullet].texture = Textures::IceBullet;
+	data[Bullet::WoodBullet].texture = Textures::WoodBullet;
 	data[Bullet::WoodBullet].speed = 75.f;
 	data[Bullet::WoodBullet].damage = 1;
 	data[Bullet::WoodBullet].damageDuration = 5;

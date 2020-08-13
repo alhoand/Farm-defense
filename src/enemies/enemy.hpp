@@ -30,9 +30,9 @@ class Enemy : public Entity {
         void            DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
         unsigned int    GetCategory() const override; // might also be made virtual later, but not now
         sf::FloatRect   GetBoundingRect() const override;
-        Enemy::Type            GetType() const; // not needed for now, but made for future
-        float           GetSpeed() const;
-        void            SlowDown();
+        virtual float   GetSpeed() const; // some enemies can resist slowing down so can be redefined in derived class
+        void            SlowDown(); 
+        virtual void    TakeHit(int damage, unsigned int category); // some enemies resist or take more damage if bullet is certain type, so that can be defined in derived classes
         bool            IsMarkedForRemoval() const override;
 
     protected:

@@ -6,10 +6,17 @@ namespace Category {
     enum Type {
         None = 0,
         Scene = 1 << 0,
-        Tower = 1 << 1,
-        Enemy = 1 << 2,
-        Ghost = 1 << 3,
-        Bullet = 1 << 4
+        ShootingTower = 1 << 1,
+        SlowingTower = 1 << 2,
+        Enemy = 1 << 3,
+        Ghost = 1 << 4,
+        FireBullet = 1 << 5,
+        IceBullet = 1 << 6,
+        WoodBullet = 1 << 7,
+
+        Tower = ShootingTower | SlowingTower,
+        Bullet = FireBullet | IceBullet | WoodBullet
+        
     };
 }
 

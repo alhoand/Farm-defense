@@ -50,5 +50,21 @@ void Bullet::DrawCurrent(sf::RenderTarget& target,sf::RenderStates states) const
 
 unsigned int Bullet::GetCategory() const
 {
-	return Category::Bullet;
+    unsigned int type;
+    switch (type_)
+    {
+        case Bullet::FireBullet :
+            type = Category::FireBullet;
+            break;
+        case Bullet::WoodBullet :
+            type = Category::WoodBullet;
+            break;
+        case Bullet::IceBullet :
+            type = Category::IceBullet;
+            break;
+        default:
+            type = Category::FireBullet;
+            break;
+    }
+	return type;
 }
