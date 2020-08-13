@@ -13,10 +13,12 @@ std::vector<EnemyData> InitializeEnemyData()
 
 	data[Enemy::Fire].hitpoints = 50;
 	data[Enemy::Fire].speed = 50.f;
+	data[Enemy::Fire].slowDownRate = 0.8;
 	data[Enemy::Fire].texture = Textures::Fire;
 
 	data[Enemy::Leaf].hitpoints = 10;
 	data[Enemy::Leaf].speed = 50.f;
+	data[Enemy::Leaf].slowDownRate = 0.8;
 	data[Enemy::Leaf].texture = Textures::Leaf;
 
 	return data;
