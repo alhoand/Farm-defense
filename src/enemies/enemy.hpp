@@ -30,7 +30,9 @@ class Enemy : public Entity {
         void            DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
         unsigned int    GetCategory() const override; // might also be made virtual later, but not now
         sf::FloatRect   GetBoundingRect() const override;
+        Enemy::Type            GetType() const; // not needed for now, but made for future
         float           GetSpeed() const;
+        void            SlowDown();
         bool            IsMarkedForRemoval() const override;
 
     protected:
@@ -48,7 +50,9 @@ class Enemy : public Entity {
 		std::size_t     directionIndex_;
         unsigned int    difficultyLevel_;
         float           difficultyIncrement_;
-        int             speed_;
+        int             maxSpeed_;
+        bool            isSlowedDown_;
+        float           slowDownRate_;
         bool            isMarkedForRemoval_;
         bool            showDeathAnimation_;
         bool            hasMovementAnimation_;

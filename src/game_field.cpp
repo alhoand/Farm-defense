@@ -273,11 +273,21 @@ void GameField::MakeTowersShoot()
 		{
 			float enemyDistance = Distance(tower, *enemy);
 
-			if (enemyDistance < minDistance && enemyDistance <= tower.GetRange())
+			if (enemyDistance <= tower.GetRange())
 			{
-				closestEnemy = enemy;
-				minDistance = enemyDistance;
+				// Does not work yet, but should be sufficient to slow enemies if tower is certain type
+				/* if (tower.GetType() == Tower::IceTower)
+				{
+					enemy.SlowDown();
+					continue;
+				} */
+				if (enemyDistance < minDistance)
+				{
+					closestEnemy = enemy;
+					minDistance = enemyDistance;
+				}
 			}
+			
 		}
 
 		if (closestEnemy)
@@ -296,6 +306,3 @@ void GameField::MakeTowersShoot()
 	activeEnemies_.clear();
 
 }
-
-
-
