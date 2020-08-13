@@ -38,7 +38,7 @@ void Label::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	states.transform *= getTransform();
 	target.draw(text_, states);
-	DrawBoundingRect(target, states);
+	//DrawBoundingRect(target, states);
 }
 // Sets text of the label element
 // By default centers the text, otherwise set second param false

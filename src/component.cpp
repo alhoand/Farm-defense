@@ -69,7 +69,7 @@ sf::Vector2f Component::GetWorldPosition() const
 {
     return GetWorldTransform() * sf::Vector2f();
 }
-
+/*
 void Component::DrawBoundingRect(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	sf::FloatRect rect = GetGlobalBounds();
@@ -83,6 +83,7 @@ void Component::DrawBoundingRect(sf::RenderTarget& target, sf::RenderStates stat
 
 	target.draw(shape);
 }
+*/
 
 /*GUI::Component* Component::GetParent() const {
 	return parent_;

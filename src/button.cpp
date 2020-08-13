@@ -123,7 +123,7 @@ void Button::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 	states.transform *= getTransform();
 	target.draw(sprite_, states);
 	target.draw(text_, states);
-	DrawBoundingRect(target, states);
+	//DrawBoundingRect(target, states);
 }
 
 }

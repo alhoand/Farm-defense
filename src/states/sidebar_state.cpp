@@ -82,8 +82,9 @@ bool SidebarState::HandleEvent(const sf::Event& event) {
 	if (sf::Event::KeyPressed && event.key.code == sf::Keyboard::U)
     {
         std::cout << "Sidebar: U-KeyPressed" << std::endl;
-		//RequestStackPop();
-        //RequestStackPush(States::ID::GameUpgradeTowerSideBar);
+		RequestStackPop();
+        RequestStackPush(States::ID::Sidebar);
+        RequestStackPush(States::ID::GameUpgradeTowerSideBar);
     }
     
     //If p is pressed, go to Pause state

@@ -123,7 +123,7 @@ bool UpgradeTowerState::HandleEvent(const sf::Event& event) {
     if (sf::Event::KeyPressed && event.key.code == sf::Keyboard::I)
     {
         std::cout << "Upgrade: I-KeyPressed" << std::endl;
-		//RequestStackPop();
+		RequestStackPop();
         //RequestStackPush(States::ID::Sidebar);
     }
 

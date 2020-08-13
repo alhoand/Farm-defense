@@ -45,7 +45,7 @@ class Component : public sf::Drawable, public sf::Transformable, private sf::Non
 
         virtual sf::FloatRect GetGlobalBounds() const{return sf::FloatRect();}
         virtual void		  HandleEvent(const sf::Event& event) = 0;
-        void			     DrawBoundingRect(sf::RenderTarget& target, sf::RenderStates states) const;
+        //void			     DrawBoundingRect(sf::RenderTarget& target, sf::RenderStates states) const;
 
         GUI::ID             GetType() const;
         void                SetType(GUI::ID type);

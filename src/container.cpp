@@ -63,7 +63,7 @@ void Container::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 	for(const Component::Ptr& child: children_) 
 	{
 		target.draw(*child, states);
-		GUI::Component::DrawBoundingRect(target, states);			
+		//GUI::Component::DrawBoundingRect(target, states);			
 	}
 		
 	
