@@ -1,13 +1,13 @@
 #pragma once
 
-#include "entity.hpp"
-#include "resource_identifiers.hpp"
-#include "data_tables.hpp"
+#include "../entity.hpp"
+#include "../resource_identifiers.hpp"
+#include "../data_tables.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 
 /*  ***TODO***
-* - all return values are void, to be changed for right ones
+* 
 */
 
 //Example of different bullet types, used if bullet is not an abstract class.
@@ -24,9 +24,8 @@ class Bullet : public Entity {
         };
 
     public:
-        //Constructor for now - this is probably not needed?
-        // Bullet(Type type, int damage, int damage_duration, const TextureHolder& textures);
-        // A constructor with fewer parameters
+
+        // Constructor
         Bullet(Type type, const TextureHolder& textures);
 
         //Destructor, only needed if abstract class
@@ -50,7 +49,6 @@ class Bullet : public Entity {
     protected:
         Type            type_;
         sf::Sprite      sprite_;
-        // sf::Vector2f    targetDirection_; - not maybe needed, if tower gives the direction?
         float           speed_;
         int             damage_;
         int             damage_duration_;

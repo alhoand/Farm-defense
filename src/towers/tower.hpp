@@ -1,14 +1,15 @@
 #pragma once
 
 //Initial header file for abstract tower class
-#include "scene_node.hpp"
 #include "bullet.hpp"
-#include "enemies/enemy.hpp"
-#include "category.hpp"
-#include "entity.hpp"
-#include "resource_identifiers.hpp"
-#include "command_queue.hpp"
-#include "data_tables.hpp"
+
+#include "../scene_node.hpp"
+#include "../enemies/enemy.hpp"
+#include "../category.hpp"
+#include "../entity.hpp"
+#include "../resource_identifiers.hpp"
+#include "../command_queue.hpp"
+#include "../data_tables.hpp"
 
 class Tower : public Entity {
     public:
@@ -19,17 +20,11 @@ class Tower : public Entity {
             TypeCount
         };
 
-        //Constructors
-
         // Default constructor - is it needed?
         Tower();
 
         // The constructor we want to use - uses data tables in order to determine the attributes' values
         Tower(Tower::Type type, const TextureHolder &textures);
-        
-        // The constructor for now. Most of the parameters should be given automatically, 
-        // depending on type (inherited class)
-        //Tower(Type type, const TextureHolder &textures, float range, int reloadSpeed, Bullet::Type bulletType, CommandQueue& commands);
 
         //Destructor
         virtual                 ~Tower() { };

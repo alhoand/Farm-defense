@@ -42,6 +42,7 @@ struct TowerData {
 std::vector<TowerData>	InitializeTowerData();
 
 struct BulletData {
+	Textures::ID	texture;
     float           speed;
     int             damage;
     int             damageDuration;
