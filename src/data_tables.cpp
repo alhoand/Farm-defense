@@ -33,7 +33,7 @@ std::vector<Direction> InitializeEnemyPath()
 	return path;
 }
 
-std::vector<TowerData> InitializeTowerData() {
+/*std::vector<TowerData> InitializeTowerData() {
 	std::vector<TowerData> data(Tower::TypeCount);
 
 	data[Tower::Fire].texture = Textures::FireTower;
@@ -73,4 +73,4 @@ std::vector<BulletData>	InitializeBulletData() {
 	data[Bullet::WoodBullet].damageDuration = 5;
 
 	return data;
-}
+}*/

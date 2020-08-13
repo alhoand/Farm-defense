@@ -14,17 +14,16 @@
 class Tower : public Entity {
     public:
         enum Type {
-            Fire,
-            Water,
-            Leaf,
+            Basic,
+            Advanced,
+            Super,
             TypeCount
         };
 
-        // Default constructor - is it needed?
         Tower();
 
-        // The constructor we want to use - uses data tables in order to determine the attributes' values
-        Tower(Tower::Type type, const TextureHolder &textures);
+        // Another constructor, inherited classes use this
+        Tower(Tower::Type type, const TextureHolder& textures, float range, float reloadTime);
 
         //Destructor
         virtual                 ~Tower() { };
@@ -56,25 +55,21 @@ class Tower : public Entity {
 
     protected:
         Textures::ID        ToTextureID(Type type);
-        void                CreateBullet(SceneNode& node, const TextureHolder& textures) const;
+        virtual void        CreateBullet(SceneNode& node, const TextureHolder& textures) const = 0;
 
-        // There is velocity_ in Entity which, in this case, describes the rotational speed
-        // Helper that makes textures::ID-types from Tower::Types
         Tower::Type         type_;
+        sf::Sprite          sprite_;
         // Range of fire in units
         float               range_;
-        sf::Sprite          sprite_;
-        // Where are the tower's guns pointed at (also gives direction for the bullet), should ALWAYS be unit vector
+        // Where are the tower's guns pointed at, should ALWAYS be unit vector
         sf::Vector2f        direction_;
-        // Some kind of container for enemies in range - this could also be a function that is called every tick
-        //std::vector<Enemy>  enemiesInRange_;
+        // How often can the tower shoot (in seconds)
         float               reloadTime_;
+
         bool                canShoot_;
 
         //Bullet::Type        bulletType_;
-        int                 bulletType_; //doesn't work anymore with Bullet::Type
-        // bool isShooting_; not needed?
+
         sf::Time            countdown_;
-        //CommandQueue&   commands_;
         Command             shootCommand_;
 };

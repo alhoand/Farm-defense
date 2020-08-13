@@ -2,24 +2,31 @@
 
 #include "../resource_holder.hpp"
 #include "../category.hpp"
-#include "../data_tables.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 
 #include <cmath>
 
-namespace {
-	const std::vector<BulletData> table = InitializeBulletData();
-}
-
-Bullet::Bullet(Type type, const TextureHolder& textures)
+/*Bullet::Bullet(Type type, const TextureHolder& textures)
     : Entity(1),
       type_(type), 
-      sprite_(textures.Get(table[type].texture)),
+      sprite_(textures.Get(ToTextureID(type))),
       speed_(table[type].speed), 
       damage_(table[type].damage), 
-      damage_duration_(table[type].damageDuration) {
+      damageDuration_(table[type].damageDuration) {
+        sf::FloatRect bounds = sprite_.getLocalBounds();
+        sprite_.setOrigin(bounds.width/2.f, bounds.height/2.f);
+    }*/
+
+// Constructor to be used with inherited classes
+Bullet::Bullet(Type type, const TextureHolder& textures, float speed, int damage, int damageDuration)
+    : Entity(1),
+      type_(type), 
+      sprite_(textures.Get(ToTextureID(type))),
+      speed_(speed), 
+      damage_(damage), 
+      damageDuration_(damageDuration) {
         sf::FloatRect bounds = sprite_.getLocalBounds();
         sprite_.setOrigin(bounds.width/2.f, bounds.height/2.f);
     }
@@ -51,4 +58,17 @@ void Bullet::DrawCurrent(sf::RenderTarget& target,sf::RenderStates states) const
 unsigned int Bullet::GetCategory() const
 {
 	return Category::Bullet;
+}
+
+Textures::ID Bullet::ToTextureID(Bullet::Type type) {
+    switch (type) {
+        case Bullet::Type::Basic:
+            return Textures::ID::BasicBullet;
+        case Bullet::Type::Advanced:
+            return Textures::ID::AdvancedBullet;
+        case Bullet::Type::Super:
+            return Textures::ID::SuperBullet;
+        default: 
+            return Textures::ID::BasicBullet;
+    }
 }

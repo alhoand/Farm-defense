@@ -2,7 +2,6 @@
 
 #include "../entity.hpp"
 #include "../resource_identifiers.hpp"
-#include "../data_tables.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 
@@ -17,16 +16,19 @@
 class Bullet : public Entity {
     public:
         enum Type {
-            FireBullet,
-            IceBullet,
-            WoodBullet,
+            Basic,
+            Advanced,
+            Super,
             TypeCount
         };
 
     public:
 
         // Constructor
-        Bullet(Type type, const TextureHolder& textures);
+        // Bullet(Type type, const TextureHolder& textures);
+
+        // Constructor to be used with inherited classes
+        Bullet(Type type, const TextureHolder& textures, float speed, int damage, int damageDuration);
 
         //Destructor, only needed if abstract class
         virtual ~Bullet() {}
@@ -51,5 +53,5 @@ class Bullet : public Entity {
         sf::Sprite      sprite_;
         float           speed_;
         int             damage_;
-        int             damage_duration_;
+        int             damageDuration_;
 };

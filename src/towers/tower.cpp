@@ -1,26 +1,17 @@
 #include "tower.hpp"
-
 #include "../utility.hpp"
-
 #include <math.h> 
 
-namespace {
-	const std::vector<TowerData> table = InitializeTowerData();
-}
-
 // Constructor
-Tower::Tower(Tower::Type type, const TextureHolder &textures)
+Tower::Tower(Tower::Type type, const TextureHolder &textures, float range, float reloadTime)
     : Entity(1), 
-    type_(type), 
-    range_(table[type].range),
-    sprite_(textures.Get(table[type].texture)), 
-    direction_(),
-    reloadTime_(table[type].reloadTime), 
-    canShoot_(false), 
-    bulletType_(table[type].bulletType), 
-    countdown_(sf::Time::Zero),
-    shootCommand_() 
-    {
+      type_(type),
+      sprite_(textures.Get(ToTextureID(type))),
+      range_(range), 
+      reloadTime_(reloadTime), 
+      canShoot_(false), 
+      countdown_(sf::Time::Zero),
+      shootCommand_() {
         sf::FloatRect bounds = sprite_.getLocalBounds();
         sprite_.setOrigin(bounds.width/2.f, bounds.height/2.f);
         shootCommand_.category_ = Category::Scene;
@@ -53,11 +44,6 @@ void Tower::UpdateCurrent(sf::Time dt, CommandQueue&) {
 }
 
 void Tower::Shoot(CommandQueue& commands, sf::Vector2f direction) {
-    // this is a first try at rotating the tower
-    // this is maybe not necessary, if towers are depicted somewhere else than strictly from above
-    /*int degrees = pow(tan(direction.y / direction.x), -1);
-    this->setRotation(degrees);*/
-
     canShoot_ = false;
     direction_ = UnitVector(direction);
     std::cout << "direction in Shoot function: " << direction_.x << ", " << direction_.y << std::endl;
@@ -100,13 +86,12 @@ sf::FloatRect Tower::GetBoundingRect() const {
     return GetWorldTransform().transformRect(sprite_.getGlobalBounds()); 
 }
 
-float Tower::GetRange() const
-{
+float Tower::GetRange() const {
     return range_;
 }
 
-
-void Tower::CreateBullet(SceneNode& node, const TextureHolder& textures) const {
+//This will be pure virtual, is not needed here
+/*void Tower::CreateBullet(SceneNode& node, const TextureHolder& textures) const {
     std::cout << "Creating a bullet" << std::endl;
 
     std::unique_ptr<Bullet> bullet(new Bullet(static_cast<Bullet::Type>(bulletType_), textures));
@@ -119,4 +104,17 @@ void Tower::CreateBullet(SceneNode& node, const TextureHolder& textures) const {
     bullet->SetVelocity(bullet->GetSpeed() * direction_);
     std::cout << "Bullet velocity: " << bullet->GetVelocity().x << ", " << bullet->GetVelocity().y << std::endl;
     node.AttachChild(std::move(bullet));
+}*/
+
+Textures::ID Tower::ToTextureID(Tower::Type type) {
+    switch (type) {
+        case Tower::Type::Basic:
+            return Textures::ID::BasicTower;
+        case Tower::Type::Advanced:
+            return Textures::ID::AdvancedTower;
+        case Tower::Type::Super:
+            return Textures::ID::SuperTower;
+        default: 
+            return Textures::ID::BasicTower;
+    }
 }
