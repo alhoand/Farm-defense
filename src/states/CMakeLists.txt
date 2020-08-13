@@ -6,6 +6,8 @@ target_sources(TowerDefense
 	menu_state.cpp
 	pause_state.cpp
 	pause_state.hpp
+	sidebar_state.hpp
+	sidebar_state.cpp
 	state.hpp        
 	state.cpp
 	title_state.hpp

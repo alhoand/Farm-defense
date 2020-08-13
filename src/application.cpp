@@ -7,6 +7,7 @@
 #include "states/menu_state.hpp"
 #include "states/pause_state.hpp"
 #include "states/upgrade_tower_state.hpp"
+#include "states/sidebar_state.hpp"
 #include <iostream>
 
 static const sf::Time timePerFrame = sf::seconds(1.f / 60.f);
@@ -41,6 +42,7 @@ void Application::RegisterStates() {
     stateStack_.RegisterState<TitleState>(States::ID::Title);
     stateStack_.RegisterState<MenuState>(States::ID::Menu);
     stateStack_.RegisterState<GameState>(States::ID::Game);
+    stateStack_.RegisterState<SidebarState>(States::ID::Sidebar);
     stateStack_.RegisterState<UpgradeTowerState>(States::ID::GameUpgradeTowerSideBar);
     stateStack_.RegisterState<PauseState>(States::ID::Pause);
 }

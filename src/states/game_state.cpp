@@ -49,9 +49,15 @@ bool GameState::HandleEvent(const sf::Event& event) {
     if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P))
 		RequestStackPush(States::ID::Pause);
 
-    if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::I)) {
-        std::cout << "Requested info " << std::endl;
+    if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::U))
+    {
+        std::cout << "Requested upgrade " << std::endl;
 		RequestStackPush(States::ID::GameUpgradeTowerSideBar);
+    }
+    if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::I))
+    {
+        std::cout << "Requested info " << std::endl;
+        RequestStackPush(States::ID::Sidebar);
     }
         
     GUIContainer_.HandleEvent(event);

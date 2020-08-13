@@ -19,9 +19,9 @@ UpgradeTowerState::UpgradeTowerState(StateStack& stack, Context context) :
     viewSize_(context.window_->getView().getSize().x/4.f, context.window_->getView().getSize().y),
     GUIContainer_()
     {
-        titleText_ = std::make_shared<GUI::Label>("", *context.fonts_, 40, Fonts::Main);
+        titleText_ = std::make_shared<GUI::Label>("", *context.fonts_, 50, Fonts::Main);
         titleText_->CenterTextOrigin();
-        titleText_->setPosition(viewSize_.x/2.f, 30.f);
+        titleText_->setPosition(viewSize_.x/2.f, 50.f);
         GUIContainer_.Pack(titleText_, true);
 
         descriptionText_ = std::make_shared<GUI::Label>("", *context.fonts_, 30, Fonts::Main);
@@ -29,7 +29,7 @@ UpgradeTowerState::UpgradeTowerState(StateStack& stack, Context context) :
         descriptionText_->setPosition(viewSize_.x/2.f, 150.f);
         GUIContainer_.Pack(descriptionText_, true);
         
-        auto upgradeButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_);
+        auto upgradeButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_,sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
         upgradeButton->setOrigin(upgradeButton->GetGlobalBounds().width/2.f, upgradeButton->GetGlobalBounds().height/2.f);
         upgradeButton->setPosition(viewSize_.x/2.f, 300.f);
         upgradeButton->SetText("Upgrade");
@@ -109,7 +109,7 @@ bool UpgradeTowerState::HandleEvent(const sf::Event& event) {
     }
         
     // If I is pressed, make the sidebar go away
-	if (sf::Event::KeyPressed && event.key.code == sf::Keyboard::I)
+	if (sf::Event::KeyPressed && event.key.code == sf::Keyboard::U)
     {
         std::cout << "KeyPressed" << std::endl;
 		RequestStackPop();
@@ -119,6 +119,12 @@ bool UpgradeTowerState::HandleEvent(const sf::Event& event) {
     {
 		RequestStackPush(States::ID::Pause);
 	}
+    if (sf::Event::KeyPressed && event.key.code == sf::Keyboard::I)
+    {
+        std::cout << "Upgrade: I-KeyPressed" << std::endl;
+		RequestStackPop();
+        RequestStackPush(States::ID::Sidebar);
+    }
 
     //Otherwise, don't propagate the events
     return false;
