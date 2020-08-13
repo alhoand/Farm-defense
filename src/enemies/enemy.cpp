@@ -125,8 +125,9 @@ void Enemy::UpdateMovementPattern(sf::Time dt)
 		{
 			directionIndex_ = (directionIndex_ + 1) % Path.size();
 			travelledDistance_ = 0.f;
+            sprite_.setRotation(Path[directionIndex_].angle); //kääntää enemyn hitboxin animaation alla kun suuntaa muuttuu, jos rikkoo jotain ni pois vaan
 		}
-        sprite_.setRotation(Path[directionIndex_].angle); 
+        
 		float radians = ToRadian(Path[directionIndex_].angle); 
 		float vx = speed_ * std::cos(radians);
 		float vy = speed_ * std::sin(radians);
