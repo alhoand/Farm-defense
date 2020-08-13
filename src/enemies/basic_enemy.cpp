@@ -21,11 +21,11 @@ BasicEnemy::BasicEnemy(const TextureHolder& textures, float difficultyLevel, flo
         //movementAnimation_.SetRepeating(true);
         //sf::FloatRect animationBounds = movementAnimation_.GetLocalBounds();
         //movementAnimation_.setOrigin(animationBounds.width/2.f, animationBounds.height/2.f);
-        hasMovementAnimation_ = true;
+        //hasMovementAnimation_ = true;
         
         sprite_.setTexture(textures.Get(Textures::ID::Leppis));
         
-        sf::FloatRect bounds = movementAnimation_.GetLocalBounds();
+        sf::FloatRect bounds = movementAnimation_.GetLocalBounds(); 
         sprite_.setOrigin(bounds.width/2.f, bounds.height/2.f);
     }
 

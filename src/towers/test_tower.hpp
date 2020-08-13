@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../tower.hpp"
+#include "tower.hpp"
 
 #include <iostream>
 #include <string>
