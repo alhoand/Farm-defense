@@ -20,7 +20,6 @@ BasicEnemy::BasicEnemy(const TextureHolder& textures, float difficultyLevel, flo
 	    movementAnimation_.SetDuration(sf::seconds(0.5));
         movementAnimation_.SetRepeating(true);
         sf::FloatRect animationBounds = movementAnimation_.GetLocalBounds();
-        //movementAnimation_.setOrigin(animationBounds.width/2.f, animationBounds.height/2.f);
         hasMovementAnimation_ = true;
         
         sprite_ = movementAnimation_.GetFirstFrame();
