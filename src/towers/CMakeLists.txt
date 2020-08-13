@@ -3,6 +3,8 @@ target_sources(TowerDefense
         bullet.cpp
         bullet.hpp
         test_tower.hpp
-        tower.cpp
         tower.hpp
+        tower.cpp
+        basic_tower.hpp
+        basic_tower.cpp
 )
