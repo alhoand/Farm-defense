@@ -51,8 +51,8 @@ Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, float difficultyLe
         deathAnimation_.SetFrameSize(sf::Vector2i(187, 201));
 	    deathAnimation_.SetNumFrames(15);
 	    deathAnimation_.SetDuration(sf::seconds(0.35));
-        sf::FloatRect deathAnimationBounds = deathAnimation_.GetLocalBounds();
-        deathAnimation_.setOrigin(deathAnimationBounds.width/2.f, deathAnimationBounds.height/2.f);
+        //sf::FloatRect deathAnimationBounds = deathAnimation_.GetLocalBounds();
+        //deathAnimation_.setOrigin(deathAnimationBounds.width/2.f, deathAnimationBounds.height/2.f);
 
     }
 
@@ -126,7 +126,7 @@ void Enemy::UpdateMovementPattern(sf::Time dt)
 			directionIndex_ = (directionIndex_ + 1) % Path.size();
 			travelledDistance_ = 0.f;
 		}
-
+        sprite_.setRotation(Path[directionIndex_].angle); 
 		float radians = ToRadian(Path[directionIndex_].angle); 
 		float vx = speed_ * std::cos(radians);
 		float vy = speed_ * std::sin(radians);
@@ -139,8 +139,13 @@ void Enemy::UpdateMovementPattern(sf::Time dt)
 } 
 
 void Enemy::UpdateMovementAnimation(sf::Time dt){
-    if(hasMovementAnimation_)
-        movementAnimation_.Update(dt);
+    if(hasMovementAnimation_){
+        //sf::Vector2f vel = GetVelocity();
+        //int rotation = atan(-vel.x/vel.y)*57.29577+90; //*57.29577 to convert rad -> deg
+        //movementAnimation_.Update(dt,rotation);
+        //jos tää menee rikki ni sen saa taas toimii noilla ylemmillä riveillä
+        movementAnimation_.Update(dt,Path[directionIndex_].angle);
+    }
 }
 
 // initialized false, can be changed in derived classes

@@ -47,6 +47,9 @@ sf::Sprite Animation::GetFirstFrame() const
 void Animation::SetFrameSize(sf::Vector2i frameSize)
 {
 	frameSize_ = frameSize;
+	sprite_.setTextureRect(sf::IntRect(0,0,frameSize_.x,frameSize_.y));
+	sf::FloatRect bounds = sprite_.getLocalBounds();
+    sprite_.setOrigin(bounds.width/2.f, bounds.height/2.f);
 }
 
 sf::Vector2i Animation::GetFrameSize() const
@@ -111,7 +114,6 @@ void Animation::Update(sf::Time dt)
 
 	sf::Vector2i textureBounds(sprite_.getTexture()->getSize());
 	sf::IntRect textureRect = sprite_.getTextureRect();
-
 	if (currentFrame_ == 0)
 		textureRect = sf::IntRect(0, 0, frameSize_.x, frameSize_.y);
 	
@@ -145,6 +147,12 @@ void Animation::Update(sf::Time dt)
 	}
 
 	sprite_.setTextureRect(textureRect);
+}
+
+//Takes rotation of animation in degrees to rotate the whole animation
+void Animation::Update(sf::Time dt, int rotation){
+	sprite_.setRotation(rotation);
+	Update(dt);
 }
 
 void Animation::draw(sf::RenderTarget& target, sf::RenderStates states) const

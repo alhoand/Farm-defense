@@ -31,6 +31,7 @@ class Animation : public sf::Drawable, public sf::Transformable
 		sf::FloatRect 			GetGlobalBounds() const;
 
 		void 					Update(sf::Time dt);
+		void					Update(sf::Time dt,int rotation);
 
         void                    Draw(sf::RenderTarget& target, sf::RenderStates states) {draw(target,states);}
 

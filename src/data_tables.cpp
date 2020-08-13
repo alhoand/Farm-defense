@@ -38,7 +38,7 @@ std::vector<TowerData> InitializeTowerData() {
 
 	data[Tower::Fire].texture = Textures::FireTower;
 	data[Tower::Fire].range = 400;
-    data[Tower::Fire].reloadTime = 1;
+    data[Tower::Fire].reloadTime = 5;
     data[Tower::Fire].bulletType = Bullet::FireBullet;
 
 	data[Tower::Water].texture = Textures::WaterTower;
