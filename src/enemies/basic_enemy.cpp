@@ -14,19 +14,20 @@ BasicEnemy::BasicEnemy(const TextureHolder& textures, float difficultyLevel, flo
         
         showDeathAnimation_ = true;
         
-        //movementAnimation_.SetTexture(textures.Get(Textures::ID::Leppis)),
-        //movementAnimation_.SetFrameSize(sf::Vector2i(150, 175));
-	    //movementAnimation_.SetNumFrames(9);
-	    //movementAnimation_.SetDuration(sf::seconds(0.5));
-        //movementAnimation_.SetRepeating(true);
-        //sf::FloatRect animationBounds = movementAnimation_.GetLocalBounds();
+        movementAnimation_.SetTexture(textures.Get(Textures::ID::Leppis)),
+        movementAnimation_.SetFrameSize(sf::Vector2i(150, 175));
+	    movementAnimation_.SetNumFrames(9);
+	    movementAnimation_.SetDuration(sf::seconds(0.5));
+        movementAnimation_.SetRepeating(true);
+        sf::FloatRect animationBounds = movementAnimation_.GetLocalBounds();
         //movementAnimation_.setOrigin(animationBounds.width/2.f, animationBounds.height/2.f);
-        //hasMovementAnimation_ = true;
+        hasMovementAnimation_ = true;
         
-        sprite_.setTexture(textures.Get(Textures::ID::Leppis));
-        
-        sf::FloatRect bounds = movementAnimation_.GetLocalBounds(); 
-        sprite_.setOrigin(bounds.width/2.f, bounds.height/2.f);
+        sprite_ = movementAnimation_.GetFirstFrame();
+        sprite_.setOrigin(animationBounds.width/2.f, animationBounds.height/2.f);
+
+        movementAnimation_.setScale(sf::Vector2f(0.5,0.5));
+        sprite_.setScale(sf::Vector2f(0.5,0.5));
     }
 
 // Basic enemy dies immediately when taking hit
