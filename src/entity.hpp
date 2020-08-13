@@ -14,7 +14,7 @@ public:
     int                 GetHitpoints() const;
     void				Destroy();
     virtual bool		IsDestroyed() const;
-    void                Damage(int damage);
+    virtual void        Damage(int damage);
 
 protected: 
     virtual void        UpdateCurrent(sf::Time dt, CommandQueue&);

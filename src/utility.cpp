@@ -7,12 +7,12 @@
 
 void CenterOrigin(sf::Sprite sprite) {
     sf::FloatRect bounds = sprite.getLocalBounds();
-	sprite.setOrigin(::floor(bounds.left + bounds.width / 2.f), ::floor(bounds.top + bounds.height / 2.f));
+ sprite.setOrigin(::floor(bounds.left + bounds.width / 2.f), ::floor(bounds.top + bounds.height / 2.f));
 }
 
 void CenterOrigin(sf::Text& text) {
     sf::FloatRect bounds = text.getLocalBounds();
-	text.setOrigin(::floor(bounds.left + bounds.width / 2.f), ::floor(bounds.top + bounds.height / 2.f));
+ text.setOrigin(::floor(bounds.left + bounds.width / 2.f), ::floor(bounds.top + bounds.height / 2.f));
 }
 
 float ToRadian(float degree)

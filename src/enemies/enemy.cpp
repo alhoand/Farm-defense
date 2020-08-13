@@ -1,7 +1,5 @@
 #include "enemy.hpp"
 #include "../utility.hpp"
-#include "../data_tables.hpp"
-#include "../command_queue.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
@@ -15,8 +13,9 @@
 namespace
 {
 	const std::vector<EnemyData> Table = InitializeEnemyData();
+    const std::vector<Direction> Path = InitializeEnemyPath();
 }
-
+/*
 Textures::ID Enemy::ToTextureID(Enemy::Type type) {
     switch (type) {
         case Enemy::Type::Fire:
@@ -28,37 +27,45 @@ Textures::ID Enemy::ToTextureID(Enemy::Type type) {
         default: 
             return Textures::ID::Fire;
     }
-}
+}*/
 
 // Constructor that works with SFML
-Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, float travelledDistance, int directionIndex)
+Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, float difficultyLevel, float travelledDistance, int directionIndex)
     : Entity(Table[type].hitpoints),
         type_(type), 
-        sprite_(textures.Get(ToTextureID(type))),
+        //sprite_(textures.Get(ToTextureID(type))),
+        sprite_(textures.Get(Textures::ID::NoTexture)),
+        deathAnimation_(textures.Get(Textures::DeathAnimation)),
+        movementAnimation_(),
         travelledDistance_(travelledDistance), 
         directionIndex_(directionIndex),
+        difficultyLevel_(difficultyLevel),
         speed_(Table[type].speed),
-        isMarkedForRemoval_(false)
+        isMarkedForRemoval_(false),
+        hasMovementAnimation_(false),
+        showDeathAnimation_(true)
     { 
-        spawnFireEnemyCommand_.category_ = Category::Scene;
-        spawnFireEnemyCommand_.action_ = [this, &textures] (SceneNode& node, sf::Time) 
-        {
-            std::cout <<"spawning a new enemy" << std::endl;
-            std::unique_ptr<Enemy> newEnemy(new Enemy(Type::Fire, textures, travelledDistance_, directionIndex_));
-		    newEnemy->setOrigin(newEnemy->GetBoundingRect().width/2, newEnemy->GetBoundingRect().height/2);
-		    newEnemy->setPosition(this->GetWorldPosition());
-            newEnemy->setScale(0.25f, 0.25f);
-		    newEnemy->SetVelocity( UnitVector(this->GetVelocity()) * Table[Type::Fire].speed ); 
-		    node.AttachChild(std::move(newEnemy));
-
-        };
         sf::FloatRect bounds = sprite_.getLocalBounds();
         sprite_.setOrigin(bounds.width/2.f, bounds.height/2.f);
+
+        deathAnimation_.SetFrameSize(sf::Vector2i(187, 201));
+	    deathAnimation_.SetNumFrames(15);
+	    deathAnimation_.SetDuration(sf::seconds(0.35));
+        //sf::FloatRect deathAnimationBounds = deathAnimation_.GetLocalBounds();
+        //deathAnimation_.setOrigin(deathAnimationBounds.width/2.f, deathAnimationBounds.height/2.f);
+
     }
 
-void Enemy::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const {
-    target.draw(sprite_, states);
-}
+Enemy::~Enemy() {}
+
+void Enemy::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const{
+	if (IsDestroyed() && showDeathAnimation_)
+		target.draw(deathAnimation_, states);
+	else if (movementAnimation_.GetNumFrames() > 0)
+		target.draw(movementAnimation_, states);
+    else
+        target.draw(sprite_, states);
+}   
 
 
 //Update the state of enemy
@@ -77,26 +84,30 @@ void Enemy::UpdateCurrent(sf::Time dt, CommandQueue& commands) {
 
     if (IsDestroyed())
 	{
-		CheckDestroyAbility(type_, commands);
-
-		isMarkedForRemoval_ = true;
+		
+        deathAnimation_.Update(dt);
+		if((deathAnimation_.IsFinished() || !showDeathAnimation_)){
+            CheckDestroyBehaviour(commands);
+            isMarkedForRemoval_ = true;
+        }
+        
+        
 		return;
 	}
-    //move enemy or game lost
+    UpdateMovementAnimation(dt);
     UpdateMovementPattern(dt);
     Entity::UpdateCurrent(dt, commands); 
 }
 
-void Enemy::CheckDestroyAbility(Enemy::Type type, CommandQueue& commands)
+void Enemy::CheckDestroyBehaviour(CommandQueue&)
 {
-    if (type == Enemy::Leaf) 
-    {
-        commands.Push(spawnFireEnemyCommand_);
-    }
+    // By default do nothing, but different types may have some action here
 }
 
 unsigned int Enemy::GetCategory() const 
 {
+    if(IsDestroyed())
+        return 0;
     return Category::Enemy;
 } 
 
@@ -108,17 +119,16 @@ sf::FloatRect Enemy::GetBoundingRect() const
 //Enemy movement pattern
 void Enemy::UpdateMovementPattern(sf::Time dt)
 {
-	const std::vector<Direction>& path = Table[type_].path;
-
-	if (!path.empty())
+	if (!Path.empty())
 	{
-		if (travelledDistance_ > path[directionIndex_].distance)
+		if (travelledDistance_ > Path[directionIndex_].distance)
 		{
-			directionIndex_ = (directionIndex_ + 1) % path.size();
+			directionIndex_ = (directionIndex_ + 1) % Path.size();
 			travelledDistance_ = 0.f;
+            sprite_.setRotation(Path[directionIndex_].angle); //kääntää enemyn hitboxin animaation alla kun suuntaa muuttuu, jos rikkoo jotain ni pois vaan
 		}
-
-		float radians = ToRadian(path[directionIndex_].angle); 
+        
+		float radians = ToRadian(Path[directionIndex_].angle); 
 		float vx = speed_ * std::cos(radians);
 		float vy = speed_ * std::sin(radians);
 
@@ -127,9 +137,25 @@ void Enemy::UpdateMovementPattern(sf::Time dt)
 		travelledDistance_ += speed_ * dt.asSeconds();
 	}
 
+} 
+
+void Enemy::UpdateMovementAnimation(sf::Time dt){
+    if(hasMovementAnimation_){
+        //sf::Vector2f vel = GetVelocity();
+        //int rotation = atan(-vel.x/vel.y)*57.29577+90; //*57.29577 to convert rad -> deg
+        //movementAnimation_.Update(dt,rotation);
+        //jos tää menee rikki ni sen saa taas toimii noilla ylemmillä riveillä
+        movementAnimation_.Update(dt,Path[directionIndex_].angle);
+    }
 }
 
-// initialized false, can be changed later
+// initialized false, can be changed in derived classes
 bool Enemy::IsMarkedForRemoval() const {
-    return isMarkedForRemoval_;
+    return isMarkedForRemoval_;// && (deathAnimation_.IsFinished() || !showDeathAnimation_));
+}
+
+// Enemy's speed increases according to difficultyLevel
+float Enemy::GetSpeed() const
+{
+    return difficultyLevel_ * speed_;
 }

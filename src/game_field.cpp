@@ -1,6 +1,9 @@
 
 #include "game_field.hpp"
+
 #include <iostream> // for debugging
+#include <limits>
+
 #include <SFML/System/Time.hpp>
 #include <cassert>
 
@@ -21,7 +24,9 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	firstTower_(),
 	spawnCountdown_(sf::seconds(5)),
 	spawnInterval_(5), //this should maybe be a parameter
-	leftToSpawn_(15)
+	leftToSpawn_(15),
+	//shootingTowers_(),
+    activeEnemies_()
 	{ 
 		LoadTextures();
 		BuildScene();
@@ -32,6 +37,9 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 void GameField::Update(sf::Time dt) {
 
 	DestroyEntitiesOutsideView();
+
+	//makes towers shoot
+	MakeTowersShoot();
 	
 	// Forwards the commands to the scene graph
 	while(!commandQueue_.IsEmpty()) {
@@ -52,7 +60,9 @@ void GameField::LoadTextures() {
 	textures_.Load(Textures::ID::Grass, "../media/textures/grass.jpg");
 	textures_.Load(Textures::ID::FireTower, "../media/textures/tower.png");
 	textures_.Load(Textures::ID::FireBullet, "../media/textures/bullet.png");
-	
+	textures_.Load(Textures::ID::NoTexture,      "../media/textures/noTexture.png");
+	textures_.Load(Textures::ID::DeathAnimation,      "../media/textures/deathAnimation.png");
+	textures_.Load(Textures::ID::Leppis,      "../media/textures/leppakerttu.png");
 }
 
 void GameField::BuildScene() {
@@ -76,11 +86,11 @@ void GameField::BuildScene() {
 
 
 	//Initialize two enemies
-	std::unique_ptr<Enemy> firstEnemy(new Enemy(Enemy::Type::Fire, textures_));
+	std::unique_ptr<Enemy> firstEnemy(new BasicEnemy(textures_));
 	firstEnemy_ = firstEnemy.get();
-	firstEnemy_->setOrigin(firstEnemy_->GetBoundingRect().width/2, firstEnemy_->GetBoundingRect().height/2);
+	//firstEnemy_->setOrigin(firstEnemy_->GetBoundingRect().width/2, firstEnemy_->GetBoundingRect().height/2);
 	firstEnemy_->setPosition(spawnPosition_);
-	firstEnemy_->setScale(0.5f, 0.5f);
+	//firstEnemy_->setScale(0.5f, 0.5f);
 
 	std::cout << "DEBUG: spawn position:" << firstEnemy_->getPosition().x << "," << firstEnemy_->getPosition().y << std::endl;
 
@@ -88,17 +98,12 @@ void GameField::BuildScene() {
 	std::cout << "DEBUG: initial velocity: " << firstEnemy_->GetVelocity().x << "," << firstEnemy_->GetVelocity().y << std::endl;
  
 	sceneLayers_[Field] -> AttachChild(std::move(firstEnemy));
-// This is secon enemy is unnecessary at the moment. The wild behaviour of the second enemy may have been caused by
-// it being a child of the first enemy.
-//	std::unique_ptr<Enemy> secondEnemy(new Enemy(Enemy::Type::Leaf, textures_, 50, enemySpeed_));
-//	secondEnemy->setPosition(-20.f, 0.f); // position relative to the first enemy
-//	sceneLayers_[Ground] -> AttachChild(std::move(secondEnemy));
 
 	//Initialize a tower that can be moved with hard-coded bullet
 	// TODO: make bullets work
-	std::unique_ptr<Tower> firstTower(new Tower(Tower::Type::Fire, textures_, 50, 5, Bullet::Type::FireBullet, commandQueue_));
+	std::unique_ptr<Tower> firstTower(new Tower(Tower::Type::Fire, textures_));
 	firstTower_ = firstTower.get();
-	firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
+	//firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
 	firstTower_->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f);
 	sceneLayers_[Field] -> AttachChild(std::move(firstTower));
 
@@ -186,19 +191,19 @@ void GameField::SpawnEnemies(sf::Time dt) {
 
 		if (leftToSpawn_-- % 2)
 		{
-			std::unique_ptr<Enemy> newEnemy(new Enemy(Enemy::Type::Leaf, textures_));
-			newEnemy->setOrigin(newEnemy->GetBoundingRect().width/2, newEnemy->GetBoundingRect().height/2);
+ 			std::unique_ptr<TestEnemy> newEnemy(new TestEnemy(textures_));
+			//newEnemy->setOrigin(newEnemy->GetBoundingRect().width/2, newEnemy->GetBoundingRect().height/2);
 			newEnemy->setPosition(spawnPosition_);
-			newEnemy->setScale(2.f, 2.f);
+			//newEnemy->setScale(2.f, 2.f);
 			newEnemy->SetVelocity(enemySpeed_, 0.f);
 			sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
 		} else
 		{
-			std::unique_ptr<Enemy> newEnemy(new Enemy(Enemy::Type::Fire, textures_));
-			newEnemy->setOrigin(newEnemy->GetBoundingRect().width/2, newEnemy->GetBoundingRect().height/2);
+			std::unique_ptr<Enemy> newEnemy(new BasicEnemy(textures_));
+			//newEnemy->setOrigin(newEnemy->GetBoundingRect().width/2, newEnemy->GetBoundingRect().height/2);
 			newEnemy->setPosition(spawnPosition_);
-			newEnemy->setScale(0.5f, 0.5f);
-			newEnemy->SetVelocity(enemySpeed_, 0.f);
+			//newEnemy->setScale(0.5f, 0.5f);
+			newEnemy->SetVelocity(enemySpeed_, 0.f); //this need to be tought again if we have multiple paths
 			sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
 		}
     }
@@ -250,5 +255,57 @@ sf::FloatRect GameField::GetGamefieldBounds() const
 
 	return bounds;
 }
+
+void GameField::MakeTowersShoot()
+{
+	// Setup command that stores all active enemies to activeEnemies_
+	Command enemyCollector;
+	enemyCollector.category_ = Category::Enemy;
+	enemyCollector.action_ = DerivedAction<Enemy>([this] (Enemy& enemy, sf::Time)
+	{
+		if (!enemy.IsDestroyed())
+			activeEnemies_.push_back(&enemy);
+	});
+
+	Command shootBullets;
+	shootBullets.category_ = Category::Tower; 
+	shootBullets.action_ = DerivedAction<Tower>([this] (Tower& tower, sf::Time)
+	{
+		// Ignore towers that can't shoot right now
+		if (!tower.CanShoot())
+			return;
+
+		float minDistance = std::numeric_limits<float>::max();
+		Enemy* closestEnemy = nullptr;
+
+		// Find closest enemy
+		for(Enemy* enemy : activeEnemies_)
+		{
+			float enemyDistance = Distance(tower, *enemy);
+
+			if (enemyDistance < minDistance && enemyDistance <= tower.GetRange())
+			{
+				closestEnemy = enemy;
+				minDistance = enemyDistance;
+			}
+		}
+
+		if (closestEnemy)
+		{
+			sf::Vector2f direction(closestEnemy->GetWorldPosition() - tower.GetWorldPosition());
+			std::cout << "shooting direction: " << direction.x << ", " << direction.y << std::endl;
+			tower.Shoot(commandQueue_, direction);
+		}
+			
+	});
+
+	// Push commands, reset active enemies
+	commandQueue_.Push(enemyCollector);
+	commandQueue_.Push(shootBullets);
+
+	activeEnemies_.clear();
+
+}
+
 
 

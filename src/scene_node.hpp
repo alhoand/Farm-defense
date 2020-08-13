@@ -52,4 +52,5 @@ private:
 };
 
 bool Collision(const SceneNode& lhs, const SceneNode& rhs);
+float Distance(const SceneNode& lhs, const SceneNode& rhs);
 

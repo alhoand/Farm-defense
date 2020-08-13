@@ -1,13 +1,17 @@
-#ifndef ENEMY_HPP
-#define ENEMY_HPP
+#pragma once
 
 //Initial header file for abstract enemy class
 #include <vector>
 
-#include "../bullet.hpp"
+//#include "../bullet.hpp"
 #include "../entity.hpp"
 #include "../resource_identifiers.hpp"
 #include "../command_queue.hpp"
+#include "../animation.hpp"
+#include "../data_tables.hpp"
+
+#include <SFML/Graphics/Sprite.hpp>
+
 
 class Enemy : public Entity {
     public:
@@ -19,31 +23,33 @@ class Enemy : public Entity {
             TypeCount //enumerators are indexed so last one tells the count of previous ones 
         };
     public:
-        //Constructors
-        Enemy();
-            
-        Enemy(Type type, const TextureHolder &textures, float travelledDistance = 0.f, int directionIndex = 0);
+                
+                        Enemy(Type type, const TextureHolder &textures, float difficultyLevel, float travelledDistance, int directionIndex);
+        virtual         ~Enemy();
 
-        void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
-
-        unsigned int GetCategory() const override;
-        virtual sf::FloatRect GetBoundingRect() const override;
-        bool IsMarkedForRemoval() const override;
+        void            DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
+        unsigned int    GetCategory() const override; // might also be made virtual later, but not now
+        sf::FloatRect   GetBoundingRect() const override;
+        float           GetSpeed() const;
+        bool            IsMarkedForRemoval() const override;
 
     protected:
-        void UpdateMovementPattern(sf::Time dt);
-        virtual void UpdateCurrent(sf::Time dt, CommandQueue& commands) override;
-        void CheckDestroyAbility(Enemy::Type type, CommandQueue& commands);
+        virtual void    UpdateMovementPattern(sf::Time dt); //can be made virtual later, not necessary now
+        void            UpdateCurrent(sf::Time dt, CommandQueue& commands) override;
+        void            UpdateMovementAnimation(sf::Time dt);
+        virtual void    CheckDestroyBehaviour(CommandQueue& commands);
 
-        Textures::ID ToTextureID(Enemy::Type type);
+        Textures::ID    ToTextureID(Enemy::Type type);
 
-        Type type_;
-        sf::Sprite sprite_;
-        float travelledDistance_;
-		std::size_t directionIndex_;
-        int speed_;
-        bool isMarkedForRemoval_;
-        Command spawnFireEnemyCommand_;
+        Type            type_;
+        sf::Sprite      sprite_;
+        float           travelledDistance_;
+		std::size_t     directionIndex_;
+        float           difficultyLevel_;
+        int             speed_;
+        bool            isMarkedForRemoval_;
+        bool            showDeathAnimation_;
+        bool            hasMovementAnimation_;
+        Animation       deathAnimation_;
+        Animation       movementAnimation_;
 };
-
-#endif // ENEMY_HPP

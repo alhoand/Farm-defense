@@ -12,7 +12,7 @@
 static const sf::Time timePerFrame = sf::seconds(1.f / 60.f);
 
 Application::Application()
-    : window_(sf::VideoMode(1280,720), "Tower Defense", sf::Style::Close),
+    : window_(sf::VideoMode(1920,1080), "Tower Defense", sf::Style::Close),
     //: window_(sf::VideoMode::getFullscreenModes()[0], "Tower Defense", sf::Style::Default),
     viewOffset_(sf::Vector2f(0.f, 0.f)),
     textures_(),
@@ -31,9 +31,7 @@ Application::Application()
         textures_.Load(Textures::ID::logo,              "../media/textures/titleLogo.png");
         textures_.Load(Textures::ID::TitleBackground,   "../media/textures/tausta.jpg");
         textures_.Load(Textures::ID::Buttons,      "../media/textures/buttons.png");
-		
-        //auto activeNode = std::make_shared<GUI::SceneNodeComponent>(nullptr);
-        //GUIContainer_.Pack(activeNode);
+		textures_.Load(Textures::ID::NoTexture,      "../media/textures/noTexture.png");
 
         RegisterStates();
         stateStack_.PushState(States::ID::Title);

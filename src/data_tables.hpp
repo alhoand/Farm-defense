@@ -1,11 +1,9 @@
-#ifndef DATATABLES_HPP
-#define DATATABLES_HPP
+#pragma once
 
 #include "resource_identifiers.hpp"
+#include "enemies/enemy.hpp"
+#include "tower.hpp"
 #include "bullet.hpp"
-
-#include <SFML/System/Time.hpp>
-#include <SFML/Graphics/Color.hpp>
 
 #include <vector>
 
@@ -24,19 +22,20 @@ struct Direction
 //hitpoints and speed are in datatable and enemy class, check if this is necessary
 struct EnemyData
 {
-	int								hitpoints;
-	float							speed;
-	Textures::ID					texture;
-	std::vector<Direction>			path;
+	int				hitpoints;
+	float			speed;
+	Textures::ID	texture;
 };
 
 //initializer
 std::vector<EnemyData>	InitializeEnemyData();
+std::vector<Direction>	InitializeEnemyPath();
 
 struct TowerData {
-    int range;
-    float reloadTime;
-    unsigned int bulletType;
+	Textures::ID	texture;
+    float 			range;
+    float 			reloadTime;
+    int 			bulletType;
 };
 
 //initializer
@@ -50,5 +49,3 @@ struct BulletData {
 
 //initializer
 std::vector<BulletData>	InitializeBulletData();
-
-#endif // DATATABLES_HPP

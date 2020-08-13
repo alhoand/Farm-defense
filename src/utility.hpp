@@ -1,5 +1,8 @@
-#ifndef UTILITY_HPP
-#define UTILITY_HPP
+#pragma once
+
+#include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 
 #include <sstream>
 #include <cassert>
@@ -27,4 +30,3 @@ float Length(sf::Vector2f vector);
 sf::Vector2f UnitVector(sf::Vector2f vector);
 
 #include "utility.inl"
-#endif // UTILITY_HPP

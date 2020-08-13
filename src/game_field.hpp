@@ -1,10 +1,13 @@
 #pragma once
 
-//Initial header file for abstract tower class
+//Initial header file for gamefield class
 #include <list>
 #include <array>
+#include <vector>
 #include <memory>
 #include "enemies/enemy.hpp"
+#include "enemies/test_enemy.hpp"
+#include "enemies/basic_enemy.hpp"
 #include "tower.hpp"
 #include "bullet.hpp"
 #include "SFML/Graphics.hpp"
@@ -17,7 +20,7 @@
 #include "category.hpp"
 
 #include <SFML/System/NonCopyable.hpp>
-#include "SFML/Graphics.hpp"
+#include <SFML/Graphics.hpp>
 
 /*  ***TODO***
 * 
@@ -35,27 +38,26 @@ namespace sf {
 class GameField : private sf::NonCopyable {
     public:
         //Constructor
-        explicit GameField(sf::RenderWindow& window, sf::Vector2f viewOffset);
+        explicit        GameField(sf::RenderWindow& window, sf::Vector2f viewOffset);
 		
         //Update whole game field
-        void Update(sf::Time dt);
-
-        void Draw();
-
-        CommandQueue& GetCommandQueue();
+        void            Update(sf::Time dt);
+        void            Draw();
+        CommandQueue&   GetCommandQueue();
 
         std::pair<SceneNode*, bool> GetActiveNode() const;
 
         //void AddTower(Tower* t); not implemented yet
 
     private:
-        void LoadTextures();
-        void BuildScene();
-        void HandleCollisions();
-        void SpawnEnemies(sf::Time dt);
-        void DestroyEntitiesOutsideView();
-        sf::FloatRect GetViewBounds() const;
-        sf::FloatRect GetGamefieldBounds() const;
+        void            LoadTextures();
+        void            BuildScene();
+        void            HandleCollisions();
+        void            SpawnEnemies(sf::Time dt);
+        void            DestroyEntitiesOutsideView();
+        sf::FloatRect   GetViewBounds() const;
+        sf::FloatRect   GetGamefieldBounds() const;
+        void            MakeTowersShoot();
 
         enum Layer {
             Background,
@@ -80,7 +82,7 @@ class GameField : private sf::NonCopyable {
         sf::Time            spawnCountdown_ ;
         int                 spawnInterval_;
         int                 leftToSpawn_; //initial, could change for better
+        //std::vector<Tower*> shootingTowers_;
+        std::vector<Enemy*> activeEnemies_;
 
-        /* sf::Time            timeSinceLastSpawn_;
-        sf::Time            spawnTime_; */
 };

@@ -4,6 +4,8 @@ add_subdirectory(states)
 
 target_sources(TowerDefense
     PRIVATE
+	animation.cpp
+	animation.hpp
     application.cpp
     application.hpp
 	bullet.cpp
@@ -45,7 +47,8 @@ target_sources(TowerDefense
 	state_stack.cpp
 	state_stack.hpp
     tower.cpp
-    tower.hpp
-	utility.hpp
+    tower.hpp 
 	utility.cpp
+	utility.hpp
+	utility.inl
 )
