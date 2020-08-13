@@ -17,7 +17,7 @@ SidebarState::SidebarState(StateStack& stack, Context context)
 
         auto waveButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
         waveButton->setOrigin(waveButton->GetGlobalBounds().width/2.f, waveButton->GetGlobalBounds().height/2.f);
-        waveButton->setPosition(viewSize_.x/2.f, 300.f);
+        waveButton->setPosition(viewSize_.x/2.f, 200.f);
         waveButton->SetText("Next wave");
         waveButton->SetCallback([this] ()
             {
@@ -25,7 +25,7 @@ SidebarState::SidebarState(StateStack& stack, Context context)
             });
         auto towerButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
         towerButton->setOrigin(towerButton->GetGlobalBounds().width/2.f, towerButton->GetGlobalBounds().height/2.f);
-        towerButton->setPosition(viewSize_.x/2.f, 500.f);
+        towerButton->setPosition(viewSize_.x/2.f, 400.f);
         towerButton->SetText("Add tower");
         towerButton->SetCallback([this] ()
             {
@@ -82,8 +82,8 @@ bool SidebarState::HandleEvent(const sf::Event& event) {
 	if (sf::Event::KeyPressed && event.key.code == sf::Keyboard::U)
     {
         std::cout << "Sidebar: U-KeyPressed" << std::endl;
-		RequestStackPop();
-        RequestStackPush(States::ID::GameUpgradeTowerSideBar);
+		//RequestStackPop();
+        //RequestStackPush(States::ID::GameUpgradeTowerSideBar);
     }
     
     //If p is pressed, go to Pause state

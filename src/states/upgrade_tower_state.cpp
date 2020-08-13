@@ -19,19 +19,19 @@ UpgradeTowerState::UpgradeTowerState(StateStack& stack, Context context) :
     viewSize_(context.window_->getView().getSize().x/4.f, context.window_->getView().getSize().y),
     GUIContainer_()
     {
-        titleText_ = std::make_shared<GUI::Label>("", *context.fonts_, 50, Fonts::Main);
+        titleText_ = std::make_shared<GUI::Label>("", *context.fonts_, 40, Fonts::Main);
         titleText_->CenterTextOrigin();
-        titleText_->setPosition(viewSize_.x/2.f, 50.f);
+        titleText_->setPosition(viewSize_.x/2.f, 650.f);
         GUIContainer_.Pack(titleText_, true);
 
         descriptionText_ = std::make_shared<GUI::Label>("", *context.fonts_, 30, Fonts::Main);
         descriptionText_->CenterTextOrigin();
-        descriptionText_->setPosition(viewSize_.x/2.f, 150.f);
+        descriptionText_->setPosition(viewSize_.x/2.f, 750.f);
         GUIContainer_.Pack(descriptionText_, true);
         
         auto upgradeButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_,sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
         upgradeButton->setOrigin(upgradeButton->GetGlobalBounds().width/2.f, upgradeButton->GetGlobalBounds().height/2.f);
-        upgradeButton->setPosition(viewSize_.x/2.f, 300.f);
+        upgradeButton->setPosition(viewSize_.x/2.f, 900.f);
         upgradeButton->SetText("Upgrade");
         upgradeButton->SetCallback([this] ()
         {
@@ -55,7 +55,7 @@ UpgradeTowerState::UpgradeTowerState(StateStack& stack, Context context) :
         auto activeTowerComponent = std::dynamic_pointer_cast<GUI::SceneNodeComponent>(temp);
         GUIContainer_.Pack(activeTowerComponent);
 
-        backgroundShape_.setFillColor(sf::Color(160,82,45,235));
+        backgroundShape_.setFillColor(sf::Color(160,82,45,0));
         backgroundShape_.setSize(viewSize_);
         GUIContainer_.setPosition(context.window_->getView().getSize().x - viewSize_.x, 0);
     }
@@ -113,6 +113,7 @@ bool UpgradeTowerState::HandleEvent(const sf::Event& event) {
     {
         std::cout << "KeyPressed" << std::endl;
 		RequestStackPop();
+        RequestStackPop();
     }
     //If p is pressed, go to Pause state
     if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P))
@@ -122,8 +123,8 @@ bool UpgradeTowerState::HandleEvent(const sf::Event& event) {
     if (sf::Event::KeyPressed && event.key.code == sf::Keyboard::I)
     {
         std::cout << "Upgrade: I-KeyPressed" << std::endl;
-		RequestStackPop();
-        RequestStackPush(States::ID::Sidebar);
+		//RequestStackPop();
+        //RequestStackPush(States::ID::Sidebar);
     }
 
     //Otherwise, don't propagate the events
