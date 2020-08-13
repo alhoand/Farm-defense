@@ -19,9 +19,13 @@ Container::Container()
 {
 }
 
-void Container::Pack(Component::Ptr component)
+void Container::Pack(Component::Ptr component, bool relativeTo)
 {
-	component->ChildOf(this); //Stores the container as the parent
+	if(relativeTo)
+	{
+		component->ChildOf(this); //Stores the container as the parent
+	}
+	
 	children_.push_back(component);
 }
 /*
@@ -56,9 +60,13 @@ void Container::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
 
-	for(const Component::Ptr& child: children_)
+	for(const Component::Ptr& child: children_) 
+	{
 		target.draw(*child, states);
-	GUI::Component::DrawBoundingRect(target, states);
+		GUI::Component::DrawBoundingRect(target, states);			
+	}
+		
+	
 }
 
 void Container::Update(sf::Time dt) {

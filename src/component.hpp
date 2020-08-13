@@ -49,12 +49,12 @@ class Component : public sf::Drawable, public sf::Transformable, private sf::Non
 
         GUI::ID             GetType() const;
         void                SetType(GUI::ID type);
-
+       // GUI::Component*          GetParent() const;
     private:
         GUI::ID             type_;
         bool				isSelected_;
         bool				isActive_;
-        Component*          parent_;
+        GUI::Component*          parent_;
 
 };
 

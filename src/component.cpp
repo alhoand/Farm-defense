@@ -1,6 +1,7 @@
 #include "component.hpp"
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include "container.hpp"
 
 
 namespace GUI
@@ -82,6 +83,10 @@ void Component::DrawBoundingRect(sf::RenderTarget& target, sf::RenderStates stat
 
 	target.draw(shape);
 }
+
+/*GUI::Component* Component::GetParent() const {
+	return parent_;
+}*/
 
 GUI::ID Component::GetType() const {
 	return type_;

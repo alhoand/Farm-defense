@@ -20,8 +20,8 @@ class Container : public Component
 
 	public:
 							Container();
-
-        void				Pack(Component::Ptr component);
+                            //Set relativeTo=true to set component position in relative to container
+        void				Pack(Component::Ptr component, bool relativeTo=false);
 
         virtual bool		IsSelectable() const;
         virtual void		HandleEvent(const sf::Event& event);

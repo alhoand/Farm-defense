@@ -35,7 +35,7 @@ Tower::Tower(Tower::Type type, const TextureHolder &textures, int range, int rel
         std::cout << "towercount: " << Tower::towerCount_ << std::endl;
         if (Tower::towerCount_ == 1) {
             Tower::ActiveTower(this);
-            std::cout << "New actvive added" << std::endl;
+            std::cout << "New active added" << std::endl;
         }
             
     }

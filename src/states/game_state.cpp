@@ -19,7 +19,7 @@ GameState::GameState(StateStack& stack, Context context) :
     std::cout << "Game state constructor started" << std::endl;
         GUIContainer_.Pack(pauseButton);
 
-        //GetContext().GUIContainer_->Pack(pauseButton);
+        GetContext().GUIContainer_->Pack(pauseButton);
         //std::cout << "Guicontainer was in context" << std::endl;
         auto nodeComponent = std::make_shared<GUI::SceneNodeComponent>(nullptr);
         nodeComponent->SetType(GUI::ID::ActiveSceneNode);
@@ -71,7 +71,7 @@ void GameState::UpdateGUI() {
         //GetContext().GUIComponent_->SetNode(nullptr);
     //std::cout << "UpdateGUI in game state" << std::endl;
     auto GUIComponent = GUIContainer_.GetChild(GUI::ID::ActiveSceneNode);
-    
+   // std::cout << "Use count for active node component: " << GUIComponent.use_count() << std::endl;
     if (Tower* activeTower = dynamic_cast<Tower*>(activeNode.first)) { // There is an active tower
         //std::cout << "There was an active tower in GUI!" << std::endl;
         auto GUINodeComponent = std::dynamic_pointer_cast<GUI::SceneNodeComponent>(GUIComponent);
