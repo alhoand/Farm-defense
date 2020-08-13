@@ -1,7 +1,7 @@
 #include "../resource_holder.hpp"
 #include "../button.hpp"
 #include "../label.hpp"
-#include "../tower.hpp"
+#include "../towers/tower.hpp"
 #include <cmath>
 #include "upgrade_tower_state.hpp"
 #include <memory>

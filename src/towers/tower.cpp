@@ -1,12 +1,13 @@
 #include "tower.hpp"
 #include <cassert>
-#include "utility.hpp"
+
+#include "../utility.hpp"
+
+#include <math.h> 
 
 namespace {
 	const std::vector<TowerData> table = InitializeTowerData();
 }
-
-//TODO delete commandqueue from parameters
 
 Tower* Tower::activeTower_  = nullptr;
 
@@ -54,27 +55,8 @@ Tower::Tower(Tower::Type type, const TextureHolder &textures)
             
     }
 
-/*Tower::Tower(Tower::Type type, const TextureHolder &textures, CommandQueue& commands)
-    : Entity(1), type_(type), 
-      sprite_(textures.Get(ToTextureID(type))), 
-      range_(table[type].range),
-      reloadTime_(table[type].reloadTime), 
-      bulletType_(table[type].bulletType),
-      countdown_(sf::Time::Zero), 
-      commands_(commands), 
-      shootCommand_() {
-        shootCommand_.category_ = Category::Scene;
-        shootCommand_.action_ = [this, &textures] (SceneNode& node, sf::Time) {
-            CreateBullet(node, Bullet::Type::FireBullet, textures);
-        };
-    }*/
-
-// Default constructor with hard-coded values for hitpoints and bullet for testing
-//Tower::Tower() : type_(Tower::Type::Fire), range_(5), bullet_(Bullet::Type::FireBullet,  5, 5) { }
-
 
 // Function for drawing the tower
-// TODO: make use of direction_, rotation of the tower
 void Tower::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(sprite_, states);
 }
@@ -97,7 +79,11 @@ void Tower::UpdateCurrent(sf::Time dt, CommandQueue&) {
 }
 
 void Tower::Shoot(CommandQueue& commands, sf::Vector2f direction) {
-    // std::cout << "Checking if tower can shoot" << std::endl;
+    // this is a first try at rotating the tower
+    // this is maybe not necessary, if towers are depicted somewhere else than strictly from above
+    /*int degrees = pow(tan(direction.y / direction.x), -1);
+    this->setRotation(degrees);*/
+
     canShoot_ = false;
     direction_ = UnitVector(direction);
     std::cout << "direction in Shoot function: " << direction_.x << ", " << direction_.y << std::endl;
@@ -145,18 +131,6 @@ float Tower::GetRange() const
     return range_;
 }
 
-Textures::ID Tower::ToTextureID(Tower::Type type) {
-    switch (type) {
-        case Tower::Type::Fire:
-            return Textures::ID::FireTower;
-        case Tower::Type::Water:
-            return Textures::ID::WaterTower;
-        case Tower::Type::Leaf:
-            return Textures::ID::LeafTower;
-        default: 
-            return Textures::ID::Fire;
-    }
-}
 
 void Tower::CreateBullet(SceneNode& node, const TextureHolder& textures) const {
     std::cout << "Creating a bullet" << std::endl;

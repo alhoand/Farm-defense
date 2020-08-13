@@ -8,8 +8,6 @@ target_sources(TowerDefense
 	animation.hpp
     application.cpp
     application.hpp
-	bullet.cpp
-	bullet.hpp
 	button.cpp
 	button.hpp
 	category.hpp
@@ -46,8 +44,6 @@ target_sources(TowerDefense
 	state_identifiers.hpp
 	state_stack.cpp
 	state_stack.hpp
-    tower.cpp
-    tower.hpp 
 	utility.cpp
 	utility.hpp
 	utility.inl

@@ -30,7 +30,7 @@ Textures::ID Enemy::ToTextureID(Enemy::Type type) {
 }*/
 
 // Constructor that works with SFML
-Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, float difficultyLevel, float travelledDistance, int directionIndex)
+Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, unsigned int difficultyLevel, float travelledDistance, int directionIndex)
     : Entity(Table[type].hitpoints),
         type_(type), 
         //sprite_(textures.Get(ToTextureID(type))),
@@ -40,6 +40,7 @@ Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, float difficultyLe
         travelledDistance_(travelledDistance), 
         directionIndex_(directionIndex),
         difficultyLevel_(difficultyLevel),
+        difficultyIncrement_(0.2), //initial, can be initialized as parameter in future
         speed_(Table[type].speed),
         isMarkedForRemoval_(false),
         hasMovementAnimation_(false),
@@ -154,8 +155,13 @@ bool Enemy::IsMarkedForRemoval() const {
     return isMarkedForRemoval_;// && (deathAnimation_.IsFinished() || !showDeathAnimation_));
 }
 
-// Enemy's speed increases according to difficultyLevel
+// Enemy's speed increases by DifficultyCoefficient
 float Enemy::GetSpeed() const
 {
-    return difficultyLevel_ * speed_;
+    return DifficultyCoefficient() * speed_;
+}
+
+float Enemy::DifficultyCoefficient() const
+{
+    return 1 + difficultyLevel_*difficultyIncrement_;
 }

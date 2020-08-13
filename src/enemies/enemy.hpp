@@ -24,7 +24,7 @@ class Enemy : public Entity {
         };
     public:
                 
-                        Enemy(Type type, const TextureHolder &textures, float difficultyLevel, float travelledDistance, int directionIndex);
+                        Enemy(Type type, const TextureHolder &textures, unsigned int difficultyLevel, float travelledDistance, int directionIndex);
         virtual         ~Enemy();
 
         void            DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -38,6 +38,7 @@ class Enemy : public Entity {
         void            UpdateCurrent(sf::Time dt, CommandQueue& commands) override;
         void            UpdateMovementAnimation(sf::Time dt);
         virtual void    CheckDestroyBehaviour(CommandQueue& commands);
+        float           DifficultyCoefficient() const;
 
         Textures::ID    ToTextureID(Enemy::Type type);
 
@@ -45,7 +46,8 @@ class Enemy : public Entity {
         sf::Sprite      sprite_;
         float           travelledDistance_;
 		std::size_t     directionIndex_;
-        float           difficultyLevel_;
+        unsigned int    difficultyLevel_;
+        float           difficultyIncrement_;
         int             speed_;
         bool            isMarkedForRemoval_;
         bool            showDeathAnimation_;

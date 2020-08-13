@@ -3,9 +3,9 @@
 #include <SFML/Graphics.hpp>
 #include "application.hpp"
 #include "game_field.hpp"
-#include "tower.hpp"
+#include "towers/tower.hpp"
 #include "enemies/enemy.hpp"
-#include "bullet.hpp"
+#include "towers/bullet.hpp"
 #include "towers/test_tower.hpp"
 #include "enemies/test_enemy.hpp"
 

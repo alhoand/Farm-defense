@@ -8,8 +8,8 @@
 #include "enemies/enemy.hpp"
 #include "enemies/test_enemy.hpp"
 #include "enemies/basic_enemy.hpp"
-#include "tower.hpp"
-#include "bullet.hpp"
+#include "towers/tower.hpp"
+#include "towers/bullet.hpp"
 #include "SFML/Graphics.hpp"
 #include "sprite_node.hpp"
 #include "command_queue.hpp"
@@ -82,7 +82,9 @@ class GameField : private sf::NonCopyable {
         sf::Time            spawnCountdown_ ;
         int                 spawnInterval_;
         int                 leftToSpawn_; //initial, could change for better
-        //std::vector<Tower*> shootingTowers_;
         std::vector<Enemy*> activeEnemies_;
+        unsigned int        difficultyLevel_;
+	    unsigned int        levelCount_; //total amount of levels or waves in current game
+        sf::Time            levelBreakTimer_;
 
 };

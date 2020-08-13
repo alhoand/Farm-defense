@@ -1,5 +1,5 @@
 #include "player.hpp"
-#include "tower.hpp"
+#include "towers/tower.hpp"
 
 
 Player::Player(sf::RenderWindow& window, sf::Vector2f viewOffset) : window_(window), viewOffset_(viewOffset) { }

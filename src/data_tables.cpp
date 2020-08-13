@@ -58,14 +58,17 @@ std::vector<TowerData> InitializeTowerData() {
 std::vector<BulletData>	InitializeBulletData() {
 	std::vector<BulletData> data(Bullet::TypeCount);
 
+	data[Bullet::FireBullet].texture = Textures::FireBullet;
 	data[Bullet::FireBullet].speed = 100.f;
 	data[Bullet::FireBullet].damage = 10;
 	data[Bullet::FireBullet].damageDuration = 1;
 
+	data[Bullet::IceBullet].texture = Textures::IceBullet;
 	data[Bullet::IceBullet].speed = 150.f;
 	data[Bullet::IceBullet].damage = 1;
 	data[Bullet::IceBullet].damageDuration = 1;
 
+	data[Bullet::IceBullet].texture = Textures::IceBullet;
 	data[Bullet::WoodBullet].speed = 75.f;
 	data[Bullet::WoodBullet].damage = 1;
 	data[Bullet::WoodBullet].damageDuration = 5;
