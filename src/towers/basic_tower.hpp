@@ -13,4 +13,4 @@ class BasicTower : public Tower {
 
 
     private:
-}
+};
