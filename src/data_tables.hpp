@@ -24,6 +24,7 @@ struct EnemyData
 {
 	int				hitpoints;
 	float			speed;
+	float			slowDownRate;
 	Textures::ID	texture;
 };
 

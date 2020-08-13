@@ -30,7 +30,7 @@ Textures::ID Enemy::ToTextureID(Enemy::Type type) {
 }*/
 
 // Constructor that works with SFML
-Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, float difficultyLevel, float travelledDistance, int directionIndex)
+Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, unsigned int difficultyLevel, float travelledDistance, int directionIndex)
     : Entity(Table[type].hitpoints),
         type_(type), 
         //sprite_(textures.Get(ToTextureID(type))),
@@ -40,7 +40,10 @@ Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, float difficultyLe
         travelledDistance_(travelledDistance), 
         directionIndex_(directionIndex),
         difficultyLevel_(difficultyLevel),
-        speed_(Table[type].speed),
+        difficultyIncrement_(0.2), //initial, can be initialized as parameter in future
+        maxSpeed_(Table[type].speed),
+        isSlowedDown_(false),
+        slowDownRate_(Table[type].slowDownRate), 
         isMarkedForRemoval_(false),
         hasMovementAnimation_(false),
         showDeathAnimation_(true)
@@ -116,6 +119,11 @@ sf::FloatRect Enemy::GetBoundingRect() const
 	return GetWorldTransform().transformRect(sprite_.getGlobalBounds());
 }
 
+Enemy::Type Enemy::GetType() const
+{
+    return type_;
+}
+
 //Enemy movement pattern
 void Enemy::UpdateMovementPattern(sf::Time dt)
 {
@@ -129,12 +137,14 @@ void Enemy::UpdateMovementPattern(sf::Time dt)
 		}
         
 		float radians = ToRadian(Path[directionIndex_].angle); 
-		float vx = speed_ * std::cos(radians);
-		float vy = speed_ * std::sin(radians);
+		float vx = GetSpeed() * std::cos(radians);
+		float vy = GetSpeed() * std::sin(radians);
 
 		SetVelocity(vx, vy); //entity function
 
-		travelledDistance_ += speed_ * dt.asSeconds();
+		travelledDistance_ += GetSpeed() * dt.asSeconds();
+
+        isSlowedDown_ = false; // if enemy was slowed down, return to not slowed down state
 	}
 
 } 
@@ -154,8 +164,22 @@ bool Enemy::IsMarkedForRemoval() const {
     return isMarkedForRemoval_;// && (deathAnimation_.IsFinished() || !showDeathAnimation_));
 }
 
-// Enemy's speed increases according to difficultyLevel
+// Enemy's speed increases by DifficultyCoefficient
 float Enemy::GetSpeed() const
 {
-    return difficultyLevel_ * speed_;
+    if (isSlowedDown_)
+    {
+        return slowDownRate_ * DifficultyCoefficient() * maxSpeed_; 
+    } 
+    return DifficultyCoefficient() * maxSpeed_;
+}
+
+void Enemy::SlowDown() 
+{
+    isSlowedDown_ = true;
+}
+
+float Enemy::DifficultyCoefficient() const
+{
+    return 1 + difficultyLevel_*difficultyIncrement_;
 }
