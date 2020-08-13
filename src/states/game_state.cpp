@@ -19,8 +19,6 @@ GameState::GameState(StateStack& stack, Context context) :
     std::cout << "Game state constructor started" << std::endl;
         GUIContainer_.Pack(pauseButton);
 
-        GetContext().GUIContainer_->Pack(pauseButton);
-        //std::cout << "Guicontainer was in context" << std::endl;
         auto nodeComponent = std::make_shared<GUI::SceneNodeComponent>(nullptr);
         nodeComponent->SetType(GUI::ID::ActiveSceneNode);
 
@@ -68,21 +66,13 @@ void GameState::UpdateGUI() {
     {
         return;
     } //TODO: implement tower addition
-        //GetContext().GUIComponent_->SetNode(nullptr);
-    //std::cout << "UpdateGUI in game state" << std::endl;
     auto GUIComponent = GUIContainer_.GetChild(GUI::ID::ActiveSceneNode);
-   // std::cout << "Use count for active node component: " << GUIComponent.use_count() << std::endl;
     if (Tower* activeTower = dynamic_cast<Tower*>(activeNode.first)) { // There is an active tower
-        //std::cout << "There was an active tower in GUI!" << std::endl;
         auto GUINodeComponent = std::dynamic_pointer_cast<GUI::SceneNodeComponent>(GUIComponent);
-        //std::cout << "GUiNodecomponent was got" << std::endl;
-      //std::cout << activeTower->getPosition().x << ", " <<activeTower->getPosition().y  << std::endl;
         if (GUINodeComponent.get() != nullptr)
         {
-            // std::cout << "The GUINode was fetched" << std::endl;
             if (auto GUINode = GUINodeComponent->GetNode()) // If there is a scene node pointer in the GUI
             {
-                //std::cout << "There was a GUINode" << std::endl;
                 if (Tower *GUITower = dynamic_cast<Tower*>(GUINode))
                 {
                     if (GUITower == activeTower) 
@@ -99,17 +89,10 @@ void GameState::UpdateGUI() {
             }
         }
     
-       // std::cout << "There was not a GUINode" << std::endl;
-        
-        //GetContext().GUIContainer_->SetNode(activeTower);
-        //std::cout << "Pöö" << std::endl;
         auto NodeComponent = std::dynamic_pointer_cast<GUI::SceneNodeComponent>(GetContext().GUIContainer_->GetChild(GUI::ID::ActiveSceneNode));
        // std::cout << "Pöö2" << std::endl;
         NodeComponent->SetNode(activeTower);
-       // if (Tower* tower = dynamic_cast<Tower*>(test->GetNode())) {
-        //    std::cout << "Juhuu! in game state" <<std::endl;
-       // }
-        
+
        // std::cout << "The guinodecomponent's active node was set" << std::endl;
         //RequestStackPush(States::ID::GameUpgradeTowerSideBar);
     }

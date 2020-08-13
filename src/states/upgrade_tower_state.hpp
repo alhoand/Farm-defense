@@ -6,12 +6,14 @@
 class UpgradeTowerState : public State {
     public:
         UpgradeTowerState(StateStack& stack, Context context);
+        ~UpgradeTowerState() {std::cout << "U deleted" <<std::endl; }
         virtual void Draw();
         virtual bool Update(sf::Time dt);
         virtual bool HandleEvent(const sf::Event& event);
 
     private:
         void UpdateGUI(sf::Time dt);
+        SceneNode* GetActiveNode(GUI::ID type) const;
         sf::Sprite backgroundSprite_;
         sf::RectangleShape backgroundShape_;
         GUI::Label::Ptr titleText_;
