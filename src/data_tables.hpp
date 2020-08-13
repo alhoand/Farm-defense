@@ -50,3 +50,22 @@ struct BulletData {
 
 //initializer
 std::vector<BulletData>	InitializeBulletData();
+
+namespace GUIitems {
+	enum ID {
+            PauseButton,
+			ResumeButton,
+			TypeCount //this should be last
+        };
+}
+
+struct GUIData {
+	Textures::ID	texture;
+    sf::IntRect     normalTexture;
+    sf::IntRect     selectedTexture;
+};
+
+//initializer
+std::vector<GUIData>	InitializeGUIData();
+
+

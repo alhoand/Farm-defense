@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "../game_field.hpp"
 #include "../player.hpp"
 #include "state.hpp"

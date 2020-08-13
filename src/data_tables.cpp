@@ -74,3 +74,16 @@ std::vector<BulletData>	InitializeBulletData() {
 
 	return data;
 }
+
+std::vector<GUIData>	InitializeGUIData() {
+	std::vector<GUIData> data(GUIitems::ID::TypeCount);
+
+	data[GUIitems::ID::PauseButton].texture = Textures::Buttons;
+	data[GUIitems::ID::PauseButton].normalTexture = sf::IntRect(108,0,55,53);
+	data[GUIitems::ID::PauseButton].selectedTexture = sf::IntRect(0,0,54,53);
+
+	data[GUIitems::ID::ResumeButton].texture = Textures::Buttons;
+	data[GUIitems::ID::ResumeButton].normalTexture = sf::IntRect(54,0,55,53);
+	data[GUIitems::ID::ResumeButton].selectedTexture = sf::IntRect(163,0,55,54);
+	return data;
+}
