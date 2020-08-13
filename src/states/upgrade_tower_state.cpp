@@ -95,9 +95,14 @@ void UpgradeTowerState::UpdateGUI(sf::Time dt) {
 
 
 bool UpgradeTowerState::HandleEvent(const sf::Event& event) {
-	
 	GUIContainer_.HandleEvent(event);
-	
+
+	    // Make the mouse-related events available for all
+    if ((event.type == sf::Event::MouseMoved) || (event.type == sf::Event::MouseButtonPressed))
+    {
+        return true;
+    }
+
     if (event.type == sf::Event::KeyReleased)
     {
         return false;
@@ -114,12 +119,6 @@ bool UpgradeTowerState::HandleEvent(const sf::Event& event) {
     {
 		RequestStackPush(States::ID::Pause);
 	}
-
-    // Make the mouse-related events available for all
-    if ((event.type == sf::Event::MouseMoved) || (event.type == sf::Event::MouseButtonPressed))
-    {
-        return true;
-    }
 
     //Otherwise, don't propagate the events
     return false;
