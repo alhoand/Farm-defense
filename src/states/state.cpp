@@ -3,13 +3,16 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 
-State::Context::Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, Player& player, sf::Vector2f viewOffset, GUI::Container& GUIContainer) 
+State::Context::Context(sf::RenderWindow& window, TextureHolder& textures,
+                        FontHolder& fonts, Player& player, sf::Vector2f viewOffset,
+                        GUI::Container& GUIContainer, GUI::Controller& GUIController) 
         : window_(&window),
         textures_(&textures),
         fonts_(&fonts),
         player_(&player),
         viewOffset_(viewOffset),
-        GUIContainer_(&GUIContainer) 
+        GUIContainer_(&GUIContainer),
+        GUIController_(&GUIController) 
         { 
         }
 

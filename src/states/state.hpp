@@ -11,6 +11,7 @@
 #include <map>
 #include "../gui_identifiers.hpp"
 #include "../container.hpp"
+#include "../controller.hpp"
 
 namespace sf {
     class RenderWindow;
@@ -28,7 +29,8 @@ public:
                  FontHolder& fonts_,
                  Player& player,
                  sf::Vector2f viewOffset,
-                 GUI::Container& GUIContainer
+                 GUI::Container& GUIContainer,
+                 GUI::Controller& GUIController
         );
 
         sf::RenderWindow* window_;
@@ -37,6 +39,7 @@ public:
         Player* player_;
         sf::Vector2f viewOffset_;
         GUI::Container* GUIContainer_;
+        GUI::Controller* GUIController_;
         
     };
 

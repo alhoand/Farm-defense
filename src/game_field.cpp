@@ -35,6 +35,15 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 		gameFieldView_.setCenter(gameFieldBounds_.left + (gameFieldBounds_.width + viewOffset_.x)/2.f, gameFieldBounds_.top + (gameFieldBounds_.height + viewOffset_.y)/2.f);
 	}
 
+void GameField::AddTower(Tower::Type type, sf::Vector2f pos)
+{
+	//std::cout << "Here we are!" << pos.x <<", " << pos.y << std::endl;
+	std::unique_ptr<Tower> newTower(new Tower(type, textures_));
+	newTower->setPosition(pos);
+	newTower->SetMovePermission(true);
+	sceneLayers_[Field]->AttachChild(std::move(newTower));
+
+}
 
 void GameField::Update(sf::Time dt) {
 
@@ -43,15 +52,23 @@ void GameField::Update(sf::Time dt) {
 	//makes towers shoot
 	MakeTowersShoot();
 	
-	// Forwards the commands to the scene graph
+	// Forwards the commands to self or the scene graph
 	while(!commandQueue_.IsEmpty()) {
-		sceneGraph_.OnCommand(commandQueue_.Pop(), dt);
+		Command next = commandQueue_.Pop();
+		if (next.category_ == Category::GameField)
+		{
+			OnCommand(next, dt);
+		}
+		else 
+		{
+			sceneGraph_.OnCommand(next, dt);
+		}
 	}
 
 	HandleCollisions();
+
 	sceneGraph_.RemoveWrecks();
 	SpawnEnemies(dt);
-
 	sceneGraph_.Update(dt, commandQueue_);
 }
 
@@ -180,6 +197,11 @@ std::pair<SceneNode*, bool> GameField::GetActiveNode() const {
 
 
 	
+}
+
+void GameField::OnCommand(Command command, sf::Time dt) 
+{
+	command.gameFieldAction_(*this, dt);
 }
 
 //Spawns only one type of enemies and spawnInterval is constant

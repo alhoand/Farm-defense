@@ -18,4 +18,5 @@ class SidebarState : public State {
         GUI::Label::Ptr descriptionText_;
         sf::Vector2f viewSize_;
         GUI::Container  GUIContainer_;
+        GUI::Controller& GUIController_;
 };

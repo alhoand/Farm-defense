@@ -19,6 +19,8 @@ target_sources(TowerDefense
 	component.hpp
 	container.cpp
 	container.hpp
+	controller.cpp
+	controller.hpp
 	data_tables.cpp
 	data_tables.hpp
 	entity.cpp

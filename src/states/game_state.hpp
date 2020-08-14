@@ -17,4 +17,5 @@ private:
     GameField gameField_;
     Player& player_;
     GUI::Container GUIContainer_;
+    GUI::Controller& GUIController_;
 };

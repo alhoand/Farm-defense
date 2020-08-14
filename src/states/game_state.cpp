@@ -7,7 +7,8 @@ GameState::GameState(StateStack& stack, Context context) :
     State(stack, context),
     gameField_(*context.window_, context.viewOffset_),
     player_(*context.player_),
-    GUIContainer_()
+    GUIContainer_(),
+    GUIController_(*context.GUIController_)
     { 
         auto pauseButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, sf::IntRect(108,0,55,53),sf::IntRect(0,0,55,54));
         pauseButton->setPosition(10, 10);
@@ -16,7 +17,6 @@ GameState::GameState(StateStack& stack, Context context) :
 	{
 		RequestStackPush(States::ID::Pause);
 	});
-    std::cout << "Game state constructor started" << std::endl;
         GUIContainer_.Pack(pauseButton);
 
         auto nodeComponent = std::make_shared<GUI::SceneNodeComponent>(nullptr);
@@ -24,7 +24,6 @@ GameState::GameState(StateStack& stack, Context context) :
 
         GUIContainer_.Pack(nodeComponent);
         GetContext().GUIContainer_->Pack(nodeComponent);
-    
     }
 
 void GameState::Draw() {
@@ -38,6 +37,8 @@ bool GameState::Update(sf::Time dt) {
     UpdateGUI(); // TODO: make this call only when needed
     CommandQueue& commands = gameField_.GetCommandQueue();
 	player_.HandleRealtimeInput(commands);
+
+    GUIController_.HandleSidebarInput(commands);
 
 	return true;
 }

@@ -21,7 +21,8 @@ Application::Application()
     statisticsText_(),
     player_(window_, viewOffset_),
     GUIContainer_(),
-    stateStack_(State::Context(window_, textures_, fonts_, player_, viewOffset_, GUIContainer_))
+    GUIController_(),
+    stateStack_(State::Context(window_, textures_, fonts_, player_, viewOffset_, GUIContainer_, GUIController_))
     { 
         window_.setFramerateLimit(60);
         window_.setPosition(sf::Vector2i(0.f, 30.f)); //sets position so title bar is at the top of screen

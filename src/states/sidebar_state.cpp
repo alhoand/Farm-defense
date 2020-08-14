@@ -1,4 +1,8 @@
 #include "sidebar_state.hpp"
+#include "../command_queue.hpp"
+#include "../towers/tower.hpp"
+#include "../game_field.hpp"
+#include "../player.hpp"
 #include <memory>
 
 SidebarState::SidebarState(StateStack& stack, Context context)
@@ -9,7 +13,10 @@ SidebarState::SidebarState(StateStack& stack, Context context)
     , descriptionText_(nullptr)
     , viewSize_(context.window_->getView().getSize().x/4.f, context.window_->getView().getSize().y)
     , GUIContainer_() 
+    , GUIController_(*context.GUIController_)
     {
+        GUIContainer_.setPosition(context.window_->getView().getSize().x - viewSize_.x, 0);
+
         titleText_ = std::make_shared<GUI::Label>("Wave 0", *context.fonts_, 50, Fonts::Main);
         titleText_->CenterTextOrigin();
         titleText_->setPosition(viewSize_.x/2.f, 50.f);
@@ -23,21 +30,33 @@ SidebarState::SidebarState(StateStack& stack, Context context)
             {
                 std::cout << "Wave button was pressed." << std::endl;
             });
+        GUIContainer_.Pack(waveButton, true);
+
         auto towerButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
         towerButton->setOrigin(towerButton->GetGlobalBounds().width/2.f, towerButton->GetGlobalBounds().height/2.f);
         towerButton->setPosition(viewSize_.x/2.f, 400.f);
         towerButton->SetText("Add tower");
-        towerButton->SetCallback([this] ()
+        GUIContainer_.Pack(towerButton, true); //Pack it before getting position to get the real pos
+
+        sf::Vector2f buttonPosition = towerButton->GetWorldPosition();
+        towerButton->SetCallback([this, buttonPosition] ()
             {
-                std::cout << "Add new tower-button was pressed." << std::endl;
+                Command command;
+                command.category_ = Category::Type::GameField;
+                command.gameFieldAction_ = GameFieldAction(
+                            [buttonPosition] (GameField& gameField, sf::Time dt)
+                            {
+                                gameField.AddTower(Tower::Type::Fire, buttonPosition);
+                            }
+
+                );
+                GUIController_.SendCommand(command);
             });
-        GUIContainer_.Pack(waveButton, true);
-        GUIContainer_.Pack(towerButton, true);
+        
 
         backgroundShape_.setFillColor(sf::Color(160,82,45,235));
         backgroundShape_.setSize(viewSize_);
-        GUIContainer_.setPosition(context.window_->getView().getSize().x - viewSize_.x, 0);
-
+        std::cout << "end of sidebar constructor" << std::endl;
     }
 
 void SidebarState::Draw() {
