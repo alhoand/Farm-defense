@@ -176,14 +176,10 @@ void Enemy::SlowDown()
 }
 
 // Default case, can be altered in derived classes and take into account the bullet category
-void Enemy::TakeHit(Bullet& bullet)
+void Enemy::TakeHit(int damage)
 {
-    switch(bullet.GetCategory()) {
-        case Category::SlowingBullet :
-            SlowDown();
-        default:
-            Damage(bullet.GetDamage());
-    }
+    Damage(damage);
+
 }
 
 

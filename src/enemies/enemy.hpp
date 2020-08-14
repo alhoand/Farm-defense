@@ -32,7 +32,7 @@ class Enemy : public Entity {
         sf::FloatRect   GetBoundingRect() const override;
         virtual float   GetSpeed() const; // some enemies can resist slowing down so can be redefined in derived class
         void            SlowDown(); 
-        virtual void    TakeHit(Bullet& bullet); // some enemies resist or take more damage if bullet is certain type, so that can be defined in derived classes
+        virtual void    TakeHit(int damage); // some enemies resist or take more damage if bullet is certain type, so that can be defined in derived classes
         bool            IsMarkedForRemoval() const override;
 
     protected:
