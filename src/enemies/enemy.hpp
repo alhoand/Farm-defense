@@ -3,7 +3,7 @@
 //Initial header file for abstract enemy class
 #include <vector>
 
-//#include "../bullet.hpp"
+#include "../towers/bullet.hpp"
 #include "../entity.hpp"
 #include "../resource_identifiers.hpp"
 #include "../command_queue.hpp"
@@ -32,7 +32,7 @@ class Enemy : public Entity {
         sf::FloatRect   GetBoundingRect() const override;
         virtual float   GetSpeed() const; // some enemies can resist slowing down so can be redefined in derived class
         void            SlowDown(); 
-        virtual void    TakeHit(int damage, unsigned int category); // some enemies resist or take more damage if bullet is certain type, so that can be defined in derived classes
+        virtual void    TakeHit(Bullet& bullet); // some enemies resist or take more damage if bullet is certain type, so that can be defined in derived classes
         bool            IsMarkedForRemoval() const override;
 
     protected:

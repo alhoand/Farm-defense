@@ -52,16 +52,14 @@ void Bullet::DrawCurrent(sf::RenderTarget& target,sf::RenderStates states) const
     target.draw(sprite_, states);
 }
 
-unsigned int Bullet::GetCategory() const
-{
+unsigned int Bullet::GetCategory() const {
     unsigned int type;
-    switch (type_)
-    {
+    switch (type_) {
         case Bullet::Basic :
             type = Category::BasicBullet;
             break;
-        case Bullet::Advanced :
-            type = Category::AdvancedBullet;
+        case Bullet::Slowing :
+            type = Category::SlowingBullet;
             break;
         case Bullet::Super :
             type = Category::SuperBullet;
@@ -77,8 +75,8 @@ Textures::ID Bullet::ToTextureID(Bullet::Type type) {
     switch (type) {
         case Bullet::Type::Basic:
             return Textures::ID::BasicBullet;
-        case Bullet::Type::Advanced:
-            return Textures::ID::AdvancedBullet;
+        case Bullet::Type::Slowing:
+            return Textures::ID::SlowingBullet;
         case Bullet::Type::Super:
             return Textures::ID::SuperBullet;
         default: 

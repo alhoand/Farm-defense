@@ -19,7 +19,7 @@ class Bullet : public Entity {
     public:
         enum Type {
             Basic,
-            Advanced,
+            Slowing,
             Super,
             TypeCount
         };

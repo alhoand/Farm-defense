@@ -11,11 +11,11 @@ namespace Category {
         Enemy = 1 << 3,
         Ghost = 1 << 4,
         BasicBullet = 1 << 5,
-        AdvancedBullet = 1 << 6,
+        SlowingBullet = 1 << 6,
         SuperBullet = 1 << 7,
 
         Tower = ShootingTower | SlowingTower,
-        Bullet = BasicBullet | AdvancedBullet | SuperBullet
+        Bullet = BasicBullet | SlowingBullet | SuperBullet
         
     };
 }

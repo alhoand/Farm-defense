@@ -52,7 +52,7 @@ void Tower::Shoot(CommandQueue& commands, sf::Vector2f direction) {
 
 
 unsigned int Tower::GetCategory() const {
-    if (type_ == Tower::Advanced)
+    if (type_ == Tower::Slowing)
     {
         return Category::SlowingTower;
     }
@@ -115,8 +115,8 @@ Textures::ID Tower::ToTextureID(Tower::Type type) {
     switch (type) {
         case Tower::Type::Basic:
             return Textures::ID::BasicTower;
-        case Tower::Type::Advanced:
-            return Textures::ID::AdvancedTower;
+        case Tower::Type::Slowing:
+            return Textures::ID::SlowingTower;
         case Tower::Type::Super:
             return Textures::ID::SuperTower;
         default: 

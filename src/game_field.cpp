@@ -149,7 +149,7 @@ void GameField::HandleCollisions()
 			auto& bullet = static_cast<Bullet&>(*pair.second);
 
 			// Apply bullet damage to enemy, destroy bullet
-			enemy.TakeHit(bullet.GetDamage(), bullet.GetCategory());
+			enemy.TakeHit(bullet);
 			std::cout << "HP now: " << enemy.GetHitpoints() << std::endl;
 			bullet.Destroy();
 
