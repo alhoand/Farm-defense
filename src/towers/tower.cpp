@@ -34,10 +34,8 @@ void Tower::UpdateCurrent(sf::Time dt, CommandQueue&) {
     //if tower hasn't shot yet (no enemies are in range), do nothing and do not reduce countdown
     if (countdown_ <= sf::Time::Zero) {
         canShoot_ = true;
-        std::cout << "It can! Hurrah! " << std::endl;
         countdown_ += sf::seconds(reloadTime_);
     } else if (countdown_ > sf::Time::Zero  && !canShoot_) {
-        // std::cout << "It cannot :(" << std::endl;
         countdown_ -= dt;
     }
 
@@ -52,9 +50,10 @@ void Tower::Shoot(CommandQueue& commands, sf::Vector2f direction) {
 
 
 unsigned int Tower::GetCategory() const {
-    if (type_ == Tower::Slowing)
-    {
+    if (type_ == Tower::Slowing) {
         return Category::SlowingTower;
+    } else if (type_ == Tower::Bombing) {
+        return Category::BombingTower;
     }
     return Category::ShootingTower;
 }
@@ -119,6 +118,8 @@ Textures::ID Tower::ToTextureID(Tower::Type type) {
             return Textures::ID::SlowingTower;
         case Tower::Type::Super:
             return Textures::ID::SuperTower;
+        case Tower::Type::Bombing:
+            return Textures::ID::BombingTower;
         default: 
             return Textures::ID::BasicTower;
     }

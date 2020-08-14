@@ -20,6 +20,7 @@ class Bullet : public Entity {
         enum Type {
             Basic,
             Super,
+            Bomb,
             TypeCount
         };
 
@@ -29,7 +30,7 @@ class Bullet : public Entity {
         // Bullet(Type type, const TextureHolder& textures);
 
         // Constructor to be used with inherited classes
-        Bullet(Type type, const TextureHolder& textures, float speed, int damage, int damageDuration);
+        Bullet(Type type, const TextureHolder& textures, float speed, int damage);
 
         //Destructor, only needed if abstract class
         virtual ~Bullet() {}
@@ -54,5 +55,5 @@ class Bullet : public Entity {
         sf::Sprite      sprite_;
         float           speed_;
         int             damage_;
-        int             damageDuration_;
+        // int             damageDuration_; - we maybe don't need this?
 };

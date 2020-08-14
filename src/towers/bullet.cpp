@@ -17,13 +17,12 @@
     }*/
 
 // Constructor to be used with inherited classes
-Bullet::Bullet(Type type, const TextureHolder& textures, float speed, int damage, int damageDuration)
+Bullet::Bullet(Type type, const TextureHolder& textures, float speed, int damage)
     : Entity(1),
       type_(type), 
       sprite_(textures.Get(ToTextureID(type))),
       speed_(speed), 
-      damage_(damage), 
-      damageDuration_(damageDuration) {
+      damage_(damage) {
         sf::FloatRect bounds = sprite_.getLocalBounds();
         sprite_.setOrigin(bounds.width/2.f, bounds.height/2.f);
     }
@@ -61,6 +60,9 @@ unsigned int Bullet::GetCategory() const {
         case Bullet::Super :
             type = Category::SuperBullet;
             break;
+        case Bullet::Bomb :
+            type = Category::Bomb;
+            break;
         default:
             type = Category::BasicBullet;
             break;
@@ -74,6 +76,8 @@ Textures::ID Bullet::ToTextureID(Bullet::Type type) {
             return Textures::ID::BasicBullet;
         case Bullet::Type::Super:
             return Textures::ID::SuperBullet;
+        case Bullet::Type::Bomb:
+            return Textures::ID::Bomb;
         default: 
             return Textures::ID::BasicBullet;
     }

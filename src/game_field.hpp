@@ -12,6 +12,7 @@
 
 #include "towers/basic_tower.hpp"
 #include "towers/slowing_tower.hpp"
+#include "towers/bombing_tower.hpp"
 
 #include "towers/bullet.hpp"
 
@@ -58,6 +59,7 @@ class GameField : private sf::NonCopyable {
         void            HandleCollisions();
         void            SpawnEnemies(sf::Time dt);
         void            DestroyEntitiesOutsideView();
+        void            DestroyDetonatedBombs();
         sf::FloatRect   GetViewBounds() const;
         sf::FloatRect   GetGamefieldBounds() const;
         void            MakeTowersShoot();

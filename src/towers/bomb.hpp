@@ -1,12 +1,24 @@
-#include "../entity.hpp"
+#pragma once
 
-class Bomb : publiv Entity {
+#include "bullet.hpp"
+#include "../game_field.hpp"
+
+class Bomb : public Bullet {
     public:
-        Bomb(const TextureHolder& textures, float speed, int damage, int damageDuration);
+        Bomb(const TextureHolder& textures);
+
+        int GetRange();
+        bool IsDetonated();
+
+        void UpdateCurrent(sf::Time dt,CommandQueue& commands);
+
+        void Detonate(CommandQueue& commands);
 
     private:
-        float distance_;            // how far will the bomb go?
-        float speed_;               // how fast will it reach its destination
-        float range_;               // the range within which enemies will be hit
-        int damage_;                // damage inflicted on enemies
-}
+        // we have type_, sprite_, speed_ and damage_ by Bullet
+        int             distance_;          // the distance the bomb will travel before detonating
+        int             range_;             // the range within which enemies will be hit
+        float           travelledDistance_; // how far the bomb has already travelled
+        Command         detonateCommand_;
+        bool            isDetonated_;         
+};

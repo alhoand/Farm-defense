@@ -37,6 +37,7 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 void GameField::Update(sf::Time dt) {
 
 	DestroyEntitiesOutsideView();
+	DestroyDetonatedBombs();
 
 	//makes towers shoot
 	MakeTowersShoot();
@@ -60,7 +61,9 @@ void GameField::LoadTextures() {
 	textures_.Load(Textures::ID::Grass, "../media/textures/grass.jpg");
 	textures_.Load(Textures::ID::BasicTower, "../media/textures/tower.png");
 	textures_.Load(Textures::ID::SlowingTower, "../media/textures/tower.png");
+	textures_.Load(Textures::ID::BombingTower, "../media/textures/tower.png");
 	textures_.Load(Textures::ID::BasicBullet, "../media/textures/bullet.png");
+	textures_.Load(Textures::ID::Bomb, "../media/textures/bullet.png");
 	textures_.Load(Textures::ID::NoTexture,      "../media/textures/noTexture.png");
 	textures_.Load(Textures::ID::DeathAnimation,      "../media/textures/deathAnimation.png");
 	textures_.Load(Textures::ID::Leppis,      "../media/textures/leppakerttu.png");
@@ -112,6 +115,12 @@ void GameField::BuildScene() {
 	//firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
 	secondTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/3.f, (gameFieldBounds_.top + gameFieldBounds_.height)/3.f);
 	sceneLayers_[Field] -> AttachChild(std::move(secondTower));
+
+	// Initialize a bombing tower
+	std::unique_ptr<Tower> thirdTower(new BombingTower(textures_));
+	//firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
+	thirdTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/4.f, (gameFieldBounds_.top + gameFieldBounds_.height)/4.f);
+	sceneLayers_[Field] -> AttachChild(std::move(thirdTower));
 
 }
 
@@ -230,6 +239,18 @@ void GameField::DestroyEntitiesOutsideView()
 			std::cout << "destroying enemy or bullet outside gamefield" << std::endl;
 			e.Destroy();
 		}	
+	});
+
+	commandQueue_.Push(command);
+}
+
+void GameField::DestroyDetonatedBombs() {
+	Command command;
+	command.category_ = Category::Bomb;
+	command.action_ = DerivedAction<Bomb>([this] (Bomb& bomb, sf::Time) {
+		if (bomb.IsDetonated()) {
+			bomb.Destroy();
+		}
 	});
 
 	commandQueue_.Push(command);

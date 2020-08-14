@@ -18,6 +18,7 @@ class Tower : public Entity {
             Basic,
             Slowing,
             Super,
+            Bombing,
             TypeCount
         };
 
