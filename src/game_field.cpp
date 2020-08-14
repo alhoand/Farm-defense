@@ -40,7 +40,8 @@ void GameField::AddTower(Tower::Type type, sf::Vector2f pos)
 	//std::cout << "Here we are!" << pos.x <<", " << pos.y << std::endl;
 	std::unique_ptr<Tower> newTower(new Tower(type, textures_));
 	newTower->setPosition(pos);
-	newTower->SetMovePermission(true);
+	newTower->AllowMoving();
+	newTower->Move();
 	sceneLayers_[Field]->AttachChild(std::move(newTower));
 
 }
