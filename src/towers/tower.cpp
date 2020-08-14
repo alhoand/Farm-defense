@@ -21,8 +21,16 @@ Tower* Tower::ActiveTower()
 
 void Tower::ActiveTower(Tower* newActive) 
 { 
-    assert(newActive != nullptr); 
+    assert(newActive != nullptr);
+
+    if (activeTower_)
+        activeTower_->Deactivate();
+
     activeTower_ = newActive;
+    activeTower_->Activate();
+    // For debugging:
+    std::cout << "New active tower added" << std::endl;
+
 }
 
 int Tower::TowerCount() { return towerCount_; }
@@ -50,7 +58,6 @@ Tower::Tower(Tower::Type type, const TextureHolder &textures)
         std::cout << "towercount: " << Tower::towerCount_ << std::endl;
         if (Tower::towerCount_ == 1) {
             Tower::ActiveTower(this);
-            std::cout << "New active added" << std::endl;
         }
             
     }
@@ -90,20 +97,43 @@ void Tower::Shoot(CommandQueue& commands, sf::Vector2f direction) {
     commands.Push(shootCommand_);
 }
 
-unsigned int Tower::GetCategory() const {
+unsigned int Tower::GetCategory() const
+{
     return Category::Tower;
 }
 
+void Tower::Activate()
+{
+    isActive_ = true;
+}
+
+void Tower::Deactivate()
+{
+    isActive_ = false;
+}
+
+bool Tower::IsActive() const
+{
+    return isActive_;
+}
 
 // This sets the permission for the tower to move
 // for now: this maybe is a clumsy way to achieve this
-void Tower::SetMovePermission(bool permissionToMove) {
+void Tower::AllowMoving()
+{
+    canMove_ = true;
+}
 
+void Tower::DisallowMoving() 
+{
+    Stop();
+    canMove_ = false;
 }
 
 // Getter of permission to move
-bool Tower::CanMove() const {
-
+bool Tower::CanMove() const
+{
+    return canMove_;
 }
 
 bool Tower::CanShoot() const 
@@ -111,15 +141,23 @@ bool Tower::CanShoot() const
     return canShoot_;
 }
 
-// Sets the tower moving with state=true, stops with state=false.
+// Sets the tower moving
 // Returns true if setting was succesful
-bool Tower::SetMoveState(bool state) {
+bool Tower::Move()
+{
+    if (canMove_)
+        isMoving_ = true;
+    return canMove_;
+}
 
+bool Tower::Stop()
+{
+    isMoving_ = false;
 }
 
 // Getter that tells if the tower is being moved by the player
 bool Tower::IsMoving() const {
-
+    return isMoving_;
 }
 
 sf::FloatRect Tower::GetBoundingRect() const {

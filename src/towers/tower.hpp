@@ -40,23 +40,29 @@ class Tower : public Entity {
         void                    Shoot(CommandQueue& commands, sf::Vector2f direction);
         virtual unsigned int    GetCategory() const override;
 
-        // This sets the permission for the tower to move
+        // These set the permission for the tower to move
         // for now: this maybe is a clumsy way to achieve this
-        void                    SetMovePermission(bool permissionToMove);
+        void                    AllowMoving();
+        void                    DisallowMoving();
+
+        void                    Activate();
+        void                    Deactivate();
 
         // Getter of permission to move
         bool                    CanMove() const;
         bool                    CanShoot() const;
+        bool                    IsActive() const;
 
-        // Sets the tower moving with state=true, stops with state=false.
-        // Returns true if setting was succesful
-        bool                    SetMoveState(bool state);
+        // Sets the tower moving or to stop
+        bool                    Move();
+        bool                    Stop();
 
         // Getter that tells if the tower is being moved by the player
-
         bool                    IsMoving() const;
 
         virtual sf::FloatRect   GetBoundingRect() const override;
+
+        float                   GetRange() const;
 
         static Textures::ID     ToTextureID(Type type);
 
@@ -65,8 +71,6 @@ class Tower : public Entity {
         static void             ActiveTower(Tower*);
 
         static int              TowerCount();
-
-        float                   GetRange() const;
 
 
     protected:
@@ -91,9 +95,13 @@ class Tower : public Entity {
         // bool isShooting_; not needed?
 
 
-        static Tower* activeTower_;
-        static int towerCount_;
+        static Tower*       activeTower_;
+        static int          towerCount_;
         sf::Time            countdown_;
         //CommandQueue&   commands_;
         Command             shootCommand_;
+
+        bool                isActive_;
+        bool                canMove_;
+        bool                isMoving_;
 };
