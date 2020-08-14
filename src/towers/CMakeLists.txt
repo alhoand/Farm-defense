@@ -11,6 +11,4 @@ target_sources(TowerDefense
         basic_bullet.cpp
         slowing_tower.hpp
         slowing_tower.cpp
-        slowing_bullet.hpp
-        slowing_bullet.cpp
 )

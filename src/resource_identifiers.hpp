@@ -13,7 +13,6 @@ namespace Textures {
         Leaf,
         Water,
         BasicBullet,
-        SlowingBullet,
         SuperBullet,
         Grass,
         BasicTower,

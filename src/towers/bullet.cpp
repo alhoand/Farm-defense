@@ -58,9 +58,6 @@ unsigned int Bullet::GetCategory() const {
         case Bullet::Basic :
             type = Category::BasicBullet;
             break;
-        case Bullet::Slowing :
-            type = Category::SlowingBullet;
-            break;
         case Bullet::Super :
             type = Category::SuperBullet;
             break;
@@ -75,8 +72,6 @@ Textures::ID Bullet::ToTextureID(Bullet::Type type) {
     switch (type) {
         case Bullet::Type::Basic:
             return Textures::ID::BasicBullet;
-        case Bullet::Type::Slowing:
-            return Textures::ID::SlowingBullet;
         case Bullet::Type::Super:
             return Textures::ID::SuperBullet;
         default: 
