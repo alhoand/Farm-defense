@@ -81,7 +81,9 @@ class GameField : private sf::NonCopyable {
         sf::Time            spawnCountdown_ ;
         int                 spawnInterval_;
         int                 leftToSpawn_; //initial, could change for better
-        //std::vector<Tower*> shootingTowers_;
         std::vector<Enemy*> activeEnemies_;
+        unsigned int        difficultyLevel_;
+	    unsigned int        levelCount_; //total amount of levels or waves in current game
+        sf::Time            levelBreakTimer_;
 
 };

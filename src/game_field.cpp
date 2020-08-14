@@ -21,11 +21,13 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	enemySpeed_(50.f),
 	firstEnemy_(),
 	firstTower_(),
-	spawnCountdown_(sf::seconds(5)),
-	spawnInterval_(5), //this should maybe be a parameter
-	leftToSpawn_(15),
-	//shootingTowers_(),
-    activeEnemies_()
+	spawnCountdown_(sf::seconds(2)),
+	spawnInterval_(2), //this should maybe be a parameter
+	leftToSpawn_(5),
+    activeEnemies_(),
+	difficultyLevel_(0), //0 is the first level and increases by 1 by each wave
+	levelCount_(5), // can be added to parameter list or askef for player, but for now it's just harcoded to be 5
+	levelBreakTimer_(sf::seconds(15))
 	{ 
 		LoadTextures();
 		BuildScene();
@@ -147,7 +149,7 @@ void GameField::HandleCollisions()
 			auto& bullet = static_cast<Bullet&>(*pair.second);
 
 			// Apply bullet damage to enemy, destroy bullet
-			enemy.Damage(bullet.GetDamage());
+			enemy.TakeHit(bullet.GetDamage(), bullet.GetCategory());
 			std::cout << "HP now: " << enemy.GetHitpoints() << std::endl;
 			bullet.Destroy();
 
@@ -167,7 +169,7 @@ void GameField::SpawnEnemies(sf::Time dt) {
 
 		if (leftToSpawn_-- % 2)
 		{
- 			std::unique_ptr<TestEnemy> newEnemy(new TestEnemy(textures_));
+ 			std::unique_ptr<TestEnemy> newEnemy(new TestEnemy(textures_, difficultyLevel_));
 			//newEnemy->setOrigin(newEnemy->GetBoundingRect().width/2, newEnemy->GetBoundingRect().height/2);
 			newEnemy->setPosition(spawnPosition_);
 			//newEnemy->setScale(2.f, 2.f);
@@ -175,7 +177,7 @@ void GameField::SpawnEnemies(sf::Time dt) {
 			sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
 		} else
 		{
-			std::unique_ptr<Enemy> newEnemy(new BasicEnemy(textures_));
+			std::unique_ptr<Enemy> newEnemy(new BasicEnemy(textures_, difficultyLevel_));
 			//newEnemy->setOrigin(newEnemy->GetBoundingRect().width/2, newEnemy->GetBoundingRect().height/2);
 			newEnemy->setPosition(spawnPosition_);
 			//newEnemy->setScale(0.5f, 0.5f);
@@ -187,6 +189,18 @@ void GameField::SpawnEnemies(sf::Time dt) {
     {
         spawnCountdown_ -= dt;
     }
+	else if (difficultyLevel_ < levelCount_ )
+	{
+		if (levelBreakTimer_ <= sf::Time::Zero)
+		{
+			difficultyLevel_++;
+			leftToSpawn_ = 5;
+			levelBreakTimer_ = sf::seconds(10); // should this timer max value be parameter also?
+		} else
+		{
+			levelBreakTimer_ -= dt;
+		}
+	}
 
 }
 
@@ -232,6 +246,7 @@ sf::FloatRect GameField::GetGamefieldBounds() const
 	return bounds;
 }
 
+// Does both: shoots enemies or slows them down depending on tower category
 void GameField::MakeTowersShoot()
 {
 	// Setup command that stores all active enemies to activeEnemies_
@@ -259,11 +274,21 @@ void GameField::MakeTowersShoot()
 		{
 			float enemyDistance = Distance(tower, *enemy);
 
-			if (enemyDistance < minDistance && enemyDistance <= tower.GetRange())
+			if (enemyDistance <= tower.GetRange())
 			{
-				closestEnemy = enemy;
-				minDistance = enemyDistance;
+				// Does not work yet, but should be sufficient to slow enemies if tower is category SlowingTower
+				/* if (tower.GetCategory() == Category::SlowingTower)
+				{
+					enemy.SlowDown(); //duration?
+					continue;
+				} */
+				if (enemyDistance < minDistance)
+				{
+					closestEnemy = enemy;
+					minDistance = enemyDistance;
+				}
 			}
+			
 		}
 
 		if (closestEnemy)
@@ -282,6 +307,3 @@ void GameField::MakeTowersShoot()
 	activeEnemies_.clear();
 
 }
-
-
-

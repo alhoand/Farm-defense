@@ -1,6 +1,11 @@
 #include "game_state.hpp"
 #include "../button.hpp"
 #include "../resource_identifiers.hpp"
+#include "../data_tables.hpp"
+
+namespace {
+	const std::vector<GUIData> table = InitializeGUIData();
+}
 
 GameState::GameState(StateStack& stack, Context context) :
     State(stack, context),
@@ -8,7 +13,9 @@ GameState::GameState(StateStack& stack, Context context) :
     player_(*context.player_),
     GUIContainer_(context)
     { 
-        auto pauseButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, sf::IntRect(108,0,55,53),sf::IntRect(0,0,55,54));
+        
+        
+        auto pauseButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, table[GUIitems::ID::PauseButton].normalTexture, table[GUIitems::ID::PauseButton].selectedTexture);
         pauseButton->setPosition(10, 10);
         pauseButton->SetCallback([this] ()
 	{

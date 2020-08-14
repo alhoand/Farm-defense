@@ -54,7 +54,23 @@ void Bullet::DrawCurrent(sf::RenderTarget& target,sf::RenderStates states) const
 
 unsigned int Bullet::GetCategory() const
 {
-	return Category::Bullet;
+    unsigned int type;
+    switch (type_)
+    {
+        case Bullet::Basic :
+            type = Category::BasicBullet;
+            break;
+        case Bullet::Advanced :
+            type = Category::AdvancedBullet;
+            break;
+        case Bullet::Super :
+            type = Category::SuperBullet;
+            break;
+        default:
+            type = Category::BasicBullet;
+            break;
+    }
+	return type;
 }
 
 Textures::ID Bullet::ToTextureID(Bullet::Type type) {

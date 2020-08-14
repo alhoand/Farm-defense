@@ -2,7 +2,11 @@
 #include "../resource_holder.hpp"
 #include "../button.hpp"
 #include <cmath>
+#include "../data_tables.hpp"
 
+namespace {
+	const std::vector<GUIData> table = InitializeGUIData();
+}
 
 PauseState::PauseState(StateStack& stack, Context context): 
 	State(stack, context), 
@@ -23,7 +27,7 @@ PauseState::PauseState(StateStack& stack, Context context):
 	pausedText_.setOrigin(::floor(bounds.left + bounds.width / 2.f), std::floor(50 + bounds.top + bounds.height / 2.f));
 	pausedText_.setPosition(0.5f * viewSize.x, 0.4f * viewSize.y);
 
-	auto resumeButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_,sf::IntRect(163,0,55,53),sf::IntRect(54,0,55,53));
+	auto resumeButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_,table[GUIitems::ID::ResumeButton].normalTexture,table[GUIitems::ID::ResumeButton].selectedTexture);
 	resumeButton->setPosition(10, 10);
 	resumeButton->SetCallback([this] ()
 	{

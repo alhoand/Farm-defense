@@ -12,10 +12,12 @@ std::vector<EnemyData> InitializeEnemyData()
 
 	data[Enemy::Fire].hitpoints = 50;
 	data[Enemy::Fire].speed = 50.f;
+	data[Enemy::Fire].slowDownRate = 0.8;
 	data[Enemy::Fire].texture = Textures::Fire;
 
 	data[Enemy::Leaf].hitpoints = 10;
 	data[Enemy::Leaf].speed = 50.f;
+	data[Enemy::Leaf].slowDownRate = 0.8;
 	data[Enemy::Leaf].texture = Textures::Leaf;
 
 	return data;
@@ -67,10 +69,23 @@ std::vector<BulletData>	InitializeBulletData() {
 	data[Bullet::IceBullet].damage = 1;
 	data[Bullet::IceBullet].damageDuration = 1;
 
-	data[Bullet::IceBullet].texture = Textures::IceBullet;
+	data[Bullet::WoodBullet].texture = Textures::WoodBullet;
 	data[Bullet::WoodBullet].speed = 75.f;
 	data[Bullet::WoodBullet].damage = 1;
 	data[Bullet::WoodBullet].damageDuration = 5;
 
 	return data;
 }*/
+
+std::vector<GUIData>	InitializeGUIData() {
+	std::vector<GUIData> data(GUIitems::ID::TypeCount);
+
+	data[GUIitems::ID::PauseButton].texture = Textures::Buttons;
+	data[GUIitems::ID::PauseButton].normalTexture = sf::IntRect(108,0,55,53);
+	data[GUIitems::ID::PauseButton].selectedTexture = sf::IntRect(0,0,54,53);
+
+	data[GUIitems::ID::ResumeButton].texture = Textures::Buttons;
+	data[GUIitems::ID::ResumeButton].normalTexture = sf::IntRect(54,0,55,53);
+	data[GUIitems::ID::ResumeButton].selectedTexture = sf::IntRect(163,0,55,54);
+	return data;
+}
