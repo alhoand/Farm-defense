@@ -7,4 +7,6 @@ target_sources(TowerDefense
         tower.cpp
         basic_tower.hpp
         basic_tower.cpp
+        basic_bullet.hpp
+        basic_bullet.cpp
 )
