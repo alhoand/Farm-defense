@@ -2,6 +2,8 @@
 
 #include "../entity.hpp"
 #include "../resource_identifiers.hpp"
+#include "../resource_holder.hpp"
+#include "../category.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 

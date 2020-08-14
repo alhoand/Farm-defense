@@ -3,13 +3,14 @@
 //Initial header file for abstract tower class
 #include "bullet.hpp"
 
-#include "../scene_node.hpp"
-#include "../enemies/enemy.hpp"
-#include "../category.hpp"
-#include "../entity.hpp"
-#include "../resource_identifiers.hpp"
+// #include "../scene_node.hpp"
+// #include "../enemies/enemy.hpp"
+// #include "../category.hpp"
+// #include "../entity.hpp"
+// #include "../resource_identifiers.hpp"
 #include "../command_queue.hpp"
-#include "../data_tables.hpp"
+#include "../utility.hpp"
+// #include "../data_tables.hpp"
 
 class Tower : public Entity {
     public:

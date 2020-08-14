@@ -1,8 +1,5 @@
 #include "bullet.hpp"
 
-#include "../resource_holder.hpp"
-#include "../category.hpp"
-
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 

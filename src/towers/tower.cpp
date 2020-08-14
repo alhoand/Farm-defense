@@ -1,5 +1,5 @@
 #include "tower.hpp"
-#include "../utility.hpp"
+
 #include <math.h> 
 
 // Constructor

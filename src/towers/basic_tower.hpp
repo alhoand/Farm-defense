@@ -1,4 +1,4 @@
-#pragma once
+// #pragma once
 
 #include "tower.hpp"
 #include "basic_bullet.hpp"

@@ -11,7 +11,6 @@
 #include "towers/tower.hpp"
 #include "towers/basic_tower.hpp"
 #include "towers/bullet.hpp"
-#include "towers/basic_bullet.hpp"
 #include "SFML/Graphics.hpp"
 #include "sprite_node.hpp"
 #include "command_queue.hpp"
