@@ -8,7 +8,7 @@
 
 //Making a Fire type enemy as a basic derived class
 BasicEnemy::BasicEnemy(const TextureHolder& textures, float difficultyLevel, float travelledDistance, int directionIndex)
-    : Enemy(Enemy::Fire, textures, difficultyLevel, travelledDistance, directionIndex)
+    : Enemy(Enemy::Basic, textures, difficultyLevel, travelledDistance, directionIndex)
     { 
         //sprite_ = 
         

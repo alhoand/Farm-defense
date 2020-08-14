@@ -154,6 +154,10 @@ void GameField::HandleCollisions()
 			std::cout << "Collision happened!!!" << std::endl;
 			auto& enemy = static_cast<Enemy&>(*pair.first);
 			auto& bullet = static_cast<Bullet&>(*pair.second);
+			if(bullet.IsDestroyed())
+			{
+				continue;
+			}
 
 			// Apply bullet damage to enemy, destroy bullet
 			enemy.TakeHit(bullet.GetDamage());
@@ -173,24 +177,47 @@ void GameField::SpawnEnemies(sf::Time dt) {
         spawnCountdown_ += sf::seconds(spawnInterval_);
 		//alternative way and probably better in actual game, change spawnInterval to spawnRate to make spawnrate <= 1 sec
 		//spawnCountdown_ += sf::seconds(1.f / (spawnRate_+1));
+		int num = RandomInt(Enemy::TypeCount);
 
-		if (leftToSpawn_-- % 2)
+		//this works only for current enemy types, probably cannot implemet for arbitrary count of enemy types
+		switch(num)
 		{
- 			std::unique_ptr<TestEnemy> newEnemy(new TestEnemy(textures_, difficultyLevel_));
-			//newEnemy->setOrigin(newEnemy->GetBoundingRect().width/2, newEnemy->GetBoundingRect().height/2);
-			newEnemy->setPosition(spawnPosition_);
-			//newEnemy->setScale(2.f, 2.f);
-			newEnemy->SetVelocity(enemySpeed_, 0.f);
-			sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
-		} else
-		{
-			std::unique_ptr<Enemy> newEnemy(new BasicEnemy(textures_, difficultyLevel_));
-			//newEnemy->setOrigin(newEnemy->GetBoundingRect().width/2, newEnemy->GetBoundingRect().height/2);
-			newEnemy->setPosition(spawnPosition_);
-			//newEnemy->setScale(0.5f, 0.5f);
-			newEnemy->SetVelocity(enemySpeed_, 0.f); //this need to be tought again if we have multiple paths
-			sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
+			case 0: 
+			{
+				std::unique_ptr<BasicEnemy> newEnemy(new BasicEnemy(textures_, difficultyLevel_));
+				newEnemy->setPosition(spawnPosition_);
+				newEnemy->SetVelocity(enemySpeed_, 0.f); //this need to be tought again if we have multiple paths
+				sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
+			}
+				break;
+			case 1:
+			{
+				std::unique_ptr<MultiEnemy> newEnemy(new MultiEnemy(textures_, difficultyLevel_));
+				newEnemy->setPosition(spawnPosition_);
+				newEnemy->SetVelocity(enemySpeed_, 0.f); //this need to be tought again if we have multiple paths
+				sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
+			}
+				break;
+			case 2:
+			{
+				std::unique_ptr<BulkEnemy> newEnemy(new BulkEnemy(textures_, difficultyLevel_));
+				newEnemy->setPosition(spawnPosition_);
+				newEnemy->SetVelocity(enemySpeed_, 0.f); //this need to be tought again if we have multiple paths
+				sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
+			}
+				break;
+			default:
+			{
+				std::unique_ptr<BasicEnemy> newEnemy(new BasicEnemy(textures_, difficultyLevel_));
+				newEnemy->setPosition(spawnPosition_);
+				newEnemy->SetVelocity(enemySpeed_, 0.f); //this need to be tought again if we have multiple paths
+				sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
+			}
+				break;
 		}
+
+		leftToSpawn_--;
+
     }
     else if (leftToSpawn_ > 0)
     {

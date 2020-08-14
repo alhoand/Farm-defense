@@ -17,9 +17,9 @@ class Enemy : public Entity {
     public:
         //Enemy types
         enum Type {
-            Fire,
-            Water,
-            Leaf,
+            Basic,
+            Bulk,
+            Multiplying,
             TypeCount //enumerators are indexed so last one tells the count of previous ones 
         };
     public:

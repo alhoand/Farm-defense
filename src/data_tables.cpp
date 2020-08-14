@@ -10,15 +10,20 @@ std::vector<EnemyData> InitializeEnemyData()
 
 	std::vector<EnemyData> data(Enemy::TypeCount);
 
-	data[Enemy::Fire].hitpoints = 50;
-	data[Enemy::Fire].speed = 50.f;
-	data[Enemy::Fire].slowDownRate = 0.8;
-	data[Enemy::Fire].texture = Textures::Fire;
+	data[Enemy::Basic].hitpoints = 10;
+	data[Enemy::Basic].speed = 50.f;
+	data[Enemy::Basic].slowDownRate = 0.5;
+	data[Enemy::Basic].texture = Textures::Fire;
 
-	data[Enemy::Leaf].hitpoints = 10;
-	data[Enemy::Leaf].speed = 50.f;
-	data[Enemy::Leaf].slowDownRate = 0.8;
-	data[Enemy::Leaf].texture = Textures::Leaf;
+	data[Enemy::Multiplying].hitpoints = 10;
+	data[Enemy::Multiplying].speed = 50.f;
+	data[Enemy::Multiplying].slowDownRate = 0.5;
+	data[Enemy::Multiplying].texture = Textures::Leaf;
+
+	data[Enemy::Bulk].hitpoints = 50;
+	data[Enemy::Bulk].speed = 50.f;
+	data[Enemy::Bulk].slowDownRate = 0.8;
+	data[Enemy::Bulk].texture = Textures::Water;
 
 	return data;
 }

@@ -7,8 +7,9 @@
 #include <memory>
 
 #include "enemies/enemy.hpp"
-#include "enemies/test_enemy.hpp"
 #include "enemies/basic_enemy.hpp"
+#include "enemies/bulk_enemy.hpp"
+#include "enemies/multi_enemy.hpp"
 
 #include "towers/basic_tower.hpp"
 #include "towers/slowing_tower.hpp"
@@ -23,6 +24,7 @@
 #include "scene_node.hpp"
 #include "command.hpp"
 #include "category.hpp"
+#include "utility.hpp"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics.hpp>

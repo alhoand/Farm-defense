@@ -34,7 +34,7 @@ void Tower::UpdateCurrent(sf::Time dt, CommandQueue&) {
     //if tower hasn't shot yet (no enemies are in range), do nothing and do not reduce countdown
     if (countdown_ <= sf::Time::Zero) {
         canShoot_ = true;
-        std::cout << "It can! Hurrah! " << std::endl;
+        //std::cout << "It can! Hurrah! " << std::endl;
         countdown_ += sf::seconds(reloadTime_);
     } else if (countdown_ > sf::Time::Zero  && !canShoot_) {
         // std::cout << "It cannot :(" << std::endl;

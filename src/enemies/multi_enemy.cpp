@@ -1,4 +1,4 @@
-#include "test_enemy.hpp"
+#include "multi_enemy.hpp"
 #include "basic_enemy.hpp"
 #include "../data_tables.hpp"
 #include "../utility.hpp"
@@ -8,12 +8,12 @@
 
 
 //Making a leaf type enemy as a test of derived class
-TestEnemy::TestEnemy(const TextureHolder& textures, float difficultyLevel, float travelledDistance, int directionIndex)
-    : Enemy(Enemy::Leaf, textures, difficultyLevel, travelledDistance, directionIndex)
+MultiEnemy::MultiEnemy(const TextureHolder& textures, float difficultyLevel, float travelledDistance, int directionIndex)
+    : Enemy(Enemy::Multiplying, textures, difficultyLevel, travelledDistance, directionIndex)
     { 
         showDeathAnimation_ = false;
-        spawnFireEnemyCommand_.category_ = Category::Scene;
-        spawnFireEnemyCommand_.action_ = [this, &textures] (SceneNode& node, sf::Time) 
+        spawnBasicEnemyCommand_.category_ = Category::Scene;
+        spawnBasicEnemyCommand_.action_ = [this, &textures] (SceneNode& node, sf::Time) 
         {
             std::cout <<"spawning a new enemy" << std::endl;
             std::unique_ptr<Enemy> newEnemy(new BasicEnemy(textures, difficultyLevel_, travelledDistance_, directionIndex_));
@@ -25,9 +25,10 @@ TestEnemy::TestEnemy(const TextureHolder& textures, float difficultyLevel, float
     }
 
 
-void TestEnemy::CheckDestroyBehaviour(CommandQueue& commands)
+void MultiEnemy::CheckDestroyBehaviour(CommandQueue& commands)
 {
-    std::cout << "hello from here" << std::endl;
-    commands.Push(spawnFireEnemyCommand_);
+    commands.Push(spawnBasicEnemyCommand_);
+    commands.Push(spawnBasicEnemyCommand_);
+    commands.Push(spawnBasicEnemyCommand_);
 }
 
