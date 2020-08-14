@@ -80,8 +80,6 @@ class GameField : private sf::NonCopyable {
         float               enemySpeed_;
         //std::list<Tower*> towers_;
         Enemy*              firstEnemy_;
-        Tower*              firstTower_;
-        Tower*              secondTower_;
         //std::list<Bullet*> bullets_;
         sf::Time            spawnCountdown_ ;
         int                 spawnInterval_;

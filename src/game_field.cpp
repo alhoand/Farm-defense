@@ -20,8 +20,6 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	commandQueue_(),
 	enemySpeed_(50.f),
 	firstEnemy_(),
-	firstTower_(),
-	secondTower_(),
 	spawnCountdown_(sf::seconds(2)),
 	spawnInterval_(2), //this should maybe be a parameter
 	leftToSpawn_(5),
@@ -104,16 +102,15 @@ void GameField::BuildScene() {
 
 	//Initialize a tower that can be moved with hard-coded bullet
 	std::unique_ptr<Tower> firstTower(new BasicTower(textures_));
-	firstTower_ = firstTower.get();
+	// firstTower_ = firstTower.get();
 	//firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
-	firstTower_->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f);
+	firstTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f);
 	sceneLayers_[Field] -> AttachChild(std::move(firstTower));
 
 	//Initialize a slowing tower
 	std::unique_ptr<Tower> secondTower(new SlowingTower(textures_));
-	secondTower_ = secondTower.get();
 	//firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
-	secondTower_->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/3.f, (gameFieldBounds_.top + gameFieldBounds_.height)/3.f);
+	secondTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/3.f, (gameFieldBounds_.top + gameFieldBounds_.height)/3.f);
 	sceneLayers_[Field] -> AttachChild(std::move(secondTower));
 
 }
