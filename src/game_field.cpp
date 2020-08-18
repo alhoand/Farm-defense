@@ -37,21 +37,26 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 
 void GameField::AddTower(Tower::Type type, sf::Vector2f pos)
 {
-	//std::cout << "Here we are!" << pos.x <<", " << pos.y << std::endl;
 	std::unique_ptr<Tower> newTower(new Tower(type, textures_));
 	newTower->setPosition(pos);
 	newTower->AllowMoving();
 	newTower->Move();
+	newTower->Activate();
+	
 	sceneLayers_[Field]->AttachChild(std::move(newTower));
-
+	Tower::ActiveTower(newTower, commandQueue_);
+	std::cout << "Here we are!" << pos.x <<", " << pos.y << std::endl;
 }
 
 void GameField::Update(sf::Time dt) {
-
+//std::cout << "Gamefield update start" << std::endl;
 	DestroyEntitiesOutsideView();
+//std::cout << "destroyed enemies" << std::endl;
 
 	//makes towers shoot
 	MakeTowersShoot();
+
+//std::cout << "made the towers shoot" << std::endl;
 	
 	// Forwards the commands to self or the scene graph
 	while(!commandQueue_.IsEmpty()) {
@@ -65,7 +70,7 @@ void GameField::Update(sf::Time dt) {
 			sceneGraph_.OnCommand(next, dt);
 		}
 	}
-
+	//std::cout << "forwarded the commands" << std::endl;
 	HandleCollisions();
 
 	sceneGraph_.RemoveWrecks();
@@ -121,11 +126,12 @@ void GameField::BuildScene() {
 
 	//Initialize a tower that can be moved with hard-coded bullet
 	// TODO: make bullets work
-	std::unique_ptr<Tower> firstTower(new Tower(Tower::Type::Fire, textures_));
-	firstTower_ = firstTower.get();
+	//std::unique_ptr<Tower> firstTower(new Tower(Tower::Type::Fire, textures_));
+	//firstTower_ = firstTower.get();
 	//firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
-	firstTower_->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f);
-	sceneLayers_[Field] -> AttachChild(std::move(firstTower));
+	//firstTower_->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f);
+	AddTower(Tower::Type::Fire, sf::Vector2f((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f));
+	//sceneLayers_[Field] -> AttachChild(std::move(firstTower));
 
 
 }
@@ -138,12 +144,12 @@ bool MatchesCategories(SceneNode::Pair& colliders, Category::Type type1, Categor
 	// Make sure first pair entry has category type1 and second has type2
 	if (type1 & category1 && type2 & category2)
 	{
-		std::cout << "matching category found" << std::endl;
+		//std::cout << "matching category found" << std::endl;
 		return true;
 	}
 	else if (type1 & category2 && type2 & category1)
 	{
-		std::cout << "matching category found" << std::endl;
+		//std::cout << "matching category found" << std::endl;
 		std::swap(colliders.first, colliders.second);
 		return true;
 	}
@@ -163,20 +169,20 @@ void GameField::HandleCollisions()
 		//std::cout << pair.first->GetCategory() << "," << pair.second->GetCategory() << std::endl;
 		if (MatchesCategories(pair, Category::Enemy, Category::Bullet))
 		{
-			std::cout << "Collision happened!!!" << std::endl;
+			//std::cout << "Collision happened!!!" << std::endl;
 			auto& enemy = static_cast<Enemy&>(*pair.first);
 			auto& bullet = static_cast<Bullet&>(*pair.second);
 
 			// Apply bullet damage to enemy, destroy bullet
 			enemy.Damage(bullet.GetDamage());
-			std::cout << "HP now: " << enemy.GetHitpoints() << std::endl;
+			//std::cout << "HP now: " << enemy.GetHitpoints() << std::endl;
 			bullet.Destroy();
 
 			//std::cout << "Collision occurred on enemy: " << enemy.Get<< std::endl;
 		}
 	}
 }
-
+/*
 // Does not handle nullptr so the caller should handle it.
 std::pair<SceneNode*, bool> GameField::GetActiveNode() const {
 	//assert(Tower::ActiveTower() != nullptr); 
@@ -198,7 +204,7 @@ std::pair<SceneNode*, bool> GameField::GetActiveNode() const {
 
 
 	
-}
+}*/
 
 void GameField::OnCommand(Command command, sf::Time dt) 
 {
@@ -261,8 +267,17 @@ void GameField::Draw() {
 CommandQueue& GameField::GetCommandQueue() {
 	return commandQueue_;
 }
+/*
+void GameField::HandleActiveTower()
+{
+	Command command;
+	command.category_ = Category::ActiveTower;
+	command.action_ = DerivedAction<Tower>([this] (Tower& t, sf::Time)
+	{
 
-
+	});
+	commandQueue_.Push(command);
+}*/
 
 void GameField::DestroyEntitiesOutsideView()
 {
@@ -342,7 +357,7 @@ void GameField::MakeTowersShoot()
 		if (closestEnemy)
 		{
 			sf::Vector2f direction(closestEnemy->GetWorldPosition() - tower.GetWorldPosition());
-			std::cout << "shooting direction: " << direction.x << ", " << direction.y << std::endl;
+			//std::cout << "shooting direction: " << direction.x << ", " << direction.y << std::endl;
 			tower.Shoot(commandQueue_, direction);
 		}
 			

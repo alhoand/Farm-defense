@@ -36,7 +36,7 @@ class Container : public Component
 
         //std::shared_ptr<GUI::SceneNodeComponent> GetNodeComponent(GUI::ID type);
 
-        Component::Ptr GetChild(GUI::ID type);
+        //Component::Ptr GetChild(GUI::ID type);
 
     private:
         virtual void		draw(sf::RenderTarget& target, sf::RenderStates states) const override{

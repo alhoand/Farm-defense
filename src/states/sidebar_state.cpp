@@ -46,6 +46,7 @@ SidebarState::SidebarState(StateStack& stack, Context context)
                 command.gameFieldAction_ = GameFieldAction(
                             [buttonPosition] (GameField& gameField, sf::Time dt)
                             {
+                                std::cout << "Button pressed!" <<std::endl;
                                 gameField.AddTower(Tower::Type::Fire, buttonPosition);
                             }
 

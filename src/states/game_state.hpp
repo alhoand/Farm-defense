@@ -13,7 +13,6 @@ public:
     virtual bool HandleEvent(const sf::Event& event) override;
 
 private:
-    void UpdateGUI();
     GameField gameField_;
     Player& player_;
     GUI::Container GUIContainer_;

@@ -56,7 +56,7 @@ class Tower : public Entity {
 
         // Sets the tower moving or to stop
         bool                    Move();
-        bool                    Stop();
+        void                    Stop();
 
         // Getter that tells if the tower is being moved by the player
         bool                    IsMoving() const;
@@ -69,7 +69,9 @@ class Tower : public Entity {
 
         static Tower*           ActiveTower(); 
 
-        static void             ActiveTower(Tower*);
+        static void             ActiveTower(std::unique_ptr<Tower> &ptr, CommandQueue& commands);
+
+        static void             ActiveTower(Tower& tower, CommandQueue& commands);
 
         static int              TowerCount();
 
@@ -104,7 +106,7 @@ class Tower : public Entity {
         //CommandQueue&   commands_;
         Command             shootCommand_;
 
-        bool                isActive_;
+        unsigned int        isActive_;
         bool                canMove_;
         bool                isMoving_;
         RangeNode*          rangeCircle_;

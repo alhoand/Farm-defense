@@ -38,7 +38,7 @@ std::shared_ptr<GUI::Button> Container::GetButton(GUI::ID type) {
 	return std::dynamic_pointer_cast<GUI::Button>(*found);
 }*/
 
-
+/*
 Component::Ptr Container::GetChild(GUI::ID type) {
 	auto found = std::find_if(children_.begin(), children_.end(),
 		[&] (GUI::Component::Ptr& child) {
@@ -46,7 +46,7 @@ Component::Ptr Container::GetChild(GUI::ID type) {
 	});
 	assert(found != children_.end());
 	return *found;
-}
+}*/
 
 
 

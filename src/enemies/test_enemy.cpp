@@ -15,7 +15,7 @@ TestEnemy::TestEnemy(const TextureHolder& textures, float difficultyLevel, float
         spawnFireEnemyCommand_.category_ = Category::Scene;
         spawnFireEnemyCommand_.action_ = [this, &textures] (SceneNode& node, sf::Time) 
         {
-            std::cout <<"spawning a new enemy" << std::endl;
+            //std::cout <<"spawning a new enemy" << std::endl;
             std::unique_ptr<Enemy> newEnemy(new BasicEnemy(textures, difficultyLevel_, travelledDistance_, directionIndex_));
 		    newEnemy->setPosition(this->GetWorldPosition());
             //newEnemy->setScale(0.25f, 0.25f);
@@ -27,7 +27,7 @@ TestEnemy::TestEnemy(const TextureHolder& textures, float difficultyLevel, float
 
 void TestEnemy::CheckDestroyBehaviour(CommandQueue& commands)
 {
-    std::cout << "hello from here" << std::endl;
+    //std::cout << "hello from here" << std::endl;
     commands.Push(spawnFireEnemyCommand_);
 }
 

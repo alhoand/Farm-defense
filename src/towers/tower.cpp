@@ -15,28 +15,93 @@ Textures::ID Tower::ToTextureID(Type type)
 }
 
 
-Tower* Tower::activeTower_  = nullptr;
+//Tower* Tower::activeTower_  = nullptr;
 
 int Tower::towerCount_ = 0;
 
 
-Tower* Tower::ActiveTower()
+/*Tower* Tower::ActiveTower()
 { 
     return activeTower_; 
 }
+*/
 
-void Tower::ActiveTower(Tower* newActive) 
+void Tower::ActiveTower(Tower &newActive, CommandQueue& commands)
+{
+   /* Command command;
+    command.category_ = Category::ActiveTower;
+    command.action_ = DerivedAction<Tower>([](Tower& t, sf::Time)
+    {
+        t.Deactivate();
+        std::cout << "Old active tower deactivated" << std::endl;
+
+    });
+    commands.Push(command);*/
+
+    Command actCmd;
+    actCmd.category_ = Category::Tower;
+    std::cout << "All cool here" << std::endl;
+    actCmd.action_ = DerivedAction<Tower>([&](Tower& t, sf::Time)
+    {
+        if (&t == &newActive)
+        {
+
+            t.Activate();
+            std::cout << "New active tower added" << std::endl;
+
+        }
+        else
+        {
+            t.Deactivate();
+            std::cout << "address of t: " << &t << ", address of new: " << &newActive << std::endl;
+            std::cout << "No new active added" << std::endl;
+        }
+        
+    });
+    commands.Push(actCmd);
+}
+
+void Tower::ActiveTower(std::unique_ptr<Tower> &newActive, CommandQueue& commands) 
 { 
-    assert(newActive != nullptr);
+    //assert(newActive != nullptr);
+    Command command;
+    command.category_ = Category::Active;
+    command.action_ = DerivedAction<Tower>([](Tower& t, sf::Time)
+    {
+        t.Deactivate();
+        std::cout << "Old active tower deactivated ptr version" << std::endl;
 
-    if (activeTower_)
-        activeTower_->Deactivate();
+    });
+    commands.Push(command);
 
-    activeTower_ = newActive;
-    activeTower_->Activate();
+    Command actCmd;
+    actCmd.category_ = Category::Tower;
+    std::cout << "All cool here" << std::endl;
+    actCmd.action_ = DerivedAction<Tower>([&](Tower& t, sf::Time)
+    {
+        if (&t == newActive.get())
+        {
+            t.Activate();
+            std::cout << "New active tower added ptr version" << std::endl;
+
+
+        }
+        else
+        {
+            t.Deactivate();
+       //     std::cout << "t address: " << &t << ", new address: " << newActive.get() << std::endl;
+            std::cout << "No new active added ptr version" << std::endl;
+        }
+        
+    });
+    commands.Push(actCmd);
+    
+    //newActive->Activate();
+
+   // activeTower_ = newActive;
+   // activeTower_->Activate();
     // For debugging:
-    std::cout << "New active tower added" << std::endl;
-
+    
 }
 
 int Tower::TowerCount() { return towerCount_; }
@@ -62,9 +127,9 @@ Tower::Tower(Tower::Type type, const TextureHolder &textures)
         };
         Tower::towerCount_++;
         std::cout << "towercount: " << Tower::towerCount_ << std::endl;
-        if (Tower::towerCount_ == 1) {
-            Tower::ActiveTower(this);
-        }
+     /*   if (Tower::towerCount_ == 1) {
+            Tower::ActiveTower(*this, );
+        }*/
 
         std::unique_ptr<RangeNode> rangeCircle(new RangeNode(range_, sf::Color(255, 0, 0, 128)));
         rangeCircle_ = rangeCircle.get();
@@ -87,7 +152,7 @@ void Tower::UpdateCurrent(sf::Time dt, CommandQueue&) {
     //if tower hasn't shot yet (no enemies are in range), do nothing and do not reduce countdown
     if (countdown_ <= sf::Time::Zero) {
         canShoot_ = true;
-        std::cout << "It can! Hurrah! " << std::endl;
+        //std::cout << "It can! Hurrah! " << std::endl;
         countdown_ += sf::seconds(reloadTime_);
     } else if (countdown_ > sf::Time::Zero  && !canShoot_) {
         // std::cout << "It cannot :(" << std::endl;
@@ -104,27 +169,44 @@ void Tower::Shoot(CommandQueue& commands, sf::Vector2f direction) {
 
     canShoot_ = false;
     direction_ = UnitVector(direction);
-    std::cout << "direction in Shoot function: " << direction_.x << ", " << direction_.y << std::endl;
+    //std::cout << "direction in Shoot function: " << direction_.x << ", " << direction_.y << std::endl;
     commands.Push(shootCommand_);
 }
 
 unsigned int Tower::GetCategory() const
 {
-    return Category::Tower;
+    //return Category::Tower; //| isActive_;
+    if(IsActive())
+    {
+        return Category::ActiveTower;
+    }
+    else
+    {
+        //std::cout << "Tower given" << std::endl;
+        return Category::Tower;
+    }
+    
 }
 
 void Tower::Activate()
 {
+    //isActive_ = Category::ActiveTower;
     isActive_ = true;
 }
 
 void Tower::Deactivate()
 {
+    /*if (IsActive())
+    {
+        isActive_ = isActive_ ^ Category::ActiveTower;
+    }*/
+
     isActive_ = false;
 }
 
 bool Tower::IsActive() const
 {
+    //return isActive_ & Category::ActiveTower;
     return isActive_;
 }
 
@@ -166,7 +248,7 @@ bool Tower::Move()
     return canMove_;
 }
 
-bool Tower::Stop()
+void Tower::Stop()
 {
     isMoving_ = false;
 }
@@ -187,7 +269,7 @@ float Tower::GetRange() const
 
 
 void Tower::CreateBullet(SceneNode& node, const TextureHolder& textures) const {
-    std::cout << "Creating a bullet" << std::endl;
+    //std::cout << "Creating a bullet" << std::endl;
 
     std::unique_ptr<Bullet> bullet(new Bullet(static_cast<Bullet::Type>(bulletType_), textures));
 
@@ -197,6 +279,6 @@ void Tower::CreateBullet(SceneNode& node, const TextureHolder& textures) const {
     bullet->setPosition(GetWorldPosition());
 
     bullet->SetVelocity(bullet->GetSpeed() * direction_);
-    std::cout << "Bullet velocity: " << bullet->GetVelocity().x << ", " << bullet->GetVelocity().y << std::endl;
+   // std::cout << "Bullet velocity: " << bullet->GetVelocity().x << ", " << bullet->GetVelocity().y << std::endl;
     node.AttachChild(std::move(bullet));
 }

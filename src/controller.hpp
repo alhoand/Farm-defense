@@ -10,7 +10,6 @@ namespace GUI {
 class Controller {
 public:
     Controller();
-    
     // Relays its own commands to the caller's queue
     void HandleSidebarInput(CommandQueue& commands);
 

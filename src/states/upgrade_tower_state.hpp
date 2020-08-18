@@ -13,11 +13,13 @@ class UpgradeTowerState : public State {
 
     private:
         void UpdateGUI(sf::Time dt);
-        SceneNode* GetActiveNode(GUI::ID type) const;
+        void UpdateTowerInfo();
+        //SceneNode* GetActiveNode(GUI::ID type) const;
         sf::Sprite backgroundSprite_;
         sf::RectangleShape backgroundShape_;
         GUI::Label::Ptr titleText_;
         GUI::Label::Ptr descriptionText_;
         sf::Vector2f viewSize_;
         GUI::Container  GUIContainer_;
+        GUI::Controller& GUIController_;
 };

@@ -11,8 +11,10 @@ namespace Category {
         Ghost = 1 << 3,
         Bullet = 1 << 4,
         Range = 1 << 5,
-        GameField = 500 //Absurd number so it is not confused with scene node entities
+        Active = 1 << 6,
+        GameField = 7,
         
+        ActiveTower = Tower | Active
     };
 }
 

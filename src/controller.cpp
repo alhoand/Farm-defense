@@ -19,6 +19,4 @@ void Controller::HandleSidebarInput(CommandQueue& commands)
     }
 }
 
-/*void Controller::HandleGUIMouseInput(const sf::Event& event, )*/
-
 }
