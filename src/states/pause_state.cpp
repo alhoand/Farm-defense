@@ -25,7 +25,7 @@ PauseState::PauseState(StateStack& stack, Context context):
 	pausedText_.setPosition(0.5f * viewSize.x, 0.4f * viewSize.y);
 
 	auto resumeButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_,sf::IntRect(163,0,55,53),sf::IntRect(54,0,55,53));
-	resumeButton->setPosition(10, 10);
+	resumeButton->setPosition(890, 10);
 	resumeButton->SetCallback([this] ()
 	{
 		RequestStackPop();

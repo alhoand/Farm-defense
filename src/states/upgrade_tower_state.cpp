@@ -21,17 +21,17 @@ UpgradeTowerState::UpgradeTowerState(StateStack& stack, Context context) :
     {
         titleText_ = std::make_shared<GUI::Label>("", *context.fonts_, 40, Fonts::Main);
         titleText_->CenterTextOrigin();
-        titleText_->setPosition(viewSize_.x/2.f, 650.f);
+        titleText_->setPosition(viewSize_.x/2.f, 370.f);
         GUIContainer_.Pack(titleText_, true);
 
         descriptionText_ = std::make_shared<GUI::Label>("", *context.fonts_, 30, Fonts::Main);
         descriptionText_->CenterTextOrigin();
-        descriptionText_->setPosition(viewSize_.x/2.f, 750.f);
+        descriptionText_->setPosition(viewSize_.x/2.f, 420.f);
         GUIContainer_.Pack(descriptionText_, true);
         
         auto upgradeButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_,sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
         upgradeButton->setOrigin(upgradeButton->GetGlobalBounds().width/2.f, upgradeButton->GetGlobalBounds().height/2.f);
-        upgradeButton->setPosition(viewSize_.x/2.f, 900.f);
+        upgradeButton->setPosition(viewSize_.x/2.f, 500.f);
         upgradeButton->SetText("Upgrade");
         upgradeButton->SetCallback([this] ()
         {

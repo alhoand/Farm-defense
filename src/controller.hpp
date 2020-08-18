@@ -10,11 +10,15 @@ namespace GUI {
 class Controller {
 public:
     Controller();
+    
     // Relays its own commands to the caller's queue
     void HandleSidebarInput(CommandQueue& commands);
 
     //Adds the command given as parameter to its own queue
     void SendCommand(Command command);
+    
+    //
+    //void SendGUIMouseInput(const sf::Event& event);
 
 private:
     CommandQueue commandInbox_;

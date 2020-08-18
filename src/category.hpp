@@ -10,7 +10,9 @@ namespace Category {
         Enemy = 1 << 2,
         Ghost = 1 << 3,
         Bullet = 1 << 4,
+        Range = 1 << 5,
         GameField = 500 //Absurd number so it is not confused with scene node entities
+        
     };
 }
 

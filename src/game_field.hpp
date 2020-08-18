@@ -60,7 +60,6 @@ class GameField : private sf::NonCopyable {
         sf::FloatRect   GetGamefieldBounds() const;
         void            MakeTowersShoot();
         void            OnCommand(Command command, sf::Time dt);
-
         enum Layer {
             Background,
             Field,

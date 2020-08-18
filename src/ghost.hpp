@@ -1,5 +1,5 @@
 #include "sprite_node.hpp"
-#include "tower.hpp"
+#include "towers/tower.hpp"
 
 class Ghost : public SpriteNode {
 public:

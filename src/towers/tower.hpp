@@ -10,6 +10,7 @@
 #include "../command_queue.hpp"
 #include "../data_tables.hpp"
 #include "../label.hpp"
+#include "range_node.hpp"
 
 class Tower : public Entity {
     public:
@@ -72,6 +73,8 @@ class Tower : public Entity {
 
         static int              TowerCount();
 
+        bool                    MyRange(RangeNode*);
+
 
     protected:
        // Textures::ID        ToTextureID(Type type);
@@ -104,4 +107,5 @@ class Tower : public Entity {
         bool                isActive_;
         bool                canMove_;
         bool                isMoving_;
+        RangeNode*          rangeCircle_;
 };

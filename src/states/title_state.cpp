@@ -22,7 +22,10 @@ TitleState::TitleState(StateStack& stateStack, Context context)
 
         sf::FloatRect bounds = text_.getLocalBounds();
         text_.setOrigin(::floor(bounds.left + bounds.width / 2.f), ::floor(bounds.top + bounds.height / 2.f));
-        text_.setPosition(sf::Vector2f(context.window_->getSize() / 2u));
+        //text_.setPosition(sf::Vector2f(context.window_->getSize() / 2u));
+        text_.setPosition(sf::Vector2f(context.window_->getDefaultView().getSize().x/2.f, context.window_->getDefaultView().getSize().y/2.f));
+
+        //std::cout << "Render size:" << context.window_->getSize().x << ", " << context.window_->getSize().y << std::endl;
 }
 
 bool TitleState::Update(sf::Time dt) {

@@ -1,5 +1,5 @@
 #include "ghost.hpp"
-#include "tower.hpp"
+#include "towers/tower.hpp"
 
 Ghost::Ghost(Tower::Type type, TextureHolder& textures, sf::Vector2f sideBarPos) : SpriteNode(textures.Get(Tower::ToTextureID(type))), sideBarPos_(sideBarPos), isDragged_(false), active_(false)
  {  }

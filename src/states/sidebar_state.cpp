@@ -17,14 +17,14 @@ SidebarState::SidebarState(StateStack& stack, Context context)
     {
         GUIContainer_.setPosition(context.window_->getView().getSize().x - viewSize_.x, 0);
 
-        titleText_ = std::make_shared<GUI::Label>("Wave 0", *context.fonts_, 50, Fonts::Main);
-        titleText_->CenterTextOrigin();
-        titleText_->setPosition(viewSize_.x/2.f, 50.f);
-        GUIContainer_.Pack(titleText_, true);
+        titleText_ = std::make_shared<GUI::Label>("Wave 0", *context.fonts_, 35, Fonts::Main);
+        //titleText_->CenterTextOrigin();
+        titleText_->setPosition(10.f, 10.f);
+        //GUIContainer_.Pack(titleText_, true);
 
         auto waveButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
         waveButton->setOrigin(waveButton->GetGlobalBounds().width/2.f, waveButton->GetGlobalBounds().height/2.f);
-        waveButton->setPosition(viewSize_.x/2.f, 200.f);
+        waveButton->setPosition(viewSize_.x/2.f, 100.f);
         waveButton->SetText("Next wave");
         waveButton->SetCallback([this] ()
             {
@@ -34,7 +34,7 @@ SidebarState::SidebarState(StateStack& stack, Context context)
 
         auto towerButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
         towerButton->setOrigin(towerButton->GetGlobalBounds().width/2.f, towerButton->GetGlobalBounds().height/2.f);
-        towerButton->setPosition(viewSize_.x/2.f, 400.f);
+        towerButton->setPosition(viewSize_.x/2.f, 200.f);
         towerButton->SetText("Add tower");
         GUIContainer_.Pack(towerButton, true); //Pack it before getting position to get the real pos
 
@@ -64,6 +64,7 @@ void SidebarState::Draw() {
     window.setView(window.getDefaultView());
 
     window.draw(backgroundShape_);
+    window.draw(*titleText_);
     window.draw(GUIContainer_);
 }
 

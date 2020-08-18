@@ -11,7 +11,7 @@ GameState::GameState(StateStack& stack, Context context) :
     GUIController_(*context.GUIController_)
     { 
         auto pauseButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, sf::IntRect(108,0,55,53),sf::IntRect(0,0,55,54));
-        pauseButton->setPosition(10, 10);
+        pauseButton->setPosition(890, 10);
         pauseButton->SetType(GUI::ID::PlayPause);
         pauseButton->SetCallback([this] ()
 	{

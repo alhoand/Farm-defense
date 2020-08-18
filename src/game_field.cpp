@@ -262,6 +262,8 @@ CommandQueue& GameField::GetCommandQueue() {
 	return commandQueue_;
 }
 
+
+
 void GameField::DestroyEntitiesOutsideView()
 {
 	Command command;
@@ -270,7 +272,7 @@ void GameField::DestroyEntitiesOutsideView()
 	{
 		if (!GetGamefieldBounds().intersects(e.GetBoundingRect()))
 		{
-			std::cout << "destroying enemy or bullet outside gamefield" << std::endl;
+			//std::cout << "destroying enemy or bullet outside gamefield" << std::endl;
 			e.Destroy();
 		}	
 	});

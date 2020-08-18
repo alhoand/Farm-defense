@@ -9,6 +9,12 @@ namespace {
 	const std::vector<TowerData> table = InitializeTowerData();
 }
 
+Textures::ID Tower::ToTextureID(Type type)
+{
+    return table[type].texture;
+}
+
+
 Tower* Tower::activeTower_  = nullptr;
 
 int Tower::towerCount_ = 0;
@@ -59,12 +65,17 @@ Tower::Tower(Tower::Type type, const TextureHolder &textures)
         if (Tower::towerCount_ == 1) {
             Tower::ActiveTower(this);
         }
+
+        std::unique_ptr<RangeNode> rangeCircle(new RangeNode(range_, sf::Color(255, 0, 0, 128)));
+        rangeCircle_ = rangeCircle.get();
+        AttachChild(std::move(rangeCircle));
             
     }
 
 
 // Function for drawing the tower
 void Tower::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const {
+    DrawRange(*rangeCircle_, target, states);
     target.draw(sprite_, states);
 }
 
@@ -117,6 +128,11 @@ bool Tower::IsActive() const
     return isActive_;
 }
 
+bool Tower::MyRange(RangeNode* rangeNodePtr)
+{
+    return rangeCircle_ == rangeNodePtr;
+
+}
 // This sets the permission for the tower to move
 // for now: this maybe is a clumsy way to achieve this
 void Tower::AllowMoving()
