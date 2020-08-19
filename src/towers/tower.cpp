@@ -45,7 +45,7 @@ void Tower::ActiveTower(Tower &newActive, CommandQueue& commands)
         {
             t.Deactivate();
             //std::cout << "address of t: " << &t << ", address of new: " << &newActive << std::endl;
-           // std::cout << "No new active added" << std::endl;
+            //std::cout << "No new active added" << std::endl;
         }
         
     });
@@ -54,6 +54,7 @@ void Tower::ActiveTower(Tower &newActive, CommandQueue& commands)
 
 void Tower::ActiveTower(std::unique_ptr<Tower> &newActive, CommandQueue& commands) 
 { 
+    /*
     //assert(newActive != nullptr);
     Command command;
     command.category_ = Category::Active;
@@ -92,8 +93,23 @@ void Tower::ActiveTower(std::unique_ptr<Tower> &newActive, CommandQueue& command
    // activeTower_ = newActive;
    // activeTower_->Activate();
     // For debugging:
+    */
+}
+void Tower::Collides(bool collision)
+{
+    if (collision)
+    {
+        rangeCircle_->SetColor(sf::Color(255, 0, 0, 128));
+        isColliding_ = true;
+    }else
+    {
+        rangeCircle_->SetDefaultColor();
+        isColliding_ = false;
+    }
     
 }
+
+
 
 int Tower::TowerCount() { return towerCount_; }
 
@@ -107,7 +123,9 @@ Tower::Tower(Tower::Type type, const TextureHolder &textures)
     canShoot_(false), 
     bulletType_(table[type].bulletType), 
     countdown_(sf::Time::Zero),
-    shootCommand_() 
+    shootCommand_(),
+    canMove_(false),
+    isColliding_()
     {
         sf::FloatRect bounds = sprite_.getLocalBounds();
         sprite_.setOrigin(bounds.width/2.f, bounds.height/2.f);

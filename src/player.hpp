@@ -14,4 +14,6 @@ public:
 private:
     sf::RenderWindow& window_;
     sf::Vector2f viewOffset_;
+    bool isDragging_;
+    sf::Vector2f click_;
 };

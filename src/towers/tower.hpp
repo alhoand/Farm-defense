@@ -61,6 +61,9 @@ class Tower : public Entity {
         // Getter that tells if the tower is being moved by the player
         bool                    IsMoving() const;
 
+        void                    Collides(bool collision = false);
+        bool                    IsColliding() const;                    
+
         virtual sf::FloatRect   GetBoundingRect() const override;
 
         float                   GetRange() const;
@@ -76,7 +79,7 @@ class Tower : public Entity {
         static int              TowerCount();
 
         bool                    MyRange(RangeNode*);
-
+        bool                    IsColliding() { return isColliding_; }
 
     protected:
        // Textures::ID        ToTextureID(Type type);
@@ -110,4 +113,6 @@ class Tower : public Entity {
         bool                canMove_;
         bool                isMoving_;
         RangeNode*          rangeCircle_;
+        bool                isColliding_;
+        bool                collisionCalled_;   
 };

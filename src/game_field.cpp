@@ -167,6 +167,7 @@ void GameField::HandleCollisions()
 {
 	std::set<SceneNode::Pair> collisionPairs;
 	sceneGraph_.CheckSceneCollision(sceneGraph_, collisionPairs);
+	bool towerCollideCalled = false;
 
 	for(SceneNode::Pair pair : collisionPairs)
 	{
@@ -184,7 +185,27 @@ void GameField::HandleCollisions()
 
 			//std::cout << "Collision occurred on enemy: " << enemy.Get<< std::endl;
 		}
+		if (MatchesCategories(pair, Category::Tower, Category::Active))
+		{
+			auto& tower = static_cast<Tower&>(*pair.first);
+			auto& activeTower = static_cast<Tower&>(*pair.second);
+
+			activeTower.Collides(true);
+			towerCollideCalled = true;
+
+		}
 	}
+	if (!towerCollideCalled)
+		{
+			Command command;
+			command.category_ = Category::Tower;
+			command.action_ = DerivedAction<Tower>([=](Tower& t, sf::Time)
+			{
+				t.Collides(false);
+			});
+			commandQueue_.Push(command);
+
+		}
 }
 void GameField::BuildPath()
 {

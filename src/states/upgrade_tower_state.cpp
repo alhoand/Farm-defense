@@ -92,8 +92,8 @@ void UpgradeTowerState::UpdateTowerInfo()
             + "\n       " + std::to_string(pos.x) + ", " + std::to_string(pos.y)
         );
 
-        std::cout << "My address:" << &t << std::endl;
-        std::cout << "I am active: " << t.IsActive() << std::endl;
+        //std::cout << "My address:" << &t << std::endl;
+        //std::cout << "I am active: " << t.IsActive() << std::endl;
        // std::cout << "Hello from the other side" << std::endl;
        //std::cout << "Pos: " << t.GetWorldPosition().x << ", " << t.GetWorldPosition().y << std::endl;
 

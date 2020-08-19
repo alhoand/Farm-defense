@@ -10,15 +10,16 @@ class RangeNode : public SceneNode {
         void                SetRadius(float radius);
 
         void                SetColor(sf::Color color);
-        
+        void                SetDefaultColor(sf::Color color);
         float               GetRadius() const;
-
+        void                SetDefaultColor();
     private:
     
         virtual void        DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 
         float               radius_;
         sf::Color           color_;
+        sf::Color           defaultColor_;
         sf::CircleShape     circle_;
 
 };
