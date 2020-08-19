@@ -41,6 +41,7 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 void GameField::AddTower(Tower::Type type, sf::Vector2f pos)
 {
 	std::unique_ptr<Tower> newTower(new Tower(type, textures_));
+	//newTower->setOrigin(newTower->GetBoundingRect().width/2.f, newTower->GetBoundingRect().height/2.f);
 	newTower->setPosition(pos);
 	newTower->AllowMoving();
 	newTower->Move();

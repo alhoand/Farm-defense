@@ -12,23 +12,22 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
         Command activate;
         activate.category_ = Category::Tower;
         sf::Vector2f mouse = window_.mapPixelToCoords(sf::Vector2i(event.mouseButton.x,event.mouseButton.y), window_.getView());
+        click_ = mouse;
         //sf::Vector2f mouse = window_.mapPixelToCoords(sf::Mouse::getPosition(window_));
         activate.action_ = DerivedAction<Tower> (
            [event, &commands, mouse] (Tower& tower, sf::Time dt) {
-               if (tower.GetBoundingRect().contains(sf::Vector2f(event.mouseButton.x,event.mouseButton.y))) {
-                   std::cout << "Tower was clicked!" << std::endl;
-                   if (!tower.IsActive())
+               if (tower.GetBoundingRect().contains(mouse)) {
+                  if (!tower.IsActive())
                    {
                         Tower::ActiveTower(tower, commands);
                         if (tower.CanMove() && !tower.IsMoving())
                         {   
-                                std::cout << "Click " << mouse.x << ", " << mouse.y << std::endl;
-                                std::cout << tower.getOrigin().x << ", " << tower.getOrigin().y << std::endl;
-                                tower.setOrigin(mouse.x - (tower.GetWorldPosition().x - tower.getOrigin().x),
-                                mouse.y - (tower.GetWorldPosition().y - tower.getOrigin().y));
-                                std::cout << tower.getOrigin().x << ", " << tower.getOrigin().y << std::endl;
-                            //tower.setPosition(mouse.x,mouse.y);
-                            //tower.Move();
+                            //std::cout << "Click " << mouse.x << ", " << mouse.y << std::endl;
+                            //std::cout << tower.getOrigin().x << ", " << tower.getOrigin().y << std::endl;
+                            tower.setOrigin(mouse.x - (tower.getPosition().x - tower.getOrigin().x),
+                            mouse.y - (tower.getPosition().y - tower.getOrigin().y));
+                            tower.setPosition(mouse.x,mouse.y);
+                            tower.Move();
                         }else if(tower.IsMoving()){
                             //tower.Stop();
                             std::cout << "the tower was moving" <<std::endl;
@@ -40,37 +39,40 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
                        //tower.DisallowMoving();
                    }
                     
-                }//else 
-                /*{
+                }else 
+                {
                     tower.Deactivate();
                     tower.Stop();
-                }*/
-           }
-        );
+                }
+            
+            }
+            );
         commands.Push(activate);
     }
     if (event.type == sf::Event::MouseMoved)
     {
         Command move;
         move.category_ = Category::Active;
+        sf::Vector2f click = click_;
         sf::Vector2f mouse = window_.mapPixelToCoords(sf::Vector2i(event.mouseMove.x,event.mouseMove.y), window_.getView());
         //sf::Vector2f mouse = window_.mapPixelToCoords(sf::Mouse::getPosition(window_));
         move.action_ = DerivedAction<Tower> (
-           [event, &commands, mouse] (Tower& tower, sf::Time dt) {
-            //if (tower.GetBoundingRect().contains(sf::Vector2f(event.mouseMove.x,event.mouseMove.y))) {
+           [event, &commands, mouse, click] (Tower& tower, sf::Time dt) {
+            //if (tower.GetBoundingRect().contains(mouse) || tower.GetBoundingRect().contains(click)) {
                 //std::cout << "Tower was clicked!" << std::endl;
                 //Tower::ActiveTower(tower, commands);
                 if (tower.IsMoving())
                 {
                    // tower.setOrigin(mouse.x - (tower.GetWorldPosition().x - tower.getOrigin().x),
                      //       mouse.y - (tower.GetWorldPosition().y - tower.getOrigin().y));
-                    //tower.setPosition(mouse.x,mouse.y);
-                    std::cout << "mouse: " << mouse.x << ", " << mouse.y << std::endl;
-                }
-               /* else {
-                    tower.Stop();
-                    tower.Deactivate();          
+                    tower.setPosition(mouse.x,mouse.y);
+                    //std::cout << "mouse: " << mouse.x << ", " << mouse.y << std::endl;
+                }/*else
+                {
+                    //tower.Stop();
+                    //tower.Deactivate();          
                 }*/
+           // }
            });
         commands.Push(move);
 
