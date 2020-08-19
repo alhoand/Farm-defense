@@ -52,6 +52,7 @@ class GameField : private sf::NonCopyable {
         void            Draw();
         CommandQueue&   GetCommandQueue();
         bool            HasNewEnemiesReachedEnd();
+        bool            EndOfLevel();
 
         //void AddTower(Tower* t); not implemented yet
 
@@ -60,6 +61,7 @@ class GameField : private sf::NonCopyable {
         void            BuildScene();
         void            HandleCollisions();
         void            SpawnEnemies(sf::Time dt);
+        void            RandomEnemySpawner(unsigned int level);
         void            DestroyEntitiesOutsideView();
         sf::FloatRect   GetViewBounds() const;
         sf::FloatRect   GetGamefieldBounds() const;

@@ -175,12 +175,44 @@ void GameField::HandleCollisions()
 //Spawns only one type of enemies and spawnInterval is constant
 void GameField::SpawnEnemies(sf::Time dt) {
 
-	if (spawnCountdown_ <= sf::Time::Zero && leftToSpawn_ > 0) //TODO leftToSpawn someway better
-    {
-        spawnCountdown_ += sf::seconds(spawnInterval_);
-		//alternative way and probably better in actual game, change spawnInterval to spawnRate to make spawnrate <= 1 sec
-		//spawnCountdown_ += sf::seconds(1.f / (spawnRate_+1));
-		int num = RandomInt(Enemy::TypeCount);
+	if (leftToSpawn_ > 0)//TODO leftToSpawn someway better?
+	{
+		if (spawnCountdown_ <= sf::Time::Zero) 
+    	{
+			spawnCountdown_ += sf::seconds(spawnInterval_);
+			//alternative way and probably better in actual game, change spawnInterval to spawnRate to make spawnrate <= 1 sec
+			//spawnCountdown_ += sf::seconds(1.f / (spawnRate_+1));
+
+			RandomEnemySpawner(difficultyLevel_+1);
+			leftToSpawn_--;
+
+		} else 
+		{
+			spawnCountdown_ -= dt;
+		}
+		return;
+	}
+	
+	if (difficultyLevel_ < levelCount_ )
+	{
+		// temporary solution, gameState should handle level changes, if difficultyLevel_ == levelCount_ => game won
+		if (levelBreakTimer_ <= sf::Time::Zero)
+		{
+			difficultyLevel_++;
+			leftToSpawn_ = 5;
+			levelBreakTimer_ = sf::seconds(10); // should this timer max value be parameter also?
+		} else
+		{
+			levelBreakTimer_ -= dt;
+		}
+	}
+
+}
+
+void GameField::RandomEnemySpawner(unsigned int level)
+{
+	int num = RandomInt(level); //random int that is max level-1
+	std::cout << "Random num: " << num << std::endl;
 
 		//this works only for current enemy types, probably cannot implemet for arbitrary count of enemy types
 		switch(num)
@@ -211,34 +243,12 @@ void GameField::SpawnEnemies(sf::Time dt) {
 				break;
 			default:
 			{
-				std::unique_ptr<BasicEnemy> newEnemy(new BasicEnemy(textures_, difficultyLevel_));
+				std::unique_ptr<BulkEnemy> newEnemy(new BulkEnemy(textures_, difficultyLevel_));
 				newEnemy->setPosition(spawnPosition_);
 				newEnemy->SetVelocity(enemySpeed_, 0.f); //this need to be tought again if we have multiple paths
 				sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
 			}
-				break;
 		}
-
-		leftToSpawn_--;
-
-    }
-    else if (leftToSpawn_ > 0)
-    {
-        spawnCountdown_ -= dt;
-    }
-	else if (difficultyLevel_ < levelCount_ )
-	{
-		if (levelBreakTimer_ <= sf::Time::Zero)
-		{
-			difficultyLevel_++;
-			leftToSpawn_ = 5;
-			levelBreakTimer_ = sf::seconds(10); // should this timer max value be parameter also?
-		} else
-		{
-			levelBreakTimer_ -= dt;
-		}
-	}
-
 }
 
 
@@ -254,6 +264,12 @@ CommandQueue& GameField::GetCommandQueue() {
 
 bool GameField::HasNewEnemiesReachedEnd() {
 	return newEnemyReachedEnd_;
+}
+
+//can be used to determine when current wave is finished
+bool GameField::EndOfLevel()
+{
+	return leftToSpawn_ > 0;
 }
 
 void GameField::DestroyEntitiesOutsideView()
