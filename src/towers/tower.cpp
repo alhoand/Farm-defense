@@ -149,7 +149,8 @@ Tower::Tower(Tower::Type type, const TextureHolder &textures)
 
 // Function for drawing the tower
 void Tower::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const {
-    if (IsActive())
+    //if (IsActive() && CanMove())
+    if(IsActive())
         DrawRange(*rangeCircle_, target, states);
     
     target.draw(sprite_, states);

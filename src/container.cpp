@@ -112,7 +112,7 @@ void Container::HandleEvent(const sf::Event& event)
 				selectedChild_ = n;
 				if (children_[selectedChild_]->IsSelected())
 				{
-					std::cout << "whoa here we are" << std::endl;
+					//std::cout << "whoa here we are" << std::endl;
 					children_[selectedChild_]->HandleEvent(event);
 				}
 				child->Activate();

@@ -191,6 +191,7 @@ void GameField::HandleCollisions()
 			auto& tower = static_cast<Tower&>(*pair.first);
 			auto& activeTower = static_cast<Tower&>(*pair.second);
 
+			tower.Collides(true);
 			activeTower.Collides(true);
 			towerCollideCalled = true;
 

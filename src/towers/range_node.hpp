@@ -1,7 +1,9 @@
 #pragma once
 #include "../scene_node.hpp"
+#include <memory>
 
 class RangeNode : public SceneNode {
+    //typedef                 std::shared_ptr<RangeNode> RangePtr;
     friend void             DrawRange(const RangeNode& rangeNode, sf::RenderTarget& target, sf::RenderStates states);
 
     public:
