@@ -42,7 +42,7 @@ class Button : public Component
 
         virtual void			HandleEvent(const sf::Event& event) override;
 
-
+        sf::Vector2f            GetClickPosition() const { return clickPosition_; }
     private:
         virtual void			draw(sf::RenderTarget& target, sf::RenderStates states) const override {
             Draw(target,states);
@@ -59,6 +59,7 @@ class Button : public Component
         sf::Sprite				sprite_;
         sf::Text				text_;
         bool					isToggle_;
+        sf::Vector2f            clickPosition_;
 };
 
 }

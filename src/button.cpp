@@ -4,6 +4,7 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <cmath>
+#include <iostream>
 
 
 namespace GUI
@@ -114,8 +115,13 @@ void Button::Deactivate()
 	}
 }
 
-void Button::HandleEvent(const sf::Event&)
+void Button::HandleEvent(const sf::Event& event)
 {
+	if(event.type == sf::Event::MouseButtonPressed)
+	{
+		//std::cout << "Jiihaa" << std::endl;
+		clickPosition_ = sf::Vector2f(event.mouseButton.x, event.mouseButton.y);
+	}
 }
 
 void Button::Draw(sf::RenderTarget& target, sf::RenderStates states) const

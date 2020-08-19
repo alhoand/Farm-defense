@@ -110,6 +110,11 @@ void Container::HandleEvent(const sf::Event& event)
 		for(const Component::Ptr& child: children_){
 			if(child->GetGlobalBounds().contains(sf::Vector2f(event.mouseButton.x,event.mouseButton.y))){
 				selectedChild_ = n;
+				if (children_[selectedChild_]->IsSelected())
+				{
+					std::cout << "whoa here we are" << std::endl;
+					children_[selectedChild_]->HandleEvent(event);
+				}
 				child->Activate();
 				//std::cout << "jiihaa" << std::endl;
 				return;

@@ -39,15 +39,16 @@ SidebarState::SidebarState(StateStack& stack, Context context)
         GUIContainer_.Pack(towerButton, true); //Pack it before getting position to get the real pos
 
         sf::Vector2f buttonPosition = towerButton->GetWorldPosition();
-        towerButton->SetCallback([this, buttonPosition] ()
+        
+        towerButton->SetCallback([this, buttonPosition, towerButton] ()
             {
                 Command command;
                 command.category_ = Category::Type::GameField;
                 command.gameFieldAction_ = GameFieldAction(
-                            [buttonPosition] (GameField& gameField, sf::Time dt)
+                            [buttonPosition, towerButton] (GameField& gameField, sf::Time dt)
                             {
-                                std::cout << "Button pressed!" <<std::endl;
-                                gameField.AddTower(Tower::Type::Fire, buttonPosition);
+                                //std::cout << "Button pressed!" <<std::endl;
+                                gameField.AddTower(Tower::Type::Fire, towerButton->GetClickPosition());
                             }
 
                 );
