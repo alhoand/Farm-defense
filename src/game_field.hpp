@@ -51,6 +51,7 @@ class GameField : private sf::NonCopyable {
         void            Update(sf::Time dt);
         void            Draw();
         CommandQueue&   GetCommandQueue();
+        bool            HasNewEnemiesReachedEnd();
 
         //void AddTower(Tower* t); not implemented yet
 
@@ -93,5 +94,6 @@ class GameField : private sf::NonCopyable {
         unsigned int        difficultyLevel_;
 	    unsigned int        levelCount_; //total amount of levels or waves in current game
         sf::Time            levelBreakTimer_;
+        bool                newEnemyReachedEnd_;
 
 };

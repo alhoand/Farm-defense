@@ -28,7 +28,8 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
     activeEnemies_(),
 	difficultyLevel_(0), //0 is the first level and increases by 1 by each wave
 	levelCount_(5), // can be added to parameter list or askef for player, but for now it's just harcoded to be 5
-	levelBreakTimer_(sf::seconds(15))
+	levelBreakTimer_(sf::seconds(15)),
+	newEnemyReachedEnd_(false)
 	{ 
 		LoadTextures();
 		BuildScene();
@@ -37,6 +38,7 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 
 
 void GameField::Update(sf::Time dt) {
+	newEnemyReachedEnd_ = false; // new enemies have not reached end at the beginning of an update
 
 	DestroyEntitiesOutsideView();
 
@@ -249,20 +251,37 @@ CommandQueue& GameField::GetCommandQueue() {
 	return commandQueue_;
 }
 
+bool GameField::HasNewEnemiesReachedEnd() {
+	return newEnemyReachedEnd_;
+}
+
 void GameField::DestroyEntitiesOutsideView()
 {
-	Command command;
-	command.category_ = Category::Bullet | Category::Enemy;
-	command.action_ = DerivedAction<Entity>([this] (Entity& e, sf::Time)
+	Command bulletCommand;
+	bulletCommand.category_ = Category::Bullet;
+	bulletCommand.action_ = DerivedAction<Entity>([this] (Entity& e, sf::Time)
 	{
 		if (!GetGamefieldBounds().intersects(e.GetBoundingRect()))
 		{
-			std::cout << "destroying enemy or bullet outside gamefield" << std::endl;
+			std::cout << "destroying bullet outside gamefield" << std::endl;
 			e.Destroy();
 		}	
 	});
 
-	commandQueue_.Push(command);
+	Command enemyCommand;
+	enemyCommand.category_ = Category::Enemy;
+	enemyCommand.action_ = DerivedAction<Entity>([this] (Entity& e, sf::Time)
+	{
+		if (!GetGamefieldBounds().intersects(e.GetBoundingRect()))
+		{
+			std::cout << "destroying enemy outside gamefield and also reduce player lives" << std::endl;
+			e.Destroy();
+			newEnemyReachedEnd_ = true;
+		}	
+	});
+
+	commandQueue_.Push(bulletCommand);
+	commandQueue_.Push(enemyCommand);
 }
 
 sf::FloatRect GameField::GetViewBounds() const

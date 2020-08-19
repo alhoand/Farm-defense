@@ -9,9 +9,13 @@ class Player {
 public:
     Player(sf::RenderWindow& window, sf::Vector2f viewOffset);
 
-    void HandleEvent(const sf::Event& event, CommandQueue& commands);
-    void HandleRealtimeInput(CommandQueue& commands);
+    void    HandleEvent(const sf::Event& event, CommandQueue& commands);
+    void    HandleRealtimeInput(CommandQueue& commands);
+    void    ReduceLife();
+    int     GetLives();
+
 private:
     sf::RenderWindow& window_;
     sf::Vector2f viewOffset_;
+    int lives_;
 };

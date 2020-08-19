@@ -32,6 +32,10 @@ void GameState::Draw() {
 
 bool GameState::Update(sf::Time dt) {
     gameField_.Update(dt); // updates the gamefield on each tick
+    if (gameField_.HasNewEnemiesReachedEnd())
+    {
+        player_.ReduceLife();
+    }
 
     CommandQueue& commands = gameField_.GetCommandQueue();
 	player_.HandleRealtimeInput(commands);

@@ -8,8 +8,8 @@
 
 
 //Making a leaf type enemy as a test of derived class
-MultiEnemy::MultiEnemy(const TextureHolder& textures, float difficultyLevel, float travelledDistance, int directionIndex)
-    : Enemy(Enemy::Multiplying, textures, difficultyLevel, travelledDistance, directionIndex)
+MultiEnemy::MultiEnemy(const TextureHolder& textures, float difficultyLevel, float travelledDistance, int directionIndex, int spawnCount)
+    : Enemy(Enemy::Multiplying, textures, difficultyLevel, travelledDistance, directionIndex), spawnTimer_(sf::Time::Zero), spawnCount_(spawnCount)
     { 
         showDeathAnimation_ = false;
         spawnBasicEnemyCommand_.category_ = Category::Scene;
@@ -25,10 +25,24 @@ MultiEnemy::MultiEnemy(const TextureHolder& textures, float difficultyLevel, flo
     }
 
 
-void MultiEnemy::CheckDestroyBehaviour(CommandQueue& commands)
+bool MultiEnemy::CheckDestroyBehaviour(sf::Time dt, CommandQueue& commands)
 {
-    commands.Push(spawnBasicEnemyCommand_);
-    commands.Push(spawnBasicEnemyCommand_);
-    commands.Push(spawnBasicEnemyCommand_);
+    if (spawnCount_ > 0)
+    {
+        if (spawnTimer_ <= sf::Time::Zero)
+        {
+            std::cout << "spawning a basic enemy" << std::endl;
+            commands.Push(spawnBasicEnemyCommand_);
+
+            spawnCount_--;
+            spawnTimer_ = sf::seconds(0.1);
+        } else
+        {
+            spawnTimer_ -= dt;
+        }
+        return true;
+    } 
+    // destroy behaviour is finished, can be removed now
+    return false;
 }
 

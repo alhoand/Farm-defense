@@ -2,16 +2,19 @@
 
 #include "enemy.hpp"
 #include "../command_queue.hpp"
+#include <SFML/System/Time.hpp>
 
 class MultiEnemy : public Enemy {
 
     public:
-        MultiEnemy(const TextureHolder &textures, float difficultyLevel = 1.f, float travelledDistance = 0.f, int directionIndex = 0);
+        MultiEnemy(const TextureHolder &textures, float difficultyLevel = 1.f, float travelledDistance = 0.f, int directionIndex = 0, int spawnCount = 3);
         //~TestEnemy();
 
     private:
-        void CheckDestroyBehaviour(CommandQueue& commands) override;
+        bool CheckDestroyBehaviour(sf::Time dt, CommandQueue& commands) override;
  
-        Command spawnBasicEnemyCommand_;
+        Command     spawnBasicEnemyCommand_;
+        sf::Time    spawnTimer_;
+        int         spawnCount_;
 };
 

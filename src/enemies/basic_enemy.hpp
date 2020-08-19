@@ -9,7 +9,4 @@ class BasicEnemy : public Enemy {
         //~BasicEnemy();
         void Damage(int damage) override;
         
-
-    private:
-        void CheckDestroyBehaviour(CommandQueue& commands) override;
 };
