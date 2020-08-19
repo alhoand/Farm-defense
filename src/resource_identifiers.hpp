@@ -25,7 +25,8 @@ namespace Textures {
         Buttons,
         NoTexture,
         DeathAnimation,
-        Leppis
+        Leppis,
+        HamahakkiIso
     };
 }
 

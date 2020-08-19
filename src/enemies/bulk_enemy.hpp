@@ -7,4 +7,7 @@ class BulkEnemy : public Enemy {
     public:
         BulkEnemy(const TextureHolder &textures, float difficultyLevel = 1.f, float travelledDistance = 0.f, int directionIndex = 0);
         //~BasicEnemy();        
+
+    private:
+        void CheckDestroyBehaviour(CommandQueue& commands) override;
 };
