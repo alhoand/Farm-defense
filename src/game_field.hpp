@@ -53,6 +53,7 @@ class GameField : private sf::NonCopyable {
     private:
         void            LoadTextures();
         void            BuildScene();
+        void            BuildPath();
         void            HandleCollisions();
         void            SpawnEnemies(sf::Time dt);
         void            DestroyEntitiesOutsideView();
@@ -88,5 +89,6 @@ class GameField : private sf::NonCopyable {
         unsigned int        difficultyLevel_;
 	    unsigned int        levelCount_; //total amount of levels or waves in current game
         sf::Time            levelBreakTimer_;
+        sf::VertexArray     path_;
 
 };

@@ -96,13 +96,13 @@ bool SidebarState::HandleEvent(const sf::Event& event) {
     // If I is pressed, make the sidebar go away
 	if (sf::Event::KeyPressed && event.key.code == sf::Keyboard::I)
     {
-        std::cout << "S: I-KeyPressed" << std::endl;
+       // std::cout << "S: I-KeyPressed" << std::endl;
 		RequestStackPop();
     }
         // If I is pressed, make the sidebar go away
 	if (sf::Event::KeyPressed && event.key.code == sf::Keyboard::U)
     {
-        std::cout << "Sidebar: U-KeyPressed" << std::endl;
+       // std::cout << "Sidebar: U-KeyPressed" << std::endl;
 		RequestStackPop();
         RequestStackPush(States::ID::Sidebar);
         RequestStackPush(States::ID::GameUpgradeTowerSideBar);

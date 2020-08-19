@@ -6,6 +6,8 @@
 
 #include <SFML/System/Time.hpp>
 #include <cassert>
+#include "data_tables.hpp"
+#include "utility.hpp"
 
 
 GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
@@ -28,7 +30,8 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
     activeEnemies_(),
 	difficultyLevel_(0), //0 is the first level and increases by 1 by each wave
 	levelCount_(5), // can be added to parameter list or askef for player, but for now it's just harcoded to be 5
-	levelBreakTimer_(sf::seconds(15))
+	levelBreakTimer_(sf::seconds(15)),
+	path_()
 	{ 
 		LoadTextures();
 		BuildScene();
@@ -109,8 +112,9 @@ void GameField::BuildScene() {
 	backgroundSprite->setPosition(gameFieldBounds_.left, gameFieldBounds_.top);
 	sceneLayers_[Background]->AttachChild(std::move(backgroundSprite));
 
+	BuildPath();
 
-	//Initialize two enemies
+	//Initialize an enemy
 	std::unique_ptr<Enemy> firstEnemy(new BasicEnemy(textures_));
 	firstEnemy_ = firstEnemy.get();
 	//firstEnemy_->setOrigin(firstEnemy_->GetBoundingRect().width/2, firstEnemy_->GetBoundingRect().height/2);
@@ -182,29 +186,10 @@ void GameField::HandleCollisions()
 		}
 	}
 }
-/*
-// Does not handle nullptr so the caller should handle it.
-std::pair<SceneNode*, bool> GameField::GetActiveNode() const {
-	//assert(Tower::ActiveTower() != nullptr); 
-	//std::cout << "Active returned" << std::endl;
-	if(Tower::ActiveTower())
-	{
-		//std::cout << "Active tower hp: " << Tower::ActiveTower()->GetHitpoints() << std::endl;
-		return { Tower::ActiveTower(), false };
-	}else 
-	{
-		if (Tower::TowerCount() > 0)
-		{
-			return { Tower::ActiveTower(), false };
-		}else
-		{
-			return { Tower::ActiveTower(), true };
-		}
-	}
-
-
+void GameField::BuildPath()
+{
 	
-}*/
+}
 
 void GameField::OnCommand(Command command, sf::Time dt) 
 {
@@ -261,6 +246,8 @@ void GameField::SpawnEnemies(sf::Time dt) {
 void GameField::Draw() {
 	window_.setView(gameFieldView_);
 	window_.draw(sceneGraph_);
+	window_.draw(path_);
+	
 
 }
 

@@ -28,33 +28,24 @@ int Tower::towerCount_ = 0;
 
 void Tower::ActiveTower(Tower &newActive, CommandQueue& commands)
 {
-   /* Command command;
-    command.category_ = Category::ActiveTower;
-    command.action_ = DerivedAction<Tower>([](Tower& t, sf::Time)
-    {
-        t.Deactivate();
-        std::cout << "Old active tower deactivated" << std::endl;
-
-    });
-    commands.Push(command);*/
 
     Command actCmd;
     actCmd.category_ = Category::Tower;
-    std::cout << "All cool here" << std::endl;
+   // std::cout << "All cool here" << std::endl;
     actCmd.action_ = DerivedAction<Tower>([&](Tower& t, sf::Time)
     {
         if (&t == &newActive)
         {
 
             t.Activate();
-            std::cout << "New active tower added" << std::endl;
+            //std::cout << "New active tower added" << std::endl;
 
         }
         else
         {
             t.Deactivate();
-            std::cout << "address of t: " << &t << ", address of new: " << &newActive << std::endl;
-            std::cout << "No new active added" << std::endl;
+            //std::cout << "address of t: " << &t << ", address of new: " << &newActive << std::endl;
+           // std::cout << "No new active added" << std::endl;
         }
         
     });
@@ -76,7 +67,7 @@ void Tower::ActiveTower(std::unique_ptr<Tower> &newActive, CommandQueue& command
 
     Command actCmd;
     actCmd.category_ = Category::Tower;
-    std::cout << "All cool here" << std::endl;
+   // std::cout << "All cool here" << std::endl;
     actCmd.action_ = DerivedAction<Tower>([&](Tower& t, sf::Time)
     {
         if (&t == newActive.get())
@@ -90,7 +81,7 @@ void Tower::ActiveTower(std::unique_ptr<Tower> &newActive, CommandQueue& command
         {
             t.Deactivate();
        //     std::cout << "t address: " << &t << ", new address: " << newActive.get() << std::endl;
-            std::cout << "No new active added ptr version" << std::endl;
+          //  std::cout << "No new active added ptr version" << std::endl;
         }
         
     });
@@ -126,7 +117,7 @@ Tower::Tower(Tower::Type type, const TextureHolder &textures)
             CreateBullet(node, textures);
         };
         Tower::towerCount_++;
-        std::cout << "towercount: " << Tower::towerCount_ << std::endl;
+     //   std::cout << "towercount: " << Tower::towerCount_ << std::endl;
      /*   if (Tower::towerCount_ == 1) {
             Tower::ActiveTower(*this, );
         }*/
@@ -140,7 +131,9 @@ Tower::Tower(Tower::Type type, const TextureHolder &textures)
 
 // Function for drawing the tower
 void Tower::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const {
-    DrawRange(*rangeCircle_, target, states);
+    if (IsActive())
+        DrawRange(*rangeCircle_, target, states);
+    
     target.draw(sprite_, states);
 }
 
