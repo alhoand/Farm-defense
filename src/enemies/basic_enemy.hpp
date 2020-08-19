@@ -11,5 +11,5 @@ class BasicEnemy : public Enemy {
         
 
     private:
-        bool CheckDestroyBehaviour(CommandQueue& commands) override;
+       // bool CheckDestroyBehaviour(CommandQueue& commands) override;
 };

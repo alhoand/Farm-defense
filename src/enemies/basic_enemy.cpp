@@ -36,9 +36,9 @@ void BasicEnemy::Damage(int)
 }
 
 
-bool BasicEnemy::CheckDestroyBehaviour(CommandQueue& commands)
+/* bool BasicEnemy::CheckDestroyBehaviour(CommandQueue& commands)
 {
     // Basic enemy just dies
     return false;
-}
+} */
 

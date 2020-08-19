@@ -22,8 +22,8 @@ BulkEnemy::BulkEnemy(const TextureHolder& textures, float difficultyLevel, float
      }
 
 
-void BulkEnemy::CheckDestroyBehaviour(CommandQueue& commands)
+/* void BulkEnemy::CheckDestroyBehaviour(CommandQueue& commands)
 {
     // Bulk enemy just dies
     return false;
-}
+} */
