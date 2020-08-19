@@ -12,6 +12,21 @@ MultiEnemy::MultiEnemy(const TextureHolder& textures, float difficultyLevel, flo
     : Enemy(Enemy::Multiplying, textures, difficultyLevel, travelledDistance, directionIndex)
     { 
         showDeathAnimation_ = false;
+        
+        movementAnimation_.SetTexture(textures.Get(Textures::ID::HamahakkiIso)),
+        movementAnimation_.SetFrameSize(sf::Vector2i(200, 200));
+	    movementAnimation_.SetNumFrames(9);
+	    movementAnimation_.SetDuration(sf::seconds(0.5));
+        movementAnimation_.SetRepeating(true);
+        sf::FloatRect animationBounds = movementAnimation_.GetLocalBounds();
+        hasMovementAnimation_ = true;
+        
+        sprite_ = movementAnimation_.GetFirstFrame();
+        sprite_.setOrigin(animationBounds.width/2.f, animationBounds.height/2.f);
+
+        movementAnimation_.setScale(sf::Vector2f(0.7,0.7));
+        sprite_.setScale(sf::Vector2f(0.5,0.5));
+
         spawnBasicEnemyCommand_.category_ = Category::Scene;
         spawnBasicEnemyCommand_.action_ = [this, &textures] (SceneNode& node, sf::Time) 
         {

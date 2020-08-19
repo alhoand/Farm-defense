@@ -14,8 +14,8 @@ BasicEnemy::BasicEnemy(const TextureHolder& textures, float difficultyLevel, flo
         
         showDeathAnimation_ = true;
         
-        movementAnimation_.SetTexture(textures.Get(Textures::ID::Leppis)),
-        movementAnimation_.SetFrameSize(sf::Vector2i(150, 175));
+        movementAnimation_.SetTexture(textures.Get(Textures::ID::HamahakkiIso)),
+        movementAnimation_.SetFrameSize(sf::Vector2i(200, 200));
 	    movementAnimation_.SetNumFrames(9);
 	    movementAnimation_.SetDuration(sf::seconds(0.5));
         movementAnimation_.SetRepeating(true);
@@ -25,8 +25,8 @@ BasicEnemy::BasicEnemy(const TextureHolder& textures, float difficultyLevel, flo
         sprite_ = movementAnimation_.GetFirstFrame();
         sprite_.setOrigin(animationBounds.width/2.f, animationBounds.height/2.f);
 
-        movementAnimation_.setScale(sf::Vector2f(0.5,0.5));
-        sprite_.setScale(sf::Vector2f(0.5,0.5));
+        movementAnimation_.setScale(sf::Vector2f(0.3,0.3));
+        sprite_.setScale(sf::Vector2f(0.3,0.3));
     }
 
 // Basic enemy dies immediately when taking hit
