@@ -9,5 +9,5 @@ class BulkEnemy : public Enemy {
         //~BasicEnemy();        
 
     private:
-        void CheckDestroyBehaviour(CommandQueue& commands) override;
+        bool CheckDestroyBehaviour(CommandQueue& commands) override;
 };
