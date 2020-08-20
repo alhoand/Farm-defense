@@ -20,8 +20,6 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	commandQueue_(),
 	enemySpeed_(50.f),
 	firstEnemy_(),
-	firstTower_(),
-	secondTower_(),
 	spawnCountdown_(sf::seconds(2)),
 	spawnInterval_(2), //this should maybe be a parameter
 	leftToSpawn_(5),
@@ -41,6 +39,7 @@ void GameField::Update(sf::Time dt) {
 	newEnemyReachedEnd_ = false; // new enemies have not reached end at the beginning of an update
 
 	DestroyEntitiesOutsideView();
+	DestroyDetonatedBombs();
 
 	//makes towers shoot
 	MakeTowersShoot();
@@ -62,9 +61,13 @@ void GameField::LoadTextures() {
 	textures_.Load(Textures::ID::Fire, "../media/textures/Doge.png");
 	textures_.Load(Textures::ID::Leaf, "../media/textures/cat.png");
 	textures_.Load(Textures::ID::Grass, "../media/textures/grass.jpg");
-	textures_.Load(Textures::ID::BasicTower, "../media/textures/harvester.png");
+	textures_.Load(Textures::ID::BasicTower, "../media/textures/tower.png");
+	textures_.Load(Textures::ID::SuperTower, "../media/textures/harvester.png");
 	textures_.Load(Textures::ID::SlowingTower, "../media/textures/tower.png");
+	textures_.Load(Textures::ID::BombingTower, "../media/textures/tower.png");
 	textures_.Load(Textures::ID::BasicBullet, "../media/textures/bullet.png");
+	textures_.Load(Textures::ID::SuperBullet, "../media/textures/bullet.png");
+	textures_.Load(Textures::ID::Bomb, "../media/textures/bullet.png");
 	textures_.Load(Textures::ID::NoTexture,      "../media/textures/noTexture.png");
 	textures_.Load(Textures::ID::DeathAnimation,      "../media/textures/deathAnimation.png");
 	textures_.Load(Textures::ID::Leppis,      "../media/textures/leppakerttu.png");
@@ -106,18 +109,23 @@ void GameField::BuildScene() {
 	sceneLayers_[Field] -> AttachChild(std::move(firstEnemy));
 
 	//Initialize a tower that can be moved with hard-coded bullet
-	std::unique_ptr<Tower> firstTower(new BasicTower(textures_));
-	firstTower_ = firstTower.get();
+	std::unique_ptr<Tower> firstTower(new SuperTower(textures_));
+	// firstTower_ = firstTower.get();
 	//firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
-	firstTower_->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f);
+	firstTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f);
 	sceneLayers_[Field] -> AttachChild(std::move(firstTower));
 
 	//Initialize a slowing tower
 	std::unique_ptr<Tower> secondTower(new SlowingTower(textures_));
-	secondTower_ = secondTower.get();
 	//firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
-	secondTower_->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/3.f, (gameFieldBounds_.top + gameFieldBounds_.height)/3.f);
+	secondTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/3.f, (gameFieldBounds_.top + gameFieldBounds_.height)/3.f);
 	sceneLayers_[Field] -> AttachChild(std::move(secondTower));
+
+	// Initialize a bombing tower
+	std::unique_ptr<Tower> thirdTower(new BombingTower(textures_));
+	//firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
+	thirdTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/4.f, (gameFieldBounds_.top + gameFieldBounds_.height)/4.f);
+	sceneLayers_[Field] -> AttachChild(std::move(thirdTower));
 
 }
 
@@ -299,6 +307,18 @@ void GameField::DestroyEntitiesOutsideView()
 
 	commandQueue_.Push(bulletCommand);
 	commandQueue_.Push(enemyCommand);
+}
+
+void GameField::DestroyDetonatedBombs() {
+	Command command;
+	command.category_ = Category::Bomb;
+	command.action_ = DerivedAction<Bomb>([this] (Bomb& bomb, sf::Time) {
+		if (bomb.IsDetonated()) {
+			bomb.Destroy();
+		}
+	});
+
+	commandQueue_.Push(command);
 }
 
 sf::FloatRect GameField::GetViewBounds() const

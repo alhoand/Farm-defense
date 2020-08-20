@@ -2,13 +2,18 @@ target_sources(TowerDefense
     PRIVATE
         bullet.cpp
         bullet.hpp
-        test_tower.hpp
         tower.hpp
         tower.cpp
         basic_tower.hpp
         basic_tower.cpp
         basic_bullet.hpp
-        basic_bullet.cpp
         slowing_tower.hpp
         slowing_tower.cpp
+        bombing_tower.hpp
+        bombing_tower.cpp
+        bomb.hpp
+        bomb.cpp
+        super_tower.hpp
+        super_tower.cpp
+        super_bullet.hpp
 )

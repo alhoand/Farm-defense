@@ -12,7 +12,9 @@
 #include "enemies/multi_enemy.hpp"
 
 #include "towers/basic_tower.hpp"
+#include "towers/super_tower.hpp"
 #include "towers/slowing_tower.hpp"
+#include "towers/bombing_tower.hpp"
 
 #include "towers/bullet.hpp"
 
@@ -63,6 +65,7 @@ class GameField : private sf::NonCopyable {
         void            SpawnEnemies(sf::Time dt);
         void            RandomEnemySpawner(unsigned int level);
         void            DestroyEntitiesOutsideView();
+        void            DestroyDetonatedBombs();
         sf::FloatRect   GetViewBounds() const;
         sf::FloatRect   GetGamefieldBounds() const;
         void            MakeTowersShoot();
@@ -85,8 +88,6 @@ class GameField : private sf::NonCopyable {
         float               enemySpeed_;
         //std::list<Tower*> towers_;
         Enemy*              firstEnemy_;
-        Tower*              firstTower_;
-        Tower*              secondTower_;
         //std::list<Bullet*> bullets_;
         sf::Time            spawnCountdown_ ;
         int                 spawnInterval_;

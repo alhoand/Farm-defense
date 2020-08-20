@@ -1,16 +1,16 @@
 #pragma once
 
-//Initial header file for abstract tower class
 #include "bullet.hpp"
 
-// #include "../scene_node.hpp"
-// #include "../enemies/enemy.hpp"
-// #include "../category.hpp"
-// #include "../entity.hpp"
-// #include "../resource_identifiers.hpp"
 #include "../command_queue.hpp"
 #include "../utility.hpp"
-// #include "../data_tables.hpp"
+
+/* Tower class is a abstract class with multiple inherited classes:
+ * - basic tower
+ * - super tower
+ * - slowing tower
+ * - bombing tower
+ */
 
 class Tower : public Entity {
     public:
@@ -18,16 +18,16 @@ class Tower : public Entity {
             Basic,
             Slowing,
             Super,
+            Bombing,
             TypeCount
         };
 
-        Tower();
-
-        // Another constructor, inherited classes use this
+        // Constructor, used by inherited classes
         Tower(Tower::Type type, const TextureHolder& textures, float range, float reloadTime);
 
         //Destructor
-        virtual                 ~Tower() { };
+        ~Tower() { }
+
         virtual void            DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 
         //Update the state of the tower, should be virtual
@@ -60,17 +60,10 @@ class Tower : public Entity {
 
         Tower::Type         type_;
         sf::Sprite          sprite_;
-        // Range of fire in units
-        float               range_;
-        // Where are the tower's guns pointed at, should ALWAYS be unit vector
-        sf::Vector2f        direction_;
-        // How often can the tower shoot (in seconds)
-        float               reloadTime_;
-
+        float               range_;      // range of fire in units
+        sf::Vector2f        direction_;  // where are the tower's guns pointed at, should ALWAYS be unit vector
+        float               reloadTime_; // how often can the tower shoot (in seconds) 
         bool                canShoot_;
-
-        //Bullet::Type        bulletType_;
-
         sf::Time            countdown_;
         Command             shootCommand_;
 };

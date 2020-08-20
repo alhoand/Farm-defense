@@ -40,48 +40,6 @@ std::vector<Direction> InitializeEnemyPath()
 	return path;
 }
 
-/*std::vector<TowerData> InitializeTowerData() {
-	std::vector<TowerData> data(Tower::TypeCount);
-
-	data[Tower::Fire].texture = Textures::FireTower;
-	data[Tower::Fire].range = 400;
-    data[Tower::Fire].reloadTime = 5;
-    data[Tower::Fire].bulletType = Bullet::FireBullet;
-
-	data[Tower::Water].texture = Textures::WaterTower;
-	data[Tower::Water].range = 100;
-    data[Tower::Water].reloadTime = 0.5;
-    data[Tower::Water].bulletType = Bullet::IceBullet;
-
-	data[Tower::Leaf].texture = Textures::LeafTower;
-	data[Tower::Leaf].range = 50;
-    data[Tower::Leaf].reloadTime = 0.5;
-    data[Tower::Leaf].bulletType = Bullet::WoodBullet;
-
-	return data;
-}
-
-std::vector<BulletData>	InitializeBulletData() {
-	std::vector<BulletData> data(Bullet::TypeCount);
-
-	data[Bullet::FireBullet].texture = Textures::FireBullet;
-	data[Bullet::FireBullet].speed = 100.f;
-	data[Bullet::FireBullet].damage = 10;
-	data[Bullet::FireBullet].damageDuration = 1;
-
-	data[Bullet::IceBullet].texture = Textures::IceBullet;
-	data[Bullet::IceBullet].speed = 150.f;
-	data[Bullet::IceBullet].damage = 1;
-	data[Bullet::IceBullet].damageDuration = 1;
-
-	data[Bullet::WoodBullet].texture = Textures::WoodBullet;
-	data[Bullet::WoodBullet].speed = 75.f;
-	data[Bullet::WoodBullet].damage = 1;
-	data[Bullet::WoodBullet].damageDuration = 5;
-
-	return data;
-}*/
-
 std::vector<GUIData>	InitializeGUIData() {
 	std::vector<GUIData> data(GUIitems::ID::TypeCount);
 

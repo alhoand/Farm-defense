@@ -58,13 +58,13 @@ void Tower::Shoot(CommandQueue& commands, sf::Vector2f direction) {
 
 
 unsigned int Tower::GetCategory() const {
-    if (type_ == Tower::Slowing)
-    {
+    if (type_ == Tower::Slowing) {
         return Category::SlowingTower;
+    } else if (type_ == Tower::Bombing) {
+        return Category::BombingTower;
     }
     return Category::ShootingTower;
 }
-
 
 // This sets the permission for the tower to move
 // for now: this maybe is a clumsy way to achieve this
@@ -125,7 +125,9 @@ Textures::ID Tower::ToTextureID(Tower::Type type) {
             return Textures::ID::SlowingTower;
         case Tower::Type::Super:
             return Textures::ID::SuperTower;
+        case Tower::Type::Bombing:
+            return Textures::ID::BombingTower;
         default: 
-            return Textures::ID::BasicTower;
+            return Textures::ID::NoTexture;
     }
 }
