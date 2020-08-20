@@ -1,6 +1,7 @@
 #include "tower.hpp"
 
 #include <math.h> 
+#include <cmath> 
 
 // Constructor
 Tower::Tower(Tower::Type type, const TextureHolder &textures, float range, float reloadTime)
@@ -45,7 +46,12 @@ void Tower::UpdateCurrent(sf::Time dt, CommandQueue&) {
 
 void Tower::Shoot(CommandQueue& commands, sf::Vector2f direction) {
     canShoot_ = false;
+   // sprite_.setRotation(atan(direction.y/direction.x));
     direction_ = UnitVector(direction);
+    if(direction.x < 0)
+        sprite_.setRotation(atan(direction.y/direction.x)*57);
+    else
+        sprite_.setRotation(atan(direction.y/direction.x)*57+180);
     std::cout << "direction in Shoot function: " << direction_.x << ", " << direction_.y << std::endl;
     commands.Push(shootCommand_);
 }

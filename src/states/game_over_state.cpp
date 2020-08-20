@@ -40,7 +40,7 @@ GameOverState::GameOverState(StateStack& stack, Context context)
 
         auto quitButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_);
         quitButton->setPosition(550, 400);
-        quitButton->SetText("Quit game");
+        quitButton->SetText("Ragequit");
         quitButton->SetCallback([this] ()
         {
             RequestStateClear();

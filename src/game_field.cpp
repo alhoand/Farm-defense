@@ -62,7 +62,7 @@ void GameField::LoadTextures() {
 	textures_.Load(Textures::ID::Fire, "../media/textures/Doge.png");
 	textures_.Load(Textures::ID::Leaf, "../media/textures/cat.png");
 	textures_.Load(Textures::ID::Grass, "../media/textures/grass.jpg");
-	textures_.Load(Textures::ID::BasicTower, "../media/textures/tower.png");
+	textures_.Load(Textures::ID::BasicTower, "../media/textures/harvester.png");
 	textures_.Load(Textures::ID::SlowingTower, "../media/textures/tower.png");
 	textures_.Load(Textures::ID::BasicBullet, "../media/textures/bullet.png");
 	textures_.Load(Textures::ID::NoTexture,      "../media/textures/noTexture.png");
