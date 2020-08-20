@@ -8,7 +8,7 @@ namespace Category {
         Scene = 1 << 0,
         Tower = 1 << 1,
         Enemy = 1 << 2,
-        Ghost = 1 << 3,
+        TowerPicture = 1 << 3,
         Bullet = 1 << 4,
         Range = 1 << 5,
         Active = 1 << 6,

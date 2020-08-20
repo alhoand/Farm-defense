@@ -1,9 +1,9 @@
 #include "sprite_node.hpp"
 #include "towers/tower.hpp"
 
-class Ghost : public SpriteNode {
+class TowerPicture : public SpriteNode {
 public:
-    Ghost(Tower::Type towerType, TextureHolder& textures, sf::Vector2f sideBarPos);
+    TowerPicture(Tower::Type towerType, TextureHolder& textures, sf::Vector2f sideBarPos);
     void GetBack();
     unsigned int GetCategory() const;
     sf::Vector2f GetPosition() const;
