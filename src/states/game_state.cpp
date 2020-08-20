@@ -13,7 +13,7 @@ GameState::GameState(StateStack& stack, Context context) :
     player_(*context.player_),
     GUIContainer_(context)
     { 
-        
+        player_.SetGameStatus(Player::GameRunning);
         
         auto pauseButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, table[GUIitems::ID::PauseButton].normalTexture, table[GUIitems::ID::PauseButton].selectedTexture);
         pauseButton->setPosition(10, 10);
@@ -32,6 +32,16 @@ void GameState::Draw() {
 
 bool GameState::Update(sf::Time dt) {
     gameField_.Update(dt); // updates the gamefield on each tick
+    if (gameField_.HasNewEnemiesReachedEnd())
+    {
+        player_.ReduceLife();
+    }
+    if (player_.GetLives() <= 0) // Somehow the winning case
+    {
+        player_.SetGameStatus(Player::GameLost);
+        RequestStackPush(States::ID::GameOver);
+        return false;
+    }
 
     CommandQueue& commands = gameField_.GetCommandQueue();
 	player_.HandleRealtimeInput(commands);

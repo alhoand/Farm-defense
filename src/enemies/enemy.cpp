@@ -90,11 +90,8 @@ void Enemy::UpdateCurrent(sf::Time dt, CommandQueue& commands) {
 		
         deathAnimation_.Update(dt);
 		if((deathAnimation_.IsFinished() || !showDeathAnimation_)){
-            CheckDestroyBehaviour(commands);
-            isMarkedForRemoval_ = true;
+            isMarkedForRemoval_ = !CheckDestroyBehaviour(dt, commands);
         }
-        
-        
 		return;
 	}
     UpdateMovementAnimation(dt);
@@ -102,9 +99,10 @@ void Enemy::UpdateCurrent(sf::Time dt, CommandQueue& commands) {
     Entity::UpdateCurrent(dt, commands); 
 }
 
-void Enemy::CheckDestroyBehaviour(CommandQueue&)
+bool Enemy::CheckDestroyBehaviour(sf::Time, CommandQueue&)
 {
-    // By default do nothing, but different types may have some action here
+    // Doesn't have any destroy behaviour by default
+    return false;
 }
 
 unsigned int Enemy::GetCategory() const 
@@ -125,9 +123,9 @@ void Enemy::UpdateMovementPattern(sf::Time dt)
 {
 	if (!Path.empty())
 	{
-		if (travelledDistance_ > Path[directionIndex_].distance)
+		if (travelledDistance_ >= Path[directionIndex_].distance)
 		{
-			directionIndex_ = (directionIndex_ + 1) % Path.size();
+			directionIndex_ = (directionIndex_ + 1) % Path.size(); 
 			travelledDistance_ = 0.f;
             sprite_.setRotation(Path[directionIndex_].angle); //kääntää enemyn hitboxin animaation alla kun suuntaa muuttuu, jos rikkoo jotain ni pois vaan
 		}

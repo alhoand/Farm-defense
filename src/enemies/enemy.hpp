@@ -17,9 +17,9 @@ class Enemy : public Entity {
     public:
         //Enemy types
         enum Type {
-            Fire,
-            Water,
-            Leaf,
+            Basic,
+            Bulk,
+            Multiplying,
             TypeCount //enumerators are indexed so last one tells the count of previous ones 
         };
     public:
@@ -39,7 +39,7 @@ class Enemy : public Entity {
         virtual void    UpdateMovementPattern(sf::Time dt); //can be made virtual later, not necessary now
         void            UpdateCurrent(sf::Time dt, CommandQueue& commands) override;
         void            UpdateMovementAnimation(sf::Time dt);
-        virtual void    CheckDestroyBehaviour(CommandQueue& commands);
+        virtual bool    CheckDestroyBehaviour(sf::Time dt, CommandQueue& commands);
         float           DifficultyCoefficient() const;
 
         Textures::ID    ToTextureID(Enemy::Type type);

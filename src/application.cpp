@@ -6,6 +6,7 @@
 #include "states/game_state.hpp"
 #include "states/menu_state.hpp"
 #include "states/pause_state.hpp"
+#include "states/game_over_state.hpp"
 #include <iostream>
 
 static const sf::Time timePerFrame = sf::seconds(1.f / 60.f);
@@ -40,6 +41,7 @@ void Application::RegisterStates() {
     stateStack_.RegisterState<MenuState>(States::ID::Menu);
     stateStack_.RegisterState<GameState>(States::ID::Game);
     stateStack_.RegisterState<PauseState>(States::ID::Pause);
+    stateStack_.RegisterState<GameOverState>(States::ID::GameOver);
 }
 
 void Application::Run() {

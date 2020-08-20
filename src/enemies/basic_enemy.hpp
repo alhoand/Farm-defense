@@ -6,10 +6,10 @@ class BasicEnemy : public Enemy {
 
     public:
         BasicEnemy(const TextureHolder &textures, float difficultyLevel = 1.f, float travelledDistance = 0.f, int directionIndex = 0);
-        //~TestEnemy();
+        //~BasicEnemy();
         void Damage(int damage) override;
         
 
     private:
-        void CheckDestroyBehaviour(CommandQueue& commands) override;
+       // bool CheckDestroyBehaviour(CommandQueue& commands) override;
 };
