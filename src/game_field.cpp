@@ -62,9 +62,11 @@ void GameField::LoadTextures() {
 	textures_.Load(Textures::ID::Leaf, "../media/textures/cat.png");
 	textures_.Load(Textures::ID::Grass, "../media/textures/grass.jpg");
 	textures_.Load(Textures::ID::BasicTower, "../media/textures/tower.png");
+	textures_.Load(Textures::ID::SuperTower, "../media/textures/tower.png");
 	textures_.Load(Textures::ID::SlowingTower, "../media/textures/tower.png");
 	textures_.Load(Textures::ID::BombingTower, "../media/textures/tower.png");
 	textures_.Load(Textures::ID::BasicBullet, "../media/textures/bullet.png");
+	textures_.Load(Textures::ID::SuperBullet, "../media/textures/bullet.png");
 	textures_.Load(Textures::ID::Bomb, "../media/textures/bullet.png");
 	textures_.Load(Textures::ID::NoTexture,      "../media/textures/noTexture.png");
 	textures_.Load(Textures::ID::DeathAnimation,      "../media/textures/deathAnimation.png");
@@ -107,7 +109,7 @@ void GameField::BuildScene() {
 	sceneLayers_[Field] -> AttachChild(std::move(firstEnemy));
 
 	//Initialize a tower that can be moved with hard-coded bullet
-	std::unique_ptr<Tower> firstTower(new BasicTower(textures_));
+	std::unique_ptr<Tower> firstTower(new SuperTower(textures_));
 	// firstTower_ = firstTower.get();
 	//firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
 	firstTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f);

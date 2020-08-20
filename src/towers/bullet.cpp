@@ -5,17 +5,6 @@
 
 #include <cmath>
 
-/*Bullet::Bullet(Type type, const TextureHolder& textures)
-    : Entity(1),
-      type_(type), 
-      sprite_(textures.Get(ToTextureID(type))),
-      speed_(table[type].speed), 
-      damage_(table[type].damage), 
-      damageDuration_(table[type].damageDuration) {
-        sf::FloatRect bounds = sprite_.getLocalBounds();
-        sprite_.setOrigin(bounds.width/2.f, bounds.height/2.f);
-    }*/
-
 // Constructor to be used with inherited classes
 Bullet::Bullet(Type type, const TextureHolder& textures, float speed, int damage)
     : Entity(1),
@@ -36,21 +25,6 @@ int Bullet::GetDamage() const {
     return damage_;
 }
 
-sf::FloatRect Bullet::GetBoundingRect() const 
-{
-	return GetWorldTransform().transformRect(sprite_.getGlobalBounds());
-}
-
-void Bullet::UpdateCurrent(sf::Time dt,CommandQueue& commands)
-{
-    Entity::UpdateCurrent(dt, commands);
-}
-
-void Bullet::DrawCurrent(sf::RenderTarget& target,sf::RenderStates states) const
-{
-    target.draw(sprite_, states);
-}
-
 unsigned int Bullet::GetCategory() const {
     unsigned int type;
     switch (type_) {
@@ -68,6 +42,18 @@ unsigned int Bullet::GetCategory() const {
             break;
     }
 	return type;
+}
+
+sf::FloatRect Bullet::GetBoundingRect() const {
+	return GetWorldTransform().transformRect(sprite_.getGlobalBounds());
+}
+
+void Bullet::UpdateCurrent(sf::Time dt,CommandQueue& commands) {
+    Entity::UpdateCurrent(dt, commands);
+}
+
+void Bullet::DrawCurrent(sf::RenderTarget& target,sf::RenderStates states) const {
+    target.draw(sprite_, states);
 }
 
 Textures::ID Bullet::ToTextureID(Bullet::Type type) {

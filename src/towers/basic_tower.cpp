@@ -1,7 +1,7 @@
 #include "basic_tower.hpp"
 
 BasicTower::BasicTower(const TextureHolder& textures)
-    : Tower(Tower::Type::Basic, textures, 400, 5) { }
+    : Tower(Tower::Type::Basic, textures, 400, 2) { }
 
 
 void BasicTower::CreateBullet(SceneNode& node, const TextureHolder& textures) const {

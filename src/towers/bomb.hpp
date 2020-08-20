@@ -3,6 +3,12 @@
 #include "bullet.hpp"
 #include "../game_field.hpp"
 
+/* This is a bomb, shot by bombing towers, that
+ * - has a range of 100, hits enemies within this range
+ * - has damage of 10 hp
+ * - has speed of 100
+ */
+
 class Bomb : public Bullet {
     public:
         Bomb(const TextureHolder& textures);
