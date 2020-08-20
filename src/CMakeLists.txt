@@ -23,8 +23,6 @@ target_sources(TowerDefense
 	data_tables.hpp
 	entity.cpp
 	entity.hpp
-	game.cpp
-	game.hpp
     game_field.cpp
     game_field.hpp
 	label.cpp

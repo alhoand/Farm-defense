@@ -8,14 +8,14 @@
 
 //Making a Fire type enemy as a basic derived class
 BasicEnemy::BasicEnemy(const TextureHolder& textures, float difficultyLevel, float travelledDistance, int directionIndex)
-    : Enemy(Enemy::Fire, textures, difficultyLevel, travelledDistance, directionIndex)
+    : Enemy(Enemy::Basic, textures, difficultyLevel, travelledDistance, directionIndex)
     { 
         //sprite_ = 
         
         showDeathAnimation_ = true;
         
-        movementAnimation_.SetTexture(textures.Get(Textures::ID::Leppis)),
-        movementAnimation_.SetFrameSize(sf::Vector2i(150, 175));
+        movementAnimation_.SetTexture(textures.Get(Textures::ID::HamahakkiIso)),
+        movementAnimation_.SetFrameSize(sf::Vector2i(200, 200));
 	    movementAnimation_.SetNumFrames(9);
 	    movementAnimation_.SetDuration(sf::seconds(0.5));
         movementAnimation_.SetRepeating(true);
@@ -25,8 +25,8 @@ BasicEnemy::BasicEnemy(const TextureHolder& textures, float difficultyLevel, flo
         sprite_ = movementAnimation_.GetFirstFrame();
         sprite_.setOrigin(animationBounds.width/2.f, animationBounds.height/2.f);
 
-        movementAnimation_.setScale(sf::Vector2f(0.5,0.5));
-        sprite_.setScale(sf::Vector2f(0.5,0.5));
+        movementAnimation_.setScale(sf::Vector2f(0.3,0.3));
+        sprite_.setScale(sf::Vector2f(0.3,0.3));
     }
 
 // Basic enemy dies immediately when taking hit
@@ -36,8 +36,9 @@ void BasicEnemy::Damage(int)
 }
 
 
-void BasicEnemy::CheckDestroyBehaviour(CommandQueue& commands)
+/* bool BasicEnemy::CheckDestroyBehaviour(CommandQueue& commands)
 {
     // Basic enemy just dies
-}
+    return false;
+} */
 

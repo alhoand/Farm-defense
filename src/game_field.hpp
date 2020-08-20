@@ -7,8 +7,9 @@
 #include <memory>
 
 #include "enemies/enemy.hpp"
-#include "enemies/test_enemy.hpp"
 #include "enemies/basic_enemy.hpp"
+#include "enemies/bulk_enemy.hpp"
+#include "enemies/multi_enemy.hpp"
 
 #include "towers/basic_tower.hpp"
 #include "towers/slowing_tower.hpp"
@@ -24,6 +25,7 @@
 #include "scene_node.hpp"
 #include "command.hpp"
 #include "category.hpp"
+#include "utility.hpp"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics.hpp>
@@ -50,6 +52,8 @@ class GameField : private sf::NonCopyable {
         void            Update(sf::Time dt);
         void            Draw();
         CommandQueue&   GetCommandQueue();
+        bool            HasNewEnemiesReachedEnd();
+        bool            EndOfLevel();
 
         //void AddTower(Tower* t); not implemented yet
 
@@ -58,6 +62,7 @@ class GameField : private sf::NonCopyable {
         void            BuildScene();
         void            HandleCollisions();
         void            SpawnEnemies(sf::Time dt);
+        void            RandomEnemySpawner(unsigned int level);
         void            DestroyEntitiesOutsideView();
         void            DestroyDetonatedBombs();
         sf::FloatRect   GetViewBounds() const;
@@ -91,5 +96,6 @@ class GameField : private sf::NonCopyable {
         unsigned int        difficultyLevel_;
 	    unsigned int        levelCount_; //total amount of levels or waves in current game
         sf::Time            levelBreakTimer_;
+        bool                newEnemyReachedEnd_;
 
 };

@@ -6,12 +6,27 @@
 #include <SFML/Graphics.hpp>
 
 class Player {
-public:
-    Player(sf::RenderWindow& window, sf::Vector2f viewOffset);
+    public:
+        enum GameStatus
+		{
+			GameRunning,
+			GameWon,
+			GameLost
+		};
 
-    void HandleEvent(const sf::Event& event, CommandQueue& commands);
-    void HandleRealtimeInput(CommandQueue& commands);
-private:
-    sf::RenderWindow& window_;
-    sf::Vector2f viewOffset_;
+    public:
+        Player(sf::RenderWindow& window, sf::Vector2f viewOffset);
+
+        void        HandleEvent(const sf::Event& event, CommandQueue& commands);
+        void        HandleRealtimeInput(CommandQueue& commands);
+        void        ReduceLife();
+        int         GetLives();
+        GameStatus  GetGameStatus();
+        void        SetGameStatus(GameStatus newStatus);
+
+    private:
+        sf::RenderWindow&   window_;
+        sf::Vector2f        viewOffset_;
+        int                 lives_;
+        GameStatus          status_;
 };
