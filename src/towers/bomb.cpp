@@ -10,16 +10,17 @@ Bomb::Bomb(const TextureHolder& textures)
         detonateCommand_.category_ = Category::Enemy;
         detonateCommand_.action_ = DerivedAction<Enemy>([this] (Enemy& enemy, sf::Time) {
             if (Distance(*this, enemy) <= range_) {
-                std::cout << "Bomb detonated!" << std::endl;
-                enemy.Damage(this->GetHitpoints());
+                enemy.TakeHit(this->GetDamage());
             }
         });
     }
 
+// Getter for the bomb's range of destruction
 int Bomb::GetRange() {
     return range_;
 }
 
+// Boolean, has the bomb been detonated?
 bool Bomb::IsDetonated() {
     return isDetonated_;
 }
@@ -33,8 +34,8 @@ void Bomb::UpdateCurrent(sf::Time dt, CommandQueue& commands) {
     Entity::UpdateCurrent(dt, commands);
 }
 
+// Pushes detonate command to command queue
 void Bomb::Detonate(CommandQueue& commands) {
     isDetonated_ = true;
     commands.Push(detonateCommand_);
-    // Destroy();
 }
