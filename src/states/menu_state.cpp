@@ -26,6 +26,15 @@ MenuState::MenuState(StateStack& stack, Context context)
 		RequestStackPop();
 		RequestStackPush(States::ID::Game);
 	});
+
+	auto scoreButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_,sf::IntRect(200,104,200,88),sf::IntRect(200,192,200,88));
+	scoreButton->setPosition(100, 350);
+	scoreButton->SetText("High Scores");
+	scoreButton->SetCallback([this] ()
+	{
+		RequestStackPop();
+		RequestStackPush(States::ID::Score);
+	});
 /*
 	auto settingsButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_);
 	settingsButton->setPosition(100, 300);
@@ -34,13 +43,15 @@ MenuState::MenuState(StateStack& stack, Context context)
 	{
 		RequestStackPush(States::ID::Settings);
 	});*/
-	auto exitButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_,sf::IntRect(200,104,200,88),sf::IntRect(200,192,200,88));
-	exitButton->setPosition(100, 350);
+	auto exitButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_,sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
+	exitButton->setPosition(100, 450);
 	exitButton->SetText("Exit");
 	exitButton->SetCallback([this] ()
 	{
 		RequestStackPop();
 	});
+
+	GUIContainer_.Pack(scoreButton);
 	GUIContainer_.Pack(playButton);
 	//GUIContainer_.Pack(settingsButton);
 	GUIContainer_.Pack(exitButton);

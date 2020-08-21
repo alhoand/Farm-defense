@@ -3,7 +3,7 @@
 
 
 Player::Player(sf::RenderWindow& window, sf::Vector2f viewOffset) 
-    : window_(window), viewOffset_(viewOffset), lives_(10), status_() { }
+    : window_(window), viewOffset_(viewOffset), lives_(10), status_(), score_(0) { }
 
 // Adapted from SFML Game Development-book
 void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
@@ -36,4 +36,14 @@ Player::GameStatus Player::GetGameStatus()
 void Player::SetGameStatus(Player::GameStatus newStatus)
 {
     status_ = newStatus;
+}
+
+int Player::GetScore()
+{
+    return score_;
+}
+
+void Player::SetScore(int change)
+{
+    score_ += change; // test if this works with negative change, or does it have to?
 }

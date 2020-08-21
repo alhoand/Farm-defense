@@ -23,10 +23,13 @@ class Player {
         int         GetLives();
         GameStatus  GetGameStatus();
         void        SetGameStatus(GameStatus newStatus);
+        int         GetScore();
+        void        SetScore(int change);
 
     private:
         sf::RenderWindow&   window_;
         sf::Vector2f        viewOffset_;
         int                 lives_;
         GameStatus          status_;
+        int                 score_;
 };

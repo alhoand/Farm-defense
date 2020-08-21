@@ -158,6 +158,11 @@ bool Enemy::IsMarkedForRemoval() const {
     return isMarkedForRemoval_;// && (deathAnimation_.IsFinished() || !showDeathAnimation_));
 }
 
+int Enemy::GetScorePoints()
+{
+    return Table[type_].scorepoints;
+}
+
 // Enemy's speed increases by DifficultyCoefficient
 float Enemy::GetSpeed() const
 {

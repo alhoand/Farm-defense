@@ -26,6 +26,7 @@ struct EnemyData
 	float			speed;
 	float			slowDownRate;
 	Textures::ID	texture;
+	int				scorepoints;
 };
 
 //initializer

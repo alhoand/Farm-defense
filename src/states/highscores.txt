@@ -1,0 +1,2 @@
+pelaaja1, 300
+pelaaja2, 500

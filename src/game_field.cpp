@@ -27,7 +27,8 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	difficultyLevel_(0), //0 is the first level and increases by 1 by each wave
 	levelCount_(5), // can be added to parameter list or askef for player, but for now it's just harcoded to be 5
 	levelBreakTimer_(sf::seconds(15)),
-	newEnemyReachedEnd_(false)
+	newEnemyReachedEnd_(false),
+	roundScore_(0)
 	{ 
 		LoadTextures();
 		BuildScene();
@@ -154,6 +155,7 @@ bool MatchesCategories(SceneNode::Pair& colliders, Category::Type type1, Categor
 
 void GameField::HandleCollisions()
 {
+	roundScore_ = 0; // set round score to zero 
 	std::set<SceneNode::Pair> collisionPairs;
 	sceneGraph_.CheckSceneCollision(sceneGraph_, collisionPairs);
 
@@ -169,7 +171,7 @@ void GameField::HandleCollisions()
 			{
 				continue;
 			}
-
+			roundScore_ += enemy.GetScorePoints();
 			// Apply bullet damage to enemy, destroy bullet
 			enemy.TakeHit(bullet.GetDamage());
 			std::cout << "HP now: " << enemy.GetHitpoints() << std::endl;
@@ -278,6 +280,16 @@ bool GameField::HasNewEnemiesReachedEnd() {
 bool GameField::EndOfLevel()
 {
 	return leftToSpawn_ > 0;
+}
+
+bool GameField::HasEnemiesToSpawn()
+{
+	return leftToSpawn_ > 0 || difficultyLevel_ < levelCount_;
+}
+
+int GameField::GetRoundScore()
+{
+	return roundScore_;
 }
 
 void GameField::DestroyEntitiesOutsideView()

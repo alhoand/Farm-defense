@@ -9,6 +9,7 @@ namespace States {
         Pause,
 		Settings,
         GameOver,
+        Score,
         None
     };
 }

@@ -34,6 +34,7 @@ class Enemy : public Entity {
         void            SlowDown(); 
         virtual void    TakeHit(int damage); // some enemies resist or take more damage if bullet is certain type, so that can be defined in derived classes
         bool            IsMarkedForRemoval() const override;
+        int             GetScorePoints();
 
     protected:
         virtual void    UpdateMovementPattern(sf::Time dt); //can be made virtual later, not necessary now

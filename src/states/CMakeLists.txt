@@ -12,4 +12,6 @@ target_sources(TowerDefense
 	game_state.cpp
 	game_over_state.hpp
 	game_over_state.cpp
+	score_state.hpp
+	score_state.cpp
 )

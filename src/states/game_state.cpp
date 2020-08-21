@@ -32,6 +32,8 @@ void GameState::Draw() {
 
 bool GameState::Update(sf::Time dt) {
     gameField_.Update(dt); // updates the gamefield on each tick
+    ModifyPlayerScore(gameField_.GetRoundScore());
+    
     if (gameField_.HasNewEnemiesReachedEnd())
     {
         player_.ReduceLife();
@@ -39,6 +41,12 @@ bool GameState::Update(sf::Time dt) {
     if (player_.GetLives() <= 0) // Somehow the winning case
     {
         player_.SetGameStatus(Player::GameLost);
+        RequestStackPush(States::ID::GameOver);
+        return false;
+    }
+    if (!gameField_.HasEnemiesToSpawn())
+    {
+        player_.SetGameStatus(Player::GameWon);
         RequestStackPush(States::ID::GameOver);
         return false;
     }
@@ -58,5 +66,12 @@ bool GameState::HandleEvent(const sf::Event& event) {
 
     GUIContainer_.HandleEvent(event);
     return true;
+}
+
+
+void GameState::ModifyPlayerScore(int score)
+{
+    player_.SetScore(score);
+    std::cout << "current score: " << player_.GetScore() << std::endl;
 }
 

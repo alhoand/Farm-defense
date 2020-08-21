@@ -1,11 +1,10 @@
 #include "game_over_state.hpp"
 #include "../button.hpp"
-#include "../data_tables.hpp"
 #include "../player.hpp"
 
-namespace {
-	const std::vector<GUIData> table = InitializeGUIData();
-}
+#include <cmath>
+#include <string>
+
 
 GameOverState::GameOverState(StateStack& stack, Context context)
     : State(stack, context),
@@ -18,7 +17,7 @@ GameOverState::GameOverState(StateStack& stack, Context context)
         gameOverText_.setFont(font);
         if (context.player_->GetGameStatus() == Player::GameStatus::GameWon)
         {
-            gameOverText_.setString("You won the game and defeated all enemies!\nWhat do you want to do next?");
+            gameOverText_.setString("You won the game and defeated all enemies!\nYour score is: " + std::to_string(context.player_->GetScore()) + "\nWhat do you want to do next?");
         } else if (context.player_->GetGameStatus() == Player::GameStatus::GameLost)
         {
             gameOverText_.setString("You lost the game :(\nWhat do you want to do next?");
