@@ -42,7 +42,7 @@ private:
     void            UpdateChildren(sf::Time dt, CommandQueue& commands);
     virtual void    draw(sf::RenderTarget& target, sf::RenderStates states)  const override;
     virtual void    Draw(sf::RenderTarget& target, sf::RenderStates states) const final;
-    virtual void    DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+    virtual void    DrawCurrent(sf::RenderTarget&, sf::RenderStates) const;
     void            DrawChildren(sf::RenderTarget& target, sf::RenderStates states) const;
 
 

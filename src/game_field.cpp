@@ -336,7 +336,7 @@ void GameField::DestroyEntitiesOutsideView()
 /* void GameField::DestroyDetonatedBombs() {
 	Command command;
 	command.category_ = Category::Bomb;
-	command.action_ = DerivedAction<Bomb>([this] (Bomb& bomb, sf::Time) {
+	command.action_ = DerivedAction<Bomb>([] (Bomb& bomb, sf::Time) {
 		if (bomb.IsDetonated()) {
 			bomb.Destroy();
 		}

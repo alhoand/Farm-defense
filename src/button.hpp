@@ -33,11 +33,11 @@ class Button : public Component
 
 
         virtual bool			IsSelectable() const override;
-        virtual void			Select();
-        virtual void			Deselect();
+        virtual void			Select() override;
+        virtual void			Deselect() override;
 
-        virtual void			Activate();
-        virtual void			Deactivate();
+        virtual void			Activate() override;
+        virtual void			Deactivate() override;
 
         virtual void			HandleEvent(const sf::Event& event) override;
 
