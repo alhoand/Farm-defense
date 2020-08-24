@@ -17,19 +17,14 @@ class Bomb : public Bullet {
 
         // Getter for bomb's range
         int GetRange();
-        
-        // Boolean to indicate whether the bomb has been detonated
-        bool IsDetonated();
+        // Indicator that tells if bomb can detonate
+        bool CanDetonate();
 
         void UpdateCurrent(sf::Time dt,CommandQueue& commands);
-
-        // Detonate function tells the bomb to detonate, that is, push detonate command to command queue
-        void Detonate(CommandQueue& commands);
 
     private:
         int             distance_;          // the distance the bomb will travel before detonating
         int             range_;             // the range within which enemies will be hit
-        float           travelledDistance_; // how far the bomb has already travelled
-        Command         detonateCommand_;
-        bool            isDetonated_;         
+        float           travelledDistance_; // how far the bomb has already travelled        
+        bool            canDetonate_;       // Indicator that tells if bomb is travelled far enough and can detonate
 };

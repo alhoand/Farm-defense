@@ -56,6 +56,7 @@ class GameField : private sf::NonCopyable {
         bool            HasNewEnemiesReachedEnd();
         bool            EndOfLevel();
         bool            HasEnemiesToSpawn();
+        void            AddRoundScore(int points);
         int             GetRoundScore();
 
         //void AddTower(Tower* t); not implemented yet

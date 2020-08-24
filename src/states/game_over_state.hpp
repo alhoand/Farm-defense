@@ -2,7 +2,12 @@
 
 #include "state.hpp"
 #include "../container.hpp"
+#include "../player.hpp"
+
 #include <SFML/Graphics.hpp>
+#include <SFML/System/Time.hpp>
+
+//#include <string>
 
 class GameOverState : public State {
     public:
@@ -14,4 +19,9 @@ class GameOverState : public State {
     private:
         sf::Text        gameOverText_;
         GUI::Container  GUIContainer_;
+        sf::Time        elapsedTime_;
+        sf::String      typedText_;
+        sf::Text        text_;
+        sf::String        name_;
+        Player          player_;
 };

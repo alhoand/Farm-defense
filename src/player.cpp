@@ -47,3 +47,12 @@ void Player::SetScore(int change)
 {
     score_ += change; // test if this works with negative change, or does it have to?
 }
+
+void Player::SetPlayerName(sf::String name)
+{
+    name_ = name;
+}
+sf::String Player::GetPlayerName()
+{
+    return name_;
+}
