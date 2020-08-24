@@ -25,17 +25,20 @@ class Tower : public Entity {
         // Constructor, used by inherited classes
         Tower(Tower::Type type, const TextureHolder& textures, float range, float reloadTime);
 
-        //Destructor
+        // Destructor
         ~Tower() { }
 
-        virtual void            DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
+        virtual void            DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 
-        //Update the state of the tower, should be virtual
-        virtual void            UpdateCurrent(sf::Time dt, CommandQueue& commands) override;
+        //Update the state of the tower
+        virtual void            UpdateCurrent(sf::Time dt, CommandQueue& commands);
 
-        // Helper function
+        // Makes the tower shoot, that is, pushes shoot command to command queue
         void                    Shoot(CommandQueue& commands, sf::Vector2f direction);
-        virtual unsigned int    GetCategory() const override;
+
+        // Getters for type and range
+        virtual unsigned int    GetCategory() const;
+        float                   GetRange() const;
 
         // This sets the permission for the tower to move
         // for now: this maybe is a clumsy way to achieve this
@@ -52,10 +55,11 @@ class Tower : public Entity {
         // Getter that tells if the tower is being moved by the player
         bool                    IsMoving() const;
         virtual sf::FloatRect   GetBoundingRect() const override;
-        float                   GetRange() const;
 
     protected:
+        // A helper function to determine bullet's texture according to type
         Textures::ID        ToTextureID(Type type);
+        // Creates a bullet for the tower to shoot, is virtual, since this depends on tower type
         virtual void        CreateBullet(SceneNode& node, const TextureHolder& textures) const = 0;
 
         Tower::Type         type_;

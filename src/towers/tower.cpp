@@ -15,23 +15,21 @@ Tower::Tower(Tower::Type type, const TextureHolder &textures, float range, float
       shootCommand_() {
         sf::FloatRect bounds = sprite_.getLocalBounds();
         sprite_.setOrigin(bounds.width/2.f, bounds.height/2.f);
+        // Initializing shootCommand_
+        // Category is Scene, since this command is executed only once in the game field
         shootCommand_.category_ = Category::Scene;
         shootCommand_.action_ = [this, &textures] (SceneNode& node, sf::Time) {
+            // A bullet is created and shot
             CreateBullet(node, textures);
         };
     }
 
-
-// Function for drawing the tower
 void Tower::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(sprite_, states);
 }
 
-
-//Update the state of the tower, should be virtual
+//Update the state of the tower
 void Tower::UpdateCurrent(sf::Time dt, CommandQueue&) {
-    // std::cout << "Updating tower" <<std::endl;
-
     //if tower hasn't shot yet (no enemies are in range), do nothing and do not reduce countdown
     if (countdown_ <= sf::Time::Zero) {
         canShoot_ = true;
@@ -46,13 +44,11 @@ void Tower::UpdateCurrent(sf::Time dt, CommandQueue&) {
 
 void Tower::Shoot(CommandQueue& commands, sf::Vector2f direction) {
     canShoot_ = false;
-   // sprite_.setRotation(atan(direction.y/direction.x));
     direction_ = UnitVector(direction);
     if(direction.x < 0)
         sprite_.setRotation(atan(direction.y/direction.x)*57);
     else
         sprite_.setRotation(atan(direction.y/direction.x)*57+180);
-    std::cout << "direction in Shoot function: " << direction_.x << ", " << direction_.y << std::endl;
     commands.Push(shootCommand_);
 }
 
