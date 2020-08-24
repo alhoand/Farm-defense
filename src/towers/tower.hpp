@@ -28,16 +28,16 @@ class Tower : public Entity {
         // Destructor
         ~Tower() { }
 
-        virtual void            DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+        virtual void            DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 
         //Update the state of the tower
-        virtual void            UpdateCurrent(sf::Time dt, CommandQueue& commands);
+        virtual void            UpdateCurrent(sf::Time dt, CommandQueue& commands) override;
 
         // Makes the tower shoot, that is, pushes shoot command to command queue
         void                    Shoot(CommandQueue& commands, sf::Vector2f direction);
 
         // Getters for type and range
-        virtual unsigned int    GetCategory() const;
+        virtual unsigned int    GetCategory() const override;
         float                   GetRange() const;
 
         // This sets the permission for the tower to move

@@ -22,8 +22,8 @@ class Container : public Component
 
         void				Pack(Component::Ptr component);
 
-        virtual bool		IsSelectable() const;
-        virtual void		HandleEvent(const sf::Event& event);
+        virtual bool		IsSelectable() const override;
+        virtual void		HandleEvent(const sf::Event& event) override;
 
     private:
         virtual void		draw(sf::RenderTarget& target, sf::RenderStates states) const override{
