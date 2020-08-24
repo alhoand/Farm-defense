@@ -31,8 +31,8 @@ Button::Button(const FontHolder& fonts, const TextureHolder& textures, sf::IntRe
 , normalTextureRect_(normalTextureRect)
 , selectedTextureRect_(selectedTextureRect)
 , pressedTextureRect_(selectedTextureRect)
-, text_("", fonts.Get(Fonts::ID::Main), 16)
 , sprite_()
+, text_("", fonts.Get(Fonts::ID::Main), 16)
 , isToggle_(false)
 {
 	sprite_.setTexture(texture_);

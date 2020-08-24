@@ -17,8 +17,8 @@ Application::Application()
     //: window_(sf::VideoMode::getFullscreenModes()[0], "Tower Defense", sf::Style::Default),
     viewOffset_(sf::Vector2f(0.f, 0.f)),
     textures_(),
-    fonts_(),
     statisticsText_(),
+    fonts_(),
     player_(window_, viewOffset_),
     stateStack_(State::Context(window_, textures_, fonts_, player_, viewOffset_))
     { 

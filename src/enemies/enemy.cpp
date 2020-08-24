@@ -35,8 +35,6 @@ Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, unsigned int diffi
         type_(type), 
         //sprite_(textures.Get(ToTextureID(type))),
         sprite_(textures.Get(Textures::ID::NoTexture)),
-        deathAnimation_(textures.Get(Textures::DeathAnimation)),
-        movementAnimation_(),
         travelledDistance_(travelledDistance), 
         directionIndex_(directionIndex),
         difficultyLevel_(difficultyLevel),
@@ -45,8 +43,10 @@ Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, unsigned int diffi
         isSlowedDown_(false),
         slowDownRate_(Table[type].slowDownRate), 
         isMarkedForRemoval_(false),
-        hasMovementAnimation_(false),
         showDeathAnimation_(true),
+        hasMovementAnimation_(false),
+        deathAnimation_(textures.Get(Textures::DeathAnimation)),
+        movementAnimation_(),
         isGivenScorepoints_(false)
     { 
         sf::FloatRect bounds = sprite_.getLocalBounds();

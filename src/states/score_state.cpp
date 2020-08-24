@@ -77,7 +77,7 @@ void ScoreState::Draw()
 
     sf::RectangleShape backgroundShape;
     
-    sf::FloatRect bounds = backgroundShape.getLocalBounds();
+    //sf::FloatRect bounds = backgroundShape.getLocalBounds();
     backgroundShape.setFillColor(sf::Color(10, 50, 20, 150));
     backgroundShape.setSize(sf::Vector2f(window.getSize()));
     //backgroundShape.setOrigin(std::floor(bounds.left + bounds.width / 2.f), std::floor(50 + bounds.top + bounds.height / 2.f));

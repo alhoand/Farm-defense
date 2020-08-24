@@ -25,7 +25,7 @@ TitleState::TitleState(StateStack& stateStack, Context context)
         text_.setPosition(sf::Vector2f(context.window_->getSize() / 2u));
 }
 
-bool TitleState::Update(sf::Time dt) {
+bool TitleState::Update(sf::Time) {
     return true;
 }
 
