@@ -25,7 +25,7 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	leftToSpawn_(5),
     activeEnemies_(),
 	difficultyLevel_(0), //0 is the first level and increases by 1 by each wave
-	levelCount_(2), // can be added to parameter list or askef for player, but for now it's just harcoded to be 5
+	levelCount_(5), // can be added to parameter list or askef for player, but for now it's just harcoded to be 5
 	levelBreakTimer_(sf::seconds(15)),
 	newEnemyReachedEnd_(false),
 	roundScore_(0),
@@ -177,7 +177,7 @@ void GameField::HandleCollisions()
 				continue;
 			}
 			// Apply bullet damage to enemy, destroy bullet
-			enemy.TakeHit(bullet.GetDamage());
+			enemy.TakeHit(bullet.GetDamage(), bullet.GetCategory());
 			if (enemy.IsDestroyed())
 			{
 				AddRoundScore(enemy.GetScorePoints());
@@ -253,6 +253,14 @@ void GameField::RandomEnemySpawner(unsigned int level)
 			case 2:
 			{
 				std::unique_ptr<BulkEnemy> newEnemy(new BulkEnemy(textures_, difficultyLevel_));
+				newEnemy->setPosition(spawnPosition_);
+				newEnemy->SetVelocity(enemySpeed_, 0.f); //this need to be tought again if we have multiple paths
+				sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
+			}
+				break;
+			case 3:
+			{
+				std::unique_ptr<FastEnemy> newEnemy(new FastEnemy(textures_, difficultyLevel_));
 				newEnemy->setPosition(spawnPosition_);
 				newEnemy->SetVelocity(enemySpeed_, 0.f); //this need to be tought again if we have multiple paths
 				sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
@@ -431,7 +439,7 @@ void GameField::MakeTowersShoot()
 		for(Enemy* enemy : activeEnemies_)
 		{
 			if (Distance(bomb, *enemy) <= bomb.GetRange()) {
-                enemy->TakeHit(bomb.GetDamage());
+                enemy->TakeHit(bomb.GetDamage(), bomb.GetCategory());
 				//bomb.Detonate()
             }
 			if (enemy->IsDestroyed())

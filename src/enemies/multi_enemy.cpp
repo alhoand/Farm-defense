@@ -39,6 +39,16 @@ MultiEnemy::MultiEnemy(const TextureHolder& textures, float difficultyLevel, flo
         };
     }
 
+//If takes damage from bomb, doubles spawncount
+void MultiEnemy::TakeHit(int damage, unsigned int bulletType)
+{
+    Damage(damage);
+    if (bulletType == Category::Bomb)
+    {
+        spawnCount_ *= 2;
+    }
+}
+
 
 bool MultiEnemy::CheckDestroyBehaviour(sf::Time dt, CommandQueue& commands)
 {

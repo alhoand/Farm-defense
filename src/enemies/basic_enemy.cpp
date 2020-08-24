@@ -30,15 +30,19 @@ BasicEnemy::BasicEnemy(const TextureHolder& textures, float difficultyLevel, flo
     }
 
 // Basic enemy dies immediately when taking hit
-void BasicEnemy::Damage(int) 
+void BasicEnemy::TakeHit(int, unsigned int)
 {
     Destroy();
 }
 
-
-/* bool BasicEnemy::CheckDestroyBehaviour(CommandQueue& commands)
+// basic enemy resists slowing down and actually gets speed boost in the slowing towers range
+float BasicEnemy::GetSpeed() const
 {
-    // Basic enemy just dies
-    return false;
-} */
+    if (isSlowedDown_)
+    {
+        return (2-slowDownRate_) * DifficultyCoefficient() * maxSpeed_; 
+    } 
+    return DifficultyCoefficient() * maxSpeed_;
+}
+
 

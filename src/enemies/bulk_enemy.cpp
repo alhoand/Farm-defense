@@ -1,4 +1,5 @@
 #include "bulk_enemy.hpp"
+#include <cmath>
 
 BulkEnemy::BulkEnemy(const TextureHolder& textures, float difficultyLevel, float travelledDistance, int directionIndex)
     : Enemy(Enemy::Bulk, textures, difficultyLevel, travelledDistance, directionIndex)
@@ -22,8 +23,12 @@ BulkEnemy::BulkEnemy(const TextureHolder& textures, float difficultyLevel, float
      }
 
 
-/* void BulkEnemy::CheckDestroyBehaviour(CommandQueue& commands)
+void BulkEnemy::TakeHit(int damage, unsigned int bulletType)
 {
-    // Bulk enemy just dies
-    return false;
-} */
+    int finalDamage = damage;
+    if (bulletType == Category::Bullet)
+    {
+        finalDamage = std::ceil(damage*0.5);
+    }
+    Damage(finalDamage);
+}

@@ -8,4 +8,6 @@ target_sources(TowerDefense
     basic_enemy.cpp
     bulk_enemy.hpp
     bulk_enemy.cpp
+    fast_enemy.hpp
+    fast_enemy.cpp
 )
