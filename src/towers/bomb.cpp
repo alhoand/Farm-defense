@@ -5,7 +5,6 @@ Bomb::Bomb(const TextureHolder& textures)
       distance_(150), 
       range_(100), 
       travelledDistance_(0),
-      detonateCommand_(),
       canDetonate_(false)
       { }
 
@@ -21,7 +20,7 @@ bool Bomb::CanDetonate()
 }
 
 
-void Bomb::UpdateCurrent(sf::Time dt, CommandQueue& ) {
+void Bomb::UpdateCurrent(sf::Time dt, CommandQueue& commands) {
     if (travelledDistance_ >= distance_) {
         canDetonate_ = true;
         return;
