@@ -7,7 +7,8 @@
 
 #include <SFML/Graphics/Sprite.hpp>
 
-/* Bullet class is a abstract class with multiple inherited classes:
+/* Towers shoot bullets according to their type. 
+ * Bullet class is a abstract class with multiple inherited classes:
  * - basic bullet
  * - super bullet
  * - bomb
@@ -29,6 +30,7 @@ class Bullet : public Entity {
         //Destructor
         ~Bullet() { }
 
+        // Getters for the bullet's attributes
         float           GetSpeed() const;
         int             GetDamage() const;
         unsigned int    GetCategory() const;
@@ -38,6 +40,8 @@ class Bullet : public Entity {
     private:
         virtual void    UpdateCurrent(sf::Time dt, CommandQueue& commands);
         virtual void    DrawCurrent(sf::RenderTarget& target,sf::RenderStates states) const;
+
+        // A helper function to determine bullet's texture according to type
         Textures::ID    ToTextureID(Bullet::Type type);
         
     protected:

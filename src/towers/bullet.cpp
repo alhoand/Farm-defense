@@ -5,7 +5,6 @@
 
 #include <cmath>
 
-// Constructor to be used with inherited classes
 Bullet::Bullet(Type type, const TextureHolder& textures, float speed, int damage)
     : Entity(1),
       type_(type), 
@@ -20,7 +19,6 @@ float Bullet::GetSpeed() const {
     return speed_;
 }
 
-        //could also return damage duration, depends on how the hit to enemy is implemented
 int Bullet::GetDamage() const {
     return damage_;
 }
