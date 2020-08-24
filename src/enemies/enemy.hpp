@@ -1,8 +1,5 @@
 #pragma once
 
-//Initial header file for abstract enemy class
-#include <vector>
-
 #include "../towers/bullet.hpp"
 #include "../entity.hpp"
 #include "../resource_identifiers.hpp"
@@ -12,6 +9,7 @@
 
 #include <SFML/Graphics/Sprite.hpp>
 
+#include <vector>
 
 class Enemy : public Entity {
     public:
@@ -28,7 +26,7 @@ class Enemy : public Entity {
         virtual         ~Enemy();
 
         void            DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
-        unsigned int    GetCategory() const override; // might also be made virtual later, but not now
+        unsigned int    GetCategory() const override; 
         sf::FloatRect   GetBoundingRect() const override;
         virtual float   GetSpeed() const; // some enemies can resist slowing down so can be redefined in derived class
         void            SlowDown(); 
@@ -37,13 +35,11 @@ class Enemy : public Entity {
         int             GetScorePoints();
 
     protected:
-        virtual void    UpdateMovementPattern(sf::Time dt); //can be made virtual later, not necessary now
+        virtual void    UpdateMovementPattern(sf::Time dt); 
         void            UpdateCurrent(sf::Time dt, CommandQueue& commands) override;
         void            UpdateMovementAnimation(sf::Time dt);
         virtual bool    CheckDestroyBehaviour(sf::Time dt, CommandQueue& commands);
         float           DifficultyCoefficient() const;
-
-        Textures::ID    ToTextureID(Enemy::Type type);
 
         Type            type_;
         sf::Sprite      sprite_;

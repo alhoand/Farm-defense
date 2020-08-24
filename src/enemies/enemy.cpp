@@ -15,25 +15,11 @@ namespace
 	const std::vector<EnemyData> Table = InitializeEnemyData();
     const std::vector<Direction> Path = InitializeEnemyPath();
 }
-/*
-Textures::ID Enemy::ToTextureID(Enemy::Type type) {
-    switch (type) {
-        case Enemy::Type::Fire:
-            return Textures::ID::Fire;
-        case Enemy::Type::Water:
-            return Textures::ID::Water;
-        case Enemy::Type::Leaf:
-            return Textures::ID::Leaf;
-        default: 
-            return Textures::ID::Fire;
-    }
-}*/
 
 // Constructor that works with SFML
 Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, unsigned int difficultyLevel, float travelledDistance, int directionIndex)
     : Entity(Table[type].hitpoints),
         type_(type), 
-        //sprite_(textures.Get(ToTextureID(type))),
         sprite_(textures.Get(Textures::ID::NoTexture)),
         deathAnimation_(textures.Get(Textures::DeathAnimation)),
         movementAnimation_(),
@@ -88,10 +74,9 @@ void Enemy::UpdateCurrent(sf::Time dt, CommandQueue& commands) {
 
     if (IsDestroyed())
 	{
-		
         deathAnimation_.Update(dt);
-		if((deathAnimation_.IsFinished() || !showDeathAnimation_)){
-            isMarkedForRemoval_ = !CheckDestroyBehaviour(dt, commands);
+		if((deathAnimation_.IsFinished() || !showDeathAnimation_) && !CheckDestroyBehaviour(dt, commands)){
+            isMarkedForRemoval_ = true;
         }
 		return;
 	}
@@ -100,19 +85,23 @@ void Enemy::UpdateCurrent(sf::Time dt, CommandQueue& commands) {
     Entity::UpdateCurrent(dt, commands); 
 }
 
+// Returns false if enemy has no ongoing destroy behaviour, and true if something is still happening
+// used to determine if enemy can be marked for removal
 bool Enemy::CheckDestroyBehaviour(sf::Time, CommandQueue&)
 {
     // Doesn't have any destroy behaviour by default
     return false;
 }
 
+// returns Enemy category, but if enemy is destroyed returns None (0)
 unsigned int Enemy::GetCategory() const 
 {
-    if(IsDestroyed())
-        return 0;
+/*     if(IsDestroyed())
+        return 0; */
     return Category::Enemy;
 } 
 
+// returns bounding rect of enemy node, used i.e. determining collisions between bullets and enemies
 sf::FloatRect Enemy::GetBoundingRect() const
 {
 	return GetWorldTransform().transformRect(sprite_.getGlobalBounds());
@@ -154,11 +143,12 @@ void Enemy::UpdateMovementAnimation(sf::Time dt){
     }
 }
 
-// initialized false, can be changed in derived classes
+// flags if enemy can be removed from game field, initialized false
 bool Enemy::IsMarkedForRemoval() const {
     return isMarkedForRemoval_;// && (deathAnimation_.IsFinished() || !showDeathAnimation_));
 }
 
+// returns how many score'points enemy is worth, one enemy returns it's score only once
 int Enemy::GetScorePoints()
 {
     if (isGivenScorepoints_)
@@ -170,7 +160,7 @@ int Enemy::GetScorePoints()
 }
 
 
-// Enemy's speed increases by DifficultyCoefficient
+// Enemy's speed increases by DifficultyCoefficient. If enemy is slowed down, speed is decreased 
 float Enemy::GetSpeed() const
 {
     if (isSlowedDown_)
@@ -180,19 +170,19 @@ float Enemy::GetSpeed() const
     return DifficultyCoefficient() * maxSpeed_;
 }
 
+// Slowing tower can make enemies to move slower
 void Enemy::SlowDown() 
 {
     isSlowedDown_ = true;
 }
 
-// Default case, can be altered in derived classes and take into account the bullet category
+// Enemy takes damage by amount of damage parameter. Can be altered in derived classes
 void Enemy::TakeHit(int damage)
 {
     Damage(damage);
-
 }
 
-
+// Returns difficulty coefficient. Used for calculating enemy's speed, which increases as difficultyLevel increases
 float Enemy::DifficultyCoefficient() const
 {
     return 1 + difficultyLevel_*difficultyIncrement_;

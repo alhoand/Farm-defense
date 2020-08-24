@@ -25,10 +25,11 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	leftToSpawn_(5),
     activeEnemies_(),
 	difficultyLevel_(0), //0 is the first level and increases by 1 by each wave
-	levelCount_(1), // can be added to parameter list or askef for player, but for now it's just harcoded to be 5
+	levelCount_(2), // can be added to parameter list or askef for player, but for now it's just harcoded to be 5
 	levelBreakTimer_(sf::seconds(15)),
 	newEnemyReachedEnd_(false),
-	roundScore_(0)
+	roundScore_(0),
+	hasActiveEnemies_(false)
 	{ 
 		LoadTextures();
 		BuildScene();
@@ -39,6 +40,8 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 void GameField::Update(sf::Time dt) {
 	newEnemyReachedEnd_ = false; // new enemies have not reached end at the beginning of an update
 	roundScore_ = 0; // set round score to zero 
+
+	std::cout << "difficulty: " << difficultyLevel_ << std::endl;
 
 	DestroyEntitiesOutsideView();
 	//DestroyDetonatedBombs();
@@ -53,7 +56,7 @@ void GameField::Update(sf::Time dt) {
 
 	HandleCollisions();
 
-	sceneGraph_.RemoveWrecks();
+	sceneGraph_.RemoveDestroyedNodes();
 	SpawnEnemies(dt);
 
 	sceneGraph_.Update(dt, commandQueue_);
@@ -189,7 +192,6 @@ void GameField::HandleCollisions()
 
 //Spawns only one type of enemies and spawnInterval is constant
 void GameField::SpawnEnemies(sf::Time dt) {
-
 	if (leftToSpawn_ > 0)//TODO leftToSpawn someway better?
 	{
 		if (spawnCountdown_ <= sf::Time::Zero) 
@@ -205,17 +207,18 @@ void GameField::SpawnEnemies(sf::Time dt) {
 		{
 			spawnCountdown_ -= dt;
 		}
-		return;
 	}
-	
-	if (difficultyLevel_ < levelCount_ )
+	else if (difficultyLevel_ < levelCount_)
 	{
 		// temporary solution, gameState should handle level changes, if difficultyLevel_ == levelCount_ => game won
 		if (levelBreakTimer_ <= sf::Time::Zero)
 		{
 			difficultyLevel_++;
-			leftToSpawn_ = 5;
-			levelBreakTimer_ = sf::seconds(10); // should this timer max value be parameter also?
+			if (difficultyLevel_ < levelCount_)
+			{
+				leftToSpawn_ = 5;
+				levelBreakTimer_ = sf::seconds(10);
+			}
 		} else
 		{
 			levelBreakTimer_ -= dt;
@@ -227,7 +230,6 @@ void GameField::SpawnEnemies(sf::Time dt) {
 void GameField::RandomEnemySpawner(unsigned int level)
 {
 	int num = RandomInt(level); //random int that is max level-1
-	std::cout << "Random num: " << num << std::endl;
 
 		//this works only for current enemy types, probably cannot implemet for arbitrary count of enemy types
 		switch(num)
@@ -284,7 +286,7 @@ bool GameField::HasNewEnemiesReachedEnd() {
 //can be used to determine when current wave is finished
 bool GameField::EndOfLevel()
 {
-	return leftToSpawn_ > 0;
+	return !hasActiveEnemies_ && leftToSpawn_ <= 0;
 }
 
 bool GameField::HasEnemiesToSpawn()
@@ -367,7 +369,14 @@ void GameField::MakeTowersShoot()
 	enemyCollector.action_ = DerivedAction<Enemy>([this] (Enemy& enemy, sf::Time)
 	{
 		if (!enemy.IsDestroyed())
+		{
 			activeEnemies_.push_back(&enemy);
+		}
+		if (!enemy.IsMarkedForRemoval())
+		{
+			hasActiveEnemies_ = true;
+		}
+
 	});
 
 	Command shootBullets;
@@ -439,6 +448,10 @@ void GameField::MakeTowersShoot()
 	commandQueue_.Push(shootBullets);
 	commandQueue_.Push(detonateCommand);
 
+	if (activeEnemies_.empty())
+	{
+		hasActiveEnemies_ = false;
+	}
 	activeEnemies_.clear();
 
 }
