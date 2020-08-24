@@ -10,6 +10,7 @@
 #include "enemies/basic_enemy.hpp"
 #include "enemies/bulk_enemy.hpp"
 #include "enemies/multi_enemy.hpp"
+#include "enemies/fast_enemy.hpp"
 
 #include "towers/basic_tower.hpp"
 #include "towers/super_tower.hpp"

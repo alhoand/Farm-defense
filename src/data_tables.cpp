@@ -12,7 +12,7 @@ std::vector<EnemyData> InitializeEnemyData()
 
 	data[Enemy::Basic].hitpoints = 10;
 	data[Enemy::Basic].speed = 50.f;
-	data[Enemy::Basic].slowDownRate = 0.5;
+	data[Enemy::Basic].slowDownRate = 0.8;
 	data[Enemy::Basic].texture = Textures::Fire;
 	data[Enemy::Basic].scorepoints = 50;
 
@@ -25,9 +25,16 @@ std::vector<EnemyData> InitializeEnemyData()
 
 	data[Enemy::Bulk].hitpoints = 50;
 	data[Enemy::Bulk].speed = 50.f;
-	data[Enemy::Bulk].slowDownRate = 0.8;
+	data[Enemy::Bulk].slowDownRate = 0.5;
 	data[Enemy::Bulk].texture = Textures::Water;
 	data[Enemy::Bulk].scorepoints = 500;
+
+	data[Enemy::Fast].hitpoints = 20;
+	data[Enemy::Fast].speed = 100.f;
+	data[Enemy::Fast].slowDownRate = 0.5;
+	data[Enemy::Fast].texture = Textures::Water;
+	data[Enemy::Fast].scorepoints = 100;
+
 
 	return data;
 }

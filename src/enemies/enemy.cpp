@@ -176,12 +176,6 @@ void Enemy::SlowDown()
     isSlowedDown_ = true;
 }
 
-// Enemy takes damage by amount of damage parameter. Can be altered in derived classes
-void Enemy::TakeHit(int damage)
-{
-    Damage(damage);
-}
-
 // Returns difficulty coefficient. Used for calculating enemy's speed, which increases as difficultyLevel increases
 float Enemy::DifficultyCoefficient() const
 {
