@@ -68,13 +68,13 @@ void GameOverState::Draw()
     backgroundShape.setFillColor(sf::Color(0, 0, 0, 150));
     backgroundShape.setSize(sf::Vector2f(window.getSize()));
 
-    window.clear();
+    //window.clear();
     window.draw(backgroundShape);
     window.draw(gameOverText_);
     window.draw(GUIContainer_);
 
-    window.draw(text_);
-    window.display();
+    //window.draw(text_);
+    //window.display();
 
 }
 

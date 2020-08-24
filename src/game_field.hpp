@@ -102,5 +102,6 @@ class GameField : private sf::NonCopyable {
         sf::Time            levelBreakTimer_;
         bool                newEnemyReachedEnd_;
         int                 roundScore_;
+        bool                hasActiveEnemies_;
 
 };

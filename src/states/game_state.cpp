@@ -44,7 +44,7 @@ bool GameState::Update(sf::Time dt) {
         RequestStackPush(States::ID::GameOver);
         return false;
     }
-    if (!gameField_.HasEnemiesToSpawn())
+    if (!gameField_.HasEnemiesToSpawn() && gameField_.EndOfLevel())
     {
         player_.SetGameStatus(Player::GameWon);
         RequestStackPush(States::ID::GameOver);
@@ -72,6 +72,6 @@ bool GameState::HandleEvent(const sf::Event& event) {
 void GameState::ModifyPlayerScore(int score)
 {
     player_.SetScore(score);
-    std::cout << "current score: " << player_.GetScore() << std::endl;
+    //std::cout << "current score: " << player_.GetScore() << std::endl;
 }
 
