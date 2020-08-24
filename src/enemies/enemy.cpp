@@ -46,7 +46,8 @@ Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, unsigned int diffi
         slowDownRate_(Table[type].slowDownRate), 
         isMarkedForRemoval_(false),
         hasMovementAnimation_(false),
-        showDeathAnimation_(true)
+        showDeathAnimation_(true),
+        isGivenScorepoints_(false)
     { 
         sf::FloatRect bounds = sprite_.getLocalBounds();
         sprite_.setOrigin(bounds.width/2.f, bounds.height/2.f);
@@ -160,8 +161,14 @@ bool Enemy::IsMarkedForRemoval() const {
 
 int Enemy::GetScorePoints()
 {
+    if (isGivenScorepoints_)
+    {
+        return 0;
+    }
+    isGivenScorepoints_ = true;
     return Table[type_].scorepoints;
 }
+
 
 // Enemy's speed increases by DifficultyCoefficient
 float Enemy::GetSpeed() const

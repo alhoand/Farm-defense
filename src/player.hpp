@@ -25,6 +25,8 @@ class Player {
         void        SetGameStatus(GameStatus newStatus);
         int         GetScore();
         void        SetScore(int change);
+        void        SetPlayerName(sf::String name);
+        sf::String  GetPlayerName();
 
     private:
         sf::RenderWindow&   window_;
@@ -32,4 +34,5 @@ class Player {
         int                 lives_;
         GameStatus          status_;
         int                 score_;
+        sf::String          name_;
 };

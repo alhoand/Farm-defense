@@ -25,7 +25,7 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	leftToSpawn_(5),
     activeEnemies_(),
 	difficultyLevel_(0), //0 is the first level and increases by 1 by each wave
-	levelCount_(5), // can be added to parameter list or askef for player, but for now it's just harcoded to be 5
+	levelCount_(1), // can be added to parameter list or askef for player, but for now it's just harcoded to be 5
 	levelBreakTimer_(sf::seconds(15)),
 	newEnemyReachedEnd_(false),
 	roundScore_(0)
@@ -38,9 +38,10 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 
 void GameField::Update(sf::Time dt) {
 	newEnemyReachedEnd_ = false; // new enemies have not reached end at the beginning of an update
+	roundScore_ = 0; // set round score to zero 
 
 	DestroyEntitiesOutsideView();
-	DestroyDetonatedBombs();
+	//DestroyDetonatedBombs();
 
 	//makes towers shoot
 	MakeTowersShoot();
@@ -51,6 +52,7 @@ void GameField::Update(sf::Time dt) {
 	}
 
 	HandleCollisions();
+
 	sceneGraph_.RemoveWrecks();
 	SpawnEnemies(dt);
 
@@ -155,7 +157,7 @@ bool MatchesCategories(SceneNode::Pair& colliders, Category::Type type1, Categor
 
 void GameField::HandleCollisions()
 {
-	roundScore_ = 0; // set round score to zero 
+	
 	std::set<SceneNode::Pair> collisionPairs;
 	sceneGraph_.CheckSceneCollision(sceneGraph_, collisionPairs);
 
@@ -171,9 +173,12 @@ void GameField::HandleCollisions()
 			{
 				continue;
 			}
-			roundScore_ += enemy.GetScorePoints();
 			// Apply bullet damage to enemy, destroy bullet
 			enemy.TakeHit(bullet.GetDamage());
+			if (enemy.IsDestroyed())
+			{
+				AddRoundScore(enemy.GetScorePoints());
+			}
 			std::cout << "HP now: " << enemy.GetHitpoints() << std::endl;
 			bullet.Destroy();
 
@@ -292,6 +297,11 @@ int GameField::GetRoundScore()
 	return roundScore_;
 }
 
+void GameField::AddRoundScore(int score)
+{
+	roundScore_ += score;
+}
+
 void GameField::DestroyEntitiesOutsideView()
 {
 	Command bulletCommand;
@@ -307,13 +317,13 @@ void GameField::DestroyEntitiesOutsideView()
 
 	Command enemyCommand;
 	enemyCommand.category_ = Category::Enemy;
-	enemyCommand.action_ = DerivedAction<Entity>([this] (Entity& e, sf::Time)
+	enemyCommand.action_ = DerivedAction<Enemy>([this] (Enemy& e, sf::Time)
 	{
 		if (!GetGamefieldBounds().intersects(e.GetBoundingRect()))
 		{
 			std::cout << "destroying enemy outside gamefield and also reduce player lives" << std::endl;
 			e.Destroy();
-			newEnemyReachedEnd_ = true;
+			newEnemyReachedEnd_ = true; // this should maybe be an int, because more than one enemies can reach end at the same time
 		}	
 	});
 
@@ -321,7 +331,7 @@ void GameField::DestroyEntitiesOutsideView()
 	commandQueue_.Push(enemyCommand);
 }
 
-void GameField::DestroyDetonatedBombs() {
+/* void GameField::DestroyDetonatedBombs() {
 	Command command;
 	command.category_ = Category::Bomb;
 	command.action_ = DerivedAction<Bomb>([this] (Bomb& bomb, sf::Time) {
@@ -331,7 +341,7 @@ void GameField::DestroyDetonatedBombs() {
 	});
 
 	commandQueue_.Push(command);
-}
+} */
 
 sf::FloatRect GameField::GetViewBounds() const
 {
@@ -401,9 +411,33 @@ void GameField::MakeTowersShoot()
 			
 	});
 
+	Command detonateCommand;
+	detonateCommand.category_ = Category::Bomb;
+    detonateCommand.action_ = DerivedAction<Bomb>([this] (Bomb& bomb, sf::Time) 
+	{
+		if (!bomb.CanDetonate())
+		{
+			return;
+		}
+		for(Enemy* enemy : activeEnemies_)
+		{
+			if (Distance(bomb, *enemy) <= bomb.GetRange()) {
+                enemy->TakeHit(bomb.GetDamage());
+				//bomb.Detonate()
+            }
+			if (enemy->IsDestroyed())
+			{
+				AddRoundScore(enemy->GetScorePoints());
+			}
+		}
+		bomb.Destroy();
+	});
+
+
 	// Push commands, reset active enemies
 	commandQueue_.Push(enemyCollector);
 	commandQueue_.Push(shootBullets);
+	commandQueue_.Push(detonateCommand);
 
 	activeEnemies_.clear();
 

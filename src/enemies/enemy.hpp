@@ -59,4 +59,5 @@ class Enemy : public Entity {
         bool            hasMovementAnimation_;
         Animation       deathAnimation_;
         Animation       movementAnimation_;
+        bool            isGivenScorepoints_;
 };

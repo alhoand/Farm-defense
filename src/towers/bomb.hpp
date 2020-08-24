@@ -14,11 +14,12 @@ class Bomb : public Bullet {
         Bomb(const TextureHolder& textures);
 
         int GetRange();
-        bool IsDetonated();
+        //bool IsDetonated();
+        bool CanDetonate();
 
         void UpdateCurrent(sf::Time dt,CommandQueue& commands);
 
-        void Detonate(CommandQueue& commands);
+        //void Detonate(CommandQueue& commands);
 
     private:
         // we have type_, sprite_, speed_ and damage_ by Bullet
@@ -26,5 +27,6 @@ class Bomb : public Bullet {
         int             range_;             // the range within which enemies will be hit
         float           travelledDistance_; // how far the bomb has already travelled
         Command         detonateCommand_;
-        bool            isDetonated_;         
+        //bool            isDetonated_;         
+        bool            canDetonate_;
 };

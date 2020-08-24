@@ -9,10 +9,20 @@
 GameOverState::GameOverState(StateStack& stack, Context context)
     : State(stack, context),
     gameOverText_(),
-    GUIContainer_(context)
+    GUIContainer_(context),
+    elapsedTime_(sf::Time::Zero),
+    typedText_("Type player name: "),
+    text_(),
+    name_(""),
+    player_(*context.player_)
     {
         sf::Font& font = context.fonts_->Get(Fonts::Main);
         sf::Vector2f viewSize = context.window_->getView().getSize();
+
+        text_.setString("");
+        text_.setFont(font);
+        //text_.setColor(sf::Color::Red);
+        text_.setPosition(0.5f * viewSize.x, 0.6f * viewSize.y);
 
         gameOverText_.setFont(font);
         if (context.player_->GetGameStatus() == Player::GameStatus::GameWon)
@@ -28,7 +38,7 @@ GameOverState::GameOverState(StateStack& stack, Context context)
         gameOverText_.setPosition(0.5f * viewSize.x, 0.3f * viewSize.y);
 
         auto menuButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_);
-        menuButton->setPosition(550, 300);
+        menuButton->setPosition(550, 500);
         menuButton->SetText("Return to main menu");
         menuButton->SetCallback([this] ()
         {
@@ -38,7 +48,7 @@ GameOverState::GameOverState(StateStack& stack, Context context)
         GUIContainer_.Pack(menuButton); 
 
         auto quitButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_);
-        quitButton->setPosition(550, 400);
+        quitButton->setPosition(550, 600);
         quitButton->SetText("Ragequit");
         quitButton->SetCallback([this] ()
         {
@@ -58,18 +68,45 @@ void GameOverState::Draw()
     backgroundShape.setFillColor(sf::Color(0, 0, 0, 150));
     backgroundShape.setSize(sf::Vector2f(window.getSize()));
 
+    window.clear();
     window.draw(backgroundShape);
     window.draw(gameOverText_);
     window.draw(GUIContainer_);
+
+    window.draw(text_);
+    window.display();
+
 }
 
-bool GameOverState::Update(sf::Time)
+bool GameOverState::Update(sf::Time dt)
 {
+    elapsedTime_ += dt;
+
+   // while (elapsedTime_ >= sf::seconds(.5f))
+    {
+        elapsedTime_ -= sf::seconds(.5f);
+        if (typedText_.getSize() > 0)
+        {
+            text_.setString(text_.getString() + typedText_[0]);
+            name_ += typedText_[0];
+            typedText_ = typedText_.toAnsiString().substr(1);
+        }
+    }
     return false;
 }
 
 bool GameOverState::HandleEvent(const sf::Event& event)
 {
+    
+    if (event.type == sf::Event::TextEntered)
+    {
+        typedText_ += event.text.unicode;
+    } else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter)
+    {
+        player_.SetPlayerName(name_ );
+        std::cout << "Player name:" << player_.GetPlayerName().toAnsiString() << std::endl;
+    }
+
     GUIContainer_.HandleEvent(event);
-    return false;
+    return false; // should this be false or true?
 }
