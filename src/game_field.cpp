@@ -78,7 +78,7 @@ void GameField::Update(sf::Time dt) {
 	newEnemyReachedEnd_ = false; // new enemies have not reached end at the beginning of an update
 	roundScore_ = 0; // set round score to zero 
 
-	std::cout << "difficulty: " << difficultyLevel_ << std::endl;
+	//std::cout << "difficulty: " << difficultyLevel_ << std::endl;
 
 	DestroyEntitiesOutsideView();
 	//DestroyDetonatedBombs();
@@ -165,7 +165,7 @@ void GameField::BuildScene() {
 	// firstTower_ = firstTower.get();
 	//firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
 
-	firstTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f);
+	firstTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f+250);
 	firstTower->DisallowMoving();
 	sceneLayers_[Field] -> AttachChild(std::move(firstTower));
 
@@ -173,15 +173,15 @@ void GameField::BuildScene() {
 	//Initialize a slowing tower
 	std::unique_ptr<Tower> secondTower(new SlowingTower(textures_));
 	//firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
-	secondTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/3.f -100.f, (gameFieldBounds_.top + gameFieldBounds_.height)/3.f);
+	secondTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/3.f +200.f, (gameFieldBounds_.top + gameFieldBounds_.height)/3.f);
 	secondTower->DisallowMoving();
 	sceneLayers_[Field] -> AttachChild(std::move(secondTower));
 
 	// Initialize a bombing tower
 	std::unique_ptr<Tower> thirdTower(new BombingTower(textures_));
 	//firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
-	thirdTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/4.f, (gameFieldBounds_.top + gameFieldBounds_.height) -280.f);
-	//thirdTower->Stop();
+	thirdTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/4.f-150.f, (gameFieldBounds_.top + gameFieldBounds_.height) -530.f);
+	thirdTower->DisallowMoving();
 	sceneLayers_[Field] -> AttachChild(std::move(thirdTower));
 
 
@@ -244,10 +244,19 @@ void GameField::HandleCollisions()
 		{
 			auto& tower = static_cast<Tower&>(*pair.first);
 			auto& activeTower = static_cast<Tower&>(*pair.second);
-
-			tower.Collides(true);
-			activeTower.Collides(true);
-			towerCollideCalled = true;
+			if (tower.IsMoving())
+			{
+				tower.Collides(true);
+				towerCollideCalled = true;
+			}
+			if (activeTower.IsMoving())
+			{
+				activeTower.Collides(true);
+				towerCollideCalled = true;
+			}
+				
+			
+			
 
 		}
 	}
