@@ -28,5 +28,6 @@ class SidebarState : public State {
         sf::Vector2f towerPosition_;
         GUI::SidebarWorld 
         sidebarWorld_;
+        int currentWave_;
         
 };

@@ -14,25 +14,25 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	: window_(window),
 	viewOffset_(viewOffset), 
 	 gameFieldView_(window.getDefaultView()),
+	 textures_(),
 	 sceneGraph_(),
+	 sceneLayers_(),
 	 gameFieldBounds_(0.f, 0.f, // x and y of the game field
 	 				gameFieldView_.getSize().x + viewOffset_.x, //world width is a bit bigger than the view's width
 					gameFieldView_.getSize().y + viewOffset_.y), // world height is same as view's height
-	 spawnPosition_(gameFieldBounds_.left + 100,
+	 spawnPosition_(gameFieldBounds_.left,
 	 				 (gameFieldBounds_.top + gameFieldBounds_.height)/3.f),
 	commandQueue_(),
-	enemySpeed_(50.f),
-	firstEnemy_(),
 	spawnCountdown_(sf::seconds(2)),
 	spawnInterval_(2), //this should maybe be a parameter
 	leftToSpawn_(0),
     activeEnemies_(),
 	difficultyLevel_(0), //0 is the first level and increases by 1 by each wave
-	levelCount_(5), // can be added to parameter list or askef for player, but for now it's just harcoded to be 5
-	levelBreakTimer_(sf::seconds(15)),
+	levelCount_(1), // can be added to parameter list or askef for player, but for now it's just harcoded to be 5
 	newEnemiesReachedEnd_(0),
 	roundScore_(0),
-	hasActiveEnemies_(false)
+	hasActiveEnemies_(false),
+	newLevelStarted_(false)
 	{ 
 		LoadTextures();
 		BuildScene();
@@ -41,19 +41,13 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 
 
 void GameField::Update(sf::Time dt) {
-	//std::cout << "updating game field" << std::endl;
 	newEnemiesReachedEnd_ = 0; // new enemies have not reached end at the beginning of an update
 	roundScore_ = 0; // set round score to zero 
 
-	//std::cout << "difficulty: " << difficultyLevel_ << std::endl;
-
 	DestroyEntitiesOutsideView();
-	//DestroyDetonatedBombs();
 
 	//makes towers shoot
 	MakeTowersShoot();
-
-//std::cout << "made the towers shoot" << std::endl;
 	
 	// Forwards the commands to self or the scene graph
 	while(!commandQueue_.IsEmpty()) {
@@ -67,7 +61,6 @@ void GameField::Update(sf::Time dt) {
 			sceneGraph_.OnCommand(next, dt);
 		}
 	}
-	//std::cout << "forwarded the commands" << std::endl;
 	HandleCollisions();
 
 	sceneGraph_.RemoveDestroyedNodes();
@@ -111,21 +104,6 @@ void GameField::BuildScene() {
 	std::unique_ptr<SpriteNode> backgroundSprite(new SpriteNode(texture, textureRect));
 	backgroundSprite->setPosition(gameFieldBounds_.left, gameFieldBounds_.top);
 	sceneLayers_[Background]->AttachChild(std::move(backgroundSprite));
-
-
-	//Initialize an enemy, WE DO NOT INITIALIZE ANY ENEMIES
-	/* std::unique_ptr<Enemy> firstEnemy(new BasicEnemy(textures_));
-	firstEnemy_ = firstEnemy.get();
-	//firstEnemy_->setOrigin(firstEnemy_->GetBoundingRect().width/2, firstEnemy_->GetBoundingRect().height/2);
-	firstEnemy_->setPosition(spawnPosition_);
-	//firstEnemy_->setScale(0.5f, 0.5f);
-
-	std::cout << "DEBUG: spawn position:" << firstEnemy_->getPosition().x << "," << firstEnemy_->getPosition().y << std::endl;
-
-	firstEnemy_->SetVelocity(enemySpeed_, 0.f);
-	std::cout << "DEBUG: initial velocity: " << firstEnemy_->GetVelocity().x << "," << firstEnemy_->GetVelocity().y << std::endl;
- 
-	sceneLayers_[Field] -> AttachChild(std::move(firstEnemy)); */
 
 	//Initialize a super tower that can be moved with hard-coded bullet
 	/*std::unique_ptr<Tower> firstTower(new SuperTower(textures_));
@@ -223,7 +201,7 @@ void GameField::HandleCollisions()
 			//std::cout << "Collision happened!!!" << std::endl;
 			auto& enemy = static_cast<Enemy&>(*pair.first);
 			auto& bullet = static_cast<Bullet&>(*pair.second);
-			if(bullet.IsDestroyed())
+			if(bullet.IsDestroyed() || enemy.IsDestroyed())
 			{
 				continue;
 			}
@@ -236,7 +214,6 @@ void GameField::HandleCollisions()
 			std::cout << "HP now: " << enemy.GetHitpoints() << std::endl;
 			bullet.Destroy();
 
-			//std::cout << "Collision occurred on enemy: " << enemy.Get<< std::endl;
 		}
 		if (MatchesCategories(pair, Category::Tower, Category::Active))
 		{
@@ -253,9 +230,6 @@ void GameField::HandleCollisions()
 				towerCollideCalled = true;
 			}
 				
-			
-			
-
 		}
 	}
 	if (!towerCollideCalled)
@@ -283,15 +257,25 @@ void GameField::OnCommand(Command command, sf::Time dt)
 
 void GameField::NextEnemyWave()
 {
-	std::cout << "Creating new enemy wave!!" << std::endl;
-	difficultyLevel_++;
-	leftToSpawn_ = 15; // Should not be hardcoded
+	std::cout << "trying to start new enemy wave" << std::endl;
+	newLevelStarted_ = true;
+	if (difficultyLevel_ < levelCount_)
+	{
+		std::cout << "Creating new enemy wave!!" << std::endl;
+		difficultyLevel_++;
+		leftToSpawn_ = difficultyLevel_ * 5; // Should not be hardcoded
+	}
+}
+
+void GameField::NextLevel()
+{
+	newLevelStarted_ = false;
+
 }
 
 
 //Spawns only one type of enemies and spawnInterval is constant
 void GameField::SpawnEnemies(sf::Time dt) {
-	//std::cout << "spawning enemies" << std::endl;
 	if (leftToSpawn_ > 0 && difficultyLevel_ <= levelCount_)//TODO leftToSpawn someway better?
 	{
 		if (spawnCountdown_ <= sf::Time::Zero) 
@@ -299,7 +283,6 @@ void GameField::SpawnEnemies(sf::Time dt) {
 			spawnCountdown_ += sf::seconds(spawnInterval_);
 			//alternative way and probably better in actual game, change spawnInterval to spawnRate to make spawnrate <= 1 sec
 			//spawnCountdown_ += sf::seconds(1.f / (spawnRate_+1));
-			std::cout << "should spawn enemy" << std::endl;
 			RandomEnemySpawner(difficultyLevel_);
 			leftToSpawn_--;
 
@@ -307,24 +290,7 @@ void GameField::SpawnEnemies(sf::Time dt) {
 		{
 			spawnCountdown_ -= dt;
 		}
-	}
-	/* else if (difficultyLevel_ < levelCount_)
-	{
-		// temporary solution, gameState should handle level changes, if difficultyLevel_ == levelCount_ => game won
-		if (levelBreakTimer_ <= sf::Time::Zero)
-		{
-			difficultyLevel_++;
-			if (difficultyLevel_ < levelCount_)
-			{
-				leftToSpawn_ = 5;
-				levelBreakTimer_ = sf::seconds(10);
-			}
-		} else
-		{
-			levelBreakTimer_ -= dt;
-		} 
-	} */
-
+	} 
 }
 
 void GameField::RandomEnemySpawner(unsigned int level)
@@ -338,7 +304,7 @@ void GameField::RandomEnemySpawner(unsigned int level)
 			{
 				std::unique_ptr<BasicEnemy> newEnemy(new BasicEnemy(textures_, difficultyLevel_));
 				newEnemy->setPosition(spawnPosition_);
-				newEnemy->SetVelocity(enemySpeed_, 0.f); //this need to be tought again if we have multiple paths
+				newEnemy->SetVelocity(newEnemy->GetSpeed(), 0.f); //this need to be tought again if we have multiple paths
 				sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
 			}
 				break;
@@ -346,7 +312,7 @@ void GameField::RandomEnemySpawner(unsigned int level)
 			{
 				std::unique_ptr<MultiEnemy> newEnemy(new MultiEnemy(textures_, difficultyLevel_));
 				newEnemy->setPosition(spawnPosition_);
-				newEnemy->SetVelocity(enemySpeed_, 0.f); //this need to be tought again if we have multiple paths
+				newEnemy->SetVelocity(newEnemy->GetSpeed(), 0.f); //this need to be tought again if we have multiple paths
 				sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
 			}
 				break;
@@ -354,7 +320,7 @@ void GameField::RandomEnemySpawner(unsigned int level)
 			{
 				std::unique_ptr<BulkEnemy> newEnemy(new BulkEnemy(textures_, difficultyLevel_));
 				newEnemy->setPosition(spawnPosition_);
-				newEnemy->SetVelocity(enemySpeed_, 0.f); //this need to be tought again if we have multiple paths
+				newEnemy->SetVelocity(newEnemy->GetSpeed(), 0.f); //this need to be tought again if we have multiple paths
 				sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
 			}
 				break;
@@ -362,7 +328,7 @@ void GameField::RandomEnemySpawner(unsigned int level)
 			{
 				std::unique_ptr<FastEnemy> newEnemy(new FastEnemy(textures_, difficultyLevel_));
 				newEnemy->setPosition(spawnPosition_);
-				newEnemy->SetVelocity(enemySpeed_, 0.f); //this need to be tought again if we have multiple paths
+				newEnemy->SetVelocity(newEnemy->GetSpeed(), 0.f); //this need to be tought again if we have multiple paths
 				sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
 			}
 				break;
@@ -370,7 +336,7 @@ void GameField::RandomEnemySpawner(unsigned int level)
 			{
 				std::unique_ptr<BulkEnemy> newEnemy(new BulkEnemy(textures_, difficultyLevel_));
 				newEnemy->setPosition(spawnPosition_);
-				newEnemy->SetVelocity(enemySpeed_, 0.f); //this need to be tought again if we have multiple paths
+				newEnemy->SetVelocity(newEnemy->GetSpeed(), 0.f); //this need to be tought again if we have multiple paths
 				sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
 			}
 		}
@@ -404,14 +370,14 @@ int GameField::NewEnemiesReachedEnd() {
 }
 
 //can be used to determine when current wave is finished
-bool GameField::EndOfLevel()
+bool GameField::IsEndOfLevel()
 {
-	return !hasActiveEnemies_ && leftToSpawn_ <= 0;
+	return newLevelStarted_ && !hasActiveEnemies_ && leftToSpawn_ <= 0 ;
 }
 
 bool GameField::IsEndOfGame()
 {
-	return EndOfLevel() && difficultyLevel_ > levelCount_;
+	return IsEndOfLevel() && difficultyLevel_ >= levelCount_;
 }
 
 int GameField::GetRoundScore()
@@ -441,29 +407,17 @@ void GameField::DestroyEntitiesOutsideView()
 	enemyCommand.category_ = Category::Enemy;
 	enemyCommand.action_ = DerivedAction<Enemy>([this] (Enemy& e, sf::Time)
 	{
-		if (!GetGamefieldBounds().intersects(e.GetBoundingRect()))
+		if (!GetGamefieldBounds().intersects(e.GetBoundingRect()) && !e.IsDestroyed())
 		{
 			std::cout << "destroying enemy outside gamefield and also reduce player lives" << std::endl;
 			e.Destroy();
-			newEnemiesReachedEnd_++; // this should maybe be an int, because more than one enemies can reach end at the same time
+			newEnemiesReachedEnd_++; 
 		}	
 	});
 
 	commandQueue_.Push(bulletCommand);
 	commandQueue_.Push(enemyCommand);
 }
-
-/* void GameField::DestroyDetonatedBombs() {
-	Command command;
-	command.category_ = Category::Bomb;
-	command.action_ = DerivedAction<Bomb>([] (Bomb& bomb, sf::Time) {
-		if (bomb.IsDetonated()) {
-			bomb.Destroy();
-		}
-	});
-
-	commandQueue_.Push(command);
-} */
 
 sf::FloatRect GameField::GetViewBounds() const
 {
@@ -550,9 +504,8 @@ void GameField::MakeTowersShoot()
 		}
 		for(Enemy* enemy : activeEnemies_)
 		{
-			if (Distance(bomb, *enemy) <= bomb.GetRange()) {
+			if (Distance(bomb, *enemy) <= bomb.GetRange() && !enemy->IsDestroyed()) {
                 enemy->TakeHit(bomb.GetDamage(), bomb.GetCategory());
-				//bomb.Detonate()
             }
 			if (enemy->IsDestroyed())
 			{

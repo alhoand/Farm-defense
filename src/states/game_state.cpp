@@ -46,25 +46,29 @@ bool GameState::Update(sf::Time dt) {
     if (player_.GetLives() <= 0) 
     {
         player_.SetGameStatus(Player::GameLost);
+        std::cout << "hello from end of game" << std::endl;
         RequestStackPush(States::ID::GameOver);
         return false;
     }
     if (gameField_.IsEndOfGame())
     {
         player_.SetGameStatus(Player::GameWon);
+        std::cout << "hello from end of game" << std::endl;
         RequestStackPush(States::ID::GameOver);
         return false;
-    }
-    if (gameField_.EndOfLevel())
-    {
-        // when level ends open side bar 
-        //RequestStackPush(States::ID::Sidebar);
     }
 
     CommandQueue& commands = gameField_.GetCommandQueue();
 	player_.HandleRealtimeInput(commands);
 
     GUIController_.FetchInput(commands);
+
+    if (gameField_.IsEndOfLevel())
+    {
+        // when level ends open side bar 
+        RequestStackPush(States::ID::EndOfLevel);
+        return false;
+    }
 
 	return true;
 }

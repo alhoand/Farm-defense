@@ -10,6 +10,7 @@
 #include "states/sidebar_state.hpp"
 #include "states/game_over_state.hpp"
 #include "states/score_state.hpp"
+#include "states/end_of_level_state.hpp"
 #include <iostream>
 
 static const sf::Time timePerFrame = sf::seconds(1.f / 60.f);
@@ -53,6 +54,7 @@ void Application::RegisterStates() {
     stateStack_.RegisterState<PauseState>(States::ID::Pause);
     stateStack_.RegisterState<GameOverState>(States::ID::GameOver);
     stateStack_.RegisterState<ScoreState>(States::ID::Score);
+    stateStack_.RegisterState<EndOfLevelState>(States::ID::EndOfLevel);
 }
 
 void Application::Run() {

@@ -54,11 +54,12 @@ class GameField : private sf::NonCopyable {
         void            Draw();
         CommandQueue&   GetCommandQueue();
         int             NewEnemiesReachedEnd();
-        bool            EndOfLevel();
+        bool            IsEndOfLevel();
         bool            IsEndOfGame();
         void            AddRoundScore(int points);
         int             GetRoundScore();
         void            NextEnemyWave();
+        void            NextLevel();
 
        // std::pair<SceneNode*, bool> GetActiveNode() const; not needed currently
 
@@ -72,7 +73,6 @@ class GameField : private sf::NonCopyable {
         void            SpawnEnemies(sf::Time dt);
         void            RandomEnemySpawner(unsigned int level);
         void            DestroyEntitiesOutsideView();
-        void            DestroyDetonatedBombs();
         sf::FloatRect   GetViewBounds() const;
         sf::FloatRect   GetGamefieldBounds() const;
         void            MakeTowersShoot();
@@ -93,9 +93,7 @@ class GameField : private sf::NonCopyable {
         sf::FloatRect       gameFieldBounds_;
         sf::Vector2f        spawnPosition_;
         CommandQueue        commandQueue_;
-        float               enemySpeed_;
         //std::list<Tower*> towers_;
-        Enemy*              firstEnemy_;
         //std::list<Bullet*> bullets_;
         sf::Time            spawnCountdown_ ;
         int                 spawnInterval_;
@@ -108,5 +106,6 @@ class GameField : private sf::NonCopyable {
         int                 newEnemiesReachedEnd_;
         int                 roundScore_;
         bool                hasActiveEnemies_;
+        bool                newLevelStarted_;
 
 };

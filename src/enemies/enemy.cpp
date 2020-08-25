@@ -96,8 +96,8 @@ bool Enemy::CheckDestroyBehaviour(sf::Time, CommandQueue&)
 // returns Enemy category, but if enemy is destroyed returns None (0)
 unsigned int Enemy::GetCategory() const 
 {
-/*     if(IsDestroyed())
-        return 0; */
+     if(IsDestroyed())
+        return 0; 
     return Category::Enemy;
 } 
 

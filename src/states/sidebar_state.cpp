@@ -4,6 +4,7 @@
 #include "../player.hpp"
 #include "../tower_button.hpp"
 #include <memory>
+#include <string>
 
 SidebarState::SidebarState(StateStack& stack, Context context)
     : State(stack, context)
@@ -16,6 +17,7 @@ SidebarState::SidebarState(StateStack& stack, Context context)
     , GUIController_(*context.GUIController_)
     , towerPosition_(sf::Vector2f(viewSize_.x/2.f, 230.f))
     , sidebarWorld_(*context.window_,towerPosition_)
+    , currentWave_(0)
     {
         GUIContainer_.setPosition(context.window_->getView().getSize().x - viewSize_.x, 0);
         sidebarWorld_.SetGraphPosition(GUIContainer_.getTransform());
@@ -39,12 +41,14 @@ SidebarState::SidebarState(StateStack& stack, Context context)
                 waveCommand.gameFieldAction_ = GameFieldAction(
                             [waveButton] (GameField& gameField, sf::Time dt)
                             {
-                                //std::cout << "Button pressed!" <<std::endl;
-                                gameField.NextEnemyWave();  //AddTower(towerButton->GetTowerType(), towerButton->GetClickPosition());  
+                                //if (gameField.IsEndOfLevel())
+                                {
+                                    gameField.NextEnemyWave();  
+                                }
                             }
                 );
+                titleText_->SetText("Wave " + std::to_string(++currentWave_), false);
                 GUIController_.SendCommand(waveCommand);
-                //RequestStackPop(); //?????
             });
         GUIContainer_.Pack(waveButton, true);
 
