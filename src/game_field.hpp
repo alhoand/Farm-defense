@@ -5,10 +5,18 @@
 #include <array>
 #include <vector>
 #include <memory>
+
 #include "enemies/enemy.hpp"
-#include "enemies/test_enemy.hpp"
 #include "enemies/basic_enemy.hpp"
-#include "towers/tower.hpp"
+#include "enemies/bulk_enemy.hpp"
+#include "enemies/multi_enemy.hpp"
+#include "enemies/fast_enemy.hpp"
+
+#include "towers/basic_tower.hpp"
+#include "towers/super_tower.hpp"
+#include "towers/slowing_tower.hpp"
+#include "towers/bombing_tower.hpp"
+
 #include "towers/bullet.hpp"
 #include "sprite_node.hpp"
 #include "command_queue.hpp"
@@ -16,6 +24,7 @@
 #include "resource_identifiers.hpp"
 #include "scene_node.hpp"
 #include "category.hpp"
+#include "utility.hpp"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics.hpp>
@@ -44,6 +53,11 @@ class GameField : private sf::NonCopyable {
         void            Update(sf::Time dt);
         void            Draw();
         CommandQueue&   GetCommandQueue();
+        bool            HasNewEnemiesReachedEnd();
+        bool            EndOfLevel();
+        bool            HasEnemiesToSpawn();
+        void            AddRoundScore(int points);
+        int             GetRoundScore();
 
        // std::pair<SceneNode*, bool> GetActiveNode() const; not needed currently
 
@@ -55,7 +69,9 @@ class GameField : private sf::NonCopyable {
         void            BuildPath();
         void            HandleCollisions();
         void            SpawnEnemies(sf::Time dt);
+        void            RandomEnemySpawner(unsigned int level);
         void            DestroyEntitiesOutsideView();
+        void            DestroyDetonatedBombs();
         sf::FloatRect   GetViewBounds() const;
         sf::FloatRect   GetGamefieldBounds() const;
         void            MakeTowersShoot();
@@ -79,15 +95,17 @@ class GameField : private sf::NonCopyable {
         float               enemySpeed_;
         //std::list<Tower*> towers_;
         Enemy*              firstEnemy_;
-        Tower*              firstTower_;
         //std::list<Bullet*> bullets_;
         sf::Time            spawnCountdown_ ;
         int                 spawnInterval_;
         int                 leftToSpawn_; //initial, could change for better
         std::vector<Enemy*> activeEnemies_;
+        // std::vector<Tower*> activeTowers_;
         unsigned int        difficultyLevel_;
 	    unsigned int        levelCount_; //total amount of levels or waves in current game
         sf::Time            levelBreakTimer_;
-        sf::VertexArray     path_;
+        bool                newEnemyReachedEnd_;
+        int                 roundScore_;
+        bool                hasActiveEnemies_;
 
 };

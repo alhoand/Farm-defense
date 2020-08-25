@@ -14,5 +14,14 @@ target_sources(TowerDefense
 	title_state.cpp
 	upgrade_tower_state.hpp
 	upgrade_tower_state.cpp
-
+	pause_state.cpp
+	pause_state.hpp
+	menu_state.hpp
+	menu_state.cpp
+	game_state.hpp
+	game_state.cpp
+	game_over_state.hpp
+	game_over_state.cpp
+	score_state.hpp
+	score_state.cpp
 )

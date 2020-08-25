@@ -20,14 +20,19 @@ class Label : public Component
 							Label(const std::string& text, const FontHolder& fonts);
                             Label(const std::string& text, const FontHolder& fonts, unsigned int fontSize = 16, Fonts::ID fontType = Fonts::ID::Main);
 
-        virtual bool		IsSelectable() const;
 		void				SetText(const std::string& text, bool center=true);
-        virtual sf::FloatRect       GetGlobalBounds() const override;
-
-        virtual void		HandleEvent(const sf::Event& event);
+        //void				SetText(const std::string& text);
+        virtual bool		IsSelectable() const override;
         void                CenterTextOrigin();
+
         virtual void        draw(sf::RenderTarget& target, sf::RenderStates states) const override 
                             { Draw(target, states); }
+
+
+        virtual sf::FloatRect       GetGlobalBounds() const override;
+
+        virtual void		HandleEvent(const sf::Event& event) override;
+
 
     private:
         void				Draw(sf::RenderTarget& target, sf::RenderStates states) const;

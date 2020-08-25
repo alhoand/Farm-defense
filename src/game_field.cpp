@@ -23,7 +23,6 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	commandQueue_(),
 	enemySpeed_(50.f),
 	firstEnemy_(),
-	firstTower_(),
 	spawnCountdown_(sf::seconds(2)),
 	spawnInterval_(2), //this should maybe be a parameter
 	leftToSpawn_(5),
@@ -31,7 +30,9 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	difficultyLevel_(0), //0 is the first level and increases by 1 by each wave
 	levelCount_(5), // can be added to parameter list or askef for player, but for now it's just harcoded to be 5
 	levelBreakTimer_(sf::seconds(15)),
-	path_()
+	newEnemyReachedEnd_(false),
+	roundScore_(0),
+	hasActiveEnemies_(false)
 	{ 
 		LoadTextures();
 		BuildScene();
@@ -40,7 +41,24 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 
 void GameField::AddTower(Tower::Type type, sf::Vector2f pos)
 {
-	std::unique_ptr<Tower> newTower(new Tower(type, textures_));
+	std::cout << "Here we are!" << std::endl;
+
+	std::unique_ptr<Tower> newTower;
+	switch (type)
+	{
+	case Tower::Type::Super:
+		newTower.reset(new SuperTower(textures_));
+		break;
+	case Tower::Type::Bombing:
+		newTower.reset(new BombingTower(textures_));
+		break;
+	case Tower::Type::Slowing:
+		newTower.reset(new SlowingTower(textures_));
+	default:
+		newTower.reset(new BasicTower(textures_));
+		break;
+	}
+	//std::unique_ptr<Tower> newTower(new Tower(type, textures_));
 	//newTower->setOrigin(newTower->GetBoundingRect().width/2.f, newTower->GetBoundingRect().height/2.f);
 	/*newTower->setOrigin(pos.x - (newTower->getPosition().x - newTower->getOrigin().x),
                                             pos.y - (newTower->getPosition().y - newTower->getOrigin().y));
@@ -52,14 +70,18 @@ void GameField::AddTower(Tower::Type type, sf::Vector2f pos)
 	newTower->Activate();
 	
 	sceneLayers_[Field]->AttachChild(std::move(newTower));
-	Tower::ActiveTower(newTower, commandQueue_);
+	//Tower::ActiveTower(newTower, commandQueue_);
 	std::cout << "Tower pos: " << pos.x <<", " << pos.y << std::endl;
 }
 
 void GameField::Update(sf::Time dt) {
-//std::cout << "Gamefield update start" << std::endl;
+	newEnemyReachedEnd_ = false; // new enemies have not reached end at the beginning of an update
+	roundScore_ = 0; // set round score to zero 
+
+	std::cout << "difficulty: " << difficultyLevel_ << std::endl;
+
 	DestroyEntitiesOutsideView();
-//std::cout << "destroyed enemies" << std::endl;
+	//DestroyDetonatedBombs();
 
 	//makes towers shoot
 	MakeTowersShoot();
@@ -81,7 +103,7 @@ void GameField::Update(sf::Time dt) {
 	//std::cout << "forwarded the commands" << std::endl;
 	HandleCollisions();
 
-	sceneGraph_.RemoveWrecks();
+	sceneGraph_.RemoveDestroyedNodes();
 	SpawnEnemies(dt);
 	sceneGraph_.Update(dt, commandQueue_);
 }
@@ -91,11 +113,17 @@ void GameField::LoadTextures() {
 	textures_.Load(Textures::ID::Fire, "../media/textures/Doge.png");
 	textures_.Load(Textures::ID::Leaf, "../media/textures/cat.png");
 	textures_.Load(Textures::ID::Grass, "../media/textures/grass.jpg");
-	textures_.Load(Textures::ID::FireTower, "../media/textures/tower.png");
-	textures_.Load(Textures::ID::FireBullet, "../media/textures/bullet.png");
+	textures_.Load(Textures::ID::BasicTower, "../media/textures/tower.png");
+	textures_.Load(Textures::ID::SuperTower, "../media/textures/harvester.png");
+	textures_.Load(Textures::ID::SlowingTower, "../media/textures/tower.png");
+	textures_.Load(Textures::ID::BombingTower, "../media/textures/tower.png");
+	textures_.Load(Textures::ID::BasicBullet, "../media/textures/bullet.png");
+	textures_.Load(Textures::ID::SuperBullet, "../media/textures/bullet.png");
+	textures_.Load(Textures::ID::Bomb, "../media/textures/bullet.png");
 	textures_.Load(Textures::ID::NoTexture,      "../media/textures/noTexture.png");
 	textures_.Load(Textures::ID::DeathAnimation,      "../media/textures/deathAnimation.png");
 	textures_.Load(Textures::ID::Leppis,      "../media/textures/leppakerttu.png");
+	textures_.Load(Textures::ID::HamahakkiIso,      "../media/textures/hamahakki.png");
 }
 
 void GameField::BuildScene() {
@@ -133,13 +161,28 @@ void GameField::BuildScene() {
 	sceneLayers_[Field] -> AttachChild(std::move(firstEnemy));
 
 	//Initialize a tower that can be moved with hard-coded bullet
-	// TODO: make bullets work
-	//std::unique_ptr<Tower> firstTower(new Tower(Tower::Type::Fire, textures_));
-	//firstTower_ = firstTower.get();
+	std::unique_ptr<Tower> firstTower(new SuperTower(textures_));
+	// firstTower_ = firstTower.get();
 	//firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
-	//firstTower_->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f);
-	//AddTower(Tower::Type::Fire, sf::Vector2f((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f));
-	//sceneLayers_[Field] -> AttachChild(std::move(firstTower));
+
+	firstTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f);
+	firstTower->DisallowMoving();
+	sceneLayers_[Field] -> AttachChild(std::move(firstTower));
+
+
+	//Initialize a slowing tower
+	std::unique_ptr<Tower> secondTower(new SlowingTower(textures_));
+	//firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
+	secondTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/3.f -100.f, (gameFieldBounds_.top + gameFieldBounds_.height)/3.f);
+	secondTower->DisallowMoving();
+	sceneLayers_[Field] -> AttachChild(std::move(secondTower));
+
+	// Initialize a bombing tower
+	std::unique_ptr<Tower> thirdTower(new BombingTower(textures_));
+	//firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
+	thirdTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/4.f, (gameFieldBounds_.top + gameFieldBounds_.height) -280.f);
+	//thirdTower->Stop();
+	sceneLayers_[Field] -> AttachChild(std::move(thirdTower));
 
 
 }
@@ -169,6 +212,7 @@ bool MatchesCategories(SceneNode::Pair& colliders, Category::Type type1, Categor
 
 void GameField::HandleCollisions()
 {
+	
 	std::set<SceneNode::Pair> collisionPairs;
 	sceneGraph_.CheckSceneCollision(sceneGraph_, collisionPairs);
 	bool towerCollideCalled = false;
@@ -181,10 +225,17 @@ void GameField::HandleCollisions()
 			//std::cout << "Collision happened!!!" << std::endl;
 			auto& enemy = static_cast<Enemy&>(*pair.first);
 			auto& bullet = static_cast<Bullet&>(*pair.second);
-
+			if(bullet.IsDestroyed())
+			{
+				continue;
+			}
 			// Apply bullet damage to enemy, destroy bullet
-			enemy.Damage(bullet.GetDamage());
-			//std::cout << "HP now: " << enemy.GetHitpoints() << std::endl;
+			enemy.TakeHit(bullet.GetDamage(), bullet.GetCategory());
+			if (enemy.IsDestroyed())
+			{
+				AddRoundScore(enemy.GetScorePoints());
+			}
+			std::cout << "HP now: " << enemy.GetHitpoints() << std::endl;
 			bullet.Destroy();
 
 			//std::cout << "Collision occurred on enemy: " << enemy.Get<< std::endl;
@@ -224,42 +275,33 @@ void GameField::OnCommand(Command command, sf::Time dt)
 
 //Spawns only one type of enemies and spawnInterval is constant
 void GameField::SpawnEnemies(sf::Time dt) {
-
-	if (spawnCountdown_ <= sf::Time::Zero && leftToSpawn_ > 0) //TODO leftToSpawn someway better
-    {
-        spawnCountdown_ += sf::seconds(spawnInterval_);
-		//alternative way and probably better in actual game, change spawnInterval to spawnRate to make spawnrate <= 1 sec
-		//spawnCountdown_ += sf::seconds(1.f / (spawnRate_+1));
-
-		if (leftToSpawn_-- % 2)
-		{
- 			std::unique_ptr<TestEnemy> newEnemy(new TestEnemy(textures_, difficultyLevel_));
-			//newEnemy->setOrigin(newEnemy->GetBoundingRect().width/2, newEnemy->GetBoundingRect().height/2);
-			newEnemy->setPosition(spawnPosition_);
-			//newEnemy->setScale(2.f, 2.f);
-			newEnemy->SetVelocity(enemySpeed_, 0.f);
-			sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
-		} else
-		{
-			std::unique_ptr<Enemy> newEnemy(new BasicEnemy(textures_, difficultyLevel_));
-			//newEnemy->setOrigin(newEnemy->GetBoundingRect().width/2, newEnemy->GetBoundingRect().height/2);
-			newEnemy->setPosition(spawnPosition_);
-			//newEnemy->setScale(0.5f, 0.5f);
-			newEnemy->SetVelocity(enemySpeed_, 0.f); //this need to be tought again if we have multiple paths
-			sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
-		}
-    }
-    else if (leftToSpawn_ > 0)
-    {
-        spawnCountdown_ -= dt;
-    }
-	else if (difficultyLevel_ < levelCount_ )
+	if (leftToSpawn_ > 0)//TODO leftToSpawn someway better?
 	{
+		if (spawnCountdown_ <= sf::Time::Zero) 
+    	{
+			spawnCountdown_ += sf::seconds(spawnInterval_);
+			//alternative way and probably better in actual game, change spawnInterval to spawnRate to make spawnrate <= 1 sec
+			//spawnCountdown_ += sf::seconds(1.f / (spawnRate_+1));
+
+			RandomEnemySpawner(difficultyLevel_+1);
+			leftToSpawn_--;
+
+		} else 
+		{
+			spawnCountdown_ -= dt;
+		}
+	}
+	else if (difficultyLevel_ < levelCount_)
+	{
+		// temporary solution, gameState should handle level changes, if difficultyLevel_ == levelCount_ => game won
 		if (levelBreakTimer_ <= sf::Time::Zero)
 		{
 			difficultyLevel_++;
-			leftToSpawn_ = 5;
-			levelBreakTimer_ = sf::seconds(10); // should this timer max value be parameter also?
+			if (difficultyLevel_ < levelCount_)
+			{
+				leftToSpawn_ = 5;
+				levelBreakTimer_ = sf::seconds(10);
+			}
 		} else
 		{
 			levelBreakTimer_ -= dt;
@@ -268,11 +310,59 @@ void GameField::SpawnEnemies(sf::Time dt) {
 
 }
 
+void GameField::RandomEnemySpawner(unsigned int level)
+{
+	int num = RandomInt(level); //random int that is max level-1
+
+		//this works only for current enemy types, probably cannot implemet for arbitrary count of enemy types
+		switch(num)
+		{
+			case 0: 
+			{
+				std::unique_ptr<BasicEnemy> newEnemy(new BasicEnemy(textures_, difficultyLevel_));
+				newEnemy->setPosition(spawnPosition_);
+				newEnemy->SetVelocity(enemySpeed_, 0.f); //this need to be tought again if we have multiple paths
+				sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
+			}
+				break;
+			case 1:
+			{
+				std::unique_ptr<MultiEnemy> newEnemy(new MultiEnemy(textures_, difficultyLevel_));
+				newEnemy->setPosition(spawnPosition_);
+				newEnemy->SetVelocity(enemySpeed_, 0.f); //this need to be tought again if we have multiple paths
+				sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
+			}
+				break;
+			case 2:
+			{
+				std::unique_ptr<BulkEnemy> newEnemy(new BulkEnemy(textures_, difficultyLevel_));
+				newEnemy->setPosition(spawnPosition_);
+				newEnemy->SetVelocity(enemySpeed_, 0.f); //this need to be tought again if we have multiple paths
+				sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
+			}
+				break;
+			case 3:
+			{
+				std::unique_ptr<FastEnemy> newEnemy(new FastEnemy(textures_, difficultyLevel_));
+				newEnemy->setPosition(spawnPosition_);
+				newEnemy->SetVelocity(enemySpeed_, 0.f); //this need to be tought again if we have multiple paths
+				sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
+			}
+				break;
+			default:
+			{
+				std::unique_ptr<BulkEnemy> newEnemy(new BulkEnemy(textures_, difficultyLevel_));
+				newEnemy->setPosition(spawnPosition_);
+				newEnemy->SetVelocity(enemySpeed_, 0.f); //this need to be tought again if we have multiple paths
+				sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
+			}
+		}
+}
+
 
 void GameField::Draw() {
 	window_.setView(gameFieldView_);
 	window_.draw(sceneGraph_);
-	window_.draw(path_);
 	
 
 }
@@ -292,21 +382,71 @@ void GameField::HandleActiveTower()
 	commandQueue_.Push(command);
 }*/
 
+bool GameField::HasNewEnemiesReachedEnd() {
+	return newEnemyReachedEnd_;
+}
+
+//can be used to determine when current wave is finished
+bool GameField::EndOfLevel()
+{
+	return !hasActiveEnemies_ && leftToSpawn_ <= 0;
+}
+
+bool GameField::HasEnemiesToSpawn()
+{
+	return leftToSpawn_ > 0 || difficultyLevel_ < levelCount_;
+}
+
+int GameField::GetRoundScore()
+{
+	return roundScore_;
+}
+
+void GameField::AddRoundScore(int score)
+{
+	roundScore_ += score;
+}
+
 void GameField::DestroyEntitiesOutsideView()
 {
-	Command command;
-	command.category_ = Category::Bullet | Category::Enemy;
-	command.action_ = DerivedAction<Entity>([this] (Entity& e, sf::Time)
+	Command bulletCommand;
+	bulletCommand.category_ = Category::Bullet;
+	bulletCommand.action_ = DerivedAction<Entity>([this] (Entity& e, sf::Time)
 	{
 		if (!GetGamefieldBounds().intersects(e.GetBoundingRect()))
 		{
-			//std::cout << "destroying enemy or bullet outside gamefield" << std::endl;
+			std::cout << "destroying bullet outside gamefield" << std::endl;
 			e.Destroy();
 		}	
 	});
 
-	commandQueue_.Push(command);
+	Command enemyCommand;
+	enemyCommand.category_ = Category::Enemy;
+	enemyCommand.action_ = DerivedAction<Enemy>([this] (Enemy& e, sf::Time)
+	{
+		if (!GetGamefieldBounds().intersects(e.GetBoundingRect()))
+		{
+			std::cout << "destroying enemy outside gamefield and also reduce player lives" << std::endl;
+			e.Destroy();
+			newEnemyReachedEnd_ = true; // this should maybe be an int, because more than one enemies can reach end at the same time
+		}	
+	});
+
+	commandQueue_.Push(bulletCommand);
+	commandQueue_.Push(enemyCommand);
 }
+
+/* void GameField::DestroyDetonatedBombs() {
+	Command command;
+	command.category_ = Category::Bomb;
+	command.action_ = DerivedAction<Bomb>([] (Bomb& bomb, sf::Time) {
+		if (bomb.IsDetonated()) {
+			bomb.Destroy();
+		}
+	});
+
+	commandQueue_.Push(command);
+} */
 
 sf::FloatRect GameField::GetViewBounds() const
 {
@@ -323,6 +463,7 @@ sf::FloatRect GameField::GetGamefieldBounds() const
 	return bounds;
 }
 
+// Does both: shoots enemies or slows them down depending on tower category
 void GameField::MakeTowersShoot()
 {
 	// Setup command that stores all active enemies to activeEnemies_
@@ -331,7 +472,14 @@ void GameField::MakeTowersShoot()
 	enemyCollector.action_ = DerivedAction<Enemy>([this] (Enemy& enemy, sf::Time)
 	{
 		if (!enemy.IsDestroyed())
+		{
 			activeEnemies_.push_back(&enemy);
+		}
+		if (!enemy.IsMarkedForRemoval())
+		{
+			hasActiveEnemies_ = true;
+		}
+
 	});
 
 	Command shootBullets;
@@ -352,12 +500,11 @@ void GameField::MakeTowersShoot()
 
 			if (enemyDistance <= tower.GetRange())
 			{
-				// Does not work yet, but should be sufficient to slow enemies if tower is certain type
-				/* if (tower.GetType() == Tower::IceTower)
-				{
-					enemy.SlowDown();
+				// Does not work yet, but should be sufficient to slow enemies if tower is category SlowingTower
+				if (tower.GetCategory() == Category::SlowingTower) {
+					enemy->SlowDown(); //duration?
 					continue;
-				} */
+				}
 				if (enemyDistance < minDistance)
 				{
 					closestEnemy = enemy;
@@ -376,10 +523,38 @@ void GameField::MakeTowersShoot()
 			
 	});
 
+	Command detonateCommand;
+	detonateCommand.category_ = Category::Bomb;
+    detonateCommand.action_ = DerivedAction<Bomb>([this] (Bomb& bomb, sf::Time) 
+	{
+		if (!bomb.CanDetonate())
+		{
+			return;
+		}
+		for(Enemy* enemy : activeEnemies_)
+		{
+			if (Distance(bomb, *enemy) <= bomb.GetRange()) {
+                enemy->TakeHit(bomb.GetDamage(), bomb.GetCategory());
+				//bomb.Detonate()
+            }
+			if (enemy->IsDestroyed())
+			{
+				AddRoundScore(enemy->GetScorePoints());
+			}
+		}
+		bomb.Destroy();
+	});
+
+
 	// Push commands, reset active enemies
 	commandQueue_.Push(enemyCollector);
 	commandQueue_.Push(shootBullets);
+	commandQueue_.Push(detonateCommand);
 
+	if (activeEnemies_.empty())
+	{
+		hasActiveEnemies_ = false;
+	}
 	activeEnemies_.clear();
 
 }

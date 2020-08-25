@@ -9,7 +9,7 @@
 
 //Making a leaf type enemy as a test of derived class
 TestEnemy::TestEnemy(const TextureHolder& textures, float difficultyLevel, float travelledDistance, int directionIndex)
-    : Enemy(Enemy::Leaf, textures, difficultyLevel, travelledDistance, directionIndex)
+    : Enemy(Enemy::Basic, textures, difficultyLevel, travelledDistance, directionIndex)
     { 
         showDeathAnimation_ = false;
         spawnFireEnemyCommand_.category_ = Category::Scene;
@@ -25,7 +25,7 @@ TestEnemy::TestEnemy(const TextureHolder& textures, float difficultyLevel, float
     }
 
 
-void TestEnemy::CheckDestroyBehaviour(CommandQueue& commands)
+bool TestEnemy::CheckDestroyBehaviour(sf::Time, CommandQueue& commands)
 {
     //std::cout << "hello from here" << std::endl;
     commands.Push(spawnFireEnemyCommand_);

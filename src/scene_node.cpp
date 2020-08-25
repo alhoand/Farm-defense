@@ -86,12 +86,12 @@ bool SceneNode::IsMarkedForRemoval() const
     return IsDestroyed();
 }
 
-void SceneNode::RemoveWrecks()
+void SceneNode::RemoveDestroyedNodes()
 {
-    auto wreckfieldBegin = std::remove_if(children_.begin(),children_.end(), std::mem_fn(&SceneNode::IsMarkedForRemoval));
-    children_.erase(wreckfieldBegin, children_.end());
+    auto removingBegin = std::remove_if(children_.begin(),children_.end(), std::mem_fn(&SceneNode::IsMarkedForRemoval));
+    children_.erase(removingBegin, children_.end());
 
-    std::for_each(children_.begin(), children_.end(),std::mem_fn(&SceneNode::RemoveWrecks));
+    std::for_each(children_.begin(), children_.end(),std::mem_fn(&SceneNode::RemoveDestroyedNodes));
 }
 
 sf::FloatRect SceneNode::GetBoundingRect() const 
@@ -123,7 +123,7 @@ void SceneNode::Draw(sf::RenderTarget &target, sf::RenderStates states) const {
     DrawBoundingRect(target, states);
 }
 
-void SceneNode::DrawCurrent(sf::RenderTarget &target, sf::RenderStates states) const {
+void SceneNode::DrawCurrent(sf::RenderTarget&, sf::RenderStates) const {
     // Do nothing by default
 }
 

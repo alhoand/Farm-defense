@@ -1,14 +1,27 @@
 #include "tower_picture.hpp"
+#include "data_tables.hpp"
 
 TowerPicture::TowerPicture(Tower::Type type, const TextureHolder& textures, sf::Vector2f sideBarPos) : SpriteNode(textures.Get(Tower::ToTextureID(type))), sideBarPos_(sideBarPos), isDragged_(false), active_(false)
  { 
+    auto data = InitializeTowerData();
+
     setOrigin(sprite_.getLocalBounds().width/2.f, sprite_.getLocalBounds().height/2.f);
 
     setPosition(sideBarPos_);
-    std::cout << "Tp origin is: " << getOrigin().x << ", " << getOrigin().y << std::endl;
-    std::cout << "Tp world pos is: " << GetWorldPosition().x << ", " << GetWorldPosition().y << std::endl;
-    std::cout << "Tp pos is: " << getPosition().x << ", " << getPosition().y << std::endl;
-    std::cout << "SidebarPos is " << sideBarPos_.x << ", " << sideBarPos_.y << std::endl;
+
+   /* switch (type)
+    {
+    case Tower::Type::Super:
+        sprite_.setScale(data[Tower::Type::Super].scale, data[Tower::Type::Super].scale);
+        break;
+    
+    default:
+        break;
+    }*/
+    //std::cout << "Tp origin is: " << getOrigin().x << ", " << getOrigin().y << std::endl;
+    //std::cout << "Tp world pos is: " << GetWorldPosition().x << ", " << GetWorldPosition().y << std::endl;
+    //std::cout << "Tp pos is: " << getPosition().x << ", " << getPosition().y << std::endl;
+    //std::cout << "SidebarPos is " << sideBarPos_.x << ", " << sideBarPos_.y << std::endl;
 
   }
 void TowerPicture::SetSidebarPos(sf::Vector2f pos)

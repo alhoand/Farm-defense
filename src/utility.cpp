@@ -3,7 +3,19 @@
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <cmath>
+#include <random>
+#include <ctime>
 
+namespace
+{
+	std::default_random_engine createRandomEngine()
+	{
+		auto seed = static_cast<unsigned long>(std::time(nullptr));
+		return std::default_random_engine(seed);
+	}
+
+	auto RandomEngine = createRandomEngine();
+}
 
 void CenterOrigin(sf::Sprite sprite) {
     sf::FloatRect bounds = sprite.getLocalBounds();
@@ -29,4 +41,10 @@ sf::Vector2f UnitVector(sf::Vector2f vector)
 {
 	assert(vector != sf::Vector2f(0.f, 0.f));
 	return vector / Length(vector);
+}
+
+int RandomInt(int exclusiveMax)
+{
+	std::uniform_int_distribution<> distr(0, exclusiveMax - 1);
+	return distr(RandomEngine);
 }

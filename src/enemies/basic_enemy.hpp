@@ -5,11 +5,13 @@
 class BasicEnemy : public Enemy {
 
     public:
-        BasicEnemy(const TextureHolder& textures, float difficultyLevel = 1.f, float travelledDistance = 0.f, int directionIndex = 0);
-        //~TestEnemy();
-        void Damage(int damage) override;
+        BasicEnemy(const TextureHolder &textures, float difficultyLevel = 1.f, float travelledDistance = 0.f, int directionIndex = 0);
+        //~BasicEnemy();
+        
+        void TakeHit(int damage, unsigned int bulletType);
+        float GetSpeed() const;
         
 
     private:
-        void CheckDestroyBehaviour(CommandQueue& commands) override;
+       // bool CheckDestroyBehaviour(CommandQueue& commands) override;
 };

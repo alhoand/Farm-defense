@@ -9,7 +9,7 @@ public:
 
     virtual void Draw() override;
 
-    virtual bool Update(sf::Time dt) override;
+    virtual bool Update(sf::Time) override;
 
     virtual bool HandleEvent(const sf::Event& event) override;
 

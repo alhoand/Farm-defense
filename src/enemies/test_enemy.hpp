@@ -10,7 +10,7 @@ class TestEnemy : public Enemy {
         //~TestEnemy();
 
     private:
-        void CheckDestroyBehaviour(CommandQueue& commands) override;
+        bool CheckDestroyBehaviour(sf::Time, CommandQueue& commands) override;
  
         Command spawnFireEnemyCommand_;
 };

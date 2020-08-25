@@ -6,15 +6,23 @@ namespace Category {
     enum Type {
         None = 0,
         Scene = 1 << 0,
-        Tower = 1 << 1,
-        Enemy = 1 << 2,
-        TowerPicture = 1 << 3,
-        Bullet = 1 << 4,
-        Range = 1 << 5,
-        Active = 1 << 6,
-        GameField = 7,
+        ShootingTower = 1 << 1,
+        SlowingTower = 1 << 2,
+        BombingTower = 1 << 3,
+        Enemy = 1 << 4,
+        Ghost = 1 << 5,
+        BasicBullet = 1 << 6,
+        SuperBullet = 1 << 7,
+        Bomb = 1 << 8,
+        TowerPicture = 1 << 9,
+        Range = 1 << 10,
+        Active = 1 << 11,
+        GameField = 1 << 12,
+
+        Tower = ShootingTower | SlowingTower | BombingTower,
+        ActiveTower = Tower | Active,
+        Bullet = BasicBullet | SuperBullet
         
-        ActiveTower = Tower | Active
     };
 }
 

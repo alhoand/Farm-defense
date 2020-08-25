@@ -4,9 +4,18 @@ target_sources(TowerDefense
         bullet.hpp
         range_node.cpp
         range_node.hpp
-        test_tower.hpp
         tower.hpp
         tower.cpp
         basic_tower.hpp
         basic_tower.cpp
+        basic_bullet.hpp
+        slowing_tower.hpp
+        slowing_tower.cpp
+        bombing_tower.hpp
+        bombing_tower.cpp
+        bomb.hpp
+        bomb.cpp
+        super_tower.hpp
+        super_tower.cpp
+        super_bullet.hpp
 )

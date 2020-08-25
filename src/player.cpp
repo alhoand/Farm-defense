@@ -1,9 +1,11 @@
 #include "player.hpp"
 #include "towers/tower.hpp"
 #include "tower_picture.hpp"
+#include <iostream>
 
 
-Player::Player(sf::RenderWindow& window, sf::Vector2f viewOffset) : window_(window), viewOffset_(viewOffset) { }
+Player::Player(sf::RenderWindow& window, sf::Vector2f viewOffset) 
+    : window_(window), viewOffset_(viewOffset), lives_(10), status_(), score_(0) { }
 
 // Adapted from SFML Game Development-book
 
@@ -145,9 +147,27 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
 
 }
 //Adapted from the SFML Game Development-book
-void Player::HandleRealtimeInput(CommandQueue& commands) {
-
+void Player::HandleRealtimeInput(CommandQueue&) {
+    // Do nothing
 }
+
+void Player::ReduceLife()
+{
+    lives_--;
+    std::cout << "Player lost one life, lives now: " << lives_ << std::endl;
+}
+
+int Player::GetLives()
+{
+    return lives_;
+}
+
+Player::GameStatus Player::GetGameStatus()
+{
+    return status_;
+}
+
+
 // Used to tell the GUI that there was a successfull placement of a tower
 void Player::SetPlacementSuccess()
 {
@@ -162,4 +182,28 @@ void Player::SetPlacementFailure()
 bool Player::PlacementSuccess()
 {
     return towerPlacementSuccess_;
+}
+
+void Player::SetGameStatus(Player::GameStatus newStatus)
+{
+    status_ = newStatus;
+}
+
+int Player::GetScore()
+{
+    return score_;
+}
+
+void Player::SetScore(int change)
+{
+    score_ += change; // test if this works with negative change, or does it have to?
+}
+
+void Player::SetPlayerName(sf::String name)
+{
+    name_ = name;
+}
+sf::String Player::GetPlayerName()
+{
+    return name_;
 }

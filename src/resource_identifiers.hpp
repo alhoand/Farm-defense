@@ -12,13 +12,14 @@ namespace Textures {
         Fire,
         Leaf,
         Water,
-        IceBullet,
-        FireBullet,
-        WoodBullet,
+        BasicBullet,
+        SuperBullet,
+        Bomb,
         Grass,
-        FireTower,
-        WaterTower,
-        LeafTower,
+        BasicTower,
+        SlowingTower,
+        SuperTower,
+        BombingTower,
         Path,
         TitleScreen,
         TitleBackground,
@@ -26,7 +27,8 @@ namespace Textures {
         Buttons,
         NoTexture,
         DeathAnimation,
-        Leppis
+        Leppis,
+        HamahakkiIso
     };
 }
 

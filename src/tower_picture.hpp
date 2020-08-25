@@ -7,7 +7,7 @@ class TowerPicture : public SpriteNode {
     public:
                                             TowerPicture(Tower::Type towerType, const TextureHolder& textures, sf::Vector2f sideBarPos);
         void                                GetBack();
-        unsigned int                        GetCategory() const;
+        unsigned int                        GetCategory() const override;
         sf::Vector2f                        GetPosition() const;
         sf::Vector2f                        GetSidebarPos() const;
         void                                SetSidebarPos(sf::Vector2f pos);
@@ -18,7 +18,7 @@ class TowerPicture : public SpriteNode {
         void                                UnDrag();
         bool                                IsDragged() const;
         
-        sf::FloatRect                       GetBoundingRect() const;
+        sf::FloatRect                       GetBoundingRect() const override;
         void                                Activate();
         void                                Deactivate();
         void                                Update(sf::Time dt) override;

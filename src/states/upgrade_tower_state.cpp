@@ -48,9 +48,6 @@ UpgradeTowerState::UpgradeTowerState(StateStack& stack, Context context) :
 
 	    });
         GUIContainer_.Pack(upgradeButton, true);
-        //GUI::Component::Ptr temp = GetContext().GUIContainer_->GetChild(GUI::ID::ActiveSceneNode);
-        //auto activeTowerComponent = std::dynamic_pointer_cast<GUI::SceneNodeComponent>(temp);
-        //GUIContainer_.Pack(activeTowerComponent);
 
         backgroundShape_.setFillColor(sf::Color(160,82,45,0));
         backgroundShape_.setSize(viewSize_);

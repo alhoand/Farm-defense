@@ -10,6 +10,8 @@ namespace States {
 		Settings,
         Sidebar,
         GameUpgradeTowerSideBar,
+        GameOver,
+        Score,
         None
     };
 }

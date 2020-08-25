@@ -1,30 +1,44 @@
 #include "tower.hpp"
-#include <cassert>
-
-#include "../utility.hpp"
 
 #include <math.h> 
+#include <cmath> 
 
-namespace {
-	const std::vector<TowerData> table = InitializeTowerData();
-}
+// Constructor
+Tower::Tower(Tower::Type type, const TextureHolder &textures, float range, float reloadTime)
+    : Entity(1), 
+      type_(type),
+      sprite_(textures.Get(ToTextureID(type))),
+      range_(range), 
+      reloadTime_(reloadTime), 
+      canShoot_(false), 
+      countdown_(sf::Time::Zero),
+      shootCommand_() {
+        sf::FloatRect bounds = sprite_.getLocalBounds();
+        sprite_.setOrigin(bounds.width/2.f, bounds.height/2.f);
 
+        Tower::towerCount_++;
+        // Adds a range circle for the tower according to the range of the tower attack
+        std::unique_ptr<RangeNode> rangeCircle(new RangeNode(range_, sf::Color(255, 0, 0, 128)));
+        rangeCircle_ = rangeCircle.get();
+        AttachChild(std::move(rangeCircle));
+
+        // Initializing shootCommand_
+        // Category is Scene, since this command is executed only once in the game field
+        shootCommand_.category_ = Category::Scene;
+        shootCommand_.action_ = [this, &textures] (SceneNode& node, sf::Time) {
+            // A bullet is created and shot
+            CreateBullet(node, textures);
+        };
+    }
+/*
 Textures::ID Tower::ToTextureID(Type type)
 {
     return table[type].texture;
 }
-
-
-//Tower* Tower::activeTower_  = nullptr;
+*/
 
 int Tower::towerCount_ = 0;
 
-
-/*Tower* Tower::ActiveTower()
-{ 
-    return activeTower_; 
-}
-*/
 
 void Tower::ActiveTower(Tower &newActive, CommandQueue& commands)
 {
@@ -52,49 +66,6 @@ void Tower::ActiveTower(Tower &newActive, CommandQueue& commands)
     commands.Push(actCmd);
 }
 
-void Tower::ActiveTower(std::unique_ptr<Tower> &newActive, CommandQueue& commands) 
-{ 
-    /*
-    //assert(newActive != nullptr);
-    Command command;
-    command.category_ = Category::Active;
-    command.action_ = DerivedAction<Tower>([](Tower& t, sf::Time)
-    {
-        t.Deactivate();
-        std::cout << "Old active tower deactivated ptr version" << std::endl;
-
-    });
-    commands.Push(command);
-
-    Command actCmd;
-    actCmd.category_ = Category::Tower;
-   // std::cout << "All cool here" << std::endl;
-    actCmd.action_ = DerivedAction<Tower>([&](Tower& t, sf::Time)
-    {
-        if (&t == newActive.get())
-        {
-            t.Activate();
-            std::cout << "New active tower added ptr version" << std::endl;
-
-
-        }
-        else
-        {
-            t.Deactivate();
-       //     std::cout << "t address: " << &t << ", new address: " << newActive.get() << std::endl;
-          //  std::cout << "No new active added ptr version" << std::endl;
-        }
-        
-    });
-    commands.Push(actCmd);
-    
-    //newActive->Activate();
-
-   // activeTower_ = newActive;
-   // activeTower_->Activate();
-    // For debugging:
-    */
-}
 void Tower::Collides(bool collision)
 {
     if (collision)
@@ -109,60 +80,16 @@ void Tower::Collides(bool collision)
     
 }
 
-
-
-int Tower::TowerCount() { return towerCount_; }
-
-Tower::Tower(Tower::Type type, const TextureHolder &textures)
-    : Entity(1), 
-    type_(type), 
-    range_(table[type].range),
-    sprite_(textures.Get(table[type].texture)), 
-    direction_(),
-    reloadTime_(table[type].reloadTime), 
-    canShoot_(false), 
-    bulletType_(table[type].bulletType), 
-    countdown_(sf::Time::Zero),
-    shootCommand_(),
-    canMove_(false),
-    isColliding_()
-    {
-        sf::FloatRect bounds = sprite_.getLocalBounds();
-        sprite_.setOrigin(bounds.width/2.f, bounds.height/2.f);
-
-        shootCommand_.category_ = Category::Scene;
-        shootCommand_.action_ = [this, &textures] (SceneNode& node, sf::Time) {
-            CreateBullet(node, textures);
-        };
-        Tower::towerCount_++;
-     //   std::cout << "towercount: " << Tower::towerCount_ << std::endl;
-     /*   if (Tower::towerCount_ == 1) {
-            Tower::ActiveTower(*this, );
-        }*/
-
-        std::unique_ptr<RangeNode> rangeCircle(new RangeNode(range_, sf::Color(255, 0, 0, 128)));
-        rangeCircle_ = rangeCircle.get();
-        AttachChild(std::move(rangeCircle));
-            
-    }
-
-
-// Function for drawing the tower
 void Tower::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const {
-    //if (IsActive() && CanMove())
     if(IsActive())
         DrawRange(*rangeCircle_, target, states);
-    
     target.draw(sprite_, states);
 }
 
-
-//Update the state of the tower, should be virtual
+//Update the state of the tower
 void Tower::UpdateCurrent(sf::Time dt, CommandQueue&) {
-    // std::cout << "Updating tower" <<std::endl;
-
-    //if tower hasn't shot yet (no enemies are in range), do nothing and do not reduce countdown
-    if (countdown_ <= sf::Time::Zero && !IsMoving()) {
+    // If tower hasn't shot yet (no enemies are in range), do nothing and do not reduce countdown
+    if ((countdown_ <= sf::Time::Zero) && !IsMoving()) {
         canShoot_ = true;
         //std::cout << "It can! Hurrah! " << std::endl;
         countdown_ += sf::seconds(reloadTime_);
@@ -170,63 +97,78 @@ void Tower::UpdateCurrent(sf::Time dt, CommandQueue&) {
         // std::cout << "It cannot :(" << std::endl;
         countdown_ -= dt;
     }
-
 }
 
 void Tower::Shoot(CommandQueue& commands, sf::Vector2f direction) {
-    // this is a first try at rotating the tower
-    // this is maybe not necessary, if towers are depicted somewhere else than strictly from above
-    /*int degrees = pow(tan(direction.y / direction.x), -1);
-    this->setRotation(degrees);*/
-
     canShoot_ = false;
     direction_ = UnitVector(direction);
-    //std::cout << "direction in Shoot function: " << direction_.x << ", " << direction_.y << std::endl;
+    if(direction.x < 0)
+        sprite_.setRotation(atan(direction.y/direction.x)*57);
+    else
+        sprite_.setRotation(atan(direction.y/direction.x)*57+180);
     commands.Push(shootCommand_);
 }
 
-unsigned int Tower::GetCategory() const
-{
-    //return Category::Tower; //| isActive_;
+
+unsigned int Tower::GetCategory() const {
+    /*if (type_ == Tower::Slowing) {
+        return Category::SlowingTower;
+    } else if (type_ == Tower::Bombing) {
+        return Category::BombingTower;
+    }
+    return Category::ShootingTower;*/
+    unsigned int myCategory = Category::Tower;
+
+    if (type_ == Tower::Slowing)
+    {
+        myCategory = Category::SlowingTower;
+    } else if (type_ == Tower::Bombing)
+    {
+        //std::cout << "Bombing tower!" << std::endl;
+        myCategory =  Category::BombingTower;
+    } else
+    {
+        myCategory = Category::ShootingTower;
+    }
+
     if(IsActive())
     {
-        return Category::ActiveTower;
+       // unsigned int temp = myCategory;
+       // unsigned int temp2 = Category::Active;
+        myCategory = Category::Active | myCategory;
+        /*
+        if (temp & myCategory)
+            std::cout << "This works!" << std::endl;
+        if (temp2 & myCategory)
+           std::cout << "This works as well!" << std::endl; */
     }
-    else
-    {
-        //std::cout << "Tower given" << std::endl;
-        return Category::Tower;
-    }
-    
+
+    return myCategory;
+
 }
 
-void Tower::Activate()
-{
-    //isActive_ = Category::ActiveTower;
-    isActive_ = true;
-}
-
-void Tower::Deactivate()
-{
-    /*if (IsActive())
-    {
-        isActive_ = isActive_ ^ Category::ActiveTower;
-    }*/
-
-    isActive_ = false;
-}
-
-bool Tower::IsActive() const
-{
-    //return isActive_ & Category::ActiveTower;
-    return isActive_;
-}
 
 bool Tower::MyRange(RangeNode* rangeNodePtr)
 {
     return rangeCircle_ == rangeNodePtr;
 
 }
+
+bool Tower::IsActive() const
+{
+    return isActive_;
+}
+
+void Tower::Activate()
+{
+    isActive_ = true;
+}
+
+void Tower::Deactivate()
+{
+    isActive_ = false;
+}
+
 // This sets the permission for the tower to move
 // for now: this maybe is a clumsy way to achieve this
 void Tower::AllowMoving()
@@ -277,12 +219,12 @@ bool Tower::IsMoving() const {
     return isMoving_;
 }
 
+
 sf::FloatRect Tower::GetBoundingRect() const {
     return GetWorldTransform().transformRect(sprite_.getGlobalBounds()); 
 }
 
-float Tower::GetRange() const
-{
+float Tower::GetRange() const {
     return range_;
 }
 
@@ -299,8 +241,9 @@ void Tower::MakeVisible()
     sprite_.setColor(sf::Color(255, 255, 255, 255));
 }
 
-void Tower::CreateBullet(SceneNode& node, const TextureHolder& textures) const {
-    //std::cout << "Creating a bullet" << std::endl;
+//This will be pure virtual, is not needed here
+/*void Tower::CreateBullet(SceneNode& node, const TextureHolder& textures) const {
+    std::cout << "Creating a bullet" << std::endl;
 
     std::unique_ptr<Bullet> bullet(new Bullet(static_cast<Bullet::Type>(bulletType_), textures));
 
@@ -310,6 +253,21 @@ void Tower::CreateBullet(SceneNode& node, const TextureHolder& textures) const {
     bullet->setPosition(GetWorldPosition());
 
     bullet->SetVelocity(bullet->GetSpeed() * direction_);
-   // std::cout << "Bullet velocity: " << bullet->GetVelocity().x << ", " << bullet->GetVelocity().y << std::endl;
+    std::cout << "Bullet velocity: " << bullet->GetVelocity().x << ", " << bullet->GetVelocity().y << std::endl;
     node.AttachChild(std::move(bullet));
+}*/
+
+Textures::ID Tower::ToTextureID(Tower::Type type) {
+    switch (type) {
+        case Tower::Type::Basic:
+            return Textures::ID::BasicTower;
+        case Tower::Type::Slowing:
+            return Textures::ID::SlowingTower;
+        case Tower::Type::Super:
+            return Textures::ID::SuperTower;
+        case Tower::Type::Bombing:
+            return Textures::ID::BombingTower;
+        default: 
+            return Textures::ID::NoTexture;
+    }
 }

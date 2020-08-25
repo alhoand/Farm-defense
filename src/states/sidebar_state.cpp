@@ -37,10 +37,10 @@ SidebarState::SidebarState(StateStack& stack, Context context)
             });
         GUIContainer_.Pack(waveButton, true);
 
-        AddTowerButton(Tower::Type::Fire, -100.f, 0.f, sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
-        AddTowerButton(Tower::Type::Fire, +100.f, 0.f, sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
-        AddTowerButton(Tower::Type::Fire, -100.f, 230.f, sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
-        AddTowerButton(Tower::Type::Fire, +100.f, 230.f, sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
+        AddTowerButton(Tower::Type::Basic, -100.f, 0.f, sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
+        AddTowerButton(Tower::Type::Slowing, +100.f, 0.f, sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
+        AddTowerButton(Tower::Type::Bombing, -100.f, 230.f, sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
+        AddTowerButton(Tower::Type::Super, +100.f, 230.f, sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
 
         backgroundShape_.setFillColor(sf::Color(160,82,45,235));
         backgroundShape_.setSize(viewSize_);
@@ -70,12 +70,15 @@ void SidebarState::UpdateGUI(sf::Time dt) {
 
 void SidebarState::AddTowerButton(Tower::Type type, float relX, float relY, sf::IntRect normalTexture, sf::IntRect selectedTexture)
 {
-        auto towerButton = std::make_shared<GUI::TowerButton>(Tower::Type::Fire, towerPosition_, *GetContext().fonts_, *GetContext().textures_, normalTexture, selectedTexture);
+        std::cout << "we got hereeeeeeeeeee" << std::endl;
+
+        auto towerButton = std::make_shared<GUI::TowerButton>(type, towerPosition_, *GetContext().fonts_, *GetContext().textures_, normalTexture, selectedTexture);
         sf::Vector2f relativePosition(relX, relY);
         towerButton->setOrigin(towerButton->GetGlobalBounds().width/2.f, towerButton->GetGlobalBounds().height/2.f);
         towerButton->setPosition(towerPosition_ + relativePosition);
         std::unique_ptr<TowerPicture> towerPic(new TowerPicture(type, *GetContext().textures_, towerPosition_ + relativePosition));
-    
+        std::cout << "we got hereeeeeeeeeee2" << std::endl;
+
         towerButton->AddTowerPicture(towerPic.get());
         //sf::Vector2f buttonPosition = towerButton->GetWorldPosition();
 
@@ -83,7 +86,6 @@ void SidebarState::AddTowerButton(Tower::Type type, float relX, float relY, sf::
 
         towerButton->SetText("");
         GUIContainer_.Pack(towerButton, true); //Pack it before getting position to get the real pos
-
         towerButton->SetCallback([this, towerButton] ()
             {
                 Command command;
@@ -124,13 +126,13 @@ bool SidebarState::HandleEvent(const sf::Event& event) {
 		RequestStackPop();
     }
         // If I is pressed, make the sidebar go away
-	if (sf::Event::KeyPressed && event.key.code == sf::Keyboard::U)
+	/*if (sf::Event::KeyPressed && event.key.code == sf::Keyboard::U)
     {
        // std::cout << "Sidebar: U-KeyPressed" << std::endl;
 		RequestStackPop();
         RequestStackPush(States::ID::Sidebar);
         RequestStackPush(States::ID::GameUpgradeTowerSideBar);
-    }
+    }*/
     
     //If p is pressed, go to Pause state
     if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P))

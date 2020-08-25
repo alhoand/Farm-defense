@@ -1,45 +1,51 @@
 #pragma once
 
-//Initial header file for abstract tower class
 #include "bullet.hpp"
-#include "../entity.hpp"
+#include "../entity.hpp" // Check if all of these are needed
 #include "../scene_node.hpp"
-#include "../enemies/enemy.hpp"
 #include "../category.hpp"
 #include "../resource_identifiers.hpp"
-#include "../command_queue.hpp"
 #include "../data_tables.hpp"
 #include "../label.hpp"
 #include "range_node.hpp"
 
+#include "../command_queue.hpp"
+#include "../utility.hpp"
+
+/* Tower class is a abstract class with multiple inherited classes:
+ * - basic tower
+ * - super tower
+ * - slowing tower
+ * - bombing tower
+ */
+
 class Tower : public Entity {
     public:
         enum Type {
-            Fire,
-            Water,
-            Leaf,
+            Basic,
+            Slowing,
+            Super,
+            Bombing,
             TypeCount
         };
 
-        // Default constructor - is it needed?
-        Tower();
+        // Constructor, used by inherited classes
+        Tower(Tower::Type type, const TextureHolder& textures, float range, float reloadTime);
 
-        // The constructor we want to use - uses data tables in order to determine the attributes' values
-        Tower(Tower::Type type, const TextureHolder& textures);
-
-        //Destructor
-
-        virtual ~Tower() { Tower::towerCount_--; };
+        // Destructor
+        ~Tower() { Tower::towerCount_--; }
 
         virtual void            DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-
-        //Update the state of the tower, should be virtual
+        //Update the state of the tower
         virtual void            UpdateCurrent(sf::Time dt, CommandQueue& commands) override;
 
-        // Helper function
+        // Makes the tower shoot, that is, pushes shoot command to command queue
         void                    Shoot(CommandQueue& commands, sf::Vector2f direction);
+
+        // Getters for type and range
         virtual unsigned int    GetCategory() const override;
+        float                   GetRange() const;
 
         // These set the permission for the tower to move
         // for now: this maybe is a clumsy way to achieve this
@@ -66,8 +72,6 @@ class Tower : public Entity {
 
         virtual sf::FloatRect   GetBoundingRect() const override;
 
-        float                   GetRange() const;
-
         static Textures::ID     ToTextureID(Type type);
 
         static Tower*           ActiveTower(); 
@@ -79,37 +83,37 @@ class Tower : public Entity {
         static int              TowerCount();
 
         bool                    MyRange(RangeNode*);
+
+
         bool                    IsColliding() { return isColliding_; }
 
     protected:
-       // Textures::ID        ToTextureID(Type type);
-        void                CreateBullet(SceneNode& node, const TextureHolder& textures) const;
 
         void                    MakeTransparent();
         void                    MakeVisible();
         
         // There is velocity_ in Entity which, in this case, describes the rotational speed
         // Helper that makes textures::ID-types from Tower::Types
+        // A helper function to determine bullet's texture according to type
+        //Textures::ID        ToTextureID(Type type);
+        // Creates a bullet for the tower to shoot, is virtual, since this depends on tower type
+        virtual void        CreateBullet(SceneNode& node, const TextureHolder& textures) const = 0;
+
         Tower::Type         type_;
-        // Range of fire in units
-        float               range_;
         sf::Sprite          sprite_;
-        // Where are the tower's guns pointed at (also gives direction for the bullet), should ALWAYS be unit vector
-        sf::Vector2f        direction_;
-        // Some kind of container for enemies in range - this could also be a function that is called every tick
-        //std::vector<Enemy>  enemiesInRange_;
-        float               reloadTime_;
+        float               range_;      // range of fire in units
+        sf::Vector2f        direction_;  // where are the tower's guns pointed at, should ALWAYS be unit vector
+        float               reloadTime_; // how often can the tower shoot (in seconds) 
         bool                canShoot_;
 
         //Bullet::Type        bulletType_;
-        int                 bulletType_; //doesn't work anymore with Bullet::Type
+        //int                 bulletType_; //doesn't work anymore with Bullet::Type
         // bool isShooting_; not needed?
 
 
-        static Tower*       activeTower_;
+        //static Tower*       activeTower_;
         static int          towerCount_;
         sf::Time            countdown_;
-        //CommandQueue&   commands_;
         Command             shootCommand_;
 
         unsigned int        isActive_;

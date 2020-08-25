@@ -73,7 +73,10 @@ CommandQueue& SidebarWorld::GetCommandQueue()
 
 void SidebarWorld::LoadTextures()
 {
-    textures_.Load(Textures::ID::FireTower, "../media/textures/tower.png");
+    textures_.Load(Textures::ID::BasicTower, "../media/textures/tower.png");
+	textures_.Load(Textures::ID::SuperTower, "../media/textures/harvester.png");
+	textures_.Load(Textures::ID::SlowingTower, "../media/textures/tower.png");
+	textures_.Load(Textures::ID::BombingTower, "../media/textures/tower.png");
 }
 
 }

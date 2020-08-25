@@ -8,17 +8,19 @@
 #include "states/pause_state.hpp"
 #include "states/upgrade_tower_state.hpp"
 #include "states/sidebar_state.hpp"
+#include "states/game_over_state.hpp"
+#include "states/score_state.hpp"
 #include <iostream>
 
 static const sf::Time timePerFrame = sf::seconds(1.f / 60.f);
 
 Application::Application()
-    : window_(sf::VideoMode(1280, 720), "Tower Defense", sf::Style::Close),
+    : window_(sf::VideoMode(1920, 1080), "Tower Defense", sf::Style::Close),
     //: window_(sf::VideoMode::getFullscreenModes()[0], "Tower Defense", sf::Style::Default),
     viewOffset_(sf::Vector2f(0.f, 0.f)),
     textures_(),
-    fonts_(),
     statisticsText_(),
+    fonts_(),
     player_(window_, viewOffset_),
     GUIContainer_(),
     GUIController_(window_),
@@ -34,7 +36,10 @@ Application::Application()
         textures_.Load(Textures::ID::TitleBackground,   "../media/textures/tausta.jpg");
         textures_.Load(Textures::ID::Buttons,      "../media/textures/buttons.png");
 		//textures_.Load(Textures::ID::NoTexture,      "../media/textures/noTexture.png");
-        textures_.Load(Textures::ID::FireTower, "../media/textures/tower.png");
+        textures_.Load(Textures::ID::BasicTower, "../media/textures/tower.png");
+        textures_.Load(Textures::ID::SuperTower, "../media/textures/harvester.png");
+        textures_.Load(Textures::ID::SlowingTower, "../media/textures/tower.png");
+        textures_.Load(Textures::ID::BombingTower, "../media/textures/tower.png");
         RegisterStates();
         stateStack_.PushState(States::ID::Title);
     }
@@ -46,6 +51,8 @@ void Application::RegisterStates() {
     stateStack_.RegisterState<SidebarState>(States::ID::Sidebar);
     stateStack_.RegisterState<UpgradeTowerState>(States::ID::GameUpgradeTowerSideBar);
     stateStack_.RegisterState<PauseState>(States::ID::Pause);
+    stateStack_.RegisterState<GameOverState>(States::ID::GameOver);
+    stateStack_.RegisterState<ScoreState>(States::ID::Score);
 }
 
 void Application::Run() {

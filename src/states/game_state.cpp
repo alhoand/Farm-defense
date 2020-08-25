@@ -2,6 +2,11 @@
 #include "../node_component.hpp"
 #include "../resource_identifiers.hpp"
 #include <memory>
+#include "../data_tables.hpp"
+
+namespace {
+	const std::vector<GUIData> table = InitializeGUIData();
+}
 
 GameState::GameState(StateStack& stack, Context context) :
     State(stack, context),
@@ -10,9 +15,10 @@ GameState::GameState(StateStack& stack, Context context) :
     GUIContainer_(),
     GUIController_(*context.GUIController_)
     { 
-        auto pauseButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, sf::IntRect(108,0,55,53),sf::IntRect(0,0,55,54));
-        pauseButton->setPosition(890, 10);
-        pauseButton->SetType(GUI::ID::PlayPause);
+        player_.SetGameStatus(Player::GameRunning);
+        
+        auto pauseButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, table[GUIitems::ID::PauseButton].normalTexture, table[GUIitems::ID::PauseButton].selectedTexture);
+        pauseButton->setPosition(10, 10);
         pauseButton->SetCallback([this] ()
 	{
 		RequestStackPush(States::ID::Pause);
@@ -30,7 +36,26 @@ void GameState::Draw() {
 }
 
 bool GameState::Update(sf::Time dt) {
-    gameField_.Update(dt); // updates the gamefield on each tick   
+    gameField_.Update(dt); // updates the gamefield on each tick
+    ModifyPlayerScore(gameField_.GetRoundScore());
+    
+    if (gameField_.HasNewEnemiesReachedEnd())
+    {
+        player_.ReduceLife();
+    }
+    if (player_.GetLives() <= 0) // Somehow the winning case
+    {
+        player_.SetGameStatus(Player::GameLost);
+        RequestStackPush(States::ID::GameOver);
+        return false;
+    }
+    if (!gameField_.HasEnemiesToSpawn() && gameField_.EndOfLevel())
+    {
+        player_.SetGameStatus(Player::GameWon);
+        RequestStackPush(States::ID::GameOver);
+        return false;
+    }
+
     CommandQueue& commands = gameField_.GetCommandQueue();
 	player_.HandleRealtimeInput(commands);
 
@@ -45,12 +70,12 @@ bool GameState::HandleEvent(const sf::Event& event) {
     if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P))
 		RequestStackPush(States::ID::Pause);
 
-    if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::U))
+    /*if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::U))
     {
         std::cout << "Requested upgrade " << std::endl;
         RequestStackPush(States::ID::Sidebar);
 		RequestStackPush(States::ID::GameUpgradeTowerSideBar);
-    }
+    }*/
     if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::I))
     {
         std::cout << "Requested info " << std::endl;
@@ -59,5 +84,12 @@ bool GameState::HandleEvent(const sf::Event& event) {
         
     GUIContainer_.HandleEvent(event);
     return true;
+}
+
+
+void GameState::ModifyPlayerScore(int score)
+{
+    player_.SetScore(score);
+    //std::cout << "current score: " << player_.GetScore() << std::endl;
 }
 

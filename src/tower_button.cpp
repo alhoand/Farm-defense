@@ -45,7 +45,7 @@ void TowerButton::Draw(sf::RenderTarget& target, sf::RenderStates states) const
                 //DrawTowerPicture(*towerPicture_, target, states);
 }
 
-void TowerButton::Update(sf::Time dt)
+void TowerButton::Update(sf::Time)
 {
         //towerPicture_->Update(dt);
         

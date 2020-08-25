@@ -26,6 +26,7 @@ struct EnemyData
 	float			speed;
 	float			slowDownRate;
 	Textures::ID	texture;
+	int				scorepoints;
 };
 
 //initializer
@@ -37,6 +38,7 @@ struct TowerData {
     float 			range;
     float 			reloadTime;
     int 			bulletType;
+	float			scale; // Scale of the sprite, 1 is normal, 0.5 is half the size
 };
 
 //initializer
@@ -51,3 +53,22 @@ struct BulletData {
 
 //initializer
 std::vector<BulletData>	InitializeBulletData();
+
+namespace GUIitems {
+	enum ID {
+            PauseButton,
+			ResumeButton,
+			TypeCount //this should be last
+        };
+}
+
+struct GUIData {
+	Textures::ID	texture;
+    sf::IntRect     normalTexture;
+    sf::IntRect     selectedTexture;
+};
+
+//initializer
+std::vector<GUIData>	InitializeGUIData();
+
+

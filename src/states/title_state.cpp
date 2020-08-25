@@ -28,7 +28,7 @@ TitleState::TitleState(StateStack& stateStack, Context context)
         //std::cout << "Render size:" << context.window_->getSize().x << ", " << context.window_->getSize().y << std::endl;
 }
 
-bool TitleState::Update(sf::Time dt) {
+bool TitleState::Update(sf::Time) {
     return true;
 }
 

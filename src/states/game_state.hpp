@@ -1,5 +1,8 @@
 #pragma once
 
+#include <vector>
+#include <list>
+
 #include "../game_field.hpp"
 #include "../player.hpp"
 #include "state.hpp"
@@ -13,8 +16,10 @@ public:
     virtual bool HandleEvent(const sf::Event& event) override;
 
 private:
-    GameField gameField_;
-    Player& player_;
-    GUI::Container GUIContainer_;
+    void            ModifyPlayerScore(int score);
+
+    GameField       gameField_;
+    Player&         player_;
+    GUI::Container  GUIContainer_;
     GUI::Controller& GUIController_;
 };
