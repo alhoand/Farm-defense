@@ -39,40 +39,6 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 		gameFieldView_.setCenter(gameFieldBounds_.left + (gameFieldBounds_.width + viewOffset_.x)/2.f, gameFieldBounds_.top + (gameFieldBounds_.height + viewOffset_.y)/2.f);
 	}
 
-void GameField::AddTower(Tower::Type type, sf::Vector2f pos)
-{
-	std::cout << "Here we are!" << std::endl;
-
-	std::unique_ptr<Tower> newTower;
-	switch (type)
-	{
-	case Tower::Type::Super:
-		newTower.reset(new SuperTower(textures_));
-		break;
-	case Tower::Type::Bombing:
-		newTower.reset(new BombingTower(textures_));
-		break;
-	case Tower::Type::Slowing:
-		newTower.reset(new SlowingTower(textures_));
-	default:
-		newTower.reset(new BasicTower(textures_));
-		break;
-	}
-	//std::unique_ptr<Tower> newTower(new Tower(type, textures_));
-	//newTower->setOrigin(newTower->GetBoundingRect().width/2.f, newTower->GetBoundingRect().height/2.f);
-	/*newTower->setOrigin(pos.x - (newTower->getPosition().x - newTower->getOrigin().x),
-                                            pos.y - (newTower->getPosition().y - newTower->getOrigin().y));
-	*/
-
-	newTower->setPosition(pos);
-	newTower->AllowMoving();
-	newTower->Move();
-	newTower->Activate();
-	
-	sceneLayers_[Field]->AttachChild(std::move(newTower));
-	//Tower::ActiveTower(newTower, commandQueue_);
-	std::cout << "Tower pos: " << pos.x <<", " << pos.y << std::endl;
-}
 
 void GameField::Update(sf::Time dt) {
 	newEnemyReachedEnd_ = false; // new enemies have not reached end at the beginning of an update
@@ -160,14 +126,14 @@ void GameField::BuildScene() {
  
 	sceneLayers_[Field] -> AttachChild(std::move(firstEnemy));
 
-	//Initialize a tower that can be moved with hard-coded bullet
-	std::unique_ptr<Tower> firstTower(new SuperTower(textures_));
+	//Initialize a super tower that can be moved with hard-coded bullet
+	/*std::unique_ptr<Tower> firstTower(new SuperTower(textures_));
 	// firstTower_ = firstTower.get();
 	//firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
 
 	firstTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f+250);
 	firstTower->DisallowMoving();
-	sceneLayers_[Field] -> AttachChild(std::move(firstTower));
+	sceneLayers_[Field] -> AttachChild(std::move(firstTower));*/
 
 
 	//Initialize a slowing tower
@@ -208,6 +174,37 @@ bool MatchesCategories(SceneNode::Pair& colliders, Category::Type type1, Categor
 	{
 		return false;
 	}
+}
+
+
+void GameField::AddTower(Tower::Type type, sf::Vector2f pos)
+{
+	std::cout << "Here we are!" << std::endl;
+
+	std::unique_ptr<Tower> newTower;
+	switch (type)
+	{
+	case Tower::Type::Super:
+		newTower.reset(new SuperTower(textures_));
+		break;
+	case Tower::Type::Bombing:
+		newTower.reset(new BombingTower(textures_));
+		break;
+	case Tower::Type::Slowing:
+		newTower.reset(new SlowingTower(textures_));
+	default:
+		newTower.reset(new BasicTower(textures_));
+		break;
+	}
+
+	newTower->setPosition(pos);
+	newTower->AllowMoving();
+	newTower->Move();
+	newTower->Activate();
+	
+	sceneLayers_[Field]->AttachChild(std::move(newTower));
+	//Tower::ActiveTower(newTower, commandQueue_);
+	std::cout << "Tower pos: " << pos.x <<", " << pos.y << std::endl;
 }
 
 void GameField::HandleCollisions()
