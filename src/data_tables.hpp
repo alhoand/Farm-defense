@@ -38,6 +38,7 @@ struct TowerData {
     float 			range;
     float 			reloadTime;
     int 			bulletType;
+	float			scale; // Scale of the sprite, 1 is normal, 0.5 is half the size
 };
 
 //initializer

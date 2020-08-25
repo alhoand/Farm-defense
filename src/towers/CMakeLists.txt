@@ -2,6 +2,8 @@ target_sources(TowerDefense
     PRIVATE
         bullet.cpp
         bullet.hpp
+        range_node.cpp
+        range_node.hpp
         tower.hpp
         tower.cpp
         basic_tower.hpp

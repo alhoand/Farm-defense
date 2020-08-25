@@ -4,6 +4,7 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <cmath>
+#include <iostream>
 
 
 namespace GUI
@@ -41,6 +42,10 @@ Button::Button(const FontHolder& fonts, const TextureHolder& textures, sf::IntRe
 	text_.setPosition(bounds.width / 2.f, bounds.height / 2.f);
 }
 
+void Button::Update(sf::Time)
+{
+	// Do nothing
+}
 
 
 void Button::SetCallback(Callback callback)
@@ -60,8 +65,8 @@ void Button::SetToggle(bool flag)
 	isToggle_ = flag;
 }
 
-sf::FloatRect Button::GetGlobalBounds(){
-	return getTransform().transformRect(sprite_.getGlobalBounds());
+sf::FloatRect Button::GetGlobalBounds() const{
+	return GetWorldTransform().transformRect(sprite_.getGlobalBounds());
 }
 
 bool Button::IsSelectable() const
@@ -114,8 +119,13 @@ void Button::Deactivate()
 	}
 }
 
-void Button::HandleEvent(const sf::Event&)
+void Button::HandleEvent(const sf::Event& event)
 {
+	if(event.type == sf::Event::MouseButtonPressed)
+	{
+		//std::cout << "Jiihaa" << std::endl;
+		clickPosition_ = sf::Vector2f(event.mouseButton.x, event.mouseButton.y);
+	}
 }
 
 void Button::Draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -123,6 +133,7 @@ void Button::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 	states.transform *= getTransform();
 	target.draw(sprite_, states);
 	target.draw(text_, states);
+	//DrawBoundingRect(target, states);
 }
 
 }

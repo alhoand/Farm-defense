@@ -20,7 +20,7 @@
 
 ScoreState::ScoreState(StateStack& stack, Context context)
 : State(stack, context)
-, GUIContainer_(context)
+, GUIContainer_()
 , textList_()
 {
     sf::Font& font = context.fonts_->Get(Fonts::Main);

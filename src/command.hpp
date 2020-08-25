@@ -6,12 +6,14 @@
 #include "scene_node.hpp"
 #include "category.hpp"
 #include <cassert>
-
 class SceneNode;
+
+class GameField;
 
 struct Command {
     Command();
     std::function<void(SceneNode&, sf::Time)> action_;
+    std::function<void(GameField&, sf::Time)> gameFieldAction_;
     unsigned int category_;
 };
 
@@ -24,4 +26,11 @@ std::function<void(SceneNode&, sf::Time)> DerivedAction(Function fn) {
         fn(static_cast<GameObject&>(node), dt);
     };
 }
+template <typename Function>
+std::function<void(GameField&, sf::Time)> GameFieldAction(Function fn) 
+{
+    return [=] (GameField& gameField, sf::Time dt) {
+        fn(gameField, dt);
+    };
+};
 

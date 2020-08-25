@@ -14,8 +14,13 @@ namespace Category {
         BasicBullet = 1 << 6,
         SuperBullet = 1 << 7,
         Bomb = 1 << 8,
+        TowerPicture = 1 << 9,
+        Range = 1 << 10,
+        Active = 1 << 11,
+        GameField = 1 << 12,
 
         Tower = ShootingTower | SlowingTower | BombingTower,
+        ActiveTower = Tower | Active,
         Bullet = BasicBullet | SuperBullet
         
     };

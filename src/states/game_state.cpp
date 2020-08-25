@@ -1,6 +1,7 @@
 #include "game_state.hpp"
-#include "../button.hpp"
+#include "../node_component.hpp"
 #include "../resource_identifiers.hpp"
+#include <memory>
 #include "../data_tables.hpp"
 
 namespace {
@@ -11,7 +12,8 @@ GameState::GameState(StateStack& stack, Context context) :
     State(stack, context),
     gameField_(*context.window_, context.viewOffset_),
     player_(*context.player_),
-    GUIContainer_(context)
+    GUIContainer_(),
+    GUIController_(*context.GUIController_)
     { 
         player_.SetGameStatus(Player::GameRunning);
         
@@ -21,7 +23,10 @@ GameState::GameState(StateStack& stack, Context context) :
 	{
 		RequestStackPush(States::ID::Pause);
 	});
-    GUIContainer_.Pack(pauseButton);
+        GUIContainer_.Pack(pauseButton);
+
+        //GetContext().textures_->Load(Textures::ID::FireTower, "../media/textures/tower.png");
+
     }
 
 void GameState::Draw() {
@@ -54,16 +59,29 @@ bool GameState::Update(sf::Time dt) {
     CommandQueue& commands = gameField_.GetCommandQueue();
 	player_.HandleRealtimeInput(commands);
 
+    GUIController_.FetchInput(commands);
+
 	return true;
 }
 
 bool GameState::HandleEvent(const sf::Event& event) {
     CommandQueue& commands = gameField_.GetCommandQueue();
     player_.HandleEvent(event, commands);
-
     if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P))
 		RequestStackPush(States::ID::Pause);
 
+    /*if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::U))
+    {
+        std::cout << "Requested upgrade " << std::endl;
+        RequestStackPush(States::ID::Sidebar);
+		RequestStackPush(States::ID::GameUpgradeTowerSideBar);
+    }*/
+    if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::I))
+    {
+        std::cout << "Requested info " << std::endl;
+        RequestStackPush(States::ID::Sidebar);
+    }
+        
     GUIContainer_.HandleEvent(event);
     return true;
 }

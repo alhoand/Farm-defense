@@ -24,7 +24,7 @@ class Enemy : public Entity {
         };
     public:
                 
-                        Enemy(Type type, const TextureHolder &textures, unsigned int difficultyLevel, float travelledDistance, int directionIndex);
+                        Enemy(Type type, const TextureHolder& texturesxtures, unsigned int difficultyLevel, float travelledDistance, int directionIndex);
         virtual         ~Enemy();
 
         void            DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;

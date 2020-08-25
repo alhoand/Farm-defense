@@ -18,14 +18,11 @@
 #include "towers/bombing_tower.hpp"
 
 #include "towers/bullet.hpp"
-
-#include "SFML/Graphics.hpp"
 #include "sprite_node.hpp"
 #include "command_queue.hpp"
 #include "resource_holder.hpp"
 #include "resource_identifiers.hpp"
 #include "scene_node.hpp"
-#include "command.hpp"
 #include "category.hpp"
 #include "utility.hpp"
 
@@ -44,6 +41,8 @@
 namespace sf {
 	class RenderWindow;
 }
+
+struct Command;
 // Takes care of building, updating and rendering the world to a SFML window
 class GameField : private sf::NonCopyable {
     public:
@@ -60,11 +59,14 @@ class GameField : private sf::NonCopyable {
         void            AddRoundScore(int points);
         int             GetRoundScore();
 
-        //void AddTower(Tower* t); not implemented yet
+       // std::pair<SceneNode*, bool> GetActiveNode() const; not needed currently
+
+        void AddTower(Tower::Type type, sf::Vector2f pos); //not implemented yet
 
     private:
         void            LoadTextures();
         void            BuildScene();
+        void            BuildPath();
         void            HandleCollisions();
         void            SpawnEnemies(sf::Time dt);
         void            RandomEnemySpawner(unsigned int level);
@@ -73,7 +75,8 @@ class GameField : private sf::NonCopyable {
         sf::FloatRect   GetViewBounds() const;
         sf::FloatRect   GetGamefieldBounds() const;
         void            MakeTowersShoot();
-
+       // void            HandleActiveTower();
+        void            OnCommand(Command command, sf::Time dt);
         enum Layer {
             Background,
             Field,

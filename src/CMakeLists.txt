@@ -19,26 +19,37 @@ target_sources(TowerDefense
 	component.hpp
 	container.cpp
 	container.hpp
+	controller.cpp
+	controller.hpp
 	data_tables.cpp
 	data_tables.hpp
 	entity.cpp
 	entity.hpp
     game_field.cpp
     game_field.hpp
+	gui_identifiers.hpp
 	label.cpp
 	label.hpp
 	main.cpp
+	node_component.hpp
+	node_component.cpp
 	player.cpp
     player.hpp
 	resource_holder.hpp
     resource_identifiers.hpp
     scene_node.cpp
     scene_node.hpp
+	sidebar_world.cpp
+	sidebar_world.hpp
 	sprite_node.cpp
     sprite_node.hpp
 	state_identifiers.hpp
 	state_stack.cpp
 	state_stack.hpp
+	tower_button.cpp
+	tower_button.hpp
+	tower_picture.cpp
+	tower_picture.hpp
 	utility.cpp
 	utility.hpp
 	utility.inl

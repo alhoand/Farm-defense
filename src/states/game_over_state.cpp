@@ -9,7 +9,7 @@
 GameOverState::GameOverState(StateStack& stack, Context context)
     : State(stack, context),
     gameOverText_(),
-    GUIContainer_(context),
+    GUIContainer_(),
     elapsedTime_(sf::Time::Zero),
     typedText_("Type player name: "),
     text_(),

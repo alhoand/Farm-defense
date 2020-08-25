@@ -1,3 +1,4 @@
+#pragma once
 #include "component.hpp"
 #include "resource_identifiers.hpp"
 #include "resource_holder.hpp"
@@ -15,11 +16,20 @@ class Label : public Component
             
 
 	public:
+                            Label(); // Not sure if needed?
 							Label(const std::string& text, const FontHolder& fonts);
+                            Label(const std::string& text, const FontHolder& fonts, unsigned int fontSize = 16, Fonts::ID fontType = Fonts::ID::Main);
 
+		void				SetText(const std::string& text, bool center=true);
+        //void				SetText(const std::string& text);
         virtual bool		IsSelectable() const override;
-		void				SetText(const std::string& text);
-        virtual sf::FloatRect       GetGlobalBounds() override;
+        void                CenterTextOrigin();
+
+        virtual void        draw(sf::RenderTarget& target, sf::RenderStates states) const override 
+                            { Draw(target, states); }
+
+
+        virtual sf::FloatRect       GetGlobalBounds() const override;
 
         virtual void		HandleEvent(const sf::Event& event) override;
 

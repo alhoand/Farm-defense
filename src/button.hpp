@@ -1,3 +1,4 @@
+#pragma once
 #include "component.hpp"
 #include "resource_identifiers.hpp"
 #include "resource_holder.hpp"
@@ -29,7 +30,7 @@ class Button : public Component
         void					SetCallback(Callback callback);
         void					SetText(const std::string& text);
         void					SetToggle(bool flag);
-        virtual sf::FloatRect           GetGlobalBounds() override;
+        virtual sf::FloatRect   GetGlobalBounds() const override;
 
 
         virtual bool			IsSelectable() const override;
@@ -41,13 +42,17 @@ class Button : public Component
 
         virtual void			HandleEvent(const sf::Event& event) override;
 
-
+        sf::Vector2f            GetClickPosition() const { return clickPosition_; }
+    protected:
+        virtual void			Draw(sf::RenderTarget& target, sf::RenderStates states) const;
     private:
         virtual void			draw(sf::RenderTarget& target, sf::RenderStates states) const override {
             Draw(target,states);
             }
-        virtual void			Draw(sf::RenderTarget& target, sf::RenderStates states) const;
+        //virtual void			Draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
+
+        virtual void            Update(sf::Time dt) override;
 
     private:
         Callback				callback_;
@@ -58,6 +63,7 @@ class Button : public Component
         sf::Sprite				sprite_;
         sf::Text				text_;
         bool					isToggle_;
+        sf::Vector2f            clickPosition_;
 };
 
 }

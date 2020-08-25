@@ -8,6 +8,8 @@ namespace States {
         Game,
         Pause,
 		Settings,
+        Sidebar,
+        GameUpgradeTowerSideBar,
         GameOver,
         Score,
         None

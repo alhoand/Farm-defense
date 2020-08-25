@@ -5,6 +5,9 @@
 #include <limits>
 
 #include <SFML/System/Time.hpp>
+#include <cassert>
+#include "data_tables.hpp"
+#include "utility.hpp"
 
 
 GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
@@ -36,29 +39,72 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 		gameFieldView_.setCenter(gameFieldBounds_.left + (gameFieldBounds_.width + viewOffset_.x)/2.f, gameFieldBounds_.top + (gameFieldBounds_.height + viewOffset_.y)/2.f);
 	}
 
+void GameField::AddTower(Tower::Type type, sf::Vector2f pos)
+{
+	std::cout << "Here we are!" << std::endl;
+
+	std::unique_ptr<Tower> newTower;
+	switch (type)
+	{
+	case Tower::Type::Super:
+		newTower.reset(new SuperTower(textures_));
+		break;
+	case Tower::Type::Bombing:
+		newTower.reset(new BombingTower(textures_));
+		break;
+	case Tower::Type::Slowing:
+		newTower.reset(new SlowingTower(textures_));
+	default:
+		newTower.reset(new BasicTower(textures_));
+		break;
+	}
+	//std::unique_ptr<Tower> newTower(new Tower(type, textures_));
+	//newTower->setOrigin(newTower->GetBoundingRect().width/2.f, newTower->GetBoundingRect().height/2.f);
+	/*newTower->setOrigin(pos.x - (newTower->getPosition().x - newTower->getOrigin().x),
+                                            pos.y - (newTower->getPosition().y - newTower->getOrigin().y));
+	*/
+
+	newTower->setPosition(pos);
+	newTower->AllowMoving();
+	newTower->Move();
+	newTower->Activate();
+	
+	sceneLayers_[Field]->AttachChild(std::move(newTower));
+	//Tower::ActiveTower(newTower, commandQueue_);
+	std::cout << "Tower pos: " << pos.x <<", " << pos.y << std::endl;
+}
 
 void GameField::Update(sf::Time dt) {
 	newEnemyReachedEnd_ = false; // new enemies have not reached end at the beginning of an update
 	roundScore_ = 0; // set round score to zero 
 
-	std::cout << "difficulty: " << difficultyLevel_ << std::endl;
+	//std::cout << "difficulty: " << difficultyLevel_ << std::endl;
 
 	DestroyEntitiesOutsideView();
 	//DestroyDetonatedBombs();
 
 	//makes towers shoot
 	MakeTowersShoot();
-	
-	// Forwards the commands to the scene graph
-	while(!commandQueue_.IsEmpty()) {
-		sceneGraph_.OnCommand(commandQueue_.Pop(), dt);
-	}
 
+//std::cout << "made the towers shoot" << std::endl;
+	
+	// Forwards the commands to self or the scene graph
+	while(!commandQueue_.IsEmpty()) {
+		Command next = commandQueue_.Pop();
+		if (next.category_ == Category::GameField)
+		{
+			OnCommand(next, dt);
+		}
+		else 
+		{
+			sceneGraph_.OnCommand(next, dt);
+		}
+	}
+	//std::cout << "forwarded the commands" << std::endl;
 	HandleCollisions();
 
 	sceneGraph_.RemoveDestroyedNodes();
 	SpawnEnemies(dt);
-
 	sceneGraph_.Update(dt, commandQueue_);
 }
 
@@ -100,7 +146,7 @@ void GameField::BuildScene() {
 	sceneLayers_[Background]->AttachChild(std::move(backgroundSprite));
 
 
-	//Initialize two enemies
+	//Initialize an enemy
 	std::unique_ptr<Enemy> firstEnemy(new BasicEnemy(textures_));
 	firstEnemy_ = firstEnemy.get();
 	//firstEnemy_->setOrigin(firstEnemy_->GetBoundingRect().width/2, firstEnemy_->GetBoundingRect().height/2);
@@ -118,20 +164,26 @@ void GameField::BuildScene() {
 	std::unique_ptr<Tower> firstTower(new SuperTower(textures_));
 	// firstTower_ = firstTower.get();
 	//firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
-	firstTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f);
+
+	firstTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f+250);
+	firstTower->DisallowMoving();
 	sceneLayers_[Field] -> AttachChild(std::move(firstTower));
+
 
 	//Initialize a slowing tower
 	std::unique_ptr<Tower> secondTower(new SlowingTower(textures_));
 	//firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
-	secondTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/3.f, (gameFieldBounds_.top + gameFieldBounds_.height)/3.f);
+	secondTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/3.f +200.f, (gameFieldBounds_.top + gameFieldBounds_.height)/3.f);
+	secondTower->DisallowMoving();
 	sceneLayers_[Field] -> AttachChild(std::move(secondTower));
 
 	// Initialize a bombing tower
 	std::unique_ptr<Tower> thirdTower(new BombingTower(textures_));
 	//firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
-	thirdTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/4.f, (gameFieldBounds_.top + gameFieldBounds_.height)/4.f);
+	thirdTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/4.f-150.f, (gameFieldBounds_.top + gameFieldBounds_.height) -530.f);
+	thirdTower->DisallowMoving();
 	sceneLayers_[Field] -> AttachChild(std::move(thirdTower));
+
 
 }
 
@@ -143,12 +195,12 @@ bool MatchesCategories(SceneNode::Pair& colliders, Category::Type type1, Categor
 	// Make sure first pair entry has category type1 and second has type2
 	if (type1 & category1 && type2 & category2)
 	{
-		std::cout << "matching category found" << std::endl;
+		//std::cout << "matching category found" << std::endl;
 		return true;
 	}
 	else if (type1 & category2 && type2 & category1)
 	{
-		std::cout << "matching category found" << std::endl;
+		//std::cout << "matching category found" << std::endl;
 		std::swap(colliders.first, colliders.second);
 		return true;
 	}
@@ -163,13 +215,14 @@ void GameField::HandleCollisions()
 	
 	std::set<SceneNode::Pair> collisionPairs;
 	sceneGraph_.CheckSceneCollision(sceneGraph_, collisionPairs);
+	bool towerCollideCalled = false;
 
 	for(SceneNode::Pair pair : collisionPairs)
 	{
 		//std::cout << pair.first->GetCategory() << "," << pair.second->GetCategory() << std::endl;
 		if (MatchesCategories(pair, Category::Enemy, Category::Bullet))
 		{
-			std::cout << "Collision happened!!!" << std::endl;
+			//std::cout << "Collision happened!!!" << std::endl;
 			auto& enemy = static_cast<Enemy&>(*pair.first);
 			auto& bullet = static_cast<Bullet&>(*pair.second);
 			if(bullet.IsDestroyed())
@@ -187,7 +240,46 @@ void GameField::HandleCollisions()
 
 			//std::cout << "Collision occurred on enemy: " << enemy.Get<< std::endl;
 		}
+		if (MatchesCategories(pair, Category::Tower, Category::Active))
+		{
+			auto& tower = static_cast<Tower&>(*pair.first);
+			auto& activeTower = static_cast<Tower&>(*pair.second);
+			if (tower.IsMoving())
+			{
+				tower.Collides(true);
+				towerCollideCalled = true;
+			}
+			if (activeTower.IsMoving())
+			{
+				activeTower.Collides(true);
+				towerCollideCalled = true;
+			}
+				
+			
+			
+
+		}
 	}
+	if (!towerCollideCalled)
+		{
+			Command command;
+			command.category_ = Category::Tower;
+			command.action_ = DerivedAction<Tower>([=](Tower& t, sf::Time)
+			{
+				t.Collides(false);
+			});
+			commandQueue_.Push(command);
+
+		}
+}
+void GameField::BuildPath()
+{
+	
+}
+
+void GameField::OnCommand(Command command, sf::Time dt) 
+{
+	command.gameFieldAction_(*this, dt);
 }
 
 //Spawns only one type of enemies and spawnInterval is constant
@@ -280,12 +372,24 @@ void GameField::RandomEnemySpawner(unsigned int level)
 void GameField::Draw() {
 	window_.setView(gameFieldView_);
 	window_.draw(sceneGraph_);
+	
 
 }
 
 CommandQueue& GameField::GetCommandQueue() {
 	return commandQueue_;
 }
+/*
+void GameField::HandleActiveTower()
+{
+	Command command;
+	command.category_ = Category::ActiveTower;
+	command.action_ = DerivedAction<Tower>([this] (Tower& t, sf::Time)
+	{
+
+	});
+	commandQueue_.Push(command);
+}*/
 
 bool GameField::HasNewEnemiesReachedEnd() {
 	return newEnemyReachedEnd_;
@@ -422,7 +526,7 @@ void GameField::MakeTowersShoot()
 		if (closestEnemy)
 		{
 			sf::Vector2f direction(closestEnemy->GetWorldPosition() - tower.GetWorldPosition());
-			std::cout << "shooting direction: " << direction.x << ", " << direction.y << std::endl;
+			//std::cout << "shooting direction: " << direction.x << ", " << direction.y << std::endl;
 			tower.Shoot(commandQueue_, direction);
 		}
 			

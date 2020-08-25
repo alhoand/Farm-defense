@@ -9,6 +9,7 @@
 #include "player.hpp"
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/System/Vector2.hpp>
+#include "controller.hpp"
 
 class Application {
 public:
@@ -27,7 +28,10 @@ private:
     TextureHolder textures_;
     FontHolder fonts_;
     Player player_;
+    GUI::Container GUIContainer_;
+    GUI::Controller GUIController_;
     StateStack stateStack_;
+    
    
 
 };

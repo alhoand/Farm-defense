@@ -51,6 +51,15 @@ std::vector<Direction> InitializeEnemyPath()
 	return path;
 }
 
+std::vector<TowerData> InitializeTowerData()
+{
+	std::vector<TowerData> data(Enemy::TypeCount);
+
+	data[Tower::Type::Super].scale = 0.5;
+
+	return data;
+}
+
 std::vector<GUIData>	InitializeGUIData() {
 	std::vector<GUIData> data(GUIitems::ID::TypeCount);
 
