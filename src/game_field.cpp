@@ -25,12 +25,12 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	firstEnemy_(),
 	spawnCountdown_(sf::seconds(2)),
 	spawnInterval_(2), //this should maybe be a parameter
-	leftToSpawn_(5),
+	leftToSpawn_(0),
     activeEnemies_(),
 	difficultyLevel_(0), //0 is the first level and increases by 1 by each wave
 	levelCount_(5), // can be added to parameter list or askef for player, but for now it's just harcoded to be 5
 	levelBreakTimer_(sf::seconds(15)),
-	newEnemyReachedEnd_(false),
+	newEnemiesReachedEnd_(0),
 	roundScore_(0),
 	hasActiveEnemies_(false)
 	{ 
@@ -75,7 +75,8 @@ void GameField::AddTower(Tower::Type type, sf::Vector2f pos)
 }
 
 void GameField::Update(sf::Time dt) {
-	newEnemyReachedEnd_ = false; // new enemies have not reached end at the beginning of an update
+	std::cout << "updating game field" << std::endl;
+	newEnemiesReachedEnd_ = 0; // new enemies have not reached end at the beginning of an update
 	roundScore_ = 0; // set round score to zero 
 
 	//std::cout << "difficulty: " << difficultyLevel_ << std::endl;
@@ -146,8 +147,8 @@ void GameField::BuildScene() {
 	sceneLayers_[Background]->AttachChild(std::move(backgroundSprite));
 
 
-	//Initialize an enemy
-	std::unique_ptr<Enemy> firstEnemy(new BasicEnemy(textures_));
+	//Initialize an enemy, WE DO NOT INITIALIZE ANY ENEMIES
+	/* std::unique_ptr<Enemy> firstEnemy(new BasicEnemy(textures_));
 	firstEnemy_ = firstEnemy.get();
 	//firstEnemy_->setOrigin(firstEnemy_->GetBoundingRect().width/2, firstEnemy_->GetBoundingRect().height/2);
 	firstEnemy_->setPosition(spawnPosition_);
@@ -158,7 +159,7 @@ void GameField::BuildScene() {
 	firstEnemy_->SetVelocity(enemySpeed_, 0.f);
 	std::cout << "DEBUG: initial velocity: " << firstEnemy_->GetVelocity().x << "," << firstEnemy_->GetVelocity().y << std::endl;
  
-	sceneLayers_[Field] -> AttachChild(std::move(firstEnemy));
+	sceneLayers_[Field] -> AttachChild(std::move(firstEnemy)); */
 
 	//Initialize a tower that can be moved with hard-coded bullet
 	std::unique_ptr<Tower> firstTower(new SuperTower(textures_));
@@ -282,17 +283,27 @@ void GameField::OnCommand(Command command, sf::Time dt)
 	command.gameFieldAction_(*this, dt);
 }
 
+
+void GameField::NextEnemyWave()
+{
+	std::cout << "Creating new enemy wave!!" << std::endl;
+	difficultyLevel_++;
+	leftToSpawn_ = 15; // Should not be hardcoded
+}
+
+
 //Spawns only one type of enemies and spawnInterval is constant
 void GameField::SpawnEnemies(sf::Time dt) {
-	if (leftToSpawn_ > 0)//TODO leftToSpawn someway better?
+	std::cout << "spawning enemies" << std::endl;
+	if (leftToSpawn_ > 0 && difficultyLevel_ <= levelCount_)//TODO leftToSpawn someway better?
 	{
 		if (spawnCountdown_ <= sf::Time::Zero) 
     	{
 			spawnCountdown_ += sf::seconds(spawnInterval_);
 			//alternative way and probably better in actual game, change spawnInterval to spawnRate to make spawnrate <= 1 sec
 			//spawnCountdown_ += sf::seconds(1.f / (spawnRate_+1));
-
-			RandomEnemySpawner(difficultyLevel_+1);
+			std::cout << "should spawn enemy" << std::endl;
+			RandomEnemySpawner(difficultyLevel_);
 			leftToSpawn_--;
 
 		} else 
@@ -300,7 +311,7 @@ void GameField::SpawnEnemies(sf::Time dt) {
 			spawnCountdown_ -= dt;
 		}
 	}
-	else if (difficultyLevel_ < levelCount_)
+	/* else if (difficultyLevel_ < levelCount_)
 	{
 		// temporary solution, gameState should handle level changes, if difficultyLevel_ == levelCount_ => game won
 		if (levelBreakTimer_ <= sf::Time::Zero)
@@ -314,8 +325,8 @@ void GameField::SpawnEnemies(sf::Time dt) {
 		} else
 		{
 			levelBreakTimer_ -= dt;
-		}
-	}
+		} 
+	} */
 
 }
 
@@ -391,8 +402,8 @@ void GameField::HandleActiveTower()
 	commandQueue_.Push(command);
 }*/
 
-bool GameField::HasNewEnemiesReachedEnd() {
-	return newEnemyReachedEnd_;
+int GameField::NewEnemiesReachedEnd() {
+	return newEnemiesReachedEnd_;
 }
 
 //can be used to determine when current wave is finished
@@ -401,9 +412,9 @@ bool GameField::EndOfLevel()
 	return !hasActiveEnemies_ && leftToSpawn_ <= 0;
 }
 
-bool GameField::HasEnemiesToSpawn()
+bool GameField::IsEndOfGame()
 {
-	return leftToSpawn_ > 0 || difficultyLevel_ < levelCount_;
+	return EndOfLevel() && difficultyLevel_ > levelCount_;
 }
 
 int GameField::GetRoundScore()
@@ -437,7 +448,7 @@ void GameField::DestroyEntitiesOutsideView()
 		{
 			std::cout << "destroying enemy outside gamefield and also reduce player lives" << std::endl;
 			e.Destroy();
-			newEnemyReachedEnd_ = true; // this should maybe be an int, because more than one enemies can reach end at the same time
+			newEnemiesReachedEnd_++; // this should maybe be an int, because more than one enemies can reach end at the same time
 		}	
 	});
 

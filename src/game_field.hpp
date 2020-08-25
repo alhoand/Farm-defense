@@ -53,11 +53,12 @@ class GameField : private sf::NonCopyable {
         void            Update(sf::Time dt);
         void            Draw();
         CommandQueue&   GetCommandQueue();
-        bool            HasNewEnemiesReachedEnd();
+        int             NewEnemiesReachedEnd();
         bool            EndOfLevel();
-        bool            HasEnemiesToSpawn();
+        bool            IsEndOfGame();
         void            AddRoundScore(int points);
         int             GetRoundScore();
+        void            NextEnemyWave();
 
        // std::pair<SceneNode*, bool> GetActiveNode() const; not needed currently
 
@@ -104,7 +105,7 @@ class GameField : private sf::NonCopyable {
         unsigned int        difficultyLevel_;
 	    unsigned int        levelCount_; //total amount of levels or waves in current game
         sf::Time            levelBreakTimer_;
-        bool                newEnemyReachedEnd_;
+        int                 newEnemiesReachedEnd_;
         int                 roundScore_;
         bool                hasActiveEnemies_;
 

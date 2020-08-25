@@ -31,9 +31,20 @@ SidebarState::SidebarState(StateStack& stack, Context context)
         waveButton->setOrigin(waveButton->GetGlobalBounds().width/2.f, waveButton->GetGlobalBounds().height/2.f);
         waveButton->setPosition(viewSize_.x/2.f, 100.f);
         waveButton->SetText("Next wave");
-        waveButton->SetCallback([this] ()
+        waveButton->SetCallback([this, waveButton] ()
             {
                 std::cout << "Wave button was pressed." << std::endl;
+                Command waveCommand;
+                waveCommand.category_ = Category::Type::GameField;
+                waveCommand.gameFieldAction_ = GameFieldAction(
+                            [waveButton] (GameField& gameField, sf::Time dt)
+                            {
+                                //std::cout << "Button pressed!" <<std::endl;
+                                gameField.NextEnemyWave();  //AddTower(towerButton->GetTowerType(), towerButton->GetClickPosition());  
+                            }
+                );
+                GUIController_.SendCommand(waveCommand);
+                RequestStackPop(); //?????
             });
         GUIContainer_.Pack(waveButton, true);
 

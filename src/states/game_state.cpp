@@ -39,21 +39,26 @@ bool GameState::Update(sf::Time dt) {
     gameField_.Update(dt); // updates the gamefield on each tick
     ModifyPlayerScore(gameField_.GetRoundScore());
     
-    if (gameField_.HasNewEnemiesReachedEnd())
+    for (int i = 0; i < gameField_.NewEnemiesReachedEnd(); i++)
     {
         player_.ReduceLife();
     }
-    if (player_.GetLives() <= 0) // Somehow the winning case
+    if (player_.GetLives() <= 0) 
     {
         player_.SetGameStatus(Player::GameLost);
         RequestStackPush(States::ID::GameOver);
         return false;
     }
-    if (!gameField_.HasEnemiesToSpawn() && gameField_.EndOfLevel())
+    if (gameField_.IsEndOfGame())
     {
         player_.SetGameStatus(Player::GameWon);
         RequestStackPush(States::ID::GameOver);
         return false;
+    }
+    if (gameField_.EndOfLevel())
+    {
+        // when level ends open side bar 
+        RequestStackPush(States::ID::Sidebar);
     }
 
     CommandQueue& commands = gameField_.GetCommandQueue();

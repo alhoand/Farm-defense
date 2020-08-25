@@ -179,5 +179,5 @@ void Enemy::SlowDown()
 // Returns difficulty coefficient. Used for calculating enemy's speed, which increases as difficultyLevel increases
 float Enemy::DifficultyCoefficient() const
 {
-    return 1 + difficultyLevel_*difficultyIncrement_;
+    return 1 + (difficultyLevel_-1)*difficultyIncrement_;
 }
