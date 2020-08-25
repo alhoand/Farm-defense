@@ -19,11 +19,8 @@ GameState::GameState(StateStack& stack, Context context) :
 	});
         GUIContainer_.Pack(pauseButton);
 
-        //auto nodeComponent = std::make_shared<GUI::SceneNodeComponent>(nullptr);
-        //nodeComponent->SetType(GUI::ID::ActiveSceneNode);
+        //GetContext().textures_->Load(Textures::ID::FireTower, "../media/textures/tower.png");
 
-        //GUIContainer_.Pack(nodeComponent);
-        //GetContext().GUIContainer_->Pack(nodeComponent);
     }
 
 void GameState::Draw() {
@@ -37,7 +34,7 @@ bool GameState::Update(sf::Time dt) {
     CommandQueue& commands = gameField_.GetCommandQueue();
 	player_.HandleRealtimeInput(commands);
 
-    GUIController_.HandleSidebarInput(commands);
+    GUIController_.FetchInput(commands);
 
 	return true;
 }

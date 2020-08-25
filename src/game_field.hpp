@@ -10,7 +10,6 @@
 #include "enemies/basic_enemy.hpp"
 #include "towers/tower.hpp"
 #include "towers/bullet.hpp"
-#include "SFML/Graphics.hpp"
 #include "sprite_node.hpp"
 #include "command_queue.hpp"
 #include "resource_holder.hpp"
@@ -46,7 +45,7 @@ class GameField : private sf::NonCopyable {
         void            Draw();
         CommandQueue&   GetCommandQueue();
 
-        std::pair<SceneNode*, bool> GetActiveNode() const;
+       // std::pair<SceneNode*, bool> GetActiveNode() const; not needed currently
 
         void AddTower(Tower::Type type, sf::Vector2f pos); //not implemented yet
 

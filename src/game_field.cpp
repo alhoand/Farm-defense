@@ -42,6 +42,10 @@ void GameField::AddTower(Tower::Type type, sf::Vector2f pos)
 {
 	std::unique_ptr<Tower> newTower(new Tower(type, textures_));
 	//newTower->setOrigin(newTower->GetBoundingRect().width/2.f, newTower->GetBoundingRect().height/2.f);
+	/*newTower->setOrigin(pos.x - (newTower->getPosition().x - newTower->getOrigin().x),
+                                            pos.y - (newTower->getPosition().y - newTower->getOrigin().y));
+	*/
+
 	newTower->setPosition(pos);
 	newTower->AllowMoving();
 	newTower->Move();
@@ -49,7 +53,7 @@ void GameField::AddTower(Tower::Type type, sf::Vector2f pos)
 	
 	sceneLayers_[Field]->AttachChild(std::move(newTower));
 	Tower::ActiveTower(newTower, commandQueue_);
-	std::cout << "Here we are!" << pos.x <<", " << pos.y << std::endl;
+	std::cout << "Tower pos: " << pos.x <<", " << pos.y << std::endl;
 }
 
 void GameField::Update(sf::Time dt) {
@@ -113,7 +117,6 @@ void GameField::BuildScene() {
 	backgroundSprite->setPosition(gameFieldBounds_.left, gameFieldBounds_.top);
 	sceneLayers_[Background]->AttachChild(std::move(backgroundSprite));
 
-	BuildPath();
 
 	//Initialize an enemy
 	std::unique_ptr<Enemy> firstEnemy(new BasicEnemy(textures_));
@@ -135,7 +138,7 @@ void GameField::BuildScene() {
 	//firstTower_ = firstTower.get();
 	//firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
 	//firstTower_->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f);
-	AddTower(Tower::Type::Fire, sf::Vector2f((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f));
+	//AddTower(Tower::Type::Fire, sf::Vector2f((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f));
 	//sceneLayers_[Field] -> AttachChild(std::move(firstTower));
 
 

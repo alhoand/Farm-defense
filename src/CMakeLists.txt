@@ -25,8 +25,6 @@ target_sources(TowerDefense
 	data_tables.hpp
 	entity.cpp
 	entity.hpp
-	game.cpp
-	game.hpp
     game_field.cpp
     game_field.hpp
 	gui_identifiers.hpp
@@ -41,11 +39,17 @@ target_sources(TowerDefense
     resource_identifiers.hpp
     scene_node.cpp
     scene_node.hpp
+	sidebar_world.cpp
+	sidebar_world.hpp
 	sprite_node.cpp
     sprite_node.hpp
 	state_identifiers.hpp
 	state_stack.cpp
 	state_stack.hpp
+	tower_button.cpp
+	tower_button.hpp
+	tower_picture.cpp
+	tower_picture.hpp
 	utility.cpp
 	utility.hpp
 	utility.inl

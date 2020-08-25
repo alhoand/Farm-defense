@@ -42,6 +42,10 @@ Button::Button(const FontHolder& fonts, const TextureHolder& textures, sf::IntRe
 	text_.setPosition(bounds.width / 2.f, bounds.height / 2.f);
 }
 
+void Button::Update(sf::Time)
+{
+	// Do nothing
+}
 
 
 void Button::SetCallback(Callback callback)

@@ -14,3 +14,9 @@ void SpriteNode::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) 
 sf::FloatRect SpriteNode::GetBounds() const {
     return sprite_.getGlobalBounds();
 }
+
+
+void SpriteNode::Update(sf::Time dt)
+{
+    //Do nothing
+}

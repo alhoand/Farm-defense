@@ -5,14 +5,16 @@
 // Represents sprites that only need to be rendered on screen, not updated or moved
 // Used to represent background tiles
 class SpriteNode : public SceneNode {
-public:
-    SpriteNode(const sf::Texture& texture);
-    SpriteNode(const sf::Texture& texture, sf::IntRect& rect);
-    sf::FloatRect GetBounds() const;
+    public:
+                            SpriteNode(const sf::Texture& texture);
+                            SpriteNode(const sf::Texture& texture, sf::IntRect& rect);
+        sf::FloatRect       GetBounds() const;
+        virtual void        Update(sf::Time dt);
 
 
-protected:
-    virtual void   DrawCurrent(sf::RenderTarget& target,sf::RenderStates states) const;
-    sf::Sprite sprite_;
+
+    protected:
+        virtual void        DrawCurrent(sf::RenderTarget& target,sf::RenderStates states) const;
+        sf::Sprite          sprite_;
     
 };

@@ -25,7 +25,7 @@ class Tower : public Entity {
         Tower();
 
         // The constructor we want to use - uses data tables in order to determine the attributes' values
-        Tower(Tower::Type type, const TextureHolder &textures);
+        Tower(Tower::Type type, const TextureHolder& textures);
 
         //Destructor
 
@@ -85,6 +85,9 @@ class Tower : public Entity {
        // Textures::ID        ToTextureID(Type type);
         void                CreateBullet(SceneNode& node, const TextureHolder& textures) const;
 
+        void                    MakeTransparent();
+        void                    MakeVisible();
+        
         // There is velocity_ in Entity which, in this case, describes the rotational speed
         // Helper that makes textures::ID-types from Tower::Types
         Tower::Type         type_;

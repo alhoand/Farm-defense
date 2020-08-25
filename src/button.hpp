@@ -43,12 +43,16 @@ class Button : public Component
         virtual void			HandleEvent(const sf::Event& event) override;
 
         sf::Vector2f            GetClickPosition() const { return clickPosition_; }
+    protected:
+        virtual void			Draw(sf::RenderTarget& target, sf::RenderStates states) const;
     private:
         virtual void			draw(sf::RenderTarget& target, sf::RenderStates states) const override {
             Draw(target,states);
             }
-        virtual void			Draw(sf::RenderTarget& target, sf::RenderStates states) const;
+        //virtual void			Draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
+
+        virtual void            Update(sf::Time dt) override;
 
     private:
         Callback				callback_;

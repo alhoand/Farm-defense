@@ -9,7 +9,7 @@
 class BasicTower : public Tower {
     public:
         // Constructor
-        BasicTower(const TextureHolder &textures);
+        BasicTower(const TextureHolder& textures);
 
 
     private:

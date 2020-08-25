@@ -21,7 +21,7 @@ Application::Application()
     statisticsText_(),
     player_(window_, viewOffset_),
     GUIContainer_(),
-    GUIController_(),
+    GUIController_(window_),
     stateStack_(State::Context(window_, textures_, fonts_, player_, viewOffset_, GUIContainer_, GUIController_))
     { 
         window_.setFramerateLimit(60);
@@ -33,8 +33,8 @@ Application::Application()
         textures_.Load(Textures::ID::logo,              "../media/textures/titleLogo.png");
         textures_.Load(Textures::ID::TitleBackground,   "../media/textures/tausta.jpg");
         textures_.Load(Textures::ID::Buttons,      "../media/textures/buttons.png");
-		textures_.Load(Textures::ID::NoTexture,      "../media/textures/noTexture.png");
-
+		//textures_.Load(Textures::ID::NoTexture,      "../media/textures/noTexture.png");
+        textures_.Load(Textures::ID::FireTower, "../media/textures/tower.png");
         RegisterStates();
         stateStack_.PushState(States::ID::Title);
     }

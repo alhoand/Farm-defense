@@ -256,16 +256,23 @@ bool Tower::CanShoot() const
 bool Tower::Move()
 {
     if (canMove_)
+    {
         isMoving_ = true;
+        MakeTransparent();
+    }
+        
     return canMove_;
 }
 
 void Tower::Stop()
 {
     isMoving_ = false;
+    MakeVisible();
 }
 
-// Getter that tells if the tower is being moved by the player
+// Getter that tells if the tower is being moved by the player.
+// This is used when the player adds new towers to the game field using the GUI sidebar.
+// When the tower is being placed, (i.e., moving), the tower should not for example shoot at enemies yet.
 bool Tower::IsMoving() const {
     return isMoving_;
 }
@@ -279,6 +286,18 @@ float Tower::GetRange() const
     return range_;
 }
 
+//Makes the tower invisible
+void Tower::MakeTransparent() {
+    sprite_.setColor(sf::Color(255, 255, 255, 0));
+}
+
+//Sets the opacity to maximum. This function can be used to make the tower visible again.
+// This is now used to make the placement / addition of towers from GUI with mouse.
+// For more info, check out Tower::IsMoving()
+void Tower::MakeVisible() 
+{
+    sprite_.setColor(sf::Color(255, 255, 255, 255));
+}
 
 void Tower::CreateBullet(SceneNode& node, const TextureHolder& textures) const {
     //std::cout << "Creating a bullet" << std::endl;
