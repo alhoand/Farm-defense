@@ -58,7 +58,7 @@ bool GameState::Update(sf::Time dt) {
     if (gameField_.EndOfLevel())
     {
         // when level ends open side bar 
-        RequestStackPush(States::ID::Sidebar);
+        //RequestStackPush(States::ID::Sidebar);
     }
 
     CommandQueue& commands = gameField_.GetCommandQueue();

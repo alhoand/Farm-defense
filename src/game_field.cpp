@@ -41,7 +41,7 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 
 
 void GameField::Update(sf::Time dt) {
-	std::cout << "updating game field" << std::endl;
+	//std::cout << "updating game field" << std::endl;
 	newEnemiesReachedEnd_ = 0; // new enemies have not reached end at the beginning of an update
 	roundScore_ = 0; // set round score to zero 
 
@@ -291,7 +291,7 @@ void GameField::NextEnemyWave()
 
 //Spawns only one type of enemies and spawnInterval is constant
 void GameField::SpawnEnemies(sf::Time dt) {
-	std::cout << "spawning enemies" << std::endl;
+	//std::cout << "spawning enemies" << std::endl;
 	if (leftToSpawn_ > 0 && difficultyLevel_ <= levelCount_)//TODO leftToSpawn someway better?
 	{
 		if (spawnCountdown_ <= sf::Time::Zero) 

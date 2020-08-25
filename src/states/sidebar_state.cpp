@@ -44,7 +44,7 @@ SidebarState::SidebarState(StateStack& stack, Context context)
                             }
                 );
                 GUIController_.SendCommand(waveCommand);
-                RequestStackPop(); //?????
+                //RequestStackPop(); //?????
             });
         GUIContainer_.Pack(waveButton, true);
 
