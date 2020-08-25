@@ -44,9 +44,11 @@ std::vector<Direction> InitializeEnemyPath()
 	std::vector<Direction> path;
 	
 	path.push_back(Direction(0.f, 400.f));
-	path.push_back(Direction(+90.f, 250.f));
-	path.push_back(Direction(0.f, 450.f));
-	path.push_back(Direction(-90.f, 200.f));
+	path.push_back(Direction(+90.f, 550.f));
+	path.push_back(Direction(0.f, 500.f));
+	path.push_back(Direction(-90.f, 650.f));
+	path.push_back(Direction(0.f, 330.f));
+	path.push_back(Direction(+90.f, 1200.f));
 
 	return path;
 }
