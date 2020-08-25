@@ -145,9 +145,3 @@ bool UpgradeTowerState::HandleEvent(const sf::Event& event) {
 
 //Helper function
 
-/*
-SceneNode* UpgradeTowerState::GetActiveNode(GUI::ID type) const {
-    auto GUIComponent = GetContext().GUIContainer_->GetChild(GUI::ID::ActiveSceneNode);
-    auto GUINodeComponent = std::dynamic_pointer_cast<GUI::SceneNodeComponent>(GUIComponent);
-    return GUINodeComponent->GetNode();
-}*/
