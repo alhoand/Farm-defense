@@ -211,6 +211,7 @@ void GameField::AddTower(Tower::Type type, sf::Vector2f pos)
 		break;
 	case Tower::Type::Slowing:
 		newTower.reset(new SlowingTower(textures_));
+		break;
 	default:
 		newTower.reset(new BasicTower(textures_));
 		break;

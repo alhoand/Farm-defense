@@ -57,7 +57,7 @@ SidebarState::SidebarState(StateStack& stack, Context context)
                 Command waveCommand;
                 waveCommand.category_ = Category::Type::GameField;
                 waveCommand.gameFieldAction_ = GameFieldAction(
-                    [this, waveButton] (GameField& gameField, sf::Time dt)
+                    [this, waveButton] (GameField& gameField, sf::Time)
                     {
                         if (gameField.CanSpawnNewWave())
                         {
@@ -178,7 +178,7 @@ bool SidebarState::HandleEvent(const sf::Event& event) {
     }
         
     // If I is pressed, make the sidebar go away
-	if (sf::Event::KeyPressed && event.key.code == sf::Keyboard::I)
+	if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::I))
     {
        // std::cout << "S: I-KeyPressed" << std::endl;
 		RequestStackPop();
@@ -193,7 +193,7 @@ bool SidebarState::HandleEvent(const sf::Event& event) {
     }*/
     
     //If p is pressed, go to Pause state
-    if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P))
+    if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::P))
     {
 		RequestStackPush(States::ID::Pause);
 	}
