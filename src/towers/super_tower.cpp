@@ -1,9 +1,7 @@
 #include "super_tower.hpp"
 
 SuperTower::SuperTower(const TextureHolder& textures)
-    : Tower(Tower::Type::Super, textures) { 
-        sprite_.setScale(0.5,0.5);
-    }
+    : Tower(Tower::Type::Super, textures) {}
 
 
 void SuperTower::CreateBullet(SceneNode& node, const TextureHolder& textures) const {
