@@ -6,7 +6,7 @@
 class UpgradeTowerState : public State {
     public:
         UpgradeTowerState(StateStack& stack, Context context);
-        ~UpgradeTowerState() {std::cout << "U deleted" <<std::endl; }
+        ~UpgradeTowerState(); //{std::cout << "U deleted" <<std::endl; }
         virtual void Draw();
         virtual bool Update(sf::Time dt);
         virtual bool HandleEvent(const sf::Event& event);

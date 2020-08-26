@@ -36,8 +36,9 @@ Application::Application()
         textures_.Load(Textures::ID::logo,              "../media/textures/titleLogo.png");
         textures_.Load(Textures::ID::TitleBackground,   "../media/textures/tausta.jpg");
         textures_.Load(Textures::ID::Buttons,      "../media/textures/buttons.png");
+        textures_.Load(Textures::ID::TowerButton, "../media/textures/nappulaAntsulle.png");
 		//textures_.Load(Textures::ID::NoTexture,      "../media/textures/noTexture.png");
-        textures_.Load(Textures::ID::BasicTower, "../media/textures/tower.png");
+        textures_.Load(Textures::ID::BasicTower, "../media/textures/tractor.png");
         textures_.Load(Textures::ID::SuperTower, "../media/textures/harvester.png");
         textures_.Load(Textures::ID::SlowingTower, "../media/textures/tower.png");
         textures_.Load(Textures::ID::BombingTower, "../media/textures/tower.png");

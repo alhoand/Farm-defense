@@ -73,8 +73,8 @@ void GameField::LoadTextures() {
 	textures_.Load(Textures::ID::Fire, "../media/textures/Doge.png");
 	textures_.Load(Textures::ID::Leaf, "../media/textures/cat.png");
 	textures_.Load(Textures::ID::Grass, "../media/textures/grass.jpg");
-	textures_.Load(Textures::ID::Path, "../media/textures/path.jpg");
-	textures_.Load(Textures::ID::BasicTower, "../media/textures/tower.png");
+	textures_.Load(Textures::ID::Path, "../media/textures/path.png");
+	textures_.Load(Textures::ID::BasicTower, "../media/textures/tractor.png");
 	textures_.Load(Textures::ID::SuperTower, "../media/textures/harvester.png");
 	textures_.Load(Textures::ID::SlowingTower, "../media/textures/tower.png");
 	textures_.Load(Textures::ID::BombingTower, "../media/textures/tower.png");
@@ -413,7 +413,7 @@ int GameField::NewEnemiesReachedEnd() {
 
 bool GameField::CanSpawnNewWave()
 {
-	return !hasActiveEnemies_ && leftToSpawn_ <= 0;
+	return (!hasActiveEnemies_ && (leftToSpawn_ <= 0));
 }
 //can be used to determine when current wave is finished
 bool GameField::IsEndOfLevel()
@@ -579,3 +579,5 @@ void GameField::MakeTowersShoot()
 	activeEnemies_.clear();
 
 }
+
+

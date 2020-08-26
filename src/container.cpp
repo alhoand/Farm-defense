@@ -86,6 +86,11 @@ void Container::UpdateChildren(sf::Time dt)
 	}
 		
 }
+/*
+sf::FloatRect Container::GetGlobalBounds() const
+{
+	return GetWorldTransform().transformRect(sf::FloatRect(get))
+}*/
 
 void Container::HandleEvent(const sf::Event& event)
 {

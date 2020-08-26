@@ -17,7 +17,7 @@ class Player {
 		};
 
     public:
-                    Player(sf::RenderWindow& window, sf::Vector2f viewOffset);
+                            Player(sf::RenderWindow& window, sf::Vector2f viewOffset);
 
         void        HandleEvent(const sf::Event& event, CommandQueue&);
         void        HandleRealtimeInput(CommandQueue&);
@@ -31,16 +31,28 @@ class Player {
         void        SetPlayerName(sf::String name);
         sf::String  GetPlayerName();
         bool        PlacementSuccess();
+        bool                InfoRequested() const;
+        bool                InfoPopRequested() const;
+        void                ResetInfoRequestStatus();
+        void                ResetInfoPopStatus();
 
+        void                RequestInfoPop();
     private:
         void                SetPlacementSuccess();
         void                SetPlacementFailure();
+        void                RequestInfo();
+
+        
+        
         sf::RenderWindow&   window_;
         sf::Vector2f        viewOffset_;
         int                 lives_;
         GameStatus          status_;
+        int                 score_;
         int                 money_;
         sf::String          name_;
         bool                towerPlacementSuccess_;
+        bool                infoRequested_;
+        bool                infoPopRequested_;
 
 };
