@@ -73,6 +73,7 @@ void GameField::LoadTextures() {
 	textures_.Load(Textures::ID::Fire, "../media/textures/Doge.png");
 	textures_.Load(Textures::ID::Leaf, "../media/textures/cat.png");
 	textures_.Load(Textures::ID::Grass, "../media/textures/grass.jpg");
+	textures_.Load(Textures::ID::Path, "../media/textures/path.jpg");
 	textures_.Load(Textures::ID::BasicTower, "../media/textures/tower.png");
 	textures_.Load(Textures::ID::SuperTower, "../media/textures/harvester.png");
 	textures_.Load(Textures::ID::SlowingTower, "../media/textures/tower.png");
@@ -97,13 +98,47 @@ void GameField::BuildScene() {
 	}
 
 	//Make the background
-	sf::Texture& texture = textures_.Get(Textures::ID::Grass);
+	sf::Texture& grass = textures_.Get(Textures::ID::Grass);
 	sf::IntRect textureRect(gameFieldBounds_);
-	texture.setRepeated(true);
+	grass.setRepeated(true);
 
-	std::unique_ptr<SpriteNode> backgroundSprite(new SpriteNode(texture, textureRect));
-	backgroundSprite->setPosition(gameFieldBounds_.left, gameFieldBounds_.top);
-	sceneLayers_[Background]->AttachChild(std::move(backgroundSprite));
+	std::unique_ptr<SpriteNode> grassSprite(new SpriteNode(grass, textureRect));
+	grassSprite->setPosition(gameFieldBounds_.left, gameFieldBounds_.top);
+	sceneLayers_[Background]->AttachChild(std::move(grassSprite));
+
+	// Make path visible
+	std::vector<Direction> path = InitializeEnemyPath();
+
+	// Path bagins from spawnPosition_ with 25 pixels of offset
+	sf::Vector2f c = spawnPosition_;
+	c.x -= 25;
+	c.y -= 25;
+
+	sf::Texture& p = textures_.Get(Textures::ID::Path);
+	std::unique_ptr<SpriteNode> pathSprite(new SpriteNode(p));
+	pathSprite->setPosition(c);
+	sceneLayers_[Background]->AttachChild(std::move(pathSprite));
+
+	for (auto i : path) {
+		int dist = 0;
+		while (dist < i.distance) {
+			dist += 50;
+			if (i.angle == 0) {
+				c.x += 50;
+			} else if (i.angle == +90) {
+				c.y += 50;
+			} else if (i.angle == -90) {
+				c.y -= 50;
+			} else {
+				c.x -= 50;
+			}
+
+			sf::Texture& p = textures_.Get(Textures::ID::Path);
+			std::unique_ptr<SpriteNode> pathSprite(new SpriteNode(p));
+			pathSprite->setPosition(c);
+			sceneLayers_[Background]->AttachChild(std::move(pathSprite));
+		}
+	}
 
 	//Initialize a super tower that can be moved with hard-coded bullet
 	/*std::unique_ptr<Tower> firstTower(new SuperTower(textures_));
