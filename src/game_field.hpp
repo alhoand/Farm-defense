@@ -25,6 +25,7 @@
 #include "scene_node.hpp"
 #include "category.hpp"
 #include "utility.hpp"
+#include "data_tables.hpp"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics.hpp>
