@@ -26,7 +26,7 @@ GameState::GameState(StateStack& stack, Context context) :
         GUIContainer_.Pack(pauseButton);
 
         //GetContext().textures_->Load(Textures::ID::FireTower, "../media/textures/tower.png");
-
+    std::cout << "ENd of game state constructor" << std::endl;
     }
 
 void GameState::Draw() {
@@ -61,7 +61,7 @@ bool GameState::Update(sf::Time dt) {
 
     CommandQueue& commands = gameField_.GetCommandQueue();
 	player_.HandleRealtimeInput(commands);
-
+    GUIController_.FetchInput(commands);
     
 
 /*     if (gameField_.IsEndOfLevel())
@@ -76,9 +76,12 @@ bool GameState::Update(sf::Time dt) {
 }
 
 bool GameState::HandleEvent(const sf::Event& event) {
+    //std::cout << "Game state handle event" << std::endl;
+
     CommandQueue& commands = gameField_.GetCommandQueue();
     player_.HandleEvent(event, commands);
-    GUIController_.FetchInput(commands);
+    //std::cout << "We got here after player_.handleevent" << std::endl;
+    
     if (event.type == sf::Event::MouseButtonReleased)
     {
        // std::cout << "Inforequested: " << player_.InfoRequested() << std::endl;

@@ -147,6 +147,8 @@ void SceneNode::OnCommand(const Command &command, sf::Time dt) {
     // 1101 & 0100 -> 0100 = 4 = true 
     // 1000 & 0100 -> 0000 = 0 = false
     if (command.category_ & GetCategory()) { 
+        if (GetCategory() == Category::Path)
+            std::cout << "Command category was path: " << std::endl;
         command.action_(*this, dt);
         //this->accelerate(2.f, 3.f);
     } 

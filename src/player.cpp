@@ -31,6 +31,7 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
                                             mouse.y - (tower.getPosition().y - tower.getOrigin().y));
                             tower.setPosition(mouse.x,mouse.y);
                             tower.Move();
+                            std::cout << "Hello" << std::endl;
                         }
 
                    }else if(!tower.IsColliding()) // If there was a click and tower is moving and not colliding
@@ -39,11 +40,11 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
                         tower.DisallowMoving();
                         SetPlacementSuccess();
                         //ResetInfoRequestStatus();
-                        //std::cout << "Placement success was set" << std::endl;
+                        std::cout << "Placement success was set" << std::endl;
 
                    }else
                    {
-                       //std::cout << "Placement failure was set" << std::endl;
+                       std::cout << "Placement failure was set" << std::endl;
                        SetPlacementFailure();
                    }
                    
@@ -58,7 +59,7 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
                             {
                                 //tower.Stop();
                                 tower.DisallowMoving();
-                                //std::cout << "Placement success was set" << std::endl;
+                                std::cout << "Placement success was set" << std::endl;
 
                                 SetPlacementSuccess();
                             }
@@ -74,7 +75,7 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
         activateTowerPicture.category_ = Category::TowerPicture;
         activateTowerPicture.action_ = DerivedAction<TowerPicture>([mouse, this] (TowerPicture& tp, sf::Time)
         {
-            if (tp.IsActive())
+           /* if (tp.IsActive())
                 {
                     sf::Vector2f parent = tp.GetWorldPosition() - tp.getPosition();
                     sf::Vector2f origin = tp.getOrigin();
@@ -86,8 +87,8 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
                     tp.Drag();
                     SetPlacementFailure();
 
-                }
-            /* if (tp.GetBoundingRect().contains(mouse) && !tp.IsDragged())
+                }*/
+            if (tp.GetBoundingRect().contains(mouse) && !tp.IsDragged())
             {
                 std::cout << "TowerPicture was pressed!"<< std::endl;
                 if (tp.IsActive())
@@ -100,12 +101,13 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
                     //tp.setPosition(mouse - parent - origin);//sf::Vector2f(100.f, 100.f)); //- tp.GetClickPos()); //-  tp.GetSidebarPos() * 100.f - tp.GetClickPos()); //+ tp.GetSidebarPos());
                     tp.setPosition(mouse);
                     tp.Drag();
-                    SetPlacementFailure();
+                    
 
                 }
+                SetPlacementFailure();
 
                 
-            } */
+            } 
     
             //std::cout << "Click:TowerPic origin:" << tp.getOrigin().x << ", " << tp.getOrigin().y << std::endl;
             //std::cout << "Click:TowerPic world pos:" << tp.GetWorldPosition().x << ", " << tp.GetWorldPosition().y << std::endl;

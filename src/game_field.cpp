@@ -37,6 +37,7 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 		LoadTextures();
 		BuildScene();
 		gameFieldView_.setCenter(gameFieldBounds_.left + (gameFieldBounds_.width + viewOffset_.x)/2.f, gameFieldBounds_.top + (gameFieldBounds_.height + viewOffset_.y)/2.f);
+		std::cout << "End of game field constructor" << std::endl;
 	}
 
 
@@ -57,7 +58,7 @@ void GameField::Update(sf::Time dt) {
 			OnCommand(next, dt);
 		}
 		else 
-		{
+		{	
 			sceneGraph_.OnCommand(next, dt);
 		}
 	}
@@ -198,11 +199,11 @@ void GameField::HandleCollisions()
 		{
 			auto& tower = static_cast<Tower&>(*pair.first);
 			auto& activeTower = static_cast<Tower&>(*pair.second);
-			if (tower.IsMoving())
-			{
+			//if (tower.IsMoving())
+			//{
 				tower.Collides(true);
 				towerCollideCalled = true;
-			}
+			//}
 			if (activeTower.IsMoving())
 			{
 				activeTower.Collides(true);
@@ -210,7 +211,7 @@ void GameField::HandleCollisions()
 			}
 				
 		}
-		/*if (MatchesCategories(pair, Category::Tower, Category::Path))
+		if (MatchesCategories(pair, Category::Tower, Category::Path))
 		{
 			//std::cout << "Path recognized" << std::endl;
 			auto& activeTower = static_cast<Tower&>(*pair.first);
@@ -220,7 +221,9 @@ void GameField::HandleCollisions()
 				activeTower.Collides(true);
 				towerCollideCalled = true;
 			}
-		}*/
+		}
+
+
 		
 	}
 	if (!towerCollideCalled)
@@ -230,6 +233,7 @@ void GameField::HandleCollisions()
 			command.action_ = DerivedAction<Tower>([=](Tower& t, sf::Time)
 			{
 				t.Collides(false);
+				//std::cout << "Collide called" << std::endl;
 			});
 			commandQueue_.Push(command);
 
@@ -248,7 +252,7 @@ void GameField::BuildPath()
 	std::unique_ptr<SpriteNode> pathSprite(new SpriteNode(p));
 	pathSprite->setPosition(c);
 	pathSprite->SetCategory(Category::Path);
-	sceneLayers_[Field]->AttachChild(std::move(pathSprite));
+	sceneLayers_[Background]->AttachChild(std::move(pathSprite));
 
 	for (auto i : path) {
 		int dist = 0;
@@ -268,7 +272,7 @@ void GameField::BuildPath()
 			std::unique_ptr<SpriteNode> pathSprite(new SpriteNode(p));
 			pathSprite->setPosition(c);
 			pathSprite->SetCategory(Category::Path);
-			sceneLayers_[Field]->AttachChild(std::move(pathSprite));
+			sceneLayers_[Background]->AttachChild(std::move(pathSprite));
 		}
 	}
 }
@@ -531,6 +535,7 @@ void GameField::MakeTowersShoot()
 	detonateCommand.category_ = Category::Bomb;
     detonateCommand.action_ = DerivedAction<Bomb>([this] (Bomb& bomb, sf::Time) 
 	{
+		//std::cout << "Here we aree at the bomb" << std::endl;
 		if (!bomb.CanDetonate())
 		{
 			return;

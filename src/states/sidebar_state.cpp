@@ -196,8 +196,11 @@ void SidebarState::AddTowerButton(Tower::Type type, float relX, float relY, sf::
 }
 
 bool SidebarState::HandleEvent(const sf::Event& event) {
+    //std::cout << "Sidebar state handleevent" << std::endl;
 	GUIContainer_.HandleEvent(event);
     GetContext().player_->HandleEvent(event, sidebarWorld_.GetCommandQueue());
+    //std::cout << "player handled events" << std::endl;
+
     //GUIController_.HandleEvent(event, sidebarWorld_.GetCommandQueue());
 
 

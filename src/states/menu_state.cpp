@@ -25,7 +25,9 @@ MenuState::MenuState(StateStack& stack, Context context)
 	{
 		RequestStackPop();
 		RequestStackPush(States::ID::Game);
+		std::cout << "Sidebar requested" << std::endl;
 		RequestStackPush(States::ID::Sidebar);
+		std::cout << "Sidebar requested" << std::endl;
 	});
 
 	/* auto scoreButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_,sf::IntRect(200,104,200,88),sf::IntRect(200,192,200,88));
