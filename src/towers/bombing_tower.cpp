@@ -1,7 +1,7 @@
 #include "bombing_tower.hpp"
 
 BombingTower::BombingTower(const TextureHolder& textures) 
-    : Tower(Tower::Type::Bombing, textures, 150, 8) { }
+    : Tower(Tower::Type::Bombing, textures, 100, 8) { }
 
 
 void BombingTower::CreateBullet(SceneNode& node, const TextureHolder& textures) const {
