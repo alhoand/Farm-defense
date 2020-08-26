@@ -10,11 +10,14 @@ class SpriteNode : public SceneNode {
                             SpriteNode(const sf::Texture& texture, sf::IntRect& rect);
         sf::FloatRect       GetBounds() const;
         virtual void        Update(sf::Time);
-
+        void                SetCategory(unsigned int category);
+        unsigned int        GetCategory() const override;
+        sf::FloatRect       GetBoundingRect() const override;
 
 
     protected:
         virtual void        DrawCurrent(sf::RenderTarget& target,sf::RenderStates states) const;
         sf::Sprite          sprite_;
+        unsigned int        category_;
     
 };

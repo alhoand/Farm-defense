@@ -116,8 +116,9 @@ void GameField::BuildScene() {
 
 	sf::Texture& p = textures_.Get(Textures::ID::Path);
 	std::unique_ptr<SpriteNode> pathSprite(new SpriteNode(p));
+	pathSprite->SetCategory(Category::Path);
 	pathSprite->setPosition(c);
-	sceneLayers_[Background]->AttachChild(std::move(pathSprite));
+	sceneLayers_[Field]->AttachChild(std::move(pathSprite));
 
 	for (auto i : path) {
 		int dist = 0;
@@ -136,7 +137,8 @@ void GameField::BuildScene() {
 			sf::Texture& p = textures_.Get(Textures::ID::Path);
 			std::unique_ptr<SpriteNode> pathSprite(new SpriteNode(p));
 			pathSprite->setPosition(c);
-			sceneLayers_[Background]->AttachChild(std::move(pathSprite));
+			pathSprite->SetCategory(Category::Path);
+			sceneLayers_[Field]->AttachChild(std::move(pathSprite));
 		}
 	}
 
@@ -233,7 +235,7 @@ void GameField::HandleCollisions()
 	std::set<SceneNode::Pair> collisionPairs;
 	sceneGraph_.CheckSceneCollision(sceneGraph_, collisionPairs);
 	bool towerCollideCalled = false;
-
+	//std::cout << "Hello frmo her " << std::endl;
 	for(SceneNode::Pair pair : collisionPairs)
 	{
 		//std::cout << pair.first->GetCategory() << "," << pair.second->GetCategory() << std::endl;
@@ -272,6 +274,18 @@ void GameField::HandleCollisions()
 			}
 				
 		}
+		if (MatchesCategories(pair, Category::Tower, Category::Path))
+		{
+			//std::cout << "Path recognized" << std::endl;
+			auto& activeTower = static_cast<Tower&>(*pair.first);
+			//auto& path = pair.second->GetCategory();
+			if (activeTower.IsMoving())
+			{
+				activeTower.Collides(true);
+				towerCollideCalled = true;
+			}
+		}
+		
 	}
 	if (!towerCollideCalled)
 		{

@@ -126,11 +126,11 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
             {
                 if (PlacementSuccess())
                 {
-                    //std::cout << "The tower pic was kindly asked to go back to the sidabar" << std::endl;
+                    std::cout << "The tower pic was kindly asked to go back to the sidabar" << std::endl;
                     tp.UnDrag();
                     tp.GetBack();
                 }else{
-                    //std::cout << "Cannot be placed here!" << std::endl;
+                    std::cout << "Cannot be placed here!" << std::endl;
                 }
             }
         });

@@ -18,6 +18,7 @@ namespace Category {
         Range = 1 << 10,
         Active = 1 << 11,
         GameField = 1 << 12,
+        Path = 1 << 13,
 
         Tower = ShootingTower | SlowingTower | BombingTower,
         ActiveTower = Tower | Active,

@@ -6,6 +6,7 @@
 #include "scene_node.hpp"
 #include "category.hpp"
 #include <cassert>
+#include <iostream>
 class SceneNode;
 
 class GameField;
