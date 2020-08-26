@@ -32,7 +32,8 @@ GameOverState::GameOverState(StateStack& stack, Context context)
         {
             gameOverText_.setString("You lost the game :(\nWhat do you want to do next?");
         }
-        context.player_->SetGameStatus(Player::GameRunning);
+       // context.player_->SetGameStatus(Player::GameRunning);
+        context.player_->ResetGame();
         gameOverText_.setCharacterSize(50);
         sf::FloatRect bounds = gameOverText_.getLocalBounds();
         gameOverText_.setOrigin(::floor(bounds.left + bounds.width / 2.f), std::floor(50 + bounds.top + bounds.height / 2.f));
@@ -57,7 +58,16 @@ GameOverState::GameOverState(StateStack& stack, Context context)
         });
         GUIContainer_.Pack(quitButton);  
 
-        //Can we do retry button?????
+        auto retryButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_);
+        retryButton->setPosition(550, 500);
+        retryButton->SetText("Try again");
+        retryButton->SetCallback([this] ()
+        {
+            RequestStateClear();
+            RequestStackPush(States::ID::Game);
+		    RequestStackPush(States::ID::Sidebar);
+        });
+        GUIContainer_.Pack(quitButton); 
     }
 
 void GameOverState::Draw()

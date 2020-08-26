@@ -187,6 +187,14 @@ Player::GameStatus Player::GetGameStatus()
     return status_;
 }
 
+void Player::ResetGame()
+{
+    lives_ = 10;
+    status_ = GameStatus::GameRunning; 
+    money_ = 500;
+    score_ = 0;
+}
+
 
 // Used to tell the GUI that there was a successfull placement of a tower
 void Player::SetPlacementSuccess()

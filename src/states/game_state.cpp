@@ -66,6 +66,7 @@ bool GameState::Update(sf::Time dt) {
 
     if (gameField_.IsEndOfLevel())
     {
+        IncreasePlayerMoney(gameField_.GetCurrentLevel() * 500);
         // when level ends open side bar 
         RequestStackPush(States::ID::EndOfLevel);
         return false;
