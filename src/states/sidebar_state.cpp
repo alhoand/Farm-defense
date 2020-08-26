@@ -48,7 +48,7 @@ SidebarState::SidebarState(StateStack& stack, Context context)
         std::cout << "Here we are 2!" << std::endl;
 
 
-        auto levelButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
+        auto levelButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_);
         levelButton->setOrigin(levelButton->GetGlobalBounds().width/2.f, levelButton->GetGlobalBounds().height/2.f);
         levelButton->setPosition(viewSize_.x/2.f, 250.f);
         levelButton->SetText("Next level");
