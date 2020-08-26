@@ -25,7 +25,7 @@ EndOfLevelState::EndOfLevelState(StateStack& stack, Context context)
         levelOverText_.setOrigin(::floor(bounds.left + bounds.width / 2.f), std::floor(50 + bounds.top + bounds.height / 2.f));
         levelOverText_.setPosition(0.5f * viewSize.x, 0.3f * viewSize.y);
 
-        auto continueButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_);
+        auto continueButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
         continueButton->setPosition(550, 400);
         continueButton->SetText("Continue to next level");
         continueButton->SetCallback([this, continueButton] ()
@@ -43,7 +43,7 @@ EndOfLevelState::EndOfLevelState(StateStack& stack, Context context)
         });
         GUIContainer_.Pack(continueButton); 
 
-        auto menuButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_);
+        auto menuButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, sf::IntRect(200,104,200,88),sf::IntRect(200,192,200,88));
         menuButton->setPosition(550, 500);
         menuButton->SetText("Return to main menu");
         menuButton->SetCallback([this] ()
@@ -53,7 +53,7 @@ EndOfLevelState::EndOfLevelState(StateStack& stack, Context context)
         });
         GUIContainer_.Pack(menuButton); 
 
-        auto quitButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_);
+        auto quitButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_,  sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
         quitButton->setPosition(550, 600);
         quitButton->SetText("Ragequit");
         quitButton->SetCallback([this] ()

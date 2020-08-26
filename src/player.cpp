@@ -5,7 +5,7 @@
 
 
 Player::Player(sf::RenderWindow& window, sf::Vector2f viewOffset) 
-    : window_(window), viewOffset_(viewOffset), lives_(10), status_(), money_(0) { }
+    : window_(window), viewOffset_(viewOffset), lives_(10), status_(), money_(500) { }
 
 // Adapted from SFML Game Development-book
 

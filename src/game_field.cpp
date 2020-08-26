@@ -302,7 +302,6 @@ void GameField::NextEnemyWave()
 	if (difficultyLevel_ < levelCount_)
 	{
 		std::cout << "Creating new enemy wave!!" << std::endl;
-		difficultyLevel_++;
 		leftToSpawn_ = difficultyLevel_ * 15; // Should not be hardcoded
 	}
 }
@@ -310,7 +309,7 @@ void GameField::NextEnemyWave()
 void GameField::NextLevel()
 {
 	newLevelStarted_ = false;
-
+	difficultyLevel_++;
 }
 
 
@@ -422,6 +421,11 @@ bool GameField::IsEndOfLevel()
 bool GameField::IsEndOfGame()
 {
 	return IsEndOfLevel() && difficultyLevel_ >= levelCount_;
+}
+
+int GameField::GetCurrentLevel()
+{
+	return difficultyLevel_;
 }
 
 int GameField::GetAddedMoney()
