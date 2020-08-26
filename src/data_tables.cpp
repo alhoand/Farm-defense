@@ -14,26 +14,26 @@ std::vector<EnemyData> InitializeEnemyData()
 	data[Enemy::Basic].speed = 50.f;
 	data[Enemy::Basic].slowDownRate = 0.8;
 	data[Enemy::Basic].texture = Textures::Fire;
-	data[Enemy::Basic].scorepoints = 50;
+	data[Enemy::Basic].worthOfMoney = 10;
 
 	data[Enemy::Multiplying].hitpoints = 10;
 	data[Enemy::Multiplying].speed = 50.f;
 	data[Enemy::Multiplying].slowDownRate = 0.5;
 	data[Enemy::Multiplying].texture = Textures::Leaf;
-	data[Enemy::Multiplying].scorepoints = 10;
+	data[Enemy::Multiplying].worthOfMoney = 20;
 	
 
 	data[Enemy::Bulk].hitpoints = 50;
 	data[Enemy::Bulk].speed = 50.f;
 	data[Enemy::Bulk].slowDownRate = 0.5;
 	data[Enemy::Bulk].texture = Textures::Water;
-	data[Enemy::Bulk].scorepoints = 500;
+	data[Enemy::Bulk].worthOfMoney = 100;
 
 	data[Enemy::Fast].hitpoints = 20;
 	data[Enemy::Fast].speed = 100.f;
 	data[Enemy::Fast].slowDownRate = 0.5;
 	data[Enemy::Fast].texture = Textures::Water;
-	data[Enemy::Fast].scorepoints = 100;
+	data[Enemy::Fast].worthOfMoney = 150;
 
 
 	return data;
@@ -58,6 +58,16 @@ std::vector<TowerData> InitializeTowerData()
 	std::vector<TowerData> data(Enemy::TypeCount);
 
 	data[Tower::Type::Super].scale = 0.5;
+
+	data[Tower::Type::Basic].price = 100;
+	data[Tower::Type::Super].price = 1000;
+	data[Tower::Type::Slowing].price = 350;
+	data[Tower::Type::Bombing].price = 500;
+
+	data[Tower::Type::Basic].name = "Basic Tower";
+	data[Tower::Type::Super].name = "Super Tower";
+	data[Tower::Type::Slowing].name = "Slowing Tower";
+	data[Tower::Type::Bombing].name = "Bomb Tower";
 
 	return data;
 }

@@ -37,7 +37,7 @@ void GameState::Draw() {
 
 bool GameState::Update(sf::Time dt) {
     gameField_.Update(dt); // updates the gamefield on each tick
-    ModifyPlayerScore(gameField_.GetRoundScore());
+    IncreasePlayerMoney(gameField_.GetAddedMoney());
     
     for (int i = 0; i < gameField_.NewEnemiesReachedEnd(); i++)
     {
@@ -96,9 +96,9 @@ bool GameState::HandleEvent(const sf::Event& event) {
 }
 
 
-void GameState::ModifyPlayerScore(int score)
+void GameState::IncreasePlayerMoney(int amount)
 {
-    player_.SetScore(score);
-    //std::cout << "current score: " << player_.GetScore() << std::endl;
+    player_.AddMoney(amount);
+    //std::cout << "current score: " << player_.GetPlayerMoney() << std::endl;
 }
 

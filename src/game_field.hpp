@@ -54,10 +54,11 @@ class GameField : private sf::NonCopyable {
         void            Draw();
         CommandQueue&   GetCommandQueue();
         int             NewEnemiesReachedEnd();
+        bool            CanSpawnNewWave();
         bool            IsEndOfLevel();
         bool            IsEndOfGame();
-        void            AddRoundScore(int points);
-        int             GetRoundScore();
+        void            AddRounMoney(int points);
+        int             GetAddedMoney();
         void            NextEnemyWave();
         void            NextLevel();
 
@@ -104,7 +105,7 @@ class GameField : private sf::NonCopyable {
 	    unsigned int        levelCount_; //total amount of levels or waves in current game
         sf::Time            levelBreakTimer_;
         int                 newEnemiesReachedEnd_;
-        int                 roundScore_;
+        int                 roundMoney_;
         bool                hasActiveEnemies_;
         bool                newLevelStarted_;
 

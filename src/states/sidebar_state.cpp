@@ -3,8 +3,14 @@
 #include "../game_field.hpp"
 #include "../player.hpp"
 #include "../tower_button.hpp"
+#include "../data_tables.hpp"
 #include <memory>
 #include <string>
+
+namespace
+{
+    const std::vector<TowerData> towerTable = InitializeTowerData();
+}
 
 SidebarState::SidebarState(StateStack& stack, Context context)
     : State(stack, context)
@@ -25,7 +31,7 @@ SidebarState::SidebarState(StateStack& stack, Context context)
         
         titleText_ = std::make_shared<GUI::Label>("Wave 0", *context.fonts_, 35, Fonts::Main);
         //titleText_->CenterTextOrigin();
-        titleText_->setPosition(10.f, 10.f);
+        titleText_->setPosition(50.f, 10.f);
         //GUIContainer_.Pack(titleText_, true);
         std::cout << "Here we are 2!" << std::endl;
 
@@ -39,16 +45,17 @@ SidebarState::SidebarState(StateStack& stack, Context context)
                 Command waveCommand;
                 waveCommand.category_ = Category::Type::GameField;
                 waveCommand.gameFieldAction_ = GameFieldAction(
-                            [waveButton] (GameField& gameField, sf::Time dt)
-                            {
-                                //if (gameField.IsEndOfLevel())
-                                {
-                                    gameField.NextEnemyWave();  
-                                }
-                            }
+                    [this, waveButton] (GameField& gameField, sf::Time dt)
+                    {
+                        if (gameField.CanSpawnNewWave())
+                        {
+                            gameField.NextEnemyWave();
+                            titleText_->SetText("Wave " + std::to_string(++currentWave_), false);
+                        } 
+                    }
                 );
-                titleText_->SetText("Wave " + std::to_string(++currentWave_), false);
                 GUIController_.SendCommand(waveCommand);
+               
             });
         GUIContainer_.Pack(waveButton, true);
 
@@ -96,25 +103,32 @@ void SidebarState::AddTowerButton(Tower::Type type, float relX, float relY, sf::
 
         towerButton->AddTowerPicture(towerPic.get());
         //sf::Vector2f buttonPosition = towerButton->GetWorldPosition();
-
         sidebarWorld_.AddTowerPicture(std::move(towerPic));
-
-        towerButton->SetText("");
+        
+        std::string towerName = towerTable[type].name;
+        towerButton->SetText(towerName.append("\n").append(std::to_string(towerTable[type].price)));
         GUIContainer_.Pack(towerButton, true); //Pack it before getting position to get the real pos
         towerButton->SetCallback([this, towerButton] ()
             {
-                Command command;
-                command.category_ = Category::Type::GameField;
-                command.gameFieldAction_ = GameFieldAction(
-                            [towerButton] (GameField& gameField, sf::Time dt)
-                            {
-                                //std::cout << "Button pressed!" <<std::endl;
-                                gameField.AddTower(towerButton->GetTowerType(), towerButton->GetClickPosition());
-                                
-                            }
-                );
+                if (GetContext().player_->BuyTower(towerTable[towerButton->GetTowerType()].price))
+                {
+                    Command command;
+                    command.category_ = Category::Type::GameField;
+                    command.gameFieldAction_ = GameFieldAction(
+                                [towerButton] (GameField& gameField, sf::Time)
+                                {
+                                    //std::cout << "Button pressed!" <<std::endl;
+                                    
+                                    gameField.AddTower(towerButton->GetTowerType(), towerButton->GetClickPosition());
+                                    // cannot buy tower if does not have enough money
+                                }
+                    );
 
-                GUIController_.SendCommand(command);
+                    GUIController_.SendCommand(command);
+                } else
+                {
+                    std::cout << "not enough money to buy towers!" << std::endl;
+                }
 
             });
 }
