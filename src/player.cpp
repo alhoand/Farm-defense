@@ -192,7 +192,6 @@ void Player::ResetGame()
     lives_ = 10;
     status_ = GameStatus::GameRunning; 
     money_ = 500;
-    score_ = 0;
 }
 
 
