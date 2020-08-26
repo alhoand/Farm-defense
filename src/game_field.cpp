@@ -20,14 +20,14 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	 gameFieldBounds_(0.f, 0.f, // x and y of the game field
 	 				gameFieldView_.getSize().x + viewOffset_.x, //world width is a bit bigger than the view's width
 					gameFieldView_.getSize().y + viewOffset_.y), // world height is same as view's height
-	 spawnPosition_(gameFieldBounds_.left,
+	 spawnPosition_(gameFieldBounds_.left + 50.f,
 	 				 (gameFieldBounds_.top + gameFieldBounds_.height)/3.f),
 	commandQueue_(),
 	spawnCountdown_(sf::seconds(2)),
 	spawnInterval_(1), //this should maybe be a parameter
 	leftToSpawn_(0),
     activeEnemies_(),
-	difficultyLevel_(1), //0 is the first level and increases by 1 by each wave
+	difficultyLevel_(0), //0 is the first level and increases by 1 by each wave
 	levelCount_(5), // can be added to parameter list or askef for player, but for now it's just harcoded to be 5
 	newEnemiesReachedEnd_(0),
 	roundMoney_(0),
@@ -267,6 +267,7 @@ void GameField::OnCommand(Command command, sf::Time dt)
 
 void GameField::NextEnemyWave()
 {
+	difficultyLevel_++;
 	std::cout << "trying to start new enemy wave" << std::endl;
 	newLevelStarted_ = true;
 	if (difficultyLevel_ <= levelCount_)
@@ -279,7 +280,6 @@ void GameField::NextEnemyWave()
 void GameField::NextLevel()
 {
 	newLevelStarted_ = false;
-	difficultyLevel_++;
 }
 
 
@@ -288,7 +288,6 @@ void GameField::SpawnEnemies(sf::Time dt) {
 	
 	if (leftToSpawn_ > 0 && difficultyLevel_ <= levelCount_)//TODO leftToSpawn someway better?
 	{
-		std::cout << "spawning enemies" << std::endl;
 		if (spawnCountdown_ <= sf::Time::Zero) 
     	{
 			spawnCountdown_ += sf::seconds(spawnInterval_);

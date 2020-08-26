@@ -22,9 +22,9 @@ SidebarState::SidebarState(StateStack& stack, Context context)
     , viewSize_(context.window_->getView().getSize().x/4.f, context.window_->getView().getSize().y)
     , GUIContainer_() 
     , GUIController_(*context.GUIController_)
-    , towerPosition_(sf::Vector2f(viewSize_.x/2.f, 400.f))
+    , towerPosition_(sf::Vector2f(viewSize_.x/2.f, 450.f))
     , sidebarWorld_(*context.window_,towerPosition_)
-    , currentWave_(0)
+    , currentLevel_(0)
     , showInfotext_(false)
     , elapsedTime_(sf::Time::Zero)
     {
@@ -32,14 +32,14 @@ SidebarState::SidebarState(StateStack& stack, Context context)
         sidebarWorld_.SetGraphPosition(GUIContainer_.getTransform());
         //std::cout << "Here we are!" << std::endl;
 
-        titleText_ = std::make_shared<GUI::Label>("Level: 0\nWave: 0", *context.fonts_, 30, Fonts::Main);
+        titleText_ = std::make_shared<GUI::Label>("Level: 0", *context.fonts_, 30, Fonts::Main);
         //titleText_->CenterTextOrigin();
         titleText_->setPosition(context.window_->getView().getSize().x-viewSize_.x + 10.f, 10.f);
         //GUIContainer_.Pack(titleText_, true);
 
-        descriptionText_ = std::make_shared<GUI::Label>("Money: " + std::to_string(GetContext().player_->GetPlayerMoney()), *context.fonts_, 30, Fonts::Main);
-        descriptionText_->setPosition(context.window_->getView().getSize().x-viewSize_.x + 10.f, 80.f);
-        descriptionText_->SetText("Money: " + std::to_string(GetContext().player_->GetPlayerMoney()), false);
+        descriptionText_ = std::make_shared<GUI::Label>("Lives: 10\nMoney: 0" + std::to_string(GetContext().player_->GetPlayerMoney()), *context.fonts_, 30, Fonts::Main);
+        descriptionText_->setPosition(context.window_->getView().getSize().x-viewSize_.x + 10.f, 45.f);
+        descriptionText_->SetText("Lives:"+ std::to_string(GetContext().player_->GetLives()) + "\nMoney: " + std::to_string(GetContext().player_->GetPlayerMoney()), false);
 
         infoText_ = std::make_shared<GUI::Label>("", *context.fonts_, 20, Fonts::Main);
         infoText_->SetColor(sf::Color::Red);
@@ -47,9 +47,36 @@ SidebarState::SidebarState(StateStack& stack, Context context)
 
         std::cout << "Here we are 2!" << std::endl;
 
-        auto waveButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
+
+        auto levelButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
+        levelButton->setOrigin(levelButton->GetGlobalBounds().width/2.f, levelButton->GetGlobalBounds().height/2.f);
+        levelButton->setPosition(viewSize_.x/2.f, 250.f);
+        levelButton->SetText("Next level");
+        levelButton->SetCallback([this, levelButton] ()
+        {
+            Command nextLevelCommand;
+            nextLevelCommand.category_ = Category::Type::GameField;
+            nextLevelCommand.gameFieldAction_ = GameFieldAction(
+                [this, levelButton] (GameField& gameField, sf::Time)
+                {
+                    if (gameField.CanSpawnNewWave())
+                    {
+                        //gameField.NextLevel();
+                        
+                        gameField.NextEnemyWave();
+                        titleText_->SetText("Level: " + std::to_string(gameField.GetCurrentLevel()), false);
+                        currentLevel_ = gameField.GetCurrentLevel();
+                    }
+                }
+            );
+            GUIController_.SendCommand(nextLevelCommand);
+        });
+        
+        GUIContainer_.Pack(levelButton, true);
+
+        /* auto waveButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
         waveButton->setOrigin(waveButton->GetGlobalBounds().width/2.f, waveButton->GetGlobalBounds().height/2.f);
-        waveButton->setPosition(viewSize_.x/2.f, 250.f);
+        waveButton->setPosition(viewSize_.x/2.f, 350.f);
         waveButton->SetText("Next wave");
         waveButton->SetCallback([this, waveButton] ()
             {
@@ -68,8 +95,9 @@ SidebarState::SidebarState(StateStack& stack, Context context)
                 );
                 GUIController_.SendCommand(waveCommand);
                
-            });
-        GUIContainer_.Pack(waveButton, true);
+            }); */
+
+
 
         AddTowerButton(Tower::Type::Basic, -100.f, 0.f, sf::IntRect(0,54,166,166),sf::IntRect(0,54,166,166));
         AddTowerButton(Tower::Type::Slowing, +100.f, 0.f, sf::IntRect(0,54,166,166),sf::IntRect(0,54,166,166));
@@ -111,8 +139,8 @@ bool SidebarState::Update(sf::Time dt) {
 }
 
 void SidebarState::UpdateGUI(sf::Time dt) {
-    titleText_->SetText("Level: "+ std::to_string(currentWave_) +"\nWave: 0", false);
-    descriptionText_->SetText("Money: " + std::to_string(GetContext().player_->GetPlayerMoney()), false);
+    //titleText_->SetText("Level: "+ std::to_string(currentWave_) +"\nWave: 0", false);
+    descriptionText_->SetText("Lives:"+ std::to_string(GetContext().player_->GetLives()) + "\nMoney: " + std::to_string(GetContext().player_->GetPlayerMoney()), false);
     GUIContainer_.Update(dt);
     sidebarWorld_.Update(dt);
     backgroundShape_.setPosition(GUIContainer_.getPosition());
