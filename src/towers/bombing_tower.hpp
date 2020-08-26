@@ -6,7 +6,7 @@
 /* This is a bombing tower that
  * - shoots bombs which cost 10 hp for any enemy in range
  * - is pretty slow, shoots in every 8 seconds
- * - has a medium range, 200 units
+ * - has a medium range, 150 units
 */
 
 class BombingTower : public Tower {

@@ -16,7 +16,7 @@ sf::FloatRect SpriteNode::GetBounds() const {
 }
 
 
-void SpriteNode::Update(sf::Time dt)
+void SpriteNode::Update(sf::Time)
 {
     //Do nothing
 }
