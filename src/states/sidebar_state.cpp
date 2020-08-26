@@ -18,26 +18,38 @@ SidebarState::SidebarState(StateStack& stack, Context context)
     , backgroundShape_()
     , titleText_(nullptr)
     , descriptionText_(nullptr)
+    , infoText_(nullptr)
     , viewSize_(context.window_->getView().getSize().x/4.f, context.window_->getView().getSize().y)
     , GUIContainer_() 
     , GUIController_(*context.GUIController_)
-    , towerPosition_(sf::Vector2f(viewSize_.x/2.f, 230.f))
+    , towerPosition_(sf::Vector2f(viewSize_.x/2.f, 400.f))
     , sidebarWorld_(*context.window_,towerPosition_)
     , currentWave_(0)
+    , showInfotext_(false)
+    , elapsedTime_(sf::Time::Zero)
     {
         GUIContainer_.setPosition(context.window_->getView().getSize().x - viewSize_.x, 0);
         sidebarWorld_.SetGraphPosition(GUIContainer_.getTransform());
         std::cout << "Here we are!" << std::endl;
-        
-        titleText_ = std::make_shared<GUI::Label>("Wave 0", *context.fonts_, 35, Fonts::Main);
+
+        titleText_ = std::make_shared<GUI::Label>("Level: 0\nWave: 0", *context.fonts_, 30, Fonts::Main);
         //titleText_->CenterTextOrigin();
-        titleText_->setPosition(50.f, 10.f);
+        titleText_->setPosition(context.window_->getView().getSize().x-viewSize_.x + 10.f, 10.f);
         //GUIContainer_.Pack(titleText_, true);
+
+        descriptionText_ = std::make_shared<GUI::Label>("Money: " + std::to_string(GetContext().player_->GetPlayerMoney()), *context.fonts_, 30, Fonts::Main);
+        descriptionText_->setPosition(context.window_->getView().getSize().x-viewSize_.x + 10.f, 80.f);
+        descriptionText_->SetText("Money: " + std::to_string(GetContext().player_->GetPlayerMoney()), false);
+
+        infoText_ = std::make_shared<GUI::Label>("", *context.fonts_, 20, Fonts::Main);
+        infoText_->SetColor(sf::Color::Red);
+        infoText_->setPosition(context.window_->getView().getSize().x-viewSize_.x + 10.f, 135.f);
+
         std::cout << "Here we are 2!" << std::endl;
 
         auto waveButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
         waveButton->setOrigin(waveButton->GetGlobalBounds().width/2.f, waveButton->GetGlobalBounds().height/2.f);
-        waveButton->setPosition(viewSize_.x/2.f, 100.f);
+        waveButton->setPosition(viewSize_.x/2.f, 250.f);
         waveButton->SetText("Next wave");
         waveButton->SetCallback([this, waveButton] ()
             {
@@ -50,7 +62,7 @@ SidebarState::SidebarState(StateStack& stack, Context context)
                         if (gameField.CanSpawnNewWave())
                         {
                             gameField.NextEnemyWave();
-                            titleText_->SetText("Wave " + std::to_string(++currentWave_), false);
+                            titleText_->SetText("Level " + std::to_string(gameField.GetCurrentLevel()), false);
                         } 
                     }
                 );
@@ -75,16 +87,32 @@ void SidebarState::Draw() {
 
     window.draw(backgroundShape_);
     window.draw(*titleText_);
+    window.draw(*descriptionText_);
+    window.draw(*infoText_);
     window.draw(GUIContainer_);
     sidebarWorld_.Draw();
 }
 
 bool SidebarState::Update(sf::Time dt) {
+    if (showInfotext_) 
+    {
+        infoText_->SetText("Not enough money to buy tower", false);
+        elapsedTime_ += dt;
+    } 
+    if (elapsedTime_ >= sf::seconds(5))
+    {
+        showInfotext_ = false;
+        elapsedTime_ = sf::Time::Zero;
+        infoText_->SetText("", false);
+    }
+
     UpdateGUI(dt);
 	return true;
 }
 
 void SidebarState::UpdateGUI(sf::Time dt) {
+    titleText_->SetText("Level: "+ std::to_string(currentWave_) +"\nWave: 0", false);
+    descriptionText_->SetText("Money: " + std::to_string(GetContext().player_->GetPlayerMoney()), false);
     GUIContainer_.Update(dt);
     sidebarWorld_.Update(dt);
     backgroundShape_.setPosition(GUIContainer_.getPosition());
@@ -109,6 +137,7 @@ void SidebarState::AddTowerButton(Tower::Type type, float relX, float relY, sf::
         std::string towerName = towerTable[type].name;
         towerButton->SetText(towerName.append("\n").append(std::to_string(towerTable[type].price)));
         GUIContainer_.Pack(towerButton, true); //Pack it before getting position to get the real pos
+        
         towerButton->SetCallback([this, towerButton] ()
             {
                 if (GetContext().player_->BuyTower(towerTable[towerButton->GetTowerType()].price))
@@ -126,8 +155,12 @@ void SidebarState::AddTowerButton(Tower::Type type, float relX, float relY, sf::
                     );
 
                     GUIController_.SendCommand(command);
+                    towerButton->GetTowerPic()->Activate();
+                    
                 } else
                 {
+                    showInfotext_ = true;
+                    
                     std::cout << "not enough money to buy towers!" << std::endl;
                 }
 

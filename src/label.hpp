@@ -22,6 +22,7 @@ class Label : public Component
 
 		void				SetText(const std::string& text, bool center=true);
         //void				SetText(const std::string& text);
+        void                SetColor(sf::Color color);
         virtual bool		IsSelectable() const override;
         void                CenterTextOrigin();
 

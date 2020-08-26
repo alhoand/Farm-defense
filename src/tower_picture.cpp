@@ -42,6 +42,8 @@ sf::Vector2f TowerPicture::GetClickPos() const
 
 
 void TowerPicture::GetBack() {
+    Deactivate();
+
     std::cout << "TowerPic origin:" << getOrigin().x << ", " << getOrigin().y << std::endl;
     std::cout << "TowerPic world pos:" << GetWorldPosition().x << ", " << GetWorldPosition().y << std::endl;
     std::cout << "TowerPic pos:" << getPosition().x << ", " << getPosition().y << std::endl;

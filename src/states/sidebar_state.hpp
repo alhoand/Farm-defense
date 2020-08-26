@@ -22,6 +22,7 @@ class SidebarState : public State {
         sf::RectangleShape backgroundShape_;
         GUI::Label::Ptr titleText_;
         GUI::Label::Ptr descriptionText_;
+        GUI::Label::Ptr infoText_;
         sf::Vector2f viewSize_;
         GUI::Container  GUIContainer_;
         GUI::Controller& GUIController_;
@@ -29,5 +30,7 @@ class SidebarState : public State {
         GUI::SidebarWorld 
         sidebarWorld_;
         int currentWave_;
+        bool showInfotext_;
+        sf::Time elapsedTime_;
         
 };
