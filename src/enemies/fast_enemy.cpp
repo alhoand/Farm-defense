@@ -27,11 +27,11 @@ void FastEnemy::TakeHit(int damage, unsigned int bulletType)
     int finalDamage = damage;
     if (bulletType == Category::BasicBullet)
     {
-        std::ceil(finalDamage * 0.5);
+        finalDamage = std::ceil(finalDamage * 0.5);
     }
     else if (bulletType == Category::Bomb)
     {
-        std::floor(finalDamage * 1.5);
+        finalDamage = std::floor(finalDamage * 1.5);
     }
     Damage(finalDamage);
 }

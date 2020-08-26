@@ -33,7 +33,7 @@ EndOfLevelState::EndOfLevelState(StateStack& stack, Context context)
             Command nextLevelCommand;
                 nextLevelCommand.category_ = Category::Type::GameField;
                 nextLevelCommand.gameFieldAction_ = GameFieldAction(
-                            [continueButton] (GameField& gameField, sf::Time dt)
+                            [continueButton] (GameField& gameField, sf::Time)
                             {
                                 gameField.NextLevel();
                             }

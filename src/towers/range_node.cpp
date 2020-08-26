@@ -4,8 +4,8 @@
 RangeNode::RangeNode(float range, sf::Color color) :
 radius_(range)
 , color_(color)
-, circle_(radius_)
 , defaultColor_(sf::Color(0, 0, 0, 128))
+, circle_(radius_)
 {
     circle_.setFillColor(defaultColor_);
     circle_.setOrigin(circle_.getLocalBounds().width/2.f, circle_.getLocalBounds().height/2.f);
@@ -29,7 +29,7 @@ float RangeNode::GetRadius() const
     return radius_;
 }
 
-void RangeNode::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
+void RangeNode::DrawCurrent(sf::RenderTarget&, sf::RenderStates) const
 {
     //target.draw(circle_, states);
 }

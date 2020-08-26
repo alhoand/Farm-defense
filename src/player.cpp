@@ -124,7 +124,7 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
         sf::Vector2f mouse = window_.mapPixelToCoords(sf::Vector2i(event.mouseMove.x,event.mouseMove.y));
         //std::cout << "Mouse: " << mouse.x << ", " << mouse.y << std::endl;
         move.action_ = DerivedAction<Tower> (
-           [mouse] (Tower& tower, sf::Time dt) {
+           [mouse] (Tower& tower, sf::Time) {
                 if (tower.IsMoving())
                     tower.setPosition(mouse.x,mouse.y);
            });
