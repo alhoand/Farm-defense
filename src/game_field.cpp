@@ -20,7 +20,7 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	 gameFieldBounds_(0.f, 0.f, // x and y of the game field
 	 				gameFieldView_.getSize().x + viewOffset_.x, //world width is a bit bigger than the view's width
 					gameFieldView_.getSize().y + viewOffset_.y), // world height is same as view's height
-	 spawnPosition_(gameFieldBounds_.left + 50.f,
+	 spawnPosition_(gameFieldBounds_.left + 10.f,
 	 				 (gameFieldBounds_.top + gameFieldBounds_.height)/3.f),
 	commandQueue_(),
 	spawnCountdown_(sf::seconds(2)),

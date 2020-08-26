@@ -5,7 +5,7 @@
 
 
 Player::Player(sf::RenderWindow& window, sf::Vector2f viewOffset) 
-    : window_(window), viewOffset_(viewOffset), lives_(10), status_(), money_(500), score_(0), infoRequested_(false), infoPopRequested_(false) { }
+    : window_(window), viewOffset_(viewOffset), lives_(10), status_(), money_(500), infoRequested_(false), infoPopRequested_(false) { }
 
 // Adapted from SFML Game Development-book
 
@@ -228,15 +228,6 @@ bool Player::BuyTower(int price)
     }
     money_ -= price;
     return true;
-}
-
-void Player::SetPlayerName(sf::String name)
-{
-    name_ = name;
-}
-sf::String Player::GetPlayerName()
-{
-    return name_;
 }
 
 bool Player::InfoRequested() const

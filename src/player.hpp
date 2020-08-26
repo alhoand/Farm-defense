@@ -28,19 +28,18 @@ class Player {
         int         GetPlayerMoney();
         void        AddMoney(int money);
         bool        BuyTower(int price);
-        void        SetPlayerName(sf::String name);
-        sf::String  GetPlayerName();
         bool        PlacementSuccess();
-        bool                InfoRequested() const;
-        bool                InfoPopRequested() const;
-        void                ResetInfoRequestStatus();
-        void                ResetInfoPopStatus();
+        bool        InfoRequested() const;
+        bool        InfoPopRequested() const;
+        void        ResetInfoRequestStatus();
+        void        ResetInfoPopStatus();
 
-        void                RequestInfoPop();
+        void        RequestInfoPop();
+        
     private:
-        void                SetPlacementSuccess();
-        void                SetPlacementFailure();
-        void                RequestInfo();
+        void        SetPlacementSuccess();
+        void        SetPlacementFailure();
+        void        RequestInfo();
 
         
         
@@ -48,9 +47,7 @@ class Player {
         sf::Vector2f        viewOffset_;
         int                 lives_;
         GameStatus          status_;
-        int                 score_;
         int                 money_;
-        sf::String          name_;
         bool                towerPlacementSuccess_;
         bool                infoRequested_;
         bool                infoPopRequested_;
