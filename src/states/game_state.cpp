@@ -80,9 +80,9 @@ bool GameState::HandleEvent(const sf::Event& event) {
     GUIController_.FetchInput(commands);
     if (event.type == sf::Event::MouseButtonReleased)
     {
-        std::cout << "Inforequested: " << player_.InfoRequested() << std::endl;
-        std::cout << "InfoPOPrequested: " << player_.InfoPopRequested() << std::endl;
-        if (player_.InfoRequested() && !(player_.InfoPopRequested()))
+       // std::cout << "Inforequested: " << player_.InfoRequested() << std::endl;
+       // std::cout << "InfoPOPrequested: " << player_.InfoPopRequested() << std::endl;
+       /* if (player_.InfoRequested() && !(player_.InfoPopRequested()))
             {
                 std::cout << "Hello from here rewuested infooooo" << std::endl;
                 RequestStackPush(States::ID::GameUpgradeTowerSideBar);
@@ -94,7 +94,7 @@ bool GameState::HandleEvent(const sf::Event& event) {
                 RequestStackPop();
                 std::cout << "Stack pop requested" << std::endl;
                 player_.ResetInfoPopStatus();
-            }
+            }*/
         
     }
     

@@ -30,7 +30,7 @@ SidebarState::SidebarState(StateStack& stack, Context context)
     {
         GUIContainer_.setPosition(context.window_->getView().getSize().x - viewSize_.x, 0);
         sidebarWorld_.SetGraphPosition(GUIContainer_.getTransform());
-        std::cout << "Here we are!" << std::endl;
+        //std::cout << "Here we are!" << std::endl;
 
         titleText_ = std::make_shared<GUI::Label>("Level: 0\nWave: 0", *context.fonts_, 30, Fonts::Main);
         //titleText_->CenterTextOrigin();
@@ -120,14 +120,14 @@ void SidebarState::UpdateGUI(sf::Time dt) {
 
 void SidebarState::AddTowerButton(Tower::Type type, float relX, float relY, sf::IntRect normalTexture, sf::IntRect selectedTexture)
 {
-        std::cout << "we got hereeeeeeeeeee" << std::endl;
+        //std::cout << "we got hereeeeeeeeeee" << std::endl;
 
         auto towerButton = std::make_shared<GUI::TowerButton>(type, towerPosition_, *GetContext().fonts_, *GetContext().textures_, normalTexture, selectedTexture);
         sf::Vector2f relativePosition(relX, relY);
         towerButton->setOrigin(towerButton->GetGlobalBounds().width/2.f, towerButton->GetGlobalBounds().height/2.f);
         towerButton->setPosition(towerPosition_ + relativePosition);
         std::unique_ptr<TowerPicture> towerPic(new TowerPicture(type, *GetContext().textures_, towerPosition_ + relativePosition));
-        std::cout << "we got hereeeeeeeeeee2" << std::endl;
+       // std::cout << "we got hereeeeeeeeeee2" << std::endl;
 
         towerButton->AddTowerPicture(towerPic.get());
         //towerButton->GetTowerPic()
@@ -177,7 +177,7 @@ bool SidebarState::HandleEvent(const sf::Event& event) {
     if ((event.type == sf::Event::MouseMoved) || (event.type == sf::Event::MouseButtonPressed) || (event.type == sf::Event::MouseButtonReleased))
     {
 
-        if (event.type == sf::Event::MouseButtonReleased)
+       /* if (event.type == sf::Event::MouseButtonReleased)
         {
             if (GetContext().player_->InfoRequested())
             {
@@ -188,7 +188,7 @@ bool SidebarState::HandleEvent(const sf::Event& event) {
             //player_.ResetInfoRequestStatus();
             //player_.ResetInfoPopStatus();
         
-        }
+        }*/
         return true;
     }
 
