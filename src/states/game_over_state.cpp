@@ -32,13 +32,13 @@ GameOverState::GameOverState(StateStack& stack, Context context)
         {
             gameOverText_.setString("You lost the game :(\nWhat do you want to do next?");
         }
-        gameOverText_.setCharacterSize(70);
+        gameOverText_.setCharacterSize(50);
         sf::FloatRect bounds = gameOverText_.getLocalBounds();
         gameOverText_.setOrigin(::floor(bounds.left + bounds.width / 2.f), std::floor(50 + bounds.top + bounds.height / 2.f));
         gameOverText_.setPosition(0.5f * viewSize.x, 0.3f * viewSize.y);
 
-        auto menuButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_);
-        menuButton->setPosition(550, 500);
+        auto menuButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, sf::IntRect(0,104,100,88),sf::IntRect(0,192,100,88));
+        menuButton->setPosition(550, 300);
         menuButton->SetText("Return to main menu");
         menuButton->SetCallback([this] ()
         {
@@ -47,8 +47,8 @@ GameOverState::GameOverState(StateStack& stack, Context context)
         });
         GUIContainer_.Pack(menuButton); 
 
-        auto quitButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_);
-        quitButton->setPosition(550, 600);
+        auto quitButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
+        quitButton->setPosition(550, 400);
         quitButton->SetText("Ragequit");
         quitButton->SetCallback([this] ()
         {
@@ -107,5 +107,5 @@ bool GameOverState::HandleEvent(const sf::Event& event)
     }
 
     GUIContainer_.HandleEvent(event);
-    return false; // should this be false or true?
+    return false; 
 }

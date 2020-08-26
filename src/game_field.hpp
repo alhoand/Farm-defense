@@ -55,6 +55,7 @@ class GameField : private sf::NonCopyable {
         CommandQueue&   GetCommandQueue();
         int             NewEnemiesReachedEnd();
         bool            CanSpawnNewWave();
+        int             GetCurrentLevel();
         bool            IsEndOfLevel();
         bool            IsEndOfGame();
         void            AddRounMoney(int points);
