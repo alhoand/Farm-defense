@@ -30,7 +30,7 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	difficultyLevel_(0), //0 is the first level and increases by 1 by each wave
 	levelCount_(1), // can be added to parameter list or askef for player, but for now it's just harcoded to be 5
 	newEnemiesReachedEnd_(0),
-	roundScore_(0),
+	roundMoney_(0),
 	hasActiveEnemies_(false),
 	newLevelStarted_(false)
 	{ 
@@ -42,7 +42,7 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 
 void GameField::Update(sf::Time dt) {
 	newEnemiesReachedEnd_ = 0; // new enemies have not reached end at the beginning of an update
-	roundScore_ = 0; // set round score to zero 
+	roundMoney_ = 0; // set round score to zero 
 
 	DestroyEntitiesOutsideView();
 
@@ -249,7 +249,7 @@ void GameField::HandleCollisions()
 			enemy.TakeHit(bullet.GetDamage(), bullet.GetCategory());
 			if (enemy.IsDestroyed())
 			{
-				AddRoundScore(enemy.GetScorePoints());
+				AddRounMoney(enemy.GetMoney());
 			}
 			std::cout << "HP now: " << enemy.GetHitpoints() << std::endl;
 			bullet.Destroy();
@@ -303,7 +303,7 @@ void GameField::NextEnemyWave()
 	{
 		std::cout << "Creating new enemy wave!!" << std::endl;
 		difficultyLevel_++;
-		leftToSpawn_ = difficultyLevel_ * 5; // Should not be hardcoded
+		leftToSpawn_ = difficultyLevel_ * 15; // Should not be hardcoded
 	}
 }
 
@@ -409,10 +409,14 @@ int GameField::NewEnemiesReachedEnd() {
 	return newEnemiesReachedEnd_;
 }
 
+bool GameField::CanSpawnNewWave()
+{
+	return !hasActiveEnemies_ && leftToSpawn_ <= 0;
+}
 //can be used to determine when current wave is finished
 bool GameField::IsEndOfLevel()
 {
-	return newLevelStarted_ && !hasActiveEnemies_ && leftToSpawn_ <= 0 ;
+	return newLevelStarted_ && !hasActiveEnemies_ && leftToSpawn_ <= 0;
 }
 
 bool GameField::IsEndOfGame()
@@ -420,14 +424,14 @@ bool GameField::IsEndOfGame()
 	return IsEndOfLevel() && difficultyLevel_ >= levelCount_;
 }
 
-int GameField::GetRoundScore()
+int GameField::GetAddedMoney()
 {
-	return roundScore_;
+	return roundMoney_;
 }
 
-void GameField::AddRoundScore(int score)
+void GameField::AddRounMoney(int money)
 {
-	roundScore_ += score;
+	roundMoney_ += money;
 }
 
 void GameField::DestroyEntitiesOutsideView()
@@ -549,7 +553,7 @@ void GameField::MakeTowersShoot()
             }
 			if (enemy->IsDestroyed())
 			{
-				AddRoundScore(enemy->GetScorePoints());
+				AddRounMoney(enemy->GetMoney());
 			}
 		}
 		bomb.Destroy();

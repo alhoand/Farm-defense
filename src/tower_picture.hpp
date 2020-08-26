@@ -21,6 +21,7 @@ class TowerPicture : public SpriteNode {
         sf::FloatRect                       GetBoundingRect() const override;
         void                                Activate();
         void                                Deactivate();
+        bool                                IsActive() const;
         void                                Update(sf::Time dt) override;
 
     private:

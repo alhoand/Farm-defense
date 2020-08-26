@@ -6,6 +6,7 @@
 #include "towers/bullet.hpp"
 
 #include <vector>
+#include <string>
 
 struct Direction
 {
@@ -26,12 +27,13 @@ struct EnemyData
 	float			speed;
 	float			slowDownRate;
 	Textures::ID	texture;
-	int				scorepoints;
+	int				worthOfMoney;
 };
 
 //initializer
 std::vector<EnemyData>	InitializeEnemyData();
 std::vector<Direction>	InitializeEnemyPath();
+
 
 struct TowerData {
 	Textures::ID	texture;
@@ -39,6 +41,8 @@ struct TowerData {
     float 			reloadTime;
     int 			bulletType;
 	float			scale; // Scale of the sprite, 1 is normal, 0.5 is half the size
+	int 			price; // tower price
+	std::string		name;
 };
 
 //initializer

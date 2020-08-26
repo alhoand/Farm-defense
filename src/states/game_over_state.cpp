@@ -27,7 +27,7 @@ GameOverState::GameOverState(StateStack& stack, Context context)
         gameOverText_.setFont(font);
         if (context.player_->GetGameStatus() == Player::GameStatus::GameWon)
         {
-            gameOverText_.setString("You won the game and defeated all enemies!\nWhat do you want to do next?"); //\nYour score is: " + std::to_string(context.player_->GetScore())
+            gameOverText_.setString("You won the game and defeated all enemies!\nWhat do you want to do next?"); //\nYour score is: " + std::to_string(context.player_->GetPlayerMoney())
         } else if (context.player_->GetGameStatus() == Player::GameStatus::GameLost)
         {
             gameOverText_.setString("You lost the game :(\nWhat do you want to do next?");

@@ -34,7 +34,7 @@ class Enemy : public Entity {
         void            SlowDown(); 
         virtual void    TakeHit(int damage, unsigned int bulletType) = 0; // some enemies resist or take more damage if bullet is certain type, so that can be defined in derived classes
         bool            IsMarkedForRemoval() const override;
-        int             GetScorePoints();
+        int             GetMoney();
 
     protected:
         virtual void    UpdateMovementPattern(sf::Time dt); 
@@ -57,5 +57,5 @@ class Enemy : public Entity {
         bool            hasMovementAnimation_;
         Animation       deathAnimation_;
         Animation       movementAnimation_;
-        bool            isGivenScorepoints_;
+        bool            isGivenMoney_;
 };
