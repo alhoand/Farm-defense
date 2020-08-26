@@ -59,9 +59,9 @@ SidebarState::SidebarState(StateStack& stack, Context context)
             });
         GUIContainer_.Pack(waveButton, true);
 
-        AddTowerButton(Tower::Type::Basic, -100.f, 0.f, sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
-        AddTowerButton(Tower::Type::Slowing, +100.f, 0.f, sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
-        AddTowerButton(Tower::Type::Bombing, -100.f, 230.f, sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
+        AddTowerButton(Tower::Type::Basic, -100.f, 0.f, sf::IntRect(0,54,166,166),sf::IntRect(0,54,166,166));
+        AddTowerButton(Tower::Type::Slowing, +100.f, 0.f, sf::IntRect(0,54,166,166),sf::IntRect(0,54,166,166));
+        AddTowerButton(Tower::Type::Bombing, -100.f, 230.f, sf::IntRect(0,54,166,166),sf::IntRect(0,54,166,166));
         AddTowerButton(Tower::Type::Super, +100.f, 230.f, sf::IntRect(0,54,166,166),sf::IntRect(0,54,166,166));
 
         backgroundShape_.setFillColor(sf::Color(160,82,45,235));
