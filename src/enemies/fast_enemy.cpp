@@ -6,10 +6,10 @@ FastEnemy::FastEnemy(const TextureHolder& textures, float difficultyLevel, float
     { 
         showDeathAnimation_ = true;
         
-        movementAnimation_.SetTexture(textures.Get(Textures::ID::Leppis)),
-        movementAnimation_.SetFrameSize(sf::Vector2i(150, 175));
-	    movementAnimation_.SetNumFrames(9);
-	    movementAnimation_.SetDuration(sf::seconds(0.5));
+        movementAnimation_.SetTexture(textures.Get(Textures::ID::Koppis)),
+        movementAnimation_.SetFrameSize(sf::Vector2i(166, 166));
+	    movementAnimation_.SetNumFrames(4);
+	    movementAnimation_.SetDuration(sf::seconds(0.3));
         movementAnimation_.SetRepeating(true);
         sf::FloatRect animationBounds = movementAnimation_.GetLocalBounds();
         hasMovementAnimation_ = true;
@@ -17,7 +17,7 @@ FastEnemy::FastEnemy(const TextureHolder& textures, float difficultyLevel, float
         sprite_ = movementAnimation_.GetFirstFrame();
         sprite_.setOrigin(animationBounds.width/2.f, animationBounds.height/2.f);
 
-        movementAnimation_.setScale(sf::Vector2f(0.2,0.2));
+        movementAnimation_.setScale(sf::Vector2f(0.4,0.4));
         sprite_.setScale(sf::Vector2f(0.2,0.2));
     }
 
