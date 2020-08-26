@@ -107,64 +107,7 @@ void GameField::BuildScene() {
 	sceneLayers_[Background]->AttachChild(std::move(grassSprite));
 
 	// Make path visible
-	std::vector<Direction> path = InitializeEnemyPath();
-
-	// Path bagins from spawnPosition_ with 25 pixels of offset
-	sf::Vector2f c = spawnPosition_;
-	c.x -= 25;
-	c.y -= 25;
-
-	sf::Texture& p = textures_.Get(Textures::ID::Path);
-	std::unique_ptr<SpriteNode> pathSprite(new SpriteNode(p));
-	pathSprite->setPosition(c);
-	sceneLayers_[Background]->AttachChild(std::move(pathSprite));
-
-	for (auto i : path) {
-		int dist = 0;
-		while (dist < i.distance) {
-			dist += 50;
-			if (i.angle == 0) {
-				c.x += 50;
-			} else if (i.angle == +90) {
-				c.y += 50;
-			} else if (i.angle == -90) {
-				c.y -= 50;
-			} else {
-				c.x -= 50;
-			}
-
-			sf::Texture& p = textures_.Get(Textures::ID::Path);
-			std::unique_ptr<SpriteNode> pathSprite(new SpriteNode(p));
-			pathSprite->setPosition(c);
-			sceneLayers_[Background]->AttachChild(std::move(pathSprite));
-		}
-	}
-
-	//Initialize a super tower that can be moved with hard-coded bullet
-	/*std::unique_ptr<Tower> firstTower(new SuperTower(textures_));
-	// firstTower_ = firstTower.get();
-	//firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
-
-	firstTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/2.f, (gameFieldBounds_.top + gameFieldBounds_.height)/2.f+250);
-	firstTower->DisallowMoving();
-	sceneLayers_[Field] -> AttachChild(std::move(firstTower));*/
-
-
-	//Initialize a slowing tower
-	/*std::unique_ptr<Tower> secondTower(new SlowingTower(textures_));
-	//firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
-	secondTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/3.f +200.f, (gameFieldBounds_.top + gameFieldBounds_.height)/3.f);
-	secondTower->DisallowMoving();
-	sceneLayers_[Field] -> AttachChild(std::move(secondTower));
-
-	// Initialize a bombing tower
-	std::unique_ptr<Tower> thirdTower(new BombingTower(textures_));
-	//firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
-	thirdTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/4.f-150.f, (gameFieldBounds_.top + gameFieldBounds_.height) -530.f);
-	thirdTower->DisallowMoving();
-	sceneLayers_[Field] -> AttachChild(std::move(thirdTower));
-	*/
-
+	BuildPath();
 }
 
 bool MatchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2)
@@ -193,11 +136,6 @@ bool MatchesCategories(SceneNode::Pair& colliders, Category::Type type1, Categor
 
 void GameField::AddTower(Tower::Type type, sf::Vector2f pos)
 {
-	/*if (newLevelStarted_) {
-		std::cout << "Cannot add towers during enemy waves!" << std::endl;
-		return;
-	}*/
-
 	std::cout << "Here we are!" << std::endl;
 
 	std::unique_ptr<Tower> newTower;
@@ -287,7 +225,38 @@ void GameField::HandleCollisions()
 }
 void GameField::BuildPath()
 {
-	
+	std::vector<Direction> path = InitializeEnemyPath();
+
+	// Path begins from spawnPosition_ with 25 pixels of offset
+	sf::Vector2f c = spawnPosition_;
+	c.x -= 25;
+	c.y -= 25;
+
+	sf::Texture& p = textures_.Get(Textures::ID::Path);
+	std::unique_ptr<SpriteNode> pathSprite(new SpriteNode(p));
+	pathSprite->setPosition(c);
+	sceneLayers_[Background]->AttachChild(std::move(pathSprite));
+
+	for (auto i : path) {
+		int dist = 0;
+		while (dist < i.distance) {
+			dist += 50;
+			if (i.angle == 0) {
+				c.x += 50;
+			} else if (i.angle == +90) {
+				c.y += 50;
+			} else if (i.angle == -90) {
+				c.y -= 50;
+			} else {
+				c.x -= 50;
+			}
+
+			sf::Texture& p = textures_.Get(Textures::ID::Path);
+			std::unique_ptr<SpriteNode> pathSprite(new SpriteNode(p));
+			pathSprite->setPosition(c);
+			sceneLayers_[Background]->AttachChild(std::move(pathSprite));
+		}
+	}
 }
 
 void GameField::OnCommand(Command command, sf::Time dt) 
@@ -303,7 +272,7 @@ void GameField::NextEnemyWave()
 	if (difficultyLevel_ <= levelCount_)
 	{
 		std::cout << "Creating new enemy wave!!" << std::endl;
-		leftToSpawn_ = difficultyLevel_ * 15; // Should not be hardcoded
+		leftToSpawn_ = difficultyLevel_ * 10; // Should not be hardcoded
 	}
 }
 

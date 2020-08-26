@@ -52,7 +52,6 @@ struct BulletData {
 	Textures::ID	texture;
     float           speed;
     int             damage;
-    int             damageDuration;
 };
 
 //initializer

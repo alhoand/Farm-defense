@@ -1,7 +1,7 @@
 #include "basic_tower.hpp"
 
 BasicTower::BasicTower(const TextureHolder& textures)
-    : Tower(Tower::Type::Basic, textures, 200, 2) { 
+    : Tower(Tower::Type::Basic, textures) { 
         sprite_.setScale(0.5,0.5);
     }
 

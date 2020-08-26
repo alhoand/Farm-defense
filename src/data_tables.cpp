@@ -57,16 +57,28 @@ std::vector<TowerData> InitializeTowerData()
 {
 	std::vector<TowerData> data(Enemy::TypeCount);
 
-	data[Tower::Type::Super].scale = 0.5;
-
+	data[Tower::Type::Basic].range = 200;
+	data[Tower::Type::Basic].reloadTime = 2;
+	data[Tower::Type::Basic].scale = 1;
 	data[Tower::Type::Basic].price = 150;
-	data[Tower::Type::Super].price = 500;
-	data[Tower::Type::Slowing].price = 200;
-	data[Tower::Type::Bombing].price = 400;
-
 	data[Tower::Type::Basic].name = "Basic Tower";
+
+	data[Tower::Type::Super].range = 250;
+	data[Tower::Type::Super].reloadTime = 0.5;
+	data[Tower::Type::Super].scale = 0.5;
+	data[Tower::Type::Super].price = 500;
 	data[Tower::Type::Super].name = "Super Tower";
+
+	data[Tower::Type::Slowing].range = 200;
+	data[Tower::Type::Slowing].reloadTime = 0;
+	data[Tower::Type::Slowing].scale = 1;
+	data[Tower::Type::Slowing].price = 200;
 	data[Tower::Type::Slowing].name = "Slowing Tower";
+
+	data[Tower::Type::Bombing].range = 100;
+	data[Tower::Type::Bombing].reloadTime = 8;
+	data[Tower::Type::Bombing].scale = 1;
+	data[Tower::Type::Bombing].price = 400;
 	data[Tower::Type::Bombing].name = "Bomb Tower";
 
 	return data;

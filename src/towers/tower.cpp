@@ -3,13 +3,17 @@
 #include <math.h> 
 #include <cmath> 
 
+namespace {
+	const std::vector<TowerData> table = InitializeTowerData();
+}
+
 // Constructor
-Tower::Tower(Tower::Type type, const TextureHolder &textures, float range, float reloadTime)
+Tower::Tower(Tower::Type type, const TextureHolder &textures)
     : Entity(1), 
       type_(type),
       sprite_(textures.Get(ToTextureID(type))),
-      range_(range), 
-      reloadTime_(reloadTime), 
+      range_(table[type].range), 
+      reloadTime_(table[type].reloadTime), 
       canShoot_(false), 
       countdown_(sf::Time::Zero),
       shootCommand_() {
