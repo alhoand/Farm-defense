@@ -37,7 +37,7 @@ void GameState::Draw() {
 
 bool GameState::Update(sf::Time dt) {
     gameField_.Update(dt); // updates the gamefield on each tick
-    ModifyPlayerScore(gameField_.GetRoundScore());
+    IncreasePlayerMoney(gameField_.GetAddedMoney());
     
     for (int i = 0; i < gameField_.NewEnemiesReachedEnd(); i++)
     {
@@ -46,20 +46,16 @@ bool GameState::Update(sf::Time dt) {
     if (player_.GetLives() <= 0) 
     {
         player_.SetGameStatus(Player::GameLost);
+        std::cout << "hello from end of game" << std::endl;
         RequestStackPush(States::ID::GameOver);
         return false;
     }
     if (gameField_.IsEndOfGame())
     {
         player_.SetGameStatus(Player::GameWon);
+        std::cout << "hello from end of game" << std::endl;
         RequestStackPush(States::ID::GameOver);
         return false;
-    }
-    if (gameField_.EndOfLevel())
-    {
-        // when level ends open side bar 
-        //RequestStackPush(States::ID::Sidebar);
-        //return false;
     }
 
 
@@ -67,6 +63,13 @@ bool GameState::Update(sf::Time dt) {
 	player_.HandleRealtimeInput(commands);
 
     
+
+    if (gameField_.IsEndOfLevel())
+    {
+        // when level ends open side bar 
+        RequestStackPush(States::ID::EndOfLevel);
+        return false;
+    }
 
 	return true;
 }
@@ -117,9 +120,9 @@ bool GameState::HandleEvent(const sf::Event& event) {
 }
 
 
-void GameState::ModifyPlayerScore(int score)
+void GameState::IncreasePlayerMoney(int amount)
 {
-    player_.SetScore(score);
-    //std::cout << "current score: " << player_.GetScore() << std::endl;
+    player_.AddMoney(amount);
+    //std::cout << "current score: " << player_.GetPlayerMoney() << std::endl;
 }
 

@@ -39,20 +39,6 @@ sf::Vector2f TowerPicture::GetClickPos() const
     return clickPosition_;
 }
 
-void TowerPicture::Activate()
-{
-    active_ = true;
-}
-
-void TowerPicture::Deactivate()
-{
-    active_ = false;
-}
-
-bool TowerPicture::IsActive() const
-{
-    return active_;
-}
 
 
 void TowerPicture::GetBack() {
@@ -101,6 +87,21 @@ bool TowerPicture::IsDragged() const {
 
 sf::Vector2f TowerPicture::GetSidebarPos() const {
     return sideBarPos_;
+}
+
+void TowerPicture::Activate()
+{
+    active_ = true;
+}
+
+void TowerPicture::Deactivate()
+{
+    active_ = false;
+}
+
+bool TowerPicture::IsActive() const
+{
+    return active_;
 }
 
 

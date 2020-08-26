@@ -1,4 +1,5 @@
 #pragma once
+
 #include "command_queue.hpp"
 #include "category.hpp"
 #include <SFML/Window/Event.hpp>
@@ -18,17 +19,18 @@ class Player {
     public:
                             Player(sf::RenderWindow& window, sf::Vector2f viewOffset);
 
-        void                HandleEvent(const sf::Event& event, CommandQueue&);
-        void                HandleRealtimeInput(CommandQueue&);
-        void                ReduceLife();
-        int                 GetLives();
-        GameStatus          GetGameStatus();
-        void                SetGameStatus(GameStatus newStatus);
-        int                 GetScore();
-        void                SetScore(int change);
-        void                SetPlayerName(sf::String name);
-        sf::String          GetPlayerName();
-        bool                PlacementSuccess();
+        void        HandleEvent(const sf::Event& event, CommandQueue&);
+        void        HandleRealtimeInput(CommandQueue&);
+        void        ReduceLife();
+        int         GetLives();
+        GameStatus  GetGameStatus();
+        void        SetGameStatus(GameStatus newStatus);
+        int         GetPlayerMoney();
+        void        AddMoney(int money);
+        bool        BuyTower(int price);
+        void        SetPlayerName(sf::String name);
+        sf::String  GetPlayerName();
+        bool        PlacementSuccess();
         bool                InfoRequested() const;
         bool                InfoPopRequested() const;
         void                ResetInfoRequestStatus();
@@ -47,6 +49,7 @@ class Player {
         int                 lives_;
         GameStatus          status_;
         int                 score_;
+        int                 money_;
         sf::String          name_;
         bool                towerPlacementSuccess_;
         bool                infoRequested_;

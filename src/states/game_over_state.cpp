@@ -19,15 +19,15 @@ GameOverState::GameOverState(StateStack& stack, Context context)
         sf::Font& font = context.fonts_->Get(Fonts::Main);
         sf::Vector2f viewSize = context.window_->getView().getSize();
 
-        text_.setString("");
+/*         text_.setString("");
         text_.setFont(font);
         //text_.setColor(sf::Color::Red);
-        text_.setPosition(0.5f * viewSize.x, 0.6f * viewSize.y);
+        text_.setPosition(0.5f * viewSize.x, 0.6f * viewSize.y); */
 
         gameOverText_.setFont(font);
         if (context.player_->GetGameStatus() == Player::GameStatus::GameWon)
         {
-            gameOverText_.setString("You won the game and defeated all enemies!\nYour score is: " + std::to_string(context.player_->GetScore()) + "\nWhat do you want to do next?");
+            gameOverText_.setString("You won the game and defeated all enemies!\nWhat do you want to do next?"); //\nYour score is: " + std::to_string(context.player_->GetPlayerMoney())
         } else if (context.player_->GetGameStatus() == Player::GameStatus::GameLost)
         {
             gameOverText_.setString("You lost the game :(\nWhat do you want to do next?");
@@ -78,9 +78,9 @@ void GameOverState::Draw()
 
 }
 
-bool GameOverState::Update(sf::Time dt)
+bool GameOverState::Update(sf::Time)
 {
-    elapsedTime_ += dt;
+/*     elapsedTime_ += dt;
 
    // while (elapsedTime_ >= sf::seconds(.5f))
     {
@@ -91,13 +91,12 @@ bool GameOverState::Update(sf::Time dt)
             name_ += typedText_[0];
             typedText_ = typedText_.toAnsiString().substr(1);
         }
-    }
+    } */
     return false;
 }
 
 bool GameOverState::HandleEvent(const sf::Event& event)
-{
-    
+{ 
     if (event.type == sf::Event::TextEntered)
     {
         typedText_ += event.text.unicode;

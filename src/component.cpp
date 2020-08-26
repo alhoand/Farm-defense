@@ -53,7 +53,7 @@ void Component::ChildOf(Component* parent) {
 	this->parent_ = parent;
 }
 
-void Component::Update(sf::Time dt) {
+void Component::Update(sf::Time) {
 	//Do nothing by default
 }
 

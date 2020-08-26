@@ -16,7 +16,7 @@ public:
     virtual bool HandleEvent(const sf::Event& event) override;
 
 private:
-    void            ModifyPlayerScore(int score);
+    void            IncreasePlayerMoney(int amount);
 
     GameField       gameField_;
     Player&         player_;

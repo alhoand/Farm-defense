@@ -38,7 +38,7 @@ class Component : public sf::Drawable, public sf::Transformable, private sf::Non
                             // Sets the parent of the component
         void                ChildOf(Component* parent);
 
-        virtual void        Update(sf::Time dt);
+        virtual void        Update(sf::Time);
         sf::Transform       GetWorldTransform() const;
 
         sf::Vector2f        GetWorldPosition() const;

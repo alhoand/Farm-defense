@@ -12,6 +12,7 @@ namespace States {
         GameUpgradeTowerSideBar,
         GameOver,
         Score,
+        EndOfLevel,
         None
     };
 }

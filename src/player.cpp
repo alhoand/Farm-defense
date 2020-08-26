@@ -16,7 +16,7 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
         Command activate;
         activate.category_ = Category::Tower;
         sf::Vector2f mouse = window_.mapPixelToCoords(sf::Vector2i(event.mouseButton.x,event.mouseButton.y), window_.getView());
-        activate.action_ = DerivedAction<Tower> ( [&commands, mouse, this] (Tower& tower, sf::Time dt)
+        activate.action_ = DerivedAction<Tower> ( [&commands, mouse, this] (Tower& tower, sf::Time)
             {
                if (tower.GetBoundingRect().contains(mouse))
                 {
@@ -74,7 +74,20 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
         activateTowerPicture.category_ = Category::TowerPicture;
         activateTowerPicture.action_ = DerivedAction<TowerPicture>([mouse, this] (TowerPicture& tp, sf::Time)
         {
-            if (tp.GetBoundingRect().contains(mouse) && !tp.IsDragged())
+            if (tp.IsActive())
+                {
+                    sf::Vector2f parent = tp.GetWorldPosition() - tp.getPosition();
+                    sf::Vector2f origin = tp.getOrigin();
+                    std::cout << "parent pos: " << parent.x << ", "  << parent.y << std::endl;
+                    tp.setOrigin(tp.getOrigin() +parent +origin); // Some black magic here
+                    
+                    //tp.setPosition(mouse - parent - origin);//sf::Vector2f(100.f, 100.f)); //- tp.GetClickPos()); //-  tp.GetSidebarPos() * 100.f - tp.GetClickPos()); //+ tp.GetSidebarPos());
+                    tp.setPosition(mouse);
+                    tp.Drag();
+                    SetPlacementFailure();
+
+                }
+            /* if (tp.GetBoundingRect().contains(mouse) && !tp.IsDragged())
             {
                 std::cout << "TowerPicture was pressed!"<< std::endl;
                 if (tp.IsActive())
@@ -92,7 +105,7 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
                 }
 
                 
-            }
+            } */
     
             //std::cout << "Click:TowerPic origin:" << tp.getOrigin().x << ", " << tp.getOrigin().y << std::endl;
             //std::cout << "Click:TowerPic world pos:" << tp.GetWorldPosition().x << ", " << tp.GetWorldPosition().y << std::endl;
@@ -131,7 +144,7 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
         sf::Vector2f mouse = window_.mapPixelToCoords(sf::Vector2i(event.mouseMove.x,event.mouseMove.y));
         //std::cout << "Mouse: " << mouse.x << ", " << mouse.y << std::endl;
         move.action_ = DerivedAction<Tower> (
-           [mouse] (Tower& tower, sf::Time dt) {
+           [mouse] (Tower& tower, sf::Time) {
                 if (tower.IsMoving())
                     tower.setPosition(mouse.x,mouse.y);
            });
@@ -196,14 +209,25 @@ void Player::SetGameStatus(Player::GameStatus newStatus)
     status_ = newStatus;
 }
 
-int Player::GetScore()
+int Player::GetPlayerMoney()
 {
-    return score_;
+    return money_;
 }
 
-void Player::SetScore(int change)
+void Player::AddMoney(int money)
 {
-    score_ += change; // test if this works with negative change, or does it have to?
+    money_ += money;
+}
+
+bool Player::BuyTower(int price)
+{
+    if (money_ < price)
+    {
+        std::cout << "Cannot buy tower, not enough money" << std::endl;
+        return false;
+    }
+    money_ -= price;
+    return true;
 }
 
 void Player::SetPlayerName(sf::String name)

@@ -2,7 +2,7 @@
 
 /* This is a slowing tower that
  * - slows down enemies in range, according to their type
- * - has a pretty good range, 400 units
+ * - has a pretty good range, 300 units
 */
 
 class SlowingTower : public Tower {
@@ -10,5 +10,5 @@ class SlowingTower : public Tower {
         SlowingTower(const TextureHolder& textures);
 
     private:
-        void CreateBullet(SceneNode& node, const TextureHolder& textures) const { }
+        void CreateBullet(SceneNode&, const TextureHolder&) const { }
 };

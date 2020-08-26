@@ -17,7 +17,7 @@ class RangeNode : public SceneNode {
         void                SetDefaultColor();
     private:
     
-        virtual void        DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
+        virtual void        DrawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
 
         float               radius_;
         sf::Color           color_;

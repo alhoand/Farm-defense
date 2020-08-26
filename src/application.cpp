@@ -10,6 +10,7 @@
 #include "states/sidebar_state.hpp"
 #include "states/game_over_state.hpp"
 #include "states/score_state.hpp"
+#include "states/end_of_level_state.hpp"
 #include <iostream>
 
 static const sf::Time timePerFrame = sf::seconds(1.f / 60.f);
@@ -18,8 +19,8 @@ Application::Application()
     : window_(sf::VideoMode(1280, 720), "Tower Defense", sf::Style::Close),
     //: window_(sf::VideoMode::getFullscreenModes()[0], "Tower Defense", sf::Style::Default),
     viewOffset_(sf::Vector2f(0.f, 0.f)),
-    textures_(),
     statisticsText_(),
+    textures_(),
     fonts_(),
     player_(window_, viewOffset_),
     GUIContainer_(),
@@ -35,6 +36,7 @@ Application::Application()
         textures_.Load(Textures::ID::logo,              "../media/textures/titleLogo.png");
         textures_.Load(Textures::ID::TitleBackground,   "../media/textures/tausta.jpg");
         textures_.Load(Textures::ID::Buttons,      "../media/textures/buttons.png");
+        textures_.Load(Textures::ID::TowerButton, "../media/textures/nappulaAntsulle.png");
 		//textures_.Load(Textures::ID::NoTexture,      "../media/textures/noTexture.png");
         textures_.Load(Textures::ID::BasicTower, "../media/textures/tower.png");
         textures_.Load(Textures::ID::SuperTower, "../media/textures/harvester.png");
@@ -53,6 +55,7 @@ void Application::RegisterStates() {
     stateStack_.RegisterState<PauseState>(States::ID::Pause);
     stateStack_.RegisterState<GameOverState>(States::ID::GameOver);
     stateStack_.RegisterState<ScoreState>(States::ID::Score);
+    stateStack_.RegisterState<EndOfLevelState>(States::ID::EndOfLevel);
 }
 
 void Application::Run() {

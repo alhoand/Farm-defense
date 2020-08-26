@@ -33,7 +33,7 @@ Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, unsigned int diffi
         hasMovementAnimation_(false),
         deathAnimation_(textures.Get(Textures::DeathAnimation)),
         movementAnimation_(),
-        isGivenScorepoints_(false)
+        isGivenMoney_(false)
     { 
         sf::FloatRect bounds = sprite_.getLocalBounds();
         sprite_.setOrigin(bounds.width/2.f, bounds.height/2.f);
@@ -96,8 +96,8 @@ bool Enemy::CheckDestroyBehaviour(sf::Time, CommandQueue&)
 // returns Enemy category, but if enemy is destroyed returns None (0)
 unsigned int Enemy::GetCategory() const 
 {
-/*     if(IsDestroyed())
-        return 0; */
+     if(IsDestroyed())
+        return 0; 
     return Category::Enemy;
 } 
 
@@ -149,14 +149,14 @@ bool Enemy::IsMarkedForRemoval() const {
 }
 
 // returns how many score'points enemy is worth, one enemy returns it's score only once
-int Enemy::GetScorePoints()
+int Enemy::GetMoney()
 {
-    if (isGivenScorepoints_)
+    if (isGivenMoney_)
     {
         return 0;
     }
-    isGivenScorepoints_ = true;
-    return Table[type_].scorepoints;
+    isGivenMoney_ = true;
+    return Table[type_].worthOfMoney;
 }
 
 
