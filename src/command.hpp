@@ -32,5 +32,5 @@ std::function<void(GameField&, sf::Time)> GameFieldAction(Function fn)
     return [=] (GameField& gameField, sf::Time dt) {
         fn(gameField, dt);
     };
-};
+}
 

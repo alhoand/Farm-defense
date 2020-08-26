@@ -154,20 +154,20 @@ bool UpgradeTowerState::HandleEvent(const sf::Event& event) {
     }
         
     // If I is pressed, make the sidebar go away
-	/*if (sf::Event::KeyPressed && event.key.code == sf::Keyboard::U)
+	if ((event.type ==sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::U))
     {
        // std::cout << "KeyPressed" << std::endl;
 		RequestStackPop();
         RequestStackPop();
-    }*/
+    }
 
 
     //If p is pressed, go to Pause state
-    if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P))
+    if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::P))
     {
 		RequestStackPush(States::ID::Pause);
 	}
-    if (sf::Event::KeyPressed && event.key.code == sf::Keyboard::I)
+    if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::I))
     {
         std::cout << "Upgrade: I-KeyPressed" << std::endl;
 		RequestStackPop();
