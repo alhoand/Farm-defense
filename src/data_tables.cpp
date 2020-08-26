@@ -14,7 +14,7 @@ std::vector<EnemyData> InitializeEnemyData()
 	data[Enemy::Basic].speed = 50.f;
 	data[Enemy::Basic].slowDownRate = 0.8;
 	data[Enemy::Basic].texture = Textures::Fire;
-	data[Enemy::Basic].worthOfMoney = 10;
+	data[Enemy::Basic].worthOfMoney = 20;
 
 	data[Enemy::Multiplying].hitpoints = 10;
 	data[Enemy::Multiplying].speed = 50.f;
@@ -47,7 +47,8 @@ std::vector<Direction> InitializeEnemyPath()
 	path.push_back(Direction(+90.f, 300.f));
 	path.push_back(Direction(0.f, 300.f));
 	path.push_back(Direction(-90.f, 400.f));
-	path.push_back(Direction(0.f, 1000.f));
+	path.push_back(Direction(0.f, 300.f));
+	path.push_back(Direction(+90.f, 1000.f));
 
 	return path;
 }
@@ -56,16 +57,28 @@ std::vector<TowerData> InitializeTowerData()
 {
 	std::vector<TowerData> data(Enemy::TypeCount);
 
-	data[Tower::Type::Super].scale = 0.5;
-
-	data[Tower::Type::Basic].price = 100;
-	data[Tower::Type::Super].price = 1000;
-	data[Tower::Type::Slowing].price = 350;
-	data[Tower::Type::Bombing].price = 500;
-
+	data[Tower::Type::Basic].range = 200;
+	data[Tower::Type::Basic].reloadTime = 2;
+	data[Tower::Type::Basic].scale = 1;
+	data[Tower::Type::Basic].price = 150;
 	data[Tower::Type::Basic].name = "Basic Tower";
+
+	data[Tower::Type::Super].range = 250;
+	data[Tower::Type::Super].reloadTime = 0.5;
+	data[Tower::Type::Super].scale = 0.5;
+	data[Tower::Type::Super].price = 500;
 	data[Tower::Type::Super].name = "Super Tower";
+
+	data[Tower::Type::Slowing].range = 200;
+	data[Tower::Type::Slowing].reloadTime = 0;
+	data[Tower::Type::Slowing].scale = 1;
+	data[Tower::Type::Slowing].price = 200;
 	data[Tower::Type::Slowing].name = "Slowing Tower";
+
+	data[Tower::Type::Bombing].range = 100;
+	data[Tower::Type::Bombing].reloadTime = 8;
+	data[Tower::Type::Bombing].scale = 1;
+	data[Tower::Type::Bombing].price = 400;
 	data[Tower::Type::Bombing].name = "Bomb Tower";
 
 	return data;

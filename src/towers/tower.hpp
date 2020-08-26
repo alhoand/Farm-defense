@@ -30,7 +30,7 @@ class Tower : public Entity {
         };
 
         // Constructor, used by inherited classes
-        Tower(Tower::Type type, const TextureHolder& textures, float range, float reloadTime);
+        Tower(Tower::Type type, const TextureHolder& textures);
 
         // Destructor
         ~Tower() { Tower::towerCount_--; }
