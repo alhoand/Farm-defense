@@ -99,10 +99,10 @@ SidebarState::SidebarState(StateStack& stack, Context context)
 
 
 
-        AddTowerButton(Tower::Type::Basic, -100.f, 0.f, sf::IntRect(0,54,166,166),sf::IntRect(0,54,166,166));
-        AddTowerButton(Tower::Type::Slowing, +100.f, 0.f, sf::IntRect(0,54,166,166),sf::IntRect(0,54,166,166));
-        AddTowerButton(Tower::Type::Bombing, -100.f, 230.f, sf::IntRect(0,54,166,166),sf::IntRect(0,54,166,166));
-        AddTowerButton(Tower::Type::Super, +100.f, 230.f, sf::IntRect(0,54,166,166),sf::IntRect(0,54,166,166));
+        AddTowerButton(Tower::Type::Basic, -100.f, 0.f, sf::IntRect(55,53,83,83),sf::IntRect(55,53,83,83));
+        AddTowerButton(Tower::Type::Slowing, +50.f, 0.f,sf::IntRect(55,53,83,83),sf::IntRect(55,53,83,83));
+        AddTowerButton(Tower::Type::Bombing, -100.f, 150.f, sf::IntRect(55,53,83,83),sf::IntRect(55,53,83,83));
+        AddTowerButton(Tower::Type::Super, +50.f, 150.f, sf::IntRect(55,53,83,83),sf::IntRect(55,53,83,83));
 
         backgroundShape_.setFillColor(sf::Color(160,82,45,235));
         backgroundShape_.setSize(viewSize_);
@@ -163,7 +163,7 @@ void SidebarState::AddTowerButton(Tower::Type type, float relX, float relY, sf::
         sidebarWorld_.AddTowerPicture(std::move(towerPic));
         
         std::string towerName = towerTable[type].name;
-        towerButton->SetText(towerName.append("\n").append(std::to_string(towerTable[type].price)));
+        //towerButton->SetText(towerName.append("\n").append(std::to_string(towerTable[type].price)));
         GUIContainer_.Pack(towerButton, true); //Pack it before getting position to get the real pos
         
         towerButton->SetCallback([this, towerButton] ()
