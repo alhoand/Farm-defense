@@ -9,6 +9,11 @@
 #include "data_tables.hpp"
 #include "utility.hpp"
 
+namespace
+{
+    const std::vector<TowerData> towerTable = InitializeTowerData();
+}
+
 
 GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	: window_(window),
@@ -553,11 +558,26 @@ void GameField::MakeTowersShoot()
 		bomb.Destroy();
 	});
 
+	Command towerCommand;
+	towerCommand.category_ = Category::Tower;
+	towerCommand.action_ = DerivedAction<Tower>([this](Tower& tower, sf::Time)
+	{
+		std::cout << "Check" << std::endl;
+		std::cout << "Sold:  " << tower.IsSold() << std::endl;
+		if (tower.IsDestroyed()) // If the tower is not sold yet
+		{
+			AddRounMoney(towerTable[tower.GetType()].price);
+			std::cout << "Money added" << std::endl;
+			//tower.Sell();
+		}
+	});
+
 
 	// Push commands, reset active enemies
 	commandQueue_.Push(enemyCollector);
 	commandQueue_.Push(shootBullets);
 	commandQueue_.Push(detonateCommand);
+	commandQueue_.Push(towerCommand);
 
 	if (activeEnemies_.empty())
 	{

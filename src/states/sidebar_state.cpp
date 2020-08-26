@@ -248,6 +248,10 @@ bool SidebarState::HandleEvent(const sf::Event& event) {
     {
 		RequestStackPush(States::ID::Pause);
 	}
+    if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::S))
+    {
+        return true;
+    }
 
     //Otherwise, don't propagate the events
     return false;

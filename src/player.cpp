@@ -167,6 +167,21 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
 
     }
 
+    if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::S))
+    {
+        Command command;
+        command.category_ = Category::Active;
+        command.action_ = DerivedAction<Tower>([](Tower& t, sf::Time)
+        {
+            if (!t.IsMoving())
+            {
+                t.Destroy();
+            }
+        });
+        commands.Push(command);
+    }
+		
+
 }
 //Adapted from the SFML Game Development-book
 void Player::HandleRealtimeInput(CommandQueue&) {
@@ -237,6 +252,16 @@ bool Player::BuyTower(int price)
     }
     money_ -= price;
     return true;
+}
+
+bool Player::SellTower(int price)
+{
+    bool success = price>=0;
+    if (success)
+    {
+        AddMoney(price);
+    }
+    return success;
 }
 
 bool Player::InfoRequested() const

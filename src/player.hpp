@@ -29,6 +29,7 @@ class Player {
         int         GetPlayerMoney();
         void        AddMoney(int money);
         bool        BuyTower(int price);
+        bool        SellTower(int price);
         bool        PlacementSuccess();
         bool        InfoRequested() const;
         bool        InfoPopRequested() const;

@@ -106,6 +106,8 @@ bool GameState::HandleEvent(const sf::Event& event) {
 
     if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P))
 		RequestStackPush(States::ID::Pause);
+    
+
 
     /*if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::U))
     {

@@ -43,6 +43,25 @@ Textures::ID Tower::ToTextureID(Type type)
 
 int Tower::towerCount_ = 0;
 
+// To check if we can really take the Scene node away from the world
+bool Tower::IsMarkedForRemoval() const 
+{
+    return IsDestroyed() && !IsMoving(); // Here we could check for animations, pick-ups etc..
+}
+
+bool Tower::IsSold() const
+{
+    return isSold_;
+}
+// Sets the tower to sold, i.e., if it is not sold yet, it destroys the tower
+void Tower::Sell()
+{
+    if (!IsSold())
+    {
+        Destroy();  
+        isSold_ = true;
+    }
+}
 
 void Tower::ActiveTower(Tower &newActive, CommandQueue& commands)
 {
@@ -92,8 +111,13 @@ void Tower::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 
 //Update the state of the tower
 void Tower::UpdateCurrent(sf::Time dt, CommandQueue&) {
+    if (IsDestroyed())
+    {
+        return; // Here we could do some animations for selling
+    }
+
     // If tower hasn't shot yet (no enemies are in range), do nothing and do not reduce countdown
-    if ((countdown_ <= sf::Time::Zero) && !IsMoving()) {
+    if ((countdown_ <= sf::Time::Zero) && !IsMoving() && !IsDestroyed()) {
         canShoot_ = true;
         //std::cout << "It can! Hurrah! " << std::endl;
         countdown_ += sf::seconds(reloadTime_);
@@ -115,12 +139,6 @@ void Tower::Shoot(CommandQueue& commands, sf::Vector2f direction) {
 
 
 unsigned int Tower::GetCategory() const {
-    /*if (type_ == Tower::Slowing) {
-        return Category::SlowingTower;
-    } else if (type_ == Tower::Bombing) {
-        return Category::BombingTower;
-    }
-    return Category::ShootingTower;*/
     unsigned int myCategory = Category::Tower;
 
     if (type_ == Tower::Slowing)
@@ -128,7 +146,6 @@ unsigned int Tower::GetCategory() const {
         myCategory = Category::SlowingTower;
     } else if (type_ == Tower::Bombing)
     {
-        //std::cout << "Bombing tower!" << std::endl;
         myCategory =  Category::BombingTower;
     } else
     {
@@ -137,14 +154,8 @@ unsigned int Tower::GetCategory() const {
 
     if(IsActive())
     {
-       // unsigned int temp = myCategory;
-       // unsigned int temp2 = Category::Active;
         myCategory = Category::Active | myCategory;
-        /*
-        if (temp & myCategory)
-            std::cout << "This works!" << std::endl;
-        if (temp2 & myCategory)
-           std::cout << "This works as well!" << std::endl; */
+
     }
 
     return myCategory;
@@ -158,6 +169,7 @@ bool Tower::MyRange(RangeNode* rangeNodePtr)
 
 }
 
+// This keeps count if the tower is selected by the player or not.
 bool Tower::IsActive() const
 {
     return isActive_;
@@ -194,6 +206,8 @@ bool Tower::CanMove() const
 
 bool Tower::CanShoot() const 
 {
+    //if (IsDestroyed())
+        //return false;
     return canShoot_;
 }
 

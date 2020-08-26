@@ -43,9 +43,16 @@ class Tower : public Entity {
         // Makes the tower shoot, that is, pushes shoot command to command queue
         void                    Shoot(CommandQueue& commands, sf::Vector2f direction);
 
-        // Getters for type and range
+        // Getters for category and range
         virtual unsigned int    GetCategory() const override;
         float                   GetRange() const;
+
+        // NOTE: This is NOT GetCategory()!
+        // - this represents the type of tower, not category. Category is related to commands!
+        Tower::Type             GetType() const { return type_; }
+
+
+       
 
         // These set the permission for the tower to move
         // for now: this maybe is a clumsy way to achieve this
@@ -54,6 +61,9 @@ class Tower : public Entity {
 
         void                    Activate();
         void                    Deactivate();
+
+
+        bool                    IsMarkedForRemoval() const override;
 
         // Getter of permission to move
         bool                    CanMove() const;
@@ -87,6 +97,9 @@ class Tower : public Entity {
 
         bool                    IsColliding() { return isColliding_; }
 
+        void                    Sell();
+        bool                    IsSold() const;
+
     protected:
 
         void                    MakeTransparent();
@@ -105,6 +118,7 @@ class Tower : public Entity {
         sf::Vector2f        direction_;  // where are the tower's guns pointed at, should ALWAYS be unit vector
         float               reloadTime_; // how often can the tower shoot (in seconds) 
         bool                canShoot_;
+        bool                isSold_;
 
         //Bullet::Type        bulletType_;
         //int                 bulletType_; //doesn't work anymore with Bullet::Type
