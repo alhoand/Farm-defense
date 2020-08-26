@@ -210,7 +210,7 @@ void GameField::HandleCollisions()
 			}
 				
 		}
-		if (MatchesCategories(pair, Category::Tower, Category::Path))
+		/*if (MatchesCategories(pair, Category::Tower, Category::Path))
 		{
 			//std::cout << "Path recognized" << std::endl;
 			auto& activeTower = static_cast<Tower&>(*pair.first);
@@ -220,7 +220,7 @@ void GameField::HandleCollisions()
 				activeTower.Collides(true);
 				towerCollideCalled = true;
 			}
-		}
+		}*/
 		
 	}
 	if (!towerCollideCalled)
