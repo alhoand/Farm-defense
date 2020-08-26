@@ -49,9 +49,9 @@ void Label::SetText(const std::string& text, bool center)
 		CenterOrigin(text_);
 }
 
-void Label::SetColor(sf::Color color)
+void Label::SetColor(const sf::Color color)
 {
-	text_.setColor(color);
+	text_.setFillColor(color);
 }
 
 }

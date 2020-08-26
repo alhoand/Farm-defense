@@ -40,7 +40,10 @@ sf::Vector2f TowerPicture::GetClickPos() const
 }
 
 
+
 void TowerPicture::GetBack() {
+    Deactivate();
+
     std::cout << "TowerPic origin:" << getOrigin().x << ", " << getOrigin().y << std::endl;
     std::cout << "TowerPic world pos:" << GetWorldPosition().x << ", " << GetWorldPosition().y << std::endl;
     std::cout << "TowerPic pos:" << getPosition().x << ", " << getPosition().y << std::endl;
@@ -70,9 +73,11 @@ sf::Vector2f TowerPicture::GetPosition() const {
 
 
 
-void TowerPicture::Drag() {
+bool TowerPicture::Drag() {
     //sprite_.setColor(sf::Color(255, 255, 255, 128));
-    isDragged_ = true;
+    if (IsActive())
+        isDragged_ = true;
+    return IsActive();
 }
 
 void TowerPicture::UnDrag() {

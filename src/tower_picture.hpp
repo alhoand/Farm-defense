@@ -14,7 +14,7 @@ class TowerPicture : public SpriteNode {
         void                                SetClickPos(sf::Vector2f pos);
         sf::Vector2f                        GetClickPos() const;
 
-        void                                Drag();
+        bool                                Drag();
         void                                UnDrag();
         bool                                IsDragged() const;
         

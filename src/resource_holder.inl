@@ -24,7 +24,7 @@ template <class Resource, class Identifier>
 Resource& ResourceHolder<Resource, Identifier>::Get(Identifier id) {
     auto found = resourceMap_.find(id);
     assert(found != resourceMap_.end());
-    std::cout << "Got a resource" << std::endl;
+    //std::cout << "Got a resource" << std::endl;
     return *found->second;
 }
 
@@ -40,5 +40,5 @@ template <class Resource, class Identifier>
 void ResourceHolder<Resource, Identifier>::InsertResource(Identifier id, std::unique_ptr<Resource> ptr) {
     auto inserted = resourceMap_.insert(std::make_pair(id, std::move(ptr)));
     assert(inserted.second);
-    std::cout << "Loaded a resource " << std::endl;
+    //std::cout << "Loaded a resource " << std::endl;
 }

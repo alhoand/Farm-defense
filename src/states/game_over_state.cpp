@@ -38,7 +38,7 @@ GameOverState::GameOverState(StateStack& stack, Context context)
         gameOverText_.setOrigin(::floor(bounds.left + bounds.width / 2.f), std::floor(50 + bounds.top + bounds.height / 2.f));
         gameOverText_.setPosition(0.5f * viewSize.x, 0.3f * viewSize.y);
 
-        auto menuButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, sf::IntRect(0,104,100,88),sf::IntRect(0,192,100,88));
+        auto menuButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_);
         menuButton->setPosition(550, 300);
         menuButton->SetText("Return to main menu");
         menuButton->SetCallback([this] ()
@@ -48,7 +48,7 @@ GameOverState::GameOverState(StateStack& stack, Context context)
         });
         GUIContainer_.Pack(menuButton); 
 
-        auto quitButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
+        auto quitButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_);
         quitButton->setPosition(550, 400);
         quitButton->SetText("Ragequit");
         quitButton->SetCallback([this] ()
