@@ -25,6 +25,7 @@ class Player {
         int         GetLives();
         GameStatus  GetGameStatus();
         void        SetGameStatus(GameStatus newStatus);
+        void        ResetGame();
         int         GetPlayerMoney();
         void        AddMoney(int money);
         bool        BuyTower(int price);
