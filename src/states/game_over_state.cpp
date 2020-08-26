@@ -78,7 +78,7 @@ void GameOverState::Draw()
 
 }
 
-bool GameOverState::Update(sf::Time dt)
+bool GameOverState::Update(sf::Time)
 {
 /*     elapsedTime_ += dt;
 
@@ -96,8 +96,7 @@ bool GameOverState::Update(sf::Time dt)
 }
 
 bool GameOverState::HandleEvent(const sf::Event& event)
-{
-/*     
+{ 
     if (event.type == sf::Event::TextEntered)
     {
         typedText_ += event.text.unicode;
@@ -106,7 +105,7 @@ bool GameOverState::HandleEvent(const sf::Event& event)
         player_.SetPlayerName(name_ );
         std::cout << "Player name:" << player_.GetPlayerName().toAnsiString() << std::endl;
     }
-*/
-    GUIContainer_.HandleEvent(event); 
+
+    GUIContainer_.HandleEvent(event);
     return false; // should this be false or true?
 }

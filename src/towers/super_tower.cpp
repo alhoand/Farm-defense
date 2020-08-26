@@ -1,7 +1,7 @@
 #include "super_tower.hpp"
 
 SuperTower::SuperTower(const TextureHolder& textures)
-    : Tower(Tower::Type::Super, textures, 400, 0.5) { 
+    : Tower(Tower::Type::Super, textures, 300, 0.5) { 
         sprite_.setScale(0.5,0.5);
     }
 
@@ -12,6 +12,5 @@ void SuperTower::CreateBullet(SceneNode& node, const TextureHolder& textures) co
     bullet->setPosition(GetWorldPosition());
 
     bullet->SetVelocity(bullet->GetSpeed() * direction_);
-    std::cout << "Bullet velocity: " << bullet->GetVelocity().x << ", " << bullet->GetVelocity().y << std::endl;
     node.AttachChild(std::move(bullet));
 }

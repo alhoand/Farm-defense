@@ -19,7 +19,7 @@ void SceneNodeComponent::HandleEvent(const sf::Event&)
 {
 }
 
-void SceneNodeComponent::Draw(sf::RenderTarget& target, sf::RenderStates states) const
+void SceneNodeComponent::Draw(sf::RenderTarget&, sf::RenderStates) const
 {
 }
 

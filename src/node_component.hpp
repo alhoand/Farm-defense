@@ -19,16 +19,16 @@ class SceneNodeComponent : public Component
 	public:
 							SceneNodeComponent(SceneNode* node);
 
-        virtual bool		IsSelectable() const;
+        virtual bool		IsSelectable() const override;
 		void				SetNode(SceneNode* node);
         SceneNode*          GetNode() const;
 
-        virtual void		HandleEvent(const sf::Event& event);
+        virtual void		HandleEvent(const sf::Event& event) override;
         virtual void        draw(sf::RenderTarget& target, sf::RenderStates states) const override
                             { Draw(target, states); }
 
     private:
-        void				Draw(sf::RenderTarget& target, sf::RenderStates states) const;
+        void				Draw(sf::RenderTarget&, sf::RenderStates) const;
 
 
     private:

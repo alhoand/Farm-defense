@@ -9,7 +9,7 @@ class SpriteNode : public SceneNode {
                             SpriteNode(const sf::Texture& texture);
                             SpriteNode(const sf::Texture& texture, sf::IntRect& rect);
         sf::FloatRect       GetBounds() const;
-        virtual void        Update(sf::Time dt);
+        virtual void        Update(sf::Time);
 
 
 

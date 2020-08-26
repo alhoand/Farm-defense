@@ -116,7 +116,7 @@ void GameField::BuildScene() {
 
 
 	//Initialize a slowing tower
-	std::unique_ptr<Tower> secondTower(new SlowingTower(textures_));
+	/*std::unique_ptr<Tower> secondTower(new SlowingTower(textures_));
 	//firstTower->setOrigin(firstTower->GetBoundingRect().width/2, firstTower->GetBoundingRect().height/2);
 	secondTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/3.f +200.f, (gameFieldBounds_.top + gameFieldBounds_.height)/3.f);
 	secondTower->DisallowMoving();
@@ -128,7 +128,7 @@ void GameField::BuildScene() {
 	thirdTower->setPosition((gameFieldBounds_.left + gameFieldBounds_.width)/4.f-150.f, (gameFieldBounds_.top + gameFieldBounds_.height) -530.f);
 	thirdTower->DisallowMoving();
 	sceneLayers_[Field] -> AttachChild(std::move(thirdTower));
-
+	*/
 
 }
 
@@ -158,6 +158,11 @@ bool MatchesCategories(SceneNode::Pair& colliders, Category::Type type1, Categor
 
 void GameField::AddTower(Tower::Type type, sf::Vector2f pos)
 {
+	/*if (newLevelStarted_) {
+		std::cout << "Cannot add towers during enemy waves!" << std::endl;
+		return;
+	}*/
+
 	std::cout << "Here we are!" << std::endl;
 
 	std::unique_ptr<Tower> newTower;

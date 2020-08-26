@@ -16,7 +16,7 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
         Command activate;
         activate.category_ = Category::Tower;
         sf::Vector2f mouse = window_.mapPixelToCoords(sf::Vector2i(event.mouseButton.x,event.mouseButton.y), window_.getView());
-        activate.action_ = DerivedAction<Tower> ( [&commands, mouse, this] (Tower& tower, sf::Time dt)
+        activate.action_ = DerivedAction<Tower> ( [&commands, mouse, this] (Tower& tower, sf::Time)
             {
                if (tower.GetBoundingRect().contains(mouse))
                 {
@@ -137,7 +137,7 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
         sf::Vector2f mouse = window_.mapPixelToCoords(sf::Vector2i(event.mouseMove.x,event.mouseMove.y));
         //std::cout << "Mouse: " << mouse.x << ", " << mouse.y << std::endl;
         move.action_ = DerivedAction<Tower> (
-           [mouse] (Tower& tower, sf::Time dt) {
+           [mouse] (Tower& tower, sf::Time) {
                 if (tower.IsMoving())
                     tower.setPosition(mouse.x,mouse.y);
            });
