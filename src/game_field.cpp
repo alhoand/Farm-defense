@@ -248,7 +248,7 @@ void GameField::BuildPath()
 	std::unique_ptr<SpriteNode> pathSprite(new SpriteNode(p));
 	pathSprite->setPosition(c);
 	pathSprite->SetCategory(Category::Path);
-	sceneLayers_[Background]->AttachChild(std::move(pathSprite));
+	sceneLayers_[Field]->AttachChild(std::move(pathSprite));
 
 	for (auto i : path) {
 		int dist = 0;
@@ -268,7 +268,7 @@ void GameField::BuildPath()
 			std::unique_ptr<SpriteNode> pathSprite(new SpriteNode(p));
 			pathSprite->setPosition(c);
 			pathSprite->SetCategory(Category::Path);
-			sceneLayers_[Background]->AttachChild(std::move(pathSprite));
+			sceneLayers_[Field]->AttachChild(std::move(pathSprite));
 		}
 	}
 }
