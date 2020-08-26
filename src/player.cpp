@@ -5,7 +5,7 @@
 
 
 Player::Player(sf::RenderWindow& window, sf::Vector2f viewOffset) 
-    : window_(window), viewOffset_(viewOffset), lives_(10), status_(), score_(0) { }
+    : window_(window), viewOffset_(viewOffset), lives_(10), status_(), score_(0), infoRequested_(false), infoPopRequested_(false) { }
 
 // Adapted from SFML Game Development-book
 
@@ -23,7 +23,8 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
                   if (!tower.IsActive() && !tower.IsColliding())
                    {
                         Tower::ActiveTower(tower, commands);
-
+                        RequestInfo();
+                        std::cout <<"Info requested in tower"<< std::endl; 
                         if (tower.CanMove() && !tower.IsMoving())
                         {   
                             tower.setOrigin(mouse.x - (tower.getPosition().x - tower.getOrigin().x),
@@ -37,6 +38,7 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
                         tower.Deactivate();
                         tower.DisallowMoving();
                         SetPlacementSuccess();
+                        //ResetInfoRequestStatus();
                         //std::cout << "Placement success was set" << std::endl;
 
                    }else
@@ -48,6 +50,7 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
                 }
                 else //All towers that are not clicked
                 {
+                    //RequestInfoPop();
                     if (!tower.IsColliding())
                        {
                             tower.Deactivate();
@@ -74,16 +77,20 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
             if (tp.GetBoundingRect().contains(mouse) && !tp.IsDragged())
             {
                 std::cout << "TowerPicture was pressed!"<< std::endl;
+                if (tp.IsActive())
+                {
+                    sf::Vector2f parent = tp.GetWorldPosition() - tp.getPosition();
+                    sf::Vector2f origin = tp.getOrigin();
+                    std::cout << "parent pos: " << parent.x << ", "  << parent.y << std::endl;
+                    tp.setOrigin(tp.getOrigin() +parent +origin); // Some black magic here
+                    
+                    //tp.setPosition(mouse - parent - origin);//sf::Vector2f(100.f, 100.f)); //- tp.GetClickPos()); //-  tp.GetSidebarPos() * 100.f - tp.GetClickPos()); //+ tp.GetSidebarPos());
+                    tp.setPosition(mouse);
+                    tp.Drag();
+                    SetPlacementFailure();
 
-                sf::Vector2f parent = tp.GetWorldPosition() - tp.getPosition();
-                sf::Vector2f origin = tp.getOrigin();
-                std::cout << "parent pos: " << parent.x << ", "  << parent.y << std::endl;
-                tp.setOrigin(tp.getOrigin() +parent +origin); // Some black magic here
-                
-                //tp.setPosition(mouse - parent - origin);//sf::Vector2f(100.f, 100.f)); //- tp.GetClickPos()); //-  tp.GetSidebarPos() * 100.f - tp.GetClickPos()); //+ tp.GetSidebarPos());
-                tp.setPosition(mouse);
-                tp.Drag();
-                SetPlacementFailure();
+                }
+
                 
             }
     
@@ -94,7 +101,7 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
         
         });
         commands.Push(activateTowerPicture);
-
+        
     }
     if (event.type == sf::Event::MouseButtonReleased)
     {
@@ -206,4 +213,31 @@ void Player::SetPlayerName(sf::String name)
 sf::String Player::GetPlayerName()
 {
     return name_;
+}
+
+bool Player::InfoRequested() const
+{
+    return infoRequested_;
+}
+void Player::RequestInfo()
+{
+    infoRequested_ = true;
+}
+void Player::ResetInfoRequestStatus()
+{
+    infoRequested_ = false;
+}
+
+void Player::RequestInfoPop()
+{
+    infoPopRequested_ = true;
+}
+void  Player::ResetInfoPopStatus()
+{
+    infoPopRequested_ = false;
+}
+
+bool Player::InfoPopRequested() const
+{
+    return infoPopRequested_;
 }

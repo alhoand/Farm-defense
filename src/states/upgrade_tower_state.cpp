@@ -10,6 +10,7 @@
 #include "../utility.hpp"
 #include <cassert>
 #include "../command_queue.hpp"
+#include "../player.hpp"
 
 UpgradeTowerState::UpgradeTowerState(StateStack& stack, Context context) :
     State(stack, context),
@@ -21,6 +22,7 @@ UpgradeTowerState::UpgradeTowerState(StateStack& stack, Context context) :
     GUIContainer_(),
     GUIController_(*context.GUIController_)
     {
+        std::cout << "Upgrade tower state constructor" << std::endl;
         titleText_ = std::make_shared<GUI::Label>("", *context.fonts_, 40, Fonts::Main);
         titleText_->CenterTextOrigin();
         titleText_->setPosition(viewSize_.x/2.f, 370.f);
@@ -49,7 +51,7 @@ UpgradeTowerState::UpgradeTowerState(StateStack& stack, Context context) :
 	    });
         GUIContainer_.Pack(upgradeButton, true);
 
-        backgroundShape_.setFillColor(sf::Color(160,82,45,0));
+        backgroundShape_.setFillColor(sf::Color(160,82,45,230));
         backgroundShape_.setSize(viewSize_);
         GUIContainer_.setPosition(context.window_->getView().getSize().x - viewSize_.x, 0);
     }
@@ -62,8 +64,19 @@ void UpgradeTowerState::Draw() {
     window.draw(GUIContainer_);
 }
 
+UpgradeTowerState::~UpgradeTowerState()
+{
+    std::cout << "U deleted" <<std::endl;
+    GetContext().player_->ResetInfoPopStatus();
+}
+
 bool UpgradeTowerState::Update(sf::Time dt) {
     UpdateGUI(dt);
+    if (GetContext().player_->InfoRequested())
+    {
+        UpdateTowerInfo();
+        //GetContext().player_->ResetInfoRequestStatus();
+    }
 	return true;
 }
 
@@ -104,14 +117,34 @@ void UpgradeTowerState::UpdateTowerInfo()
 
 bool UpgradeTowerState::HandleEvent(const sf::Event& event) {
 	GUIContainer_.HandleEvent(event);
-
+    //std::cout << "Upgrade tower state here we are" << std::endl;
 	    // Make the mouse-related events available for all
-    if ((event.type == sf::Event::MouseMoved) || (event.type == sf::Event::MouseButtonPressed))
+    if ((event.type == sf::Event::MouseMoved) || (event.type == sf::Event::MouseButtonPressed) || (event.type == sf::Event::MouseButtonReleased))
     {
-        //if (event.type == sf::Event::MouseButtonPressed)
-       // {
-            UpdateTowerInfo();
-       // }
+        if (event.type == sf::Event::MouseButtonPressed)
+        {
+            if (!backgroundShape_.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))
+            {
+                Player* player = GetContext().player_;
+                Command popCommand;
+                popCommand.category_ = Category::Type::Tower;
+                popCommand.action_ = DerivedAction<Tower>(
+                            [player] (Tower& t, sf::Time)
+                            {
+                                std::cout << "Pop command given" << std::endl;
+                                player->RequestInfoPop();
+                                //player->Re
+                                //NextEnemyWave();  //AddTower(towerButton->GetTowerType(), towerButton->GetClickPosition());  
+                            }
+                );
+                GUIController_.SendCommand(popCommand);
+                //std::cout << GUIContainer_.GetGlobalBounds().left <<", " << GUIContainer_.GetGlobalBounds().width << std::endl;
+            
+            }
+        }
+        
+            
+
         return true;
     }
 
@@ -121,12 +154,14 @@ bool UpgradeTowerState::HandleEvent(const sf::Event& event) {
     }
         
     // If I is pressed, make the sidebar go away
-	if (sf::Event::KeyPressed && event.key.code == sf::Keyboard::U)
+	/*if (sf::Event::KeyPressed && event.key.code == sf::Keyboard::U)
     {
        // std::cout << "KeyPressed" << std::endl;
 		RequestStackPop();
         RequestStackPop();
-    }
+    }*/
+
+
     //If p is pressed, go to Pause state
     if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P))
     {

@@ -59,12 +59,14 @@ bool GameState::Update(sf::Time dt) {
     {
         // when level ends open side bar 
         //RequestStackPush(States::ID::Sidebar);
+        //return false;
     }
+
 
     CommandQueue& commands = gameField_.GetCommandQueue();
 	player_.HandleRealtimeInput(commands);
 
-    GUIController_.FetchInput(commands);
+    
 
 	return true;
 }
@@ -72,6 +74,29 @@ bool GameState::Update(sf::Time dt) {
 bool GameState::HandleEvent(const sf::Event& event) {
     CommandQueue& commands = gameField_.GetCommandQueue();
     player_.HandleEvent(event, commands);
+    GUIController_.FetchInput(commands);
+    if (event.type == sf::Event::MouseButtonReleased)
+    {
+        std::cout << "Inforequested: " << player_.InfoRequested() << std::endl;
+        std::cout << "InfoPOPrequested: " << player_.InfoPopRequested() << std::endl;
+        if (player_.InfoRequested() && !(player_.InfoPopRequested()))
+            {
+                std::cout << "Hello from here rewuested infooooo" << std::endl;
+                RequestStackPush(States::ID::GameUpgradeTowerSideBar);
+                player_.ResetInfoRequestStatus();
+                
+            }
+        if (player_.InfoPopRequested() && !(player_.InfoRequested()))
+            {
+                RequestStackPop();
+                std::cout << "Stack pop requested" << std::endl;
+                player_.ResetInfoPopStatus();
+            }
+        
+    }
+    
+    
+
     if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P))
 		RequestStackPush(States::ID::Pause);
 

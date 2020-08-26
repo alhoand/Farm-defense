@@ -406,7 +406,7 @@ int GameField::NewEnemiesReachedEnd() {
 //can be used to determine when current wave is finished
 bool GameField::EndOfLevel()
 {
-	return !hasActiveEnemies_ && leftToSpawn_ <= 0;
+	return (!hasActiveEnemies_ && (leftToSpawn_ <= 0));
 }
 
 bool GameField::IsEndOfGame()
@@ -575,3 +575,5 @@ void GameField::MakeTowersShoot()
 	activeEnemies_.clear();
 
 }
+
+

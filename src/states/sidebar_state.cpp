@@ -91,6 +91,7 @@ void SidebarState::AddTowerButton(Tower::Type type, float relX, float relY, sf::
         std::cout << "we got hereeeeeeeeeee2" << std::endl;
 
         towerButton->AddTowerPicture(towerPic.get());
+        //towerButton->GetTowerPic()
         //sf::Vector2f buttonPosition = towerButton->GetWorldPosition();
 
         sidebarWorld_.AddTowerPicture(std::move(towerPic));
@@ -119,9 +120,24 @@ bool SidebarState::HandleEvent(const sf::Event& event) {
 	GUIContainer_.HandleEvent(event);
     GetContext().player_->HandleEvent(event, sidebarWorld_.GetCommandQueue());
     //GUIController_.HandleEvent(event, sidebarWorld_.GetCommandQueue());
+
+
 	    // Make the mouse-related events available for all
-    if ((event.type == sf::Event::MouseMoved) || (event.type == sf::Event::MouseButtonPressed))
+    if ((event.type == sf::Event::MouseMoved) || (event.type == sf::Event::MouseButtonPressed) || (event.type == sf::Event::MouseButtonReleased))
     {
+
+        if (event.type == sf::Event::MouseButtonReleased)
+        {
+            if (GetContext().player_->InfoRequested())
+            {
+                std::cout << "Hello from here rewuested infooooo" << std::endl;
+                RequestStackPop();
+                RequestStackPush(States::ID::GameUpgradeTowerSideBar);
+            }
+            //player_.ResetInfoRequestStatus();
+            //player_.ResetInfoPopStatus();
+        
+        }
         return true;
     }
 
