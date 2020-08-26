@@ -26,25 +26,26 @@ EndOfLevelState::EndOfLevelState(StateStack& stack, Context context)
         levelOverText_.setPosition(0.5f * viewSize.x, 0.3f * viewSize.y);
 
         auto continueButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
-        continueButton->setPosition(550, 400);
-        continueButton->SetText("Continue to next level");
+        continueButton->setPosition(550, 300);
+        continueButton->SetText("Continue game");
         continueButton->SetCallback([this, continueButton] ()
         {
+            std::cout << "continue pressed" << std::endl;
             Command nextLevelCommand;
-                nextLevelCommand.category_ = Category::Type::GameField;
-                nextLevelCommand.gameFieldAction_ = GameFieldAction(
-                            [continueButton] (GameField& gameField, sf::Time)
-                            {
-                                gameField.NextLevel();
-                            }
-                );
-                GUIController_.SendCommand(nextLevelCommand);
-            RequestStackPop();
+            nextLevelCommand.category_ = Category::Type::GameField;
+            nextLevelCommand.gameFieldAction_ = GameFieldAction(
+                [this, continueButton] (GameField& gameField, sf::Time)
+                {
+                    gameField.NextLevel();
+                }
+            );
+            GUIController_.SendCommand(nextLevelCommand);
+            RequestStackPop();                
         });
         GUIContainer_.Pack(continueButton); 
 
         auto menuButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, sf::IntRect(200,104,200,88),sf::IntRect(200,192,200,88));
-        menuButton->setPosition(550, 500);
+        menuButton->setPosition(550, 400);
         menuButton->SetText("Return to main menu");
         menuButton->SetCallback([this] ()
         {
@@ -54,7 +55,7 @@ EndOfLevelState::EndOfLevelState(StateStack& stack, Context context)
         GUIContainer_.Pack(menuButton); 
 
         auto quitButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_,  sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
-        quitButton->setPosition(550, 600);
+        quitButton->setPosition(550, 500);
         quitButton->SetText("Ragequit");
         quitButton->SetCallback([this] ()
         {

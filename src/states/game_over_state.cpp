@@ -32,6 +32,7 @@ GameOverState::GameOverState(StateStack& stack, Context context)
         {
             gameOverText_.setString("You lost the game :(\nWhat do you want to do next?");
         }
+        context.player_->SetGameStatus(Player::GameRunning);
         gameOverText_.setCharacterSize(50);
         sf::FloatRect bounds = gameOverText_.getLocalBounds();
         gameOverText_.setOrigin(::floor(bounds.left + bounds.width / 2.f), std::floor(50 + bounds.top + bounds.height / 2.f));
@@ -97,14 +98,14 @@ bool GameOverState::Update(sf::Time)
 
 bool GameOverState::HandleEvent(const sf::Event& event)
 { 
-    if (event.type == sf::Event::TextEntered)
+/*     if (event.type == sf::Event::TextEntered)
     {
         typedText_ += event.text.unicode;
     } else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter)
     {
         player_.SetPlayerName(name_ );
         std::cout << "Player name:" << player_.GetPlayerName().toAnsiString() << std::endl;
-    }
+    } */
 
     GUIContainer_.HandleEvent(event);
     return false; 
