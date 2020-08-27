@@ -6,7 +6,7 @@
 /* This is a basic tower that
  * - shoots basic bullets which cost 10 hp for the enemy
  * - is moderately fast, shoots in every 2 seconds
- * - has a pretty good range, 300 units
+ * - has a pretty good range, 200 units
 */
 
 class BasicTower : public Tower {

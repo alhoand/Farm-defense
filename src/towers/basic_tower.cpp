@@ -11,6 +11,5 @@ void BasicTower::CreateBullet(SceneNode& node, const TextureHolder& textures) co
     bullet->setPosition(GetWorldPosition());
 
     bullet->SetVelocity(bullet->GetSpeed() * direction_);
-    std::cout << "Bullet velocity: " << bullet->GetVelocity().x << ", " << bullet->GetVelocity().y << std::endl;
     node.AttachChild(std::move(bullet));
 }

@@ -10,5 +10,5 @@
 class SuperBullet : public Bullet {
     public:
         SuperBullet(const TextureHolder& textures)
-            : Bullet(Bullet::Type::Super, textures, 200, 5) { }
+            : Bullet(Bullet::Type::Super, textures) { }
 };

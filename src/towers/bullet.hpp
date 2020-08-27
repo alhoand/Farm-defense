@@ -1,8 +1,7 @@
 #pragma once
 
 #include "../entity.hpp"
-#include "../resource_identifiers.hpp"
-#include "../resource_holder.hpp"
+#include "../data_tables.hpp"
 #include "../category.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
@@ -25,7 +24,7 @@ class Bullet : public Entity {
 
     public:
         // Constructor to be used with inherited classes
-        Bullet(Type type, const TextureHolder& textures, float speed, int damage);
+        Bullet(Type type, const TextureHolder& textures);
 
         //Destructor
         ~Bullet() { }
@@ -41,9 +40,6 @@ class Bullet : public Entity {
         virtual void    UpdateCurrent(sf::Time dt, CommandQueue& commands);
         virtual void    DrawCurrent(sf::RenderTarget& target,sf::RenderStates states) const;
 
-        // A helper function to determine bullet's texture according to type
-        Textures::ID    ToTextureID(Bullet::Type type);
-        
     protected:
         Type            type_;
         sf::Sprite      sprite_;
