@@ -55,7 +55,7 @@ void Bomb::UpdateCurrent(sf::Time dt, CommandQueue& commands) {
     //if(canDetonate_)
         
     
-    double scale = 0.001*travelledDistance_* travelledDistance_ - 0.001*travelledDistance_ * distance_ + 0.5;
+    double scale = 0.0005*travelledDistance_* travelledDistance_ - 0.0005*travelledDistance_ * distance_ + 0.5;
     sprite_.setScale(scale,scale);
     sprite_.rotate(5);
     travelledDistance_ += GetSpeed() * dt.asSeconds();
