@@ -1,7 +1,7 @@
 #include "bomb.hpp"
 
 Bomb::Bomb(const TextureHolder& textures) 
-    : Bullet(Bullet::Type::Bomb, textures, 150, 10), 
+    : Bullet(Bullet::Type::Bomb, textures), 
       distance_(150), 
       range_(100), 
       travelledDistance_(0),

@@ -45,7 +45,7 @@ SidebarState::SidebarState(StateStack& stack, Context context)
         infoText_->SetColor(sf::Color::Red);
         infoText_->setPosition(context.window_->getView().getSize().x-viewSize_.x + 10.f, 135.f);
 
-        std::cout << "Here we are 2!" << std::endl;
+        //std::cout << "Here we are 2!" << std::endl;
 
 
         auto levelButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_);
@@ -106,6 +106,9 @@ SidebarState::SidebarState(StateStack& stack, Context context)
 
         backgroundShape_.setFillColor(sf::Color(160,82,45,235));
         backgroundShape_.setSize(viewSize_);
+
+        backgroundShape_.setPosition(GUIContainer_.getPosition());
+
         std::cout << "end of sidebar constructor" << std::endl;
     }
 
@@ -143,7 +146,7 @@ void SidebarState::UpdateGUI(sf::Time dt) {
     descriptionText_->SetText("Lives:"+ std::to_string(GetContext().player_->GetLives()) + "\nMoney: " + std::to_string(GetContext().player_->GetPlayerMoney()), false);
     GUIContainer_.Update(dt);
     sidebarWorld_.Update(dt);
-    backgroundShape_.setPosition(GUIContainer_.getPosition());
+    //backgroundShape_.setPosition(GUIContainer_.getPosition());
 }
 
 void SidebarState::AddTowerButton(Tower::Type type, float relX, float relY, sf::IntRect normalTexture, sf::IntRect selectedTexture)
@@ -208,18 +211,20 @@ bool SidebarState::HandleEvent(const sf::Event& event) {
     if ((event.type == sf::Event::MouseMoved) || (event.type == sf::Event::MouseButtonPressed) || (event.type == sf::Event::MouseButtonReleased))
     {
 
-       /* if (event.type == sf::Event::MouseButtonReleased)
+        if (event.type == sf::Event::MouseButtonReleased)
         {
             if (GetContext().player_->InfoRequested())
             {
-                std::cout << "Hello from here rewuested infooooo" << std::endl;
-                RequestStackPop();
-                RequestStackPush(States::ID::GameUpgradeTowerSideBar);
+                std::cout << "Sidebar now recognised that player is requesting info" << std::endl;
+                RequestStackPop(); // Should pop this state 
+                RequestStackPush(States::ID::GameUpgradeTowerSideBar); // Pushes the upgrade/sell side bar
+                GetContext().player_->ResetInfoRequestStatus(); // Resets the player to not request info
+                
             }
             //player_.ResetInfoRequestStatus();
             //player_.ResetInfoPopStatus();
         
-        }*/
+        }
         return true;
     }
 

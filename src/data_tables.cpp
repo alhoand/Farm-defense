@@ -57,28 +57,51 @@ std::vector<Direction> InitializeEnemyPath()
 
 std::vector<TowerData> InitializeTowerData()
 {
-	std::vector<TowerData> data(Enemy::TypeCount);
+	std::vector<TowerData> data(Tower::TypeCount);
 
+	data[Tower::Type::Basic].texture = Textures::ID::BasicTower;
 	data[Tower::Type::Basic].range = 200;
 	data[Tower::Type::Basic].reloadTime = 2;
 	data[Tower::Type::Basic].price = 150;
 	data[Tower::Type::Basic].name = "Basic Tower";
 
+	data[Tower::Type::Super].texture = Textures::ID::SuperTower;
 	data[Tower::Type::Super].range = 250;
 	data[Tower::Type::Super].reloadTime = 0.5;
 	data[Tower::Type::Super].scale = 0.5;
 	data[Tower::Type::Super].price = 600;
 	data[Tower::Type::Super].name = "Super Tower";
 
+	data[Tower::Type::Slowing].texture = Textures::ID::SlowingTower;
 	data[Tower::Type::Slowing].range = 200;
 	data[Tower::Type::Slowing].reloadTime = 0;
 	data[Tower::Type::Slowing].price = 200;
 	data[Tower::Type::Slowing].name = "Slowing Tower";
 
+	data[Tower::Type::Bombing].texture = Textures::ID::BombingTower;
 	data[Tower::Type::Bombing].range = 150;
 	data[Tower::Type::Bombing].reloadTime = 3;
 	data[Tower::Type::Bombing].price = 300;
 	data[Tower::Type::Bombing].name = "Bomb Tower";
+
+	return data;
+}
+
+//initializer
+std::vector<BulletData>	InitializeBulletData() {
+	std::vector<BulletData> data(Bullet::TypeCount);
+
+	data[Bullet::Type::Basic].texture = Textures::ID::BasicBullet;
+	data[Bullet::Type::Basic].speed = 150;
+	data[Bullet::Type::Basic].damage = 10;
+
+	data[Bullet::Type::Super].texture = Textures::ID::SuperBullet;
+	data[Bullet::Type::Super].speed = 200;
+	data[Bullet::Type::Super].damage = 5;
+
+	data[Bullet::Type::Bomb].texture = Textures::ID::Bomb;
+	data[Bullet::Type::Bomb].speed = 150;
+	data[Bullet::Type::Bomb].damage = 10;
 
 	return data;
 }

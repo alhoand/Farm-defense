@@ -5,12 +5,16 @@
 
 #include <cmath>
 
-Bullet::Bullet(Type type, const TextureHolder& textures, float speed, int damage)
+namespace {
+	const std::vector<BulletData> table = InitializeBulletData();
+}
+
+Bullet::Bullet(Type type, const TextureHolder& textures)
     : Entity(1),
       type_(type), 
-      sprite_(textures.Get(ToTextureID(type))),
-      speed_(speed), 
-      damage_(damage) {
+      sprite_(textures.Get(table[type].texture)),
+      speed_(table[type].speed), 
+      damage_(table[type].damage) {
         sf::FloatRect bounds = sprite_.getLocalBounds();
         sprite_.setOrigin(bounds.width/2.f, bounds.height/2.f);
     }
@@ -52,17 +56,4 @@ void Bullet::UpdateCurrent(sf::Time dt,CommandQueue& commands) {
 
 void Bullet::DrawCurrent(sf::RenderTarget& target,sf::RenderStates states) const {
     target.draw(sprite_, states);
-}
-
-Textures::ID Bullet::ToTextureID(Bullet::Type type) {
-    switch (type) {
-        case Bullet::Type::Basic:
-            return Textures::ID::BasicBullet;
-        case Bullet::Type::Super:
-            return Textures::ID::SuperBullet;
-        case Bullet::Type::Bomb:
-            return Textures::ID::Bomb;
-        default: 
-            return Textures::ID::BasicBullet;
-    }
 }

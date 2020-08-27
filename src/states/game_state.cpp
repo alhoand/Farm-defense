@@ -24,6 +24,11 @@ GameState::GameState(StateStack& stack, Context context) :
 		RequestStackPush(States::ID::Pause);
 	});
         GUIContainer_.Pack(pauseButton);
+        
+        // Share the pausebutton with the other game states
+        pauseButton->SetType(GUI::ID::PlayPause);
+        GetContext().GUIContainer_->Pack(pauseButton);
+        
 
         //GetContext().textures_->Load(Textures::ID::FireTower, "../media/textures/tower.png");
     std::cout << "ENd of game state constructor" << std::endl;

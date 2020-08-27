@@ -1,9 +1,13 @@
 #include "tower_picture.hpp"
 #include "data_tables.hpp"
 
-TowerPicture::TowerPicture(Tower::Type type, const TextureHolder& textures, sf::Vector2f sideBarPos) : SpriteNode(textures.Get(Tower::ToTextureID(type))), sideBarPos_(sideBarPos), isDragged_(false), active_(false)
- { 
-    auto data = InitializeTowerData();
+namespace {
+	const std::vector<TowerData> data = InitializeTowerData();
+}
+
+TowerPicture::TowerPicture(Tower::Type type, const TextureHolder& textures, sf::Vector2f sideBarPos)
+    : SpriteNode(textures.Get(data[type].texture)), sideBarPos_(sideBarPos), isDragged_(false), active_(false)
+ {
 
     setOrigin(sprite_.getLocalBounds().width/2.f, sprite_.getLocalBounds().height/2.f);
 
@@ -44,21 +48,23 @@ sf::Vector2f TowerPicture::GetClickPos() const
 void TowerPicture::GetBack() {
     Deactivate();
 
-    std::cout << "TowerPic origin:" << getOrigin().x << ", " << getOrigin().y << std::endl;
+   /* std::cout << "TowerPic origin:" << getOrigin().x << ", " << getOrigin().y << std::endl;
     std::cout << "TowerPic world pos:" << GetWorldPosition().x << ", " << GetWorldPosition().y << std::endl;
     std::cout << "TowerPic pos:" << getPosition().x << ", " << getPosition().y << std::endl;
     std::cout << "TowerPic Getpos:" << GetPosition().x << ", " << GetPosition().y << std::endl;
     std::cout << "TowePic Local bounds center " << sprite_.getLocalBounds().width/2.f << ", " << sprite_.getLocalBounds().height/2.f << std::endl;
+    */
     setOrigin(sprite_.getLocalBounds().width/2.f, sprite_.getLocalBounds().height/2.f);
-    std::cout << "TowePic Local bounds center after" << sprite_.getLocalBounds().width/2.f << ", " << sprite_.getLocalBounds().height/2.f << std::endl;
+    /*std::cout << "TowePic Local bounds center after" << sprite_.getLocalBounds().width/2.f << ", " << sprite_.getLocalBounds().height/2.f << std::endl;
     std::cout << "TowerPic origin after: " << getOrigin().x << ", " << getOrigin().y << std::endl;
     sf::Vector2f parent = GetWorldPosition() - getPosition();
     std::cout << "parent pos: " << parent.x << ", "  << parent.y << std::endl;
+    */
     setPosition(sideBarPos_); //+ (GetWorldTransform() * sf::Vector2f())); //- getPosition()));
-    std::cout << "TowerPic world pos after: " << GetWorldPosition().x << ", " << GetWorldPosition().y << std::endl;
+    /*std::cout << "TowerPic world pos after: " << GetWorldPosition().x << ", " << GetWorldPosition().y << std::endl;
     std::cout << "TowerPic pos after: " << getPosition().x << ", " << getPosition().y << std::endl;
     std::cout << "TowerPic Getpos: after " << GetPosition().x << ", " << GetPosition().y << std::endl;
-
+*/
     //SetTransparent();
 }
 

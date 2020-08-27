@@ -8,7 +8,7 @@
  * A bomb is shot by bombing towers, and it
  * - has a range of 100, hits enemies within this range
  * - has damage of 10 hp
- * - has speed of 100
+ * - has speed of 150
  */
 
 class Bomb : public Bullet {

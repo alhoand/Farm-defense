@@ -48,9 +48,15 @@ void Component::Deactivate()
 {
 	isActive_ = false;
 }
-
-void Component::ChildOf(Component* parent) {
+// Makes the caller the "follower" of the parent component,
+// i.e., sets its position and other render states relative to the parent component.
+void Component::FollowerOf(Component* parent) {
 	this->parent_ = parent;
+}
+//Check FollowerOf-function
+bool Component::IsFollowerOf(const Component* parent)
+{
+	return this->parent_ == parent;
 }
 
 void Component::Update(sf::Time) {

@@ -23,7 +23,7 @@ class SceneNodeComponent : public Component
 		void				SetNode(SceneNode* node);
         SceneNode*          GetNode() const;
 
-        virtual void		HandleEvent(const sf::Event& event) override;
+        virtual bool		HandleEvent(const sf::Event& event) override;
         virtual void        draw(sf::RenderTarget& target, sf::RenderStates states) const override
                             { Draw(target, states); }
 

@@ -11,7 +11,7 @@ namespace {
 Tower::Tower(Tower::Type type, const TextureHolder &textures)
     : Entity(1), 
       type_(type),
-      sprite_(textures.Get(ToTextureID(type))),
+      sprite_(textures.Get(table[type].texture)),
       range_(table[type].range), 
       reloadTime_(table[type].reloadTime), 
       canShoot_(false), 
@@ -34,12 +34,6 @@ Tower::Tower(Tower::Type type, const TextureHolder &textures)
             CreateBullet(node, textures);
         };
     }
-/*
-Textures::ID Tower::ToTextureID(Type type)
-{
-    return table[type].texture;
-}
-*/
 
 int Tower::towerCount_ = 0;
 
@@ -95,7 +89,7 @@ void Tower::Collides(bool collision)
     {
         rangeCircle_->SetColor(sf::Color(255, 0, 0, 128));
         isColliding_ = true;
-    }else
+    } else
     {
         rangeCircle_->SetDefaultColor();
         isColliding_ = false;
@@ -186,7 +180,6 @@ void Tower::Deactivate()
 }
 
 // This sets the permission for the tower to move
-// for now: this maybe is a clumsy way to achieve this
 void Tower::AllowMoving()
 {
     canMove_ = true;
@@ -206,8 +199,6 @@ bool Tower::CanMove() const
 
 bool Tower::CanShoot() const 
 {
-    //if (IsDestroyed())
-        //return false;
     return canShoot_;
 }
 
@@ -259,33 +250,3 @@ void Tower::MakeVisible()
     sprite_.setColor(sf::Color(255, 255, 255, 255));
 }
 
-//This will be pure virtual, is not needed here
-/*void Tower::CreateBullet(SceneNode& node, const TextureHolder& textures) const {
-    std::cout << "Creating a bullet" << std::endl;
-
-    std::unique_ptr<Bullet> bullet(new Bullet(static_cast<Bullet::Type>(bulletType_), textures));
-
-    //sf::Vector2f offset(sprite_.getGlobalBounds().width / 2.f, sprite_.getGlobalBounds().height / 2.f);
-    //sf::Vector2f velocity(0.0f, 100.0f);
-
-    bullet->setPosition(GetWorldPosition());
-
-    bullet->SetVelocity(bullet->GetSpeed() * direction_);
-    std::cout << "Bullet velocity: " << bullet->GetVelocity().x << ", " << bullet->GetVelocity().y << std::endl;
-    node.AttachChild(std::move(bullet));
-}*/
-
-Textures::ID Tower::ToTextureID(Tower::Type type) {
-    switch (type) {
-        case Tower::Type::Basic:
-            return Textures::ID::BasicTower;
-        case Tower::Type::Slowing:
-            return Textures::ID::SlowingTower;
-        case Tower::Type::Super:
-            return Textures::ID::SuperTower;
-        case Tower::Type::Bombing:
-            return Textures::ID::BombingTower;
-        default: 
-            return Textures::ID::NoTexture;
-    }
-}
