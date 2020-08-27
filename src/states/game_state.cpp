@@ -1,8 +1,9 @@
 #include "game_state.hpp"
 #include "../node_component.hpp"
 #include "../resource_identifiers.hpp"
-#include <memory>
 #include "../data_tables.hpp"
+
+#include <memory>
 
 namespace {
 	const std::vector<GUIData> table = InitializeGUIData();
@@ -21,9 +22,9 @@ GameState::GameState(StateStack& stack, Context context) :
         auto pauseButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, table[GUIitems::ID::PauseButton].normalTexture, table[GUIitems::ID::PauseButton].selectedTexture);
         pauseButton->setPosition(10, 10);
         pauseButton->SetCallback([this] ()
-	{
-		RequestStackPush(States::ID::Pause);
-	});
+        {
+            RequestStackPush(States::ID::Pause);
+        });
         GUIContainer_.Pack(pauseButton);
         
         // Share the pausebutton with the other game states
@@ -47,6 +48,7 @@ bool GameState::Update(sf::Time dt) {
         RequestStackPush(States::ID::GameOver);
         return false;
     }
+
     gameField_.Update(dt); // updates the gamefield on each tick
     IncreasePlayerMoney(gameField_.GetAddedMoney());
     CommandQueue& commands = gameField_.GetCommandQueue();
@@ -65,6 +67,7 @@ bool GameState::Update(sf::Time dt) {
     }
     if (gameField_.IsEndOfGame())
     {
+        gameEnded_ = true;
         player_.SetGameStatus(Player::GameWon);
         return true;
     }
@@ -84,7 +87,6 @@ bool GameState::HandleEvent(const sf::Event& event) {
 
     CommandQueue& commands = gameField_.GetCommandQueue();
     player_.HandleEvent(event, commands);
-    //std::cout << "We got here after player_.handleevent" << std::endl;
     
     if (event.type == sf::Event::MouseButtonReleased)
     {
@@ -104,21 +106,13 @@ bool GameState::HandleEvent(const sf::Event& event) {
                 player_.ResetInfoPopStatus();
             }*/
         
-    }
-    
-    
+    }  
 
     if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P))
-		RequestStackPush(States::ID::Pause);
+	{
+        RequestStackPush(States::ID::Pause);
+    }
     
-
-
-    /*if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::U))
-    {
-        std::cout << "Requested upgrade " << std::endl;
-        RequestStackPush(States::ID::Sidebar);
-		RequestStackPush(States::ID::GameUpgradeTowerSideBar);
-    }*/
     if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::I))
     {
         std::cout << "Requested info " << std::endl;
@@ -133,6 +127,5 @@ bool GameState::HandleEvent(const sf::Event& event) {
 void GameState::IncreasePlayerMoney(int amount)
 {
     player_.AddMoney(amount);
-    //std::cout << "current score: " << player_.GetPlayerMoney() << std::endl;
 }
 

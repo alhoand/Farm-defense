@@ -60,7 +60,7 @@ bool MultiEnemy::CheckDestroyBehaviour(sf::Time dt, CommandQueue& commands)
             commands.Push(spawnBasicEnemyCommand_);
 
             spawnCount_--;
-            spawnTimer_ = sf::seconds(0.1);
+            spawnTimer_ = sf::seconds(0.5);
         } else
         {
             spawnTimer_ -= dt;

@@ -1,14 +1,12 @@
 
 #include "game_field.hpp"
 
+#include <SFML/System/Time.hpp>
+
 #include <iostream> // for debugging
 #include <limits>
 #include <algorithm>
-
-#include <SFML/System/Time.hpp>
 #include <cassert>
-#include "data_tables.hpp"
-#include "utility.hpp"
 
 namespace
 {
@@ -18,7 +16,7 @@ namespace
 
 GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	: window_(window),
-	viewOffset_(viewOffset), 
+	 viewOffset_(viewOffset), 
 	 gameFieldView_(window.getDefaultView()),
 	 textures_(),
 	 sceneGraph_(),
@@ -29,12 +27,10 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	 spawnPosition_(gameFieldBounds_.left + 10.f,
 	 				 (gameFieldBounds_.top + gameFieldBounds_.height)/3.f),
 	commandQueue_(),
-	spawnCountdown_(sf::seconds(2)),
-	spawnInterval_(2), //this should maybe be a parameter
 	leftToSpawn_(0),
     activeEnemies_(),
-	difficultyLevel_(0), //0 is the first level and increases by 1 by each wave
-	levelCount_(5), // can be added to parameter list or askef for player, but for now it's just harcoded to be 5
+	difficultyLevel_(0), //0 is the initial state, increases by 1 by each wave
+	levelCount_(5),
 	newEnemiesReachedEnd_(0),
 	roundMoney_(0),
 	hasActiveEntities_(false),
@@ -52,8 +48,7 @@ void GameField::Update(sf::Time dt) {
 	newEnemiesReachedEnd_ = 0; // new enemies have not reached end at the beginning of an update
 	roundMoney_ = 0; // set round score to zero 
 
-	//makes towers shoot
-	MakeTowersShoot();
+	MakeTowersShoot(); //makes towers shoot
 	DestroyEntitiesOutsideView();
 	
 	// Forwards the commands to self or the scene graph
@@ -75,71 +70,79 @@ void GameField::Update(sf::Time dt) {
 	sceneGraph_.Update(dt, commandQueue_);
 }
 
-void GameField::LoadTextures() {
+
+void GameField::Draw() {
+	window_.setView(gameFieldView_);
+	window_.draw(sceneGraph_);
 	
-	textures_.Load(Textures::ID::Fire, "../media/textures/Doge.png");
-	textures_.Load(Textures::ID::Leaf, "../media/textures/cat.png");
-	textures_.Load(Textures::ID::Grass, "../media/textures/grass.jpg");
-	textures_.Load(Textures::ID::Path, "../media/textures/path.png");
-	textures_.Load(Textures::ID::BasicTower, "../media/textures/tractor.png");
-	textures_.Load(Textures::ID::SuperTower, "../media/textures/harvester.png");
-	textures_.Load(Textures::ID::SlowingTower, "../media/textures/tower.png");
-	textures_.Load(Textures::ID::BombingTower, "../media/textures/tower.png");
-	textures_.Load(Textures::ID::BasicBullet, "../media/textures/bullet.png");
-	textures_.Load(Textures::ID::SuperBullet, "../media/textures/bullet.png");
-	textures_.Load(Textures::ID::Bomb, "../media/textures/bomb.png");
-	textures_.Load(Textures::ID::NoTexture,      "../media/textures/noTexture.png");
-	textures_.Load(Textures::ID::DeathAnimation,      "../media/textures/deathAnimation.png");
-	textures_.Load(Textures::ID::Explosion,      "../media/textures/explosion.png");
-	textures_.Load(Textures::ID::Leppis,      "../media/textures/leppakerttu.png");
-	textures_.Load(Textures::ID::Koppis,      "../media/textures/koppakuoriainen.png");
-	textures_.Load(Textures::ID::HamahakkiIso,      "../media/textures/hamahakki.png");
+
 }
 
-void GameField::BuildScene() {
-	// Initialize all the scene layers, i.e., the SceneNodes that are rendered together
-	for (std::size_t i = 0; i < LayerCount; i++) {
-		Category::Type category = (i == Field) ? Category::Scene : Category::None;
 
-		SceneNode::Ptr layer(new SceneNode(category));
-		sceneLayers_[i] = layer.get();
-		sceneGraph_.AttachChild(std::move(layer));
-	}
-
-	//Make the background
-	sf::Texture& grass = textures_.Get(Textures::ID::Grass);
-	sf::IntRect textureRect(gameFieldBounds_);
-	grass.setRepeated(true);
-
-	std::unique_ptr<SpriteNode> grassSprite(new SpriteNode(grass, textureRect));
-	grassSprite->setPosition(gameFieldBounds_.left, gameFieldBounds_.top);
-	sceneLayers_[Background]->AttachChild(std::move(grassSprite));
-
-	// Make path visible
-	BuildPath();
+CommandQueue& GameField::GetCommandQueue() {
+	return commandQueue_;
 }
 
-bool MatchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2)
+int GameField::NewEnemiesReachedEnd() {
+	return newEnemiesReachedEnd_;
+}
+
+int GameField::GetCurrentLevel()
 {
-	unsigned int category1 = colliders.first->GetCategory();
-	unsigned int category2 = colliders.second->GetCategory();
+	return difficultyLevel_;
+}
 
-	// Make sure first pair entry has category type1 and second has type2
-	if (type1 & category1 && type2 & category2)
+//can be used to determine wheter current level is finished
+bool GameField::IsEndOfLevel()
+{
+	return isEndOfLevel_;
+}
+
+bool GameField::IsEndOfGame()
+{
+	return IsEndOfLevel() && difficultyLevel_ >= levelCount_;
+}
+
+int GameField::GetAddedMoney()
+{
+	return roundMoney_;
+}
+
+// Creates a new enemy wave
+void GameField::NextEnemyWave()
+{
+	difficultyLevel_++;
+	newLevelStarted_ = true;
+
+	if (difficultyLevel_ <= levelCount_)
 	{
-		//std::cout << "matching category found" << std::endl;
-		return true;
+		//std::cout << "Creating new enemy wave!!" << std::endl;
+		switch (difficultyLevel_) {
+			case 1:
+				leftToSpawn_ = 10;
+				break;
+			case 2:
+				leftToSpawn_ = 15;
+				break;
+			case 3:
+				leftToSpawn_ = 20;
+				break;
+			case 4:
+				leftToSpawn_ = 25;
+				break;
+			case 5:
+				leftToSpawn_ = 35;
+				break;
+			default:
+			break;
+		}
 	}
-	else if (type1 & category2 && type2 & category1)
-	{
-		//std::cout << "matching category found" << std::endl;
-		std::swap(colliders.first, colliders.second);
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+}
+
+// Sets gameField in the beginning of next level
+void GameField::NextLevel()
+{
+	isEndOfLevel_ = false;
 }
 
 
@@ -174,73 +177,54 @@ void GameField::AddTower(Tower::Type type, sf::Vector2f pos)
 	std::cout << "Tower pos: " << pos.x <<", " << pos.y << std::endl;
 }
 
-void GameField::HandleCollisions()
-{
+// private member functions
+
+void GameField::LoadTextures() {
 	
-	std::set<SceneNode::Pair> collisionPairs;
-	sceneGraph_.CheckSceneCollision(sceneGraph_, collisionPairs);
-	bool towerCollideCalled = false;
-	for(SceneNode::Pair pair : collisionPairs)
-	{
-		if (MatchesCategories(pair, Category::Enemy, Category::Bullet))
-		{
-			auto& enemy = static_cast<Enemy&>(*pair.first);
-			auto& bullet = static_cast<Bullet&>(*pair.second);
-			if(bullet.IsDestroyed() || enemy.IsDestroyed())
-			{
-				continue;
-			}
-			// Apply bullet damage to enemy, destroy bullet
-			enemy.TakeHit(bullet.GetDamage(), bullet.GetCategory());
-			if (enemy.IsDestroyed())
-			{
-				AddRounMoney(enemy.GetMoney());
-			}
-			std::cout << "HP now: " << enemy.GetHitpoints() << std::endl;
-			bullet.Destroy();
-
-		}
-		if (MatchesCategories(pair, Category::Tower, Category::Active))
-		{
-			auto& tower = static_cast<Tower&>(*pair.first);
-			auto& activeTower = static_cast<Tower&>(*pair.second);
-			//if (tower.IsMoving())
-			//{
-				tower.Collides(true);
-				towerCollideCalled = true;
-			//}
-			if (activeTower.IsMoving())
-			{
-				activeTower.Collides(true);
-				towerCollideCalled = true;
-			}
-				
-		}
-		if (MatchesCategories(pair, Category::Tower, Category::Path))
-		{
-			//std::cout << "Path recognized" << std::endl;
-			auto& activeTower = static_cast<Tower&>(*pair.first);
-			if (activeTower.IsMoving())
-			{
-				activeTower.Collides(true);
-				towerCollideCalled = true;
-			}
-		}
-
-	}
-	if (!towerCollideCalled)
-		{
-			Command command;
-			command.category_ = Category::Tower;
-			command.action_ = DerivedAction<Tower>([=](Tower& t, sf::Time)
-			{
-				t.Collides(false);
-				//std::cout << "Collide called" << std::endl;
-			});
-			commandQueue_.Push(command);
-
-		}
+	textures_.Load(Textures::ID::Fire, "../media/textures/Doge.png");
+	textures_.Load(Textures::ID::Leaf, "../media/textures/cat.png");
+	textures_.Load(Textures::ID::Grass, "../media/textures/grass.jpg");
+	textures_.Load(Textures::ID::Path, "../media/textures/path.png");
+	textures_.Load(Textures::ID::BasicTower, "../media/textures/tractor.png");
+	textures_.Load(Textures::ID::SuperTower, "../media/textures/harvester.png");
+	textures_.Load(Textures::ID::SlowingTower, "../media/textures/tower.png");
+	textures_.Load(Textures::ID::BombingTower, "../media/textures/tower.png");
+	textures_.Load(Textures::ID::BasicBullet, "../media/textures/bullet.png");
+	textures_.Load(Textures::ID::SuperBullet, "../media/textures/bullet.png");
+	textures_.Load(Textures::ID::Bomb, "../media/textures/bomb.png");
+	textures_.Load(Textures::ID::NoTexture,      "../media/textures/noTexture.png");
+	textures_.Load(Textures::ID::DeathAnimation,      "../media/textures/deathAnimation.png");
+	textures_.Load(Textures::ID::Explosion,      "../media/textures/explosion.png");
+	textures_.Load(Textures::ID::Leppis,      "../media/textures/leppakerttu.png");
+	textures_.Load(Textures::ID::Koppis,      "../media/textures/koppakuoriainen.png");
+	textures_.Load(Textures::ID::HamahakkiIso,      "../media/textures/hamahakki.png");
 }
+
+
+void GameField::BuildScene() {
+	// Initialize all the scene layers, i.e., the SceneNodes that are rendered together
+	for (std::size_t i = 0; i < LayerCount; i++) {
+		Category::Type category = (i == Field) ? Category::Scene : Category::None;
+
+		SceneNode::Ptr layer(new SceneNode(category));
+		sceneLayers_[i] = layer.get();
+		sceneGraph_.AttachChild(std::move(layer));
+	}
+
+	//Make the background
+	sf::Texture& grass = textures_.Get(Textures::ID::Grass);
+	sf::IntRect textureRect(gameFieldBounds_);
+	grass.setRepeated(true);
+
+	std::unique_ptr<SpriteNode> grassSprite(new SpriteNode(grass, textureRect));
+	grassSprite->setPosition(gameFieldBounds_.left, gameFieldBounds_.top);
+	sceneLayers_[Background]->AttachChild(std::move(grassSprite));
+
+	// Make path visible
+	BuildPath();
+}
+
+// builds the enemy path on the game field
 void GameField::BuildPath()
 {
 	std::vector<Direction> path = InitializeEnemyPath();
@@ -279,51 +263,76 @@ void GameField::BuildPath()
 	}
 }
 
-void GameField::OnCommand(Command command, sf::Time dt) 
+// function that handles all collisions on game field
+void GameField::HandleCollisions()
 {
-	command.gameFieldAction_(*this, dt);
-}
-
-
-void GameField::NextEnemyWave()
-{
-	difficultyLevel_++;
-	//std::cout << "trying to start new enemy wave" << std::endl;
-	newLevelStarted_ = true;
-
-	if (difficultyLevel_ <= levelCount_)
+	
+	std::set<SceneNode::Pair> collisionPairs;
+	sceneGraph_.CheckSceneCollision(sceneGraph_, collisionPairs);
+	bool towerCollideCalled = false;
+	for(SceneNode::Pair pair : collisionPairs)
 	{
-		std::cout << "Creating new enemy wave!!" << std::endl;
-		switch (difficultyLevel_) {
-			case 1:
-				leftToSpawn_ = 10;
-				break;
-			case 2:
-				leftToSpawn_ = 15;
-				break;
-			case 3:
-				leftToSpawn_ = 20;
-				break;
-			case 4:
-				leftToSpawn_ = 25;
-				break;
-			case 5:
-				leftToSpawn_ = 35;
-				break;
-			default:
-			break;
+		if (MatchesCategories(pair, Category::Enemy, Category::Bullet))
+		{
+			auto& enemy = static_cast<Enemy&>(*pair.first);
+			auto& bullet = static_cast<Bullet&>(*pair.second);
+			if(bullet.IsDestroyed() || enemy.IsDestroyed())
+			{
+				continue;
+			}
+			// Apply bullet damage to enemy, destroy bullet
+			enemy.TakeHit(bullet.GetDamage(), bullet.GetCategory());
+			if (enemy.IsDestroyed())
+			{
+				roundMoney_ +=enemy.GetMoney();
+			}
+			std::cout << "HP now: " << enemy.GetHitpoints() << std::endl;
+			bullet.Destroy();
+
 		}
+		if (MatchesCategories(pair, Category::Tower, Category::Active))
+		{
+			auto& tower = static_cast<Tower&>(*pair.first);
+			auto& activeTower = static_cast<Tower&>(*pair.second);
+			//if (tower.IsMoving())
+			//{
+				tower.Collides(true);
+				towerCollideCalled = true;
+			//}
+			if (activeTower.IsMoving())
+			{
+				activeTower.Collides(true);
+				towerCollideCalled = true;
+			}
+				
+		}
+		if (MatchesCategories(pair, Category::Tower, Category::Path))
+		{
+			//std::cout << "Path recognized" << std::endl;
+			auto& activeTower = static_cast<Tower&>(*pair.first);
+			if (activeTower.IsMoving())
+			{
+				activeTower.Collides(true);
+				towerCollideCalled = true;
+			}
+		}
+
+	}
+	if (!towerCollideCalled)
+	{
+		Command command;
+		command.category_ = Category::Tower;
+		command.action_ = DerivedAction<Tower>([=](Tower& t, sf::Time)
+		{
+			t.Collides(false);
+			//std::cout << "Collide called" << std::endl;
+		});
+		commandQueue_.Push(command);
 	}
 }
 
-void GameField::NextLevel()
-{
-	isEndOfLevel_ = false;
-	//newLevelStarted_ = false;
-}
 
-
-//Spawns only one type of enemies and spawnInterval is constant
+//Spawns enemies
 void GameField::SpawnEnemies(sf::Time dt) {
 	
 	if (leftToSpawn_ > 0 && difficultyLevel_ <= levelCount_)
@@ -347,11 +356,11 @@ void GameField::SpawnEnemies(sf::Time dt) {
 	
 }
 
+// randomizes the enemy types that spawn
 void GameField::RandomEnemySpawner(unsigned int level)
 {
-	int num = RandomInt(std::min((int) level, 4)); //random int that is max level-1
+	int num = RandomInt(std::min((int) level, 4)); //random int that is max level-1 or 4
 
-		//this works only for current enemy types, probably cannot implemet for arbitrary count of enemy types
 		switch(num)
 		{
 			case 0: 
@@ -396,49 +405,7 @@ void GameField::RandomEnemySpawner(unsigned int level)
 		}
 }
 
-
-void GameField::Draw() {
-	window_.setView(gameFieldView_);
-	window_.draw(sceneGraph_);
-	
-
-}
-
-CommandQueue& GameField::GetCommandQueue() {
-	return commandQueue_;
-}
-
-int GameField::NewEnemiesReachedEnd() {
-	return newEnemiesReachedEnd_;
-}
-
-
-//can be used to determine when current level is finished
-bool GameField::IsEndOfLevel()
-{
-	return isEndOfLevel_;
-}
-
-bool GameField::IsEndOfGame()
-{
-	return IsEndOfLevel() && difficultyLevel_ >= levelCount_;
-}
-
-int GameField::GetCurrentLevel()
-{
-	return difficultyLevel_;
-}
-
-int GameField::GetAddedMoney()
-{
-	return roundMoney_;
-}
-
-void GameField::AddRounMoney(int money)
-{
-	roundMoney_ += money;
-}
-
+// destroys entities that are no longer on the game field
 void GameField::DestroyEntitiesOutsideView()
 {
 	Command bulletCommand;
@@ -472,10 +439,12 @@ void GameField::DestroyEntitiesOutsideView()
 	commandQueue_.Push(enemyCommand);
 }
 
+
 sf::FloatRect GameField::GetViewBounds() const
 {
 	return sf::FloatRect(gameFieldView_.getCenter() - gameFieldView_.getSize() / 2.f, gameFieldView_.getSize());
 }
+
 
 sf::FloatRect GameField::GetGamefieldBounds() const
 {
@@ -563,7 +532,7 @@ void GameField::MakeTowersShoot()
 				}
 				if (enemy->IsDestroyed())
 				{
-					AddRounMoney(enemy->GetMoney());
+					roundMoney_ += enemy->GetMoney();
 				}
 			}
 			bomb.Detonate();
@@ -581,13 +550,10 @@ void GameField::MakeTowersShoot()
 	towerCommand.category_ = Category::Tower;
 	towerCommand.action_ = DerivedAction<Tower>([this](Tower& tower, sf::Time)
 	{
-		//std::cout << "Check" << std::endl;
-		//std::cout << "Sold:  " << tower.IsSold() << std::endl;
 		if (tower.IsDestroyed()) // If the tower is not sold yet
 		{
-			AddRounMoney(towerTable[tower.GetType()].price);
-			std::cout << "Money added" << std::endl;
-			//tower.Sell();
+			roundMoney_ += towerTable[tower.GetType()].price;
+			//std::cout << "Money added" << std::endl;
 		}
 	});
 
@@ -599,7 +565,35 @@ void GameField::MakeTowersShoot()
 	commandQueue_.Push(towerCommand);
 
 	activeEnemies_.clear();
-
 }
 
 
+void GameField::OnCommand(Command command, sf::Time dt) 
+{
+	command.gameFieldAction_(*this, dt);
+}
+
+
+// helper function to match colliding categories
+bool MatchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2)
+{
+	unsigned int category1 = colliders.first->GetCategory();
+	unsigned int category2 = colliders.second->GetCategory();
+
+	// Make sure first pair entry has category type1 and second has type2
+	if (type1 & category1 && type2 & category2)
+	{
+		//std::cout << "matching category found" << std::endl;
+		return true;
+	}
+	else if (type1 & category2 && type2 & category1)
+	{
+		//std::cout << "matching category found" << std::endl;
+		std::swap(colliders.first, colliders.second);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}

@@ -23,7 +23,7 @@ EndOfLevelState::EndOfLevelState(StateStack& stack, Context context)
 
         sf::FloatRect bounds = levelOverText_.getLocalBounds();
         levelOverText_.setOrigin(::floor(bounds.left + bounds.width / 2.f), std::floor(50 + bounds.top + bounds.height / 2.f));
-        levelOverText_.setPosition(0.5f * viewSize.x, 0.3f * viewSize.y);
+        levelOverText_.setPosition(0.5f * viewSize.x, 0.5f * viewSize.y);
 
     }
 

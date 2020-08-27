@@ -7,7 +7,6 @@
 Player::Player(sf::RenderWindow& window, sf::Vector2f viewOffset) 
     : window_(window), viewOffset_(viewOffset), lives_(10), status_(), money_(500), currentLevel_(1), infoRequested_(false), infoPopRequested_(false) { }
 
-// Adapted from SFML Game Development-book
 
 void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
     if (event.type == sf::Event::MouseButtonPressed) // CLICK
@@ -215,6 +214,7 @@ void Player::ResetGame()
     lives_ = 10;
     status_ = GameStatus::GameRunning; 
     money_ = 500;
+    currentLevel_ = 1;
 }
 
 int Player::GetPlayerMoney() const

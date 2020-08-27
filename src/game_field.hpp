@@ -30,20 +30,13 @@
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics.hpp>
 
-/*  ***TODO***
-* 
-* - add multiple towers and enemies to the sceneGraph
-* - move the towers with mouse
-* - enemy move path
-* - collision recognition
-* - all return values are void, to be changed for right ones
-*/
 // Forward declaration
 namespace sf {
 	class RenderWindow;
 }
 
 struct Command;
+
 // Takes care of building, updating and rendering the world to a SFML window
 class GameField : private sf::NonCopyable {
     public:
@@ -58,14 +51,11 @@ class GameField : private sf::NonCopyable {
         int             GetCurrentLevel();
         bool            IsEndOfLevel();
         bool            IsEndOfGame();
-        void            AddRounMoney(int points);
         int             GetAddedMoney();
         void            NextEnemyWave();
         void            NextLevel();
 
-       // std::pair<SceneNode*, bool> GetActiveNode() const; not needed currently
-
-        void AddTower(Tower::Type type, sf::Vector2f pos); //not implemented yet
+        void AddTower(Tower::Type type, sf::Vector2f pos);
 
     private:
         void            LoadTextures();
@@ -78,7 +68,6 @@ class GameField : private sf::NonCopyable {
         sf::FloatRect   GetViewBounds() const;
         sf::FloatRect   GetGamefieldBounds() const;
         void            MakeTowersShoot();
-       // void            HandleActiveTower();
         void            OnCommand(Command command, sf::Time dt);
         enum Layer {
             Background,
@@ -95,15 +84,10 @@ class GameField : private sf::NonCopyable {
         sf::FloatRect       gameFieldBounds_;
         sf::Vector2f        spawnPosition_;
         CommandQueue        commandQueue_;
-        //std::list<Tower*> towers_;
-        //std::list<Bullet*> bullets_;
-        sf::Time            spawnCountdown_ ;
-        int                 spawnInterval_;
-        int                 leftToSpawn_; //initial, could change for better
+        int                 leftToSpawn_;
         std::vector<Enemy*> activeEnemies_;
-        // std::vector<Tower*> activeTowers_;
         unsigned int        difficultyLevel_;
-	    unsigned int        levelCount_; //total amount of levels or waves in current game
+	    unsigned int        levelCount_; 
         sf::Time            levelBreakTimer_;
         int                 newEnemiesReachedEnd_;
         int                 roundMoney_;
