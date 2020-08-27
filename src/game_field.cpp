@@ -29,7 +29,7 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	 				 (gameFieldBounds_.top + gameFieldBounds_.height)/3.f),
 	commandQueue_(),
 	spawnCountdown_(sf::seconds(2)),
-	spawnInterval_(1), //this should maybe be a parameter
+	spawnInterval_(2), //this should maybe be a parameter
 	leftToSpawn_(0),
     activeEnemies_(),
 	difficultyLevel_(0), //0 is the first level and increases by 1 by each wave
@@ -297,7 +297,25 @@ void GameField::NextEnemyWave()
 	if (difficultyLevel_ <= levelCount_)
 	{
 		std::cout << "Creating new enemy wave!!" << std::endl;
-		leftToSpawn_ = difficultyLevel_ * 10; // Should not be hardcoded
+		switch (difficultyLevel_) {
+			case 1:
+				leftToSpawn_ = 10;
+				break;
+			case 2:
+				leftToSpawn_ = 15;
+				break;
+			case 3:
+				leftToSpawn_ = 20;
+				break;
+			case 4:
+				leftToSpawn_ = 25;
+				break;
+			case 5:
+				leftToSpawn_ = 35;
+				break;
+			default:
+			break;
+		}
 	}
 }
 
