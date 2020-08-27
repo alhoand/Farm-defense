@@ -27,6 +27,8 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	 spawnPosition_(gameFieldBounds_.left + 10.f,
 	 				 (gameFieldBounds_.top + gameFieldBounds_.height)/3.f),
 	commandQueue_(),
+	spawnCountdown_(sf::seconds(2)),
+	spawnInterval_(2),
 	leftToSpawn_(0),
     activeEnemies_(),
 	difficultyLevel_(0), //0 is the initial state, increases by 1 by each wave
@@ -260,6 +262,31 @@ void GameField::BuildPath()
 			pathSprite->SetCategory(Category::Path);
 			sceneLayers_[Background]->AttachChild(std::move(pathSprite));
 		}
+	}
+}
+
+
+// helper function to match colliding categories
+bool MatchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2)
+{
+	unsigned int category1 = colliders.first->GetCategory();
+	unsigned int category2 = colliders.second->GetCategory();
+
+	// Make sure first pair entry has category type1 and second has type2
+	if (type1 & category1 && type2 & category2)
+	{
+		//std::cout << "matching category found" << std::endl;
+		return true;
+	}
+	else if (type1 & category2 && type2 & category1)
+	{
+		//std::cout << "matching category found" << std::endl;
+		std::swap(colliders.first, colliders.second);
+		return true;
+	}
+	else
+	{
+		return false;
 	}
 }
 
@@ -574,26 +601,4 @@ void GameField::OnCommand(Command command, sf::Time dt)
 }
 
 
-// helper function to match colliding categories
-bool MatchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2)
-{
-	unsigned int category1 = colliders.first->GetCategory();
-	unsigned int category2 = colliders.second->GetCategory();
 
-	// Make sure first pair entry has category type1 and second has type2
-	if (type1 & category1 && type2 & category2)
-	{
-		//std::cout << "matching category found" << std::endl;
-		return true;
-	}
-	else if (type1 & category2 && type2 & category1)
-	{
-		//std::cout << "matching category found" << std::endl;
-		std::swap(colliders.first, colliders.second);
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}

@@ -84,6 +84,8 @@ class GameField : private sf::NonCopyable {
         sf::FloatRect       gameFieldBounds_;
         sf::Vector2f        spawnPosition_;
         CommandQueue        commandQueue_;
+        sf::Time            spawnCountdown_ ;
+        int                 spawnInterval_;
         int                 leftToSpawn_;
         std::vector<Enemy*> activeEnemies_;
         unsigned int        difficultyLevel_;
