@@ -13,9 +13,9 @@ namespace GUI
 Button::Button(const FontHolder& fonts, const TextureHolder& textures):
   callback_()
 , texture_(textures.Get(Textures::Buttons))
-, normalTextureRect_(sf::IntRect(0,370,200,88))
-, selectedTextureRect_(sf::IntRect(0,546,200,88))
-, pressedTextureRect_(sf::IntRect(0,546,200,88))
+, normalTextureRect_(sf::IntRect(0,286,200,88))
+, selectedTextureRect_(sf::IntRect(0,462,200,88))
+, pressedTextureRect_(sf::IntRect(0,462,200,88))
 , sprite_()
 , text_("", fonts.Get(Fonts::ID::Main), 16)
 , isToggle_(false)
