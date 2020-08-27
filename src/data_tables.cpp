@@ -81,7 +81,7 @@ std::vector<TowerData> InitializeTowerData()
 	data[Tower::Type::Bombing].texture = Textures::ID::BombingTower;
 	data[Tower::Type::Bombing].range = 150;
 	data[Tower::Type::Bombing].reloadTime = 3;
-	data[Tower::Type::Bombing].price = 300;
+	data[Tower::Type::Bombing].price = 350;
 	data[Tower::Type::Bombing].name = "Bomb Tower";
 
 	return data;
