@@ -114,10 +114,8 @@ UpgradeTowerState::UpgradeTowerState(StateStack& stack, Context context) :
         auto pauseButton = GetContext().GUIContainer_->GetChild(GUI::ID::PlayPause);
         GUIContainer_.Pack(pauseButton);
 
-        std::cout << "Pause's parent is the container: " << pauseButton->IsFollowerOf(&GUIContainer_) << std::endl;
-
-        //backgroundShape_.setFillColor(sf::Color(160,82,45,230));
-        backgroundShape_.setFillColor(sf::Color(0,0,235,230));
+        backgroundShape_.setFillColor(sf::Color(160,82,45,230));
+        //backgroundShape_.setFillColor(sf::Color(0,0,235,230));
         backgroundShape_.setSize(viewSize_);
         GUIContainer_.setPosition(context.window_->getView().getSize().x - viewSize_.x, 0);
         backgroundShape_.setPosition(GUIContainer_.getPosition());
@@ -134,7 +132,7 @@ void UpgradeTowerState::Draw() {
 
 UpgradeTowerState::~UpgradeTowerState()
 {
-    std::cout << "U deleted" <<std::endl;
+   // std::cout << "U deleted" <<std::endl;
     //GetContext().player_->ResetInfoPopStatus();
 }
 
@@ -154,7 +152,7 @@ void UpgradeTowerState::UpdateGUI(sf::Time dt) {
         RequestStackPop(); // Pop this state
         RequestStackPush(States::ID::Sidebar); // Push the sidebar back
         GetContext().player_->ResetInfoPopStatus(); // Reset the request status
-        std::cout << "State popped and pushed" << std::endl;
+        // << "State popped and pushed" << std::endl;
         return;
     }
 
@@ -203,7 +201,7 @@ bool UpgradeTowerState::HandleEvent(const sf::Event& event) {
         
         if (event.type == sf::Event::MouseButtonPressed)
         {
-            std::cout << "Mouse clicked event upgrade" <<std::endl;
+           // std::cout << "Mouse clicked event upgrade" <<std::endl;
             if (!backgroundShape_.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))
             {
                 Player* player = GetContext().player_;
