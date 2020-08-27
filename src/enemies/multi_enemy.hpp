@@ -7,7 +7,7 @@
 class MultiEnemy : public Enemy {
 
     public:
-        MultiEnemy(const TextureHolder &textures, float difficultyLevel = 1.f, float travelledDistance = 0.f, int directionIndex = 0, int spawnCount = 3);
+        MultiEnemy(const TextureHolder &textures, unsigned int difficultyLevel = 1, float travelledDistance = 0.f, int directionIndex = 0, int spawnCount = 3);
         //~TestEnemy();
 
         void TakeHit(int damage, unsigned int bulletType) override;

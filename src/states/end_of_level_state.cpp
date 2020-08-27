@@ -11,57 +11,20 @@
 EndOfLevelState::EndOfLevelState(StateStack& stack, Context context)
     : State(stack, context),
     levelOverText_(),
-    GUIContainer_(),
-    GUIController_(*context.GUIController_)
+    elapsedTime_(sf::Time::Zero)
     {
         sf::Font& font = context.fonts_->Get(Fonts::Main);
         sf::Vector2f viewSize = context.window_->getView().getSize();
 
         levelOverText_.setFont(font);
-        levelOverText_.setString("You completed the level!");
-        levelOverText_.setCharacterSize(70);
+
+        levelOverText_.setString("You completed level!");
+        levelOverText_.setCharacterSize(50);
 
         sf::FloatRect bounds = levelOverText_.getLocalBounds();
         levelOverText_.setOrigin(::floor(bounds.left + bounds.width / 2.f), std::floor(50 + bounds.top + bounds.height / 2.f));
         levelOverText_.setPosition(0.5f * viewSize.x, 0.3f * viewSize.y);
 
-        auto continueButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_);
-        continueButton->setPosition(550, 300);
-        continueButton->SetText("Continue game");
-        continueButton->SetCallback([this, continueButton] ()
-        {
-            std::cout << "continue pressed" << std::endl;
-            Command nextLevelCommand;
-            nextLevelCommand.category_ = Category::Type::GameField;
-            nextLevelCommand.gameFieldAction_ = GameFieldAction(
-                [this, continueButton] (GameField& gameField, sf::Time)
-                {
-                    gameField.NextLevel();
-                }
-            );
-            GUIController_.SendCommand(nextLevelCommand);
-            RequestStackPop();                
-        });
-        GUIContainer_.Pack(continueButton); 
-
-        auto menuButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_);
-        menuButton->setPosition(550, 400);
-        menuButton->SetText("Return to main menu");
-        menuButton->SetCallback([this] ()
-        {
-            RequestStateClear();
-            RequestStackPush(States::ID::Menu);
-        });
-        GUIContainer_.Pack(menuButton); 
-
-        auto quitButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_);
-        quitButton->setPosition(550, 500);
-        quitButton->SetText("Ragequit");
-        quitButton->SetCallback([this] ()
-        {
-            RequestStateClear();
-        });
-        GUIContainer_.Pack(quitButton);  
     }
 
 void EndOfLevelState::Draw()
@@ -75,17 +38,20 @@ void EndOfLevelState::Draw()
     
     window.draw(backgroundShape);
     window.draw(levelOverText_);
-    window.draw(GUIContainer_);
-
 }
 
-bool EndOfLevelState::Update(sf::Time)
-{
+bool EndOfLevelState::Update(sf::Time dt)
+{ 
+    elapsedTime_ += dt;
+
+    if (elapsedTime_ > sf::seconds(2))
+    {
+        RequestStackPop();
+    }
     return false;
 }
 
-bool EndOfLevelState::HandleEvent(const sf::Event& event)
+bool EndOfLevelState::HandleEvent(const sf::Event&)
 {
-    GUIContainer_.HandleEvent(event);
     return false;
 }

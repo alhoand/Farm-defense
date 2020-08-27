@@ -1,7 +1,7 @@
 #include "fast_enemy.hpp"
 #include <cmath>
 
-FastEnemy::FastEnemy(const TextureHolder& textures, float difficultyLevel, float travelledDistance, int directionIndex)
+FastEnemy::FastEnemy(const TextureHolder& textures, unsigned int difficultyLevel, float travelledDistance, int directionIndex)
     : Enemy(Enemy::Fast, textures, difficultyLevel, travelledDistance, directionIndex)
     { 
         showDeathAnimation_ = true;

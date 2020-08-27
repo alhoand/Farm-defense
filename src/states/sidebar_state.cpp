@@ -59,7 +59,7 @@ SidebarState::SidebarState(StateStack& stack, Context context)
             nextLevelCommand.gameFieldAction_ = GameFieldAction(
                 [this, levelButton] (GameField& gameField, sf::Time)
                 {
-                    if (gameField.CanSpawnNewWave())
+                    //if (gameField.CanSpawnNewWave())
                     {
                         //gameField.NextLevel();
                         
@@ -139,8 +139,7 @@ bool SidebarState::Update(sf::Time dt) {
 }
 
 void SidebarState::UpdateGUI(sf::Time dt) {
-    //titleText_->SetText("Level: "+ std::to_string(currentWave_) +"\nWave: 0", false);
-    descriptionText_->SetText("Lives:"+ std::to_string(GetContext().player_->GetLives()) + "\nMoney: " + std::to_string(GetContext().player_->GetPlayerMoney()), false);
+    descriptionText_->SetText("Lives: "+ std::to_string(GetContext().player_->GetLives()) + "\nMoney: " + std::to_string(GetContext().player_->GetPlayerMoney()), false);
     GUIContainer_.Update(dt);
     sidebarWorld_.Update(dt);
     backgroundShape_.setPosition(GUIContainer_.getPosition());

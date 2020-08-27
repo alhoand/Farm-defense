@@ -110,5 +110,6 @@ class GameField : private sf::NonCopyable {
         int                 roundMoney_;
         bool                hasActiveEnemies_;
         bool                newLevelStarted_;
+        bool                isEndOfLevel_;
 
 };

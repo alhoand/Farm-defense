@@ -43,6 +43,11 @@ bool GameState::Update(sf::Time dt) {
     {
         player_.ReduceLife();
     }
+
+    CommandQueue& commands = gameField_.GetCommandQueue();
+	player_.HandleRealtimeInput(commands);
+    GUIController_.FetchInput(commands);
+
     if (player_.GetLives() <= 0) 
     {
         player_.SetGameStatus(Player::GameLost);
@@ -57,20 +62,12 @@ bool GameState::Update(sf::Time dt) {
         RequestStackPush(States::ID::GameOver);
         return false;
     }
-
-
-    CommandQueue& commands = gameField_.GetCommandQueue();
-	player_.HandleRealtimeInput(commands);
-    GUIController_.FetchInput(commands);
-    
-
-/*     if (gameField_.IsEndOfLevel())
+    if (gameField_.IsEndOfLevel())
     {
-        IncreasePlayerMoney(gameField_.GetCurrentLevel() * 500);
-        // when level ends open side bar 
         RequestStackPush(States::ID::EndOfLevel);
+        gameField_.NextLevel();
         return false;
-    } */
+    } 
 
 	return true;
 }

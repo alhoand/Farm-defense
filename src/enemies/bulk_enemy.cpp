@@ -1,7 +1,7 @@
 #include "bulk_enemy.hpp"
 #include <cmath>
 
-BulkEnemy::BulkEnemy(const TextureHolder& textures, float difficultyLevel, float travelledDistance, int directionIndex)
+BulkEnemy::BulkEnemy(const TextureHolder& textures, unsigned int difficultyLevel, float travelledDistance, int directionIndex)
     : Enemy(Enemy::Bulk, textures, difficultyLevel, travelledDistance, directionIndex)
     {
         showDeathAnimation_ = true;

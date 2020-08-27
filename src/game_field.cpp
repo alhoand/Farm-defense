@@ -3,6 +3,7 @@
 
 #include <iostream> // for debugging
 #include <limits>
+#include <algorithm>
 
 #include <SFML/System/Time.hpp>
 #include <cassert>
@@ -37,7 +38,8 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	newEnemiesReachedEnd_(0),
 	roundMoney_(0),
 	hasActiveEnemies_(false),
-	newLevelStarted_(false)
+	newLevelStarted_(false),
+	isEndOfLevel_(false)
 	{ 
 		LoadTextures();
 		BuildScene();
@@ -229,8 +231,6 @@ void GameField::HandleCollisions()
 			}
 		}
 
-
-		
 	}
 	if (!towerCollideCalled)
 		{
@@ -292,8 +292,9 @@ void GameField::OnCommand(Command command, sf::Time dt)
 void GameField::NextEnemyWave()
 {
 	difficultyLevel_++;
-	std::cout << "trying to start new enemy wave" << std::endl;
+	//std::cout << "trying to start new enemy wave" << std::endl;
 	newLevelStarted_ = true;
+
 	if (difficultyLevel_ <= levelCount_)
 	{
 		std::cout << "Creating new enemy wave!!" << std::endl;
@@ -321,33 +322,38 @@ void GameField::NextEnemyWave()
 
 void GameField::NextLevel()
 {
-	newLevelStarted_ = false;
+	isEndOfLevel_ = false;
+	//newLevelStarted_ = false;
 }
 
 
 //Spawns only one type of enemies and spawnInterval is constant
 void GameField::SpawnEnemies(sf::Time dt) {
 	
-	if (leftToSpawn_ > 0 && difficultyLevel_ <= levelCount_)//TODO leftToSpawn someway better?
+	if (leftToSpawn_ > 0 && difficultyLevel_ <= levelCount_)
 	{
 		if (spawnCountdown_ <= sf::Time::Zero) 
     	{
 			spawnCountdown_ += sf::seconds(spawnInterval_);
-			//alternative way and probably better in actual game, change spawnInterval to spawnRate to make spawnrate <= 1 sec
-			//spawnCountdown_ += sf::seconds(1.f / (spawnRate_+1));
 			RandomEnemySpawner(difficultyLevel_);
 			leftToSpawn_--;
-
 		} else 
 		{
 			spawnCountdown_ -= dt;
 		}
 	} 
+	else if (!hasActiveEnemies_ && leftToSpawn_ <= 0 && newLevelStarted_)
+	{
+		// when no enemies is left to spawn and all enemies on the field are destroyed we are at the end of level
+		isEndOfLevel_ = true;
+		newLevelStarted_ = false;
+	}
+	
 }
 
 void GameField::RandomEnemySpawner(unsigned int level)
 {
-	int num = RandomInt(level); //random int that is max level-1
+	int num = RandomInt(std::min((int) level, 4)); //random int that is max level-1
 
 		//this works only for current enemy types, probably cannot implemet for arbitrary count of enemy types
 		switch(num)
@@ -405,30 +411,21 @@ void GameField::Draw() {
 CommandQueue& GameField::GetCommandQueue() {
 	return commandQueue_;
 }
-/*
-void GameField::HandleActiveTower()
-{
-	Command command;
-	command.category_ = Category::ActiveTower;
-	command.action_ = DerivedAction<Tower>([this] (Tower& t, sf::Time)
-	{
-
-	});
-	commandQueue_.Push(command);
-}*/
 
 int GameField::NewEnemiesReachedEnd() {
 	return newEnemiesReachedEnd_;
 }
 
+// not used probably
 bool GameField::CanSpawnNewWave()
 {
 	return (!hasActiveEnemies_ && (leftToSpawn_ <= 0));
 }
-//can be used to determine when current wave is finished
+
+//can be used to determine when current level is finished
 bool GameField::IsEndOfLevel()
 {
-	return newLevelStarted_ && !hasActiveEnemies_ && leftToSpawn_ <= 0;
+	return isEndOfLevel_;
 }
 
 bool GameField::IsEndOfGame()
@@ -532,9 +529,8 @@ void GameField::MakeTowersShoot()
 
 			if (enemyDistance <= tower.GetRange())
 			{
-				// Does not work yet, but should be sufficient to slow enemies if tower is category SlowingTower
 				if (tower.GetCategory() == Category::SlowingTower) {
-					enemy->SlowDown(); //duration?
+					enemy->SlowDown();
 					continue;
 				}
 				if (enemyDistance < minDistance)
@@ -559,7 +555,6 @@ void GameField::MakeTowersShoot()
 	detonateCommand.category_ = Category::Bomb;
     detonateCommand.action_ = DerivedAction<Bomb>([this] (Bomb& bomb, sf::Time) 
 	{
-		//std::cout << "Here we aree at the bomb" << std::endl;
 		if (!bomb.CanDetonate())
 		{
 			return;
