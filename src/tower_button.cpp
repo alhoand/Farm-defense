@@ -24,10 +24,10 @@ TowerButton::TowerButton(Tower::Type type,
         //std::cout << "TowerPic origin: " << towerPicture_->getOrigin().x << ", " << towerPicture_->getOrigin().y << std::endl;
         //std::cout << "TowerPic world pos: " << towerPicture_->GetWorldPosition().x << ", " << towerPicture_->GetWorldPosition().y << std::endl;
 
-        std::cout << "TowerButton pos: " << getPosition().x << ", " << getPosition().y << std::endl;
+       /* std::cout << "TowerButton pos: " << getPosition().x << ", " << getPosition().y << std::endl;
         std::cout << "TowerButton origin: " << getOrigin().x << ", " << getOrigin().y << std::endl;
         std::cout << "TowerButton world pos: " << GetWorldPosition().x << ", " << GetWorldPosition().y << std::endl;
-
+*/
     }
 
 Tower::Type TowerButton::GetTowerType() const

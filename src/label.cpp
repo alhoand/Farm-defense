@@ -30,8 +30,9 @@ sf::FloatRect Label::GetGlobalBounds() const{
 	return GetWorldTransform().transformRect(text_.getGlobalBounds());
 }
 
-void Label::HandleEvent(const sf::Event&)
+bool Label::HandleEvent(const sf::Event&)
 {
+	return true; // Propagate events through
 }
 
 void Label::Draw(sf::RenderTarget& target, sf::RenderStates states) const

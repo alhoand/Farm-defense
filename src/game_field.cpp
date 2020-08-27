@@ -563,8 +563,8 @@ void GameField::MakeTowersShoot()
 	towerCommand.category_ = Category::Tower;
 	towerCommand.action_ = DerivedAction<Tower>([this](Tower& tower, sf::Time)
 	{
-		std::cout << "Check" << std::endl;
-		std::cout << "Sold:  " << tower.IsSold() << std::endl;
+		//std::cout << "Check" << std::endl;
+		//std::cout << "Sold:  " << tower.IsSold() << std::endl;
 		if (tower.IsDestroyed()) // If the tower is not sold yet
 		{
 			AddRounMoney(towerTable[tower.GetType()].price);

@@ -31,9 +31,11 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
                                             mouse.y - (tower.getPosition().y - tower.getOrigin().y));
                             tower.setPosition(mouse.x,mouse.y);
                             tower.Move();
-                            std::cout << "Hello" << std::endl;
+                            //std::cout << "Hello" << std::endl;
                         }
-
+                   }else if(tower.IsActive() && !tower.IsColliding() && !tower.IsMoving())
+                   {
+                       std::cout << "The tower was active, not colliding and not moving." << std::endl;
                    }else if(!tower.IsColliding()) // If there was a click and tower is moving and not colliding
                    {
                         tower.Deactivate();
@@ -53,20 +55,19 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
                 {
                     //RequestInfoPop();
                     if (!tower.IsColliding())
-                       {
-                            tower.Deactivate();
-                            if (tower.CanMove())
-                            {
-                                //tower.Stop();
-                                tower.DisallowMoving();
-                                std::cout << "Placement success was set" << std::endl;
+                    {
+                        tower.Deactivate();
+                        if (tower.CanMove())
+                        {
+                            //tower.Stop();
+                            tower.DisallowMoving();
+                            std::cout << "Placement success was set" << std::endl;
 
-                                SetPlacementSuccess();
-                            }
-                       }
+                            SetPlacementSuccess();
+                        }
+                    }
                 }
-            }
-            );
+            });
         commands.Push(activate);
 
 

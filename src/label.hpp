@@ -32,7 +32,7 @@ class Label : public Component
 
         virtual sf::FloatRect       GetGlobalBounds() const override;
 
-        virtual void		HandleEvent(const sf::Event& event) override;
+        virtual bool		HandleEvent(const sf::Event& event) override;
 
 
     private:
