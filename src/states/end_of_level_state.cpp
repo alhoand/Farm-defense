@@ -18,7 +18,7 @@ EndOfLevelState::EndOfLevelState(StateStack& stack, Context context)
 
         levelOverText_.setFont(font);
 
-        levelOverText_.setString("You completed level!");
+        levelOverText_.setString("You completed level " + std::to_string(context.player_->GetCurrentLevel()-1) + "!");
         levelOverText_.setCharacterSize(50);
 
         sf::FloatRect bounds = levelOverText_.getLocalBounds();

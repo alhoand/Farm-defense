@@ -37,7 +37,7 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	levelCount_(5), // can be added to parameter list or askef for player, but for now it's just harcoded to be 5
 	newEnemiesReachedEnd_(0),
 	roundMoney_(0),
-	hasActiveEnemies_(false),
+	hasActiveEntities_(false),
 	newLevelStarted_(false),
 	isEndOfLevel_(false)
 	{ 
@@ -52,10 +52,9 @@ void GameField::Update(sf::Time dt) {
 	newEnemiesReachedEnd_ = 0; // new enemies have not reached end at the beginning of an update
 	roundMoney_ = 0; // set round score to zero 
 
-	DestroyEntitiesOutsideView();
-
 	//makes towers shoot
 	MakeTowersShoot();
+	DestroyEntitiesOutsideView();
 	
 	// Forwards the commands to self or the scene graph
 	while(!commandQueue_.IsEmpty()) {
@@ -181,13 +180,10 @@ void GameField::HandleCollisions()
 	std::set<SceneNode::Pair> collisionPairs;
 	sceneGraph_.CheckSceneCollision(sceneGraph_, collisionPairs);
 	bool towerCollideCalled = false;
-	//std::cout << "Hello frmo her " << std::endl;
 	for(SceneNode::Pair pair : collisionPairs)
 	{
-		//std::cout << pair.first->GetCategory() << "," << pair.second->GetCategory() << std::endl;
 		if (MatchesCategories(pair, Category::Enemy, Category::Bullet))
 		{
-			//std::cout << "Collision happened!!!" << std::endl;
 			auto& enemy = static_cast<Enemy&>(*pair.first);
 			auto& bullet = static_cast<Bullet&>(*pair.second);
 			if(bullet.IsDestroyed() || enemy.IsDestroyed())
@@ -224,7 +220,6 @@ void GameField::HandleCollisions()
 		{
 			//std::cout << "Path recognized" << std::endl;
 			auto& activeTower = static_cast<Tower&>(*pair.first);
-			//auto& path = pair.second->GetCategory();
 			if (activeTower.IsMoving())
 			{
 				activeTower.Collides(true);
@@ -343,7 +338,7 @@ void GameField::SpawnEnemies(sf::Time dt) {
 			spawnCountdown_ -= dt;
 		}
 	} 
-	else if (!hasActiveEnemies_ && leftToSpawn_ <= 0 && newLevelStarted_)
+	else if (!hasActiveEntities_ && leftToSpawn_ <= 0 && newLevelStarted_)
 	{
 		// when no enemies is left to spawn and all enemies on the field are destroyed we are at the end of level
 		isEndOfLevel_ = true;
@@ -417,11 +412,6 @@ int GameField::NewEnemiesReachedEnd() {
 	return newEnemiesReachedEnd_;
 }
 
-// not used probably
-bool GameField::CanSpawnNewWave()
-{
-	return (!hasActiveEnemies_ && (leftToSpawn_ <= 0));
-}
 
 //can be used to determine when current level is finished
 bool GameField::IsEndOfLevel()
@@ -460,6 +450,10 @@ void GameField::DestroyEntitiesOutsideView()
 			std::cout << "destroying bullet outside gamefield" << std::endl;
 			e.Destroy();
 		}	
+		if (!e.IsDestroyed())
+		{
+			hasActiveEntities_ = true;
+		}
 	});
 
 	Command enemyCommand;
@@ -496,6 +490,7 @@ sf::FloatRect GameField::GetGamefieldBounds() const
 // Does both: shoots enemies or slows them down depending on tower category
 void GameField::MakeTowersShoot()
 {
+	hasActiveEntities_ = false; //initialize false
 	// Setup command that stores all active enemies to activeEnemies_
 	Command enemyCollector;
 	enemyCollector.category_ = Category::Enemy;
@@ -507,7 +502,7 @@ void GameField::MakeTowersShoot()
 		}
 		if (!enemy.IsMarkedForRemoval())
 		{
-			hasActiveEnemies_ = true;
+			hasActiveEntities_ = true;
 		}
 
 	});
@@ -575,7 +570,11 @@ void GameField::MakeTowersShoot()
 		}
 		if(bomb.AnimationFinished()){
 			bomb.Destroy();
+		} else
+		{
+			hasActiveEntities_ = true;
 		}
+		
 	});
 
 	Command towerCommand;
@@ -599,10 +598,6 @@ void GameField::MakeTowersShoot()
 	commandQueue_.Push(detonateCommand);
 	commandQueue_.Push(towerCommand);
 
-	if (activeEnemies_.empty())
-	{
-		hasActiveEnemies_ = false;
-	}
 	activeEnemies_.clear();
 
 }

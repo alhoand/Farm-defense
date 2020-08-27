@@ -13,7 +13,8 @@ GameState::GameState(StateStack& stack, Context context) :
     gameField_(*context.window_, context.viewOffset_),
     player_(*context.player_),
     GUIContainer_(),
-    GUIController_(*context.GUIController_)
+    GUIController_(*context.GUIController_),
+    gameEnded_(false)
     { 
         player_.SetGameStatus(Player::GameRunning);
         
@@ -41,36 +42,37 @@ void GameState::Draw() {
 }
 
 bool GameState::Update(sf::Time dt) {
+    if (gameEnded_)
+    {
+        RequestStackPush(States::ID::GameOver);
+        return false;
+    }
     gameField_.Update(dt); // updates the gamefield on each tick
     IncreasePlayerMoney(gameField_.GetAddedMoney());
-    
-    for (int i = 0; i < gameField_.NewEnemiesReachedEnd(); i++)
-    {
-        player_.ReduceLife();
-    }
-
     CommandQueue& commands = gameField_.GetCommandQueue();
 	player_.HandleRealtimeInput(commands);
     GUIController_.FetchInput(commands);
 
+    for (int i = 0; i < gameField_.NewEnemiesReachedEnd(); i++)
+    {
+        player_.ReduceLife();
+    }
     if (player_.GetLives() <= 0) 
     {
+        gameEnded_ = true;
         player_.SetGameStatus(Player::GameLost);
-        std::cout << "hello from end of game" << std::endl;
-        RequestStackPush(States::ID::GameOver);
-        return false;
+        return true;
     }
     if (gameField_.IsEndOfGame())
     {
         player_.SetGameStatus(Player::GameWon);
-        std::cout << "hello from end of game" << std::endl;
-        RequestStackPush(States::ID::GameOver);
-        return false;
+        return true;
     }
     if (gameField_.IsEndOfLevel())
     {
         RequestStackPush(States::ID::EndOfLevel);
         gameField_.NextLevel();
+        player_.AdvanceLevel();
         return false;
     } 
 
