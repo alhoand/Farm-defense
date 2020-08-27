@@ -1,7 +1,7 @@
 #include "bomb.hpp"
 
 Bomb::Bomb(const TextureHolder& textures) 
-    : Bullet(Bullet::Type::Bomb, textures, 100, 10), 
+    : Bullet(Bullet::Type::Bomb, textures, 150, 10), 
       distance_(150), 
       range_(100), 
       travelledDistance_(0),
@@ -25,6 +25,9 @@ void Bomb::UpdateCurrent(sf::Time dt, CommandQueue& commands) {
         canDetonate_ = true;
         return;
     }
+    double scale = 0.001*travelledDistance_* travelledDistance_ - 0.001*travelledDistance_ * distance_ + 0.5;
+    sprite_.setScale(scale,scale);
+    sprite_.rotate(5);
     travelledDistance_ += GetSpeed() * dt.asSeconds();
     Entity::UpdateCurrent(dt, commands);
 }

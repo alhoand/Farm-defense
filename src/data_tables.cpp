@@ -14,26 +14,26 @@ std::vector<EnemyData> InitializeEnemyData()
 	data[Enemy::Basic].speed = 50.f;
 	data[Enemy::Basic].slowDownRate = 0.8;
 	data[Enemy::Basic].texture = Textures::Fire;
-	data[Enemy::Basic].worthOfMoney = 15;
+	data[Enemy::Basic].worthOfMoney = 5;
 
 	data[Enemy::Multiplying].hitpoints = 10;
 	data[Enemy::Multiplying].speed = 50.f;
 	data[Enemy::Multiplying].slowDownRate = 0.5;
 	data[Enemy::Multiplying].texture = Textures::Leaf;
-	data[Enemy::Multiplying].worthOfMoney = 30;
+	data[Enemy::Multiplying].worthOfMoney = 10;
 	
 
 	data[Enemy::Bulk].hitpoints = 50;
 	data[Enemy::Bulk].speed = 50.f;
 	data[Enemy::Bulk].slowDownRate = 0.5;
 	data[Enemy::Bulk].texture = Textures::Water;
-	data[Enemy::Bulk].worthOfMoney = 50;
+	data[Enemy::Bulk].worthOfMoney = 15;
 
 	data[Enemy::Fast].hitpoints = 20;
 	data[Enemy::Fast].speed = 100.f;
 	data[Enemy::Fast].slowDownRate = 0.5;
 	data[Enemy::Fast].texture = Textures::Water;
-	data[Enemy::Fast].worthOfMoney = 100;
+	data[Enemy::Fast].worthOfMoney = 20;
 
 
 	return data;
@@ -76,7 +76,7 @@ std::vector<TowerData> InitializeTowerData()
 	data[Tower::Type::Slowing].name = "Slowing Tower";
 
 	data[Tower::Type::Bombing].range = 150;
-	data[Tower::Type::Bombing].reloadTime = 8;
+	data[Tower::Type::Bombing].reloadTime = 3;
 	data[Tower::Type::Bombing].price = 300;
 	data[Tower::Type::Bombing].name = "Bomb Tower";
 
