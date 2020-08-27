@@ -19,6 +19,7 @@ class UpgradeTowerState : public State {
         sf::RectangleShape backgroundShape_;
         GUI::Label::Ptr titleText_;
         GUI::Label::Ptr descriptionText_;
+        GUI::Button::Ptr sellButton_;
         sf::Vector2f viewSize_;
         GUI::Container  GUIContainer_;
         GUI::Controller& GUIController_;

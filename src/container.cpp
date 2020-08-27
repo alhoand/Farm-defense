@@ -23,7 +23,7 @@ void Container::Pack(Component::Ptr component, bool relativeTo)
 {
 	if(relativeTo)
 	{
-		component->ChildOf(this); //Stores the container as the parent
+		component->FollowerOf(this); //Stores the container as the parent
 	}
 	
 	children_.push_back(component);
@@ -38,7 +38,7 @@ std::shared_ptr<GUI::Button> Container::GetButton(GUI::ID type) {
 	return std::dynamic_pointer_cast<GUI::Button>(*found);
 }*/
 
-/*
+
 Component::Ptr Container::GetChild(GUI::ID type) {
 	auto found = std::find_if(children_.begin(), children_.end(),
 		[&] (GUI::Component::Ptr& child) {
@@ -46,7 +46,7 @@ Component::Ptr Container::GetChild(GUI::ID type) {
 	});
 	assert(found != children_.end());
 	return *found;
-}*/
+}
 
 
 
@@ -62,7 +62,14 @@ void Container::Draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 	for(const Component::Ptr& child: children_) 
 	{
-		target.draw(*child, states);
+		if(child->IsFollowerOf(this))
+			target.draw(*child, states);
+		else
+		{
+			target.draw(*child); // Do not take the parent's states into consideration
+		}
+		
+		
 		//GUI::Component::DrawBoundingRect(target, states);			
 	}
 		
@@ -82,17 +89,11 @@ void Container::UpdateChildren(sf::Time dt)
 {
 	for(const Component::Ptr& child: children_){
 		child->Update(dt);
-		//std::cout << "Container child global bounds left: (" << child->GetGlobalBounds().left << ", top: " << child->GetGlobalBounds().top << ")" << std::endl;
 	}
 		
 }
-/*
-sf::FloatRect Container::GetGlobalBounds() const
-{
-	return GetWorldTransform().transformRect(sf::FloatRect(get))
-}*/
 
-void Container::HandleEvent(const sf::Event& event)
+bool Container::HandleEvent(const sf::Event& event)
 {
 	if(event.type == sf::Event::MouseMoved){
 		int n = 0;
@@ -100,7 +101,7 @@ void Container::HandleEvent(const sf::Event& event)
 			if(child->GetGlobalBounds().contains(sf::Vector2f(event.mouseMove.x,event.mouseMove.y))){
 				selectedChild_ = n;
 				child->Select();	
-				return;
+				return true; // Propagate events
 			}
 			else
 			{
@@ -121,15 +122,16 @@ void Container::HandleEvent(const sf::Event& event)
 					children_[selectedChild_]->HandleEvent(event);
 				}
 				child->Activate();
-				//std::cout << "jiihaa" << std::endl;
-				return;
+				return false; // Doesn't propagate events if the caller doesn't want to
 			}
 			else
 				child->Deselect();
+				
 			n++;
 		}
 		selectedChild_ = -1;
 	}
+	return true;
 }
 
 bool Container::HasSelection() const

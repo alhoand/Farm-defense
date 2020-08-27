@@ -25,6 +25,9 @@ void Bomb::UpdateCurrent(sf::Time dt, CommandQueue& commands) {
         canDetonate_ = true;
         return;
     }
+    double scale = 0.001*travelledDistance_* travelledDistance_ - 0.001*travelledDistance_ * distance_ + 0.5;
+    sprite_.setScale(scale,scale);
+    sprite_.rotate(5);
     travelledDistance_ += GetSpeed() * dt.asSeconds();
     Entity::UpdateCurrent(dt, commands);
 }

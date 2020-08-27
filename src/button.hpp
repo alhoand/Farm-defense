@@ -40,7 +40,7 @@ class Button : public Component
         virtual void			Activate() override;
         virtual void			Deactivate() override;
 
-        virtual void			HandleEvent(const sf::Event& event) override;
+        virtual bool			HandleEvent(const sf::Event& event) override;
 
         sf::Vector2f            GetClickPosition() const { return clickPosition_; }
     protected:
