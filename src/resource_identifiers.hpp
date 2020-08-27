@@ -30,7 +30,8 @@ namespace Textures {
         Leppis,
         Koppis,
         HamahakkiIso,
-        TowerButton
+        TowerButton,
+        Explosion
     };
 }
 

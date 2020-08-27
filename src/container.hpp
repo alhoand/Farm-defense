@@ -24,7 +24,7 @@ class Container : public Component
         void				Pack(Component::Ptr component, bool relativeTo=false);
 
         virtual bool		IsSelectable() const override;
-        virtual void		HandleEvent(const sf::Event& event) override;
+        virtual bool		HandleEvent(const sf::Event& event) override;
 
         virtual void        Update(sf::Time dt) override;
 
@@ -36,7 +36,7 @@ class Container : public Component
 
         //std::shared_ptr<GUI::SceneNodeComponent> GetNodeComponent(GUI::ID type);
 
-        //Component::Ptr GetChild(GUI::ID type);
+        Component::Ptr GetChild(GUI::ID type);
 
     private:
         virtual void		draw(sf::RenderTarget& target, sf::RenderStates states) const override{

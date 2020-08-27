@@ -15,8 +15,9 @@ bool SceneNodeComponent::IsSelectable() const
     return false;
 }
 
-void SceneNodeComponent::HandleEvent(const sf::Event&)
+bool SceneNodeComponent::HandleEvent(const sf::Event&)
 {
+    return false;
 }
 
 void SceneNodeComponent::Draw(sf::RenderTarget&, sf::RenderStates) const

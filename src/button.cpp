@@ -119,13 +119,14 @@ void Button::Deactivate()
 	}
 }
 
-void Button::HandleEvent(const sf::Event& event)
+bool Button::HandleEvent(const sf::Event& event)
 {
 	if(event.type == sf::Event::MouseButtonPressed)
 	{
 		//std::cout << "Jiihaa" << std::endl;
 		clickPosition_ = sf::Vector2f(event.mouseButton.x, event.mouseButton.y);
 	}
+	return false; // Don't propagate events
 }
 
 void Button::Draw(sf::RenderTarget& target, sf::RenderStates states) const
