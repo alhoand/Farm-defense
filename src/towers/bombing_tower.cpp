@@ -10,6 +10,5 @@ void BombingTower::CreateBullet(SceneNode& node, const TextureHolder& textures) 
     bomb->setPosition(GetWorldPosition());
 
     bomb->SetVelocity(bomb->GetSpeed() * direction_);
-    std::cout << "Bomb velocity: " << bomb->GetVelocity().x << ", " << bomb->GetVelocity().y << std::endl;
     node.AttachChild(std::move(bomb));
 }

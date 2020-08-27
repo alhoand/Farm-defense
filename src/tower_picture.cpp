@@ -1,9 +1,13 @@
 #include "tower_picture.hpp"
 #include "data_tables.hpp"
 
-TowerPicture::TowerPicture(Tower::Type type, const TextureHolder& textures, sf::Vector2f sideBarPos) : SpriteNode(textures.Get(Tower::ToTextureID(type))), sideBarPos_(sideBarPos), isDragged_(false), active_(false)
- { 
-    auto data = InitializeTowerData();
+namespace {
+	const std::vector<TowerData> data = InitializeTowerData();
+}
+
+TowerPicture::TowerPicture(Tower::Type type, const TextureHolder& textures, sf::Vector2f sideBarPos)
+    : SpriteNode(textures.Get(data[type].texture)), sideBarPos_(sideBarPos), isDragged_(false), active_(false)
+ {
 
     setOrigin(sprite_.getLocalBounds().width/2.f, sprite_.getLocalBounds().height/2.f);
 

@@ -90,6 +90,7 @@ void GameField::LoadTextures() {
 	textures_.Load(Textures::ID::Bomb, "../media/textures/bomb.png");
 	textures_.Load(Textures::ID::NoTexture,      "../media/textures/noTexture.png");
 	textures_.Load(Textures::ID::DeathAnimation,      "../media/textures/deathAnimation.png");
+	textures_.Load(Textures::ID::Explosion,      "../media/textures/explosion.png");
 	textures_.Load(Textures::ID::Leppis,      "../media/textures/leppakerttu.png");
 	textures_.Load(Textures::ID::Koppis,      "../media/textures/koppakuoriainen.png");
 	textures_.Load(Textures::ID::HamahakkiIso,      "../media/textures/hamahakki.png");
@@ -570,17 +571,22 @@ void GameField::MakeTowersShoot()
 		{
 			return;
 		}
-		for(Enemy* enemy : activeEnemies_)
-		{
-			if (Distance(bomb, *enemy) <= bomb.GetRange() && !enemy->IsDestroyed()) {
-                enemy->TakeHit(bomb.GetDamage(), bomb.GetCategory());
-            }
-			if (enemy->IsDestroyed())
+		else if(!bomb.HasDetonated()){
+			for(Enemy* enemy : activeEnemies_)
 			{
-				AddRounMoney(enemy->GetMoney());
+				if (Distance(bomb, *enemy) <= bomb.GetRange() && !enemy->IsDestroyed()) {
+					enemy->TakeHit(bomb.GetDamage(), bomb.GetCategory());
+				}
+				if (enemy->IsDestroyed())
+				{
+					AddRounMoney(enemy->GetMoney());
+				}
 			}
+			bomb.Detonate();
 		}
-		bomb.Destroy();
+		if(bomb.AnimationFinished()){
+			bomb.Destroy();
+		}
 	});
 
 	Command towerCommand;

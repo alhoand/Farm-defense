@@ -5,7 +5,7 @@
 
 /* This is a bombing tower that
  * - shoots bombs which cost 10 hp for any enemy in range
- * - is pretty slow, shoots in every 8 seconds
+ * - is pretty slow, shoots in every 3 seconds
  * - has a medium range, 150 units
 */
 

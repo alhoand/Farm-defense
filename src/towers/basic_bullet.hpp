@@ -10,5 +10,5 @@
 class BasicBullet : public Bullet {
     public:
         BasicBullet(const TextureHolder& textures)
-            : Bullet(Bullet::Type::Basic, textures, 150, 10) { }
+            : Bullet(Bullet::Type::Basic, textures) { }
 };
