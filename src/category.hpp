@@ -19,10 +19,12 @@ namespace Category {
         Active = 1 << 11,
         GameField = 1 << 12,
         Path = 1 << 13,
+        RoughGrass = 1 << 14,
 
         Tower = ShootingTower | SlowingTower | BombingTower,
         ActiveTower = Tower | Active,
-        Bullet = BasicBullet | SuperBullet
+        Bullet = BasicBullet | SuperBullet,
+        Forbidden = Path | RoughGrass
         
     };
 }

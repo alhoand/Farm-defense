@@ -27,7 +27,7 @@ UpgradeTowerState::UpgradeTowerState(StateStack& stack, Context context) :
     GUIController_(*context.GUIController_)
     {
         
-        std::cout << "Upgrade tower state constructor" << std::endl;
+        //std::cout << "Upgrade tower state constructor" << std::endl;
 
         // Initialize the tower's name title
         titleText_ = std::make_shared<GUI::Label>("", *context.fonts_, 40, Fonts::Main);

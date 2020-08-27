@@ -14,7 +14,6 @@ namespace
     const std::vector<TowerData> towerTable = InitializeTowerData();
 }
 
-
 GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	: window_(window),
 	viewOffset_(viewOffset), 
@@ -37,8 +36,10 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	newEnemiesReachedEnd_(0),
 	roundMoney_(0),
 	hasActiveEnemies_(false),
-	newLevelStarted_(false)
+	newLevelStarted_(false),
+	outOfBounds_(sf::IntRect(sf::Vector2i(gameFieldBounds_.left, gameFieldBounds_.top), sf::Vector2i(gameFieldBounds_.width/5, gameFieldBounds_.height)))
 	{ 
+
 		LoadTextures();
 		BuildScene();
 		gameFieldView_.setCenter(gameFieldBounds_.left + (gameFieldBounds_.width + viewOffset_.x)/2.f, gameFieldBounds_.top + (gameFieldBounds_.height + viewOffset_.y)/2.f);
@@ -113,6 +114,11 @@ void GameField::BuildScene() {
 	grassSprite->setPosition(gameFieldBounds_.left, gameFieldBounds_.top);
 	sceneLayers_[Background]->AttachChild(std::move(grassSprite));
 
+	// Make some rough grass that is just regular grass for now and forbidden from towers
+	std::unique_ptr<SpriteNode> outOfBoundsSprite(new SpriteNode(grass, outOfBounds_));
+	outOfBoundsSprite->setPosition(gameFieldBounds_.left + gameFieldBounds_.width - outOfBounds_.width, gameFieldBounds_.top);
+	outOfBoundsSprite->SetCategory(Category::RoughGrass);
+	sceneLayers_[Background]->AttachChild(std::move(outOfBoundsSprite));
 	// Make path visible
 	BuildPath();
 }
@@ -217,7 +223,7 @@ void GameField::HandleCollisions()
 			}
 				
 		}
-		if (MatchesCategories(pair, Category::Tower, Category::Path))
+		if (MatchesCategories(pair, Category::Tower, Category::Forbidden))
 		{
 			//std::cout << "Path recognized" << std::endl;
 			auto& activeTower = static_cast<Tower&>(*pair.first);

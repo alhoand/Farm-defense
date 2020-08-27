@@ -111,4 +111,6 @@ class GameField : private sf::NonCopyable {
         bool                hasActiveEnemies_;
         bool                newLevelStarted_;
 
+        sf::IntRect         outOfBounds_;
+
 };

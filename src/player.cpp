@@ -166,22 +166,7 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
         });
         commands.Push(movePic);
 
-    }
-
-    if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::S))
-    {
-        Command command;
-        command.category_ = Category::Active;
-        command.action_ = DerivedAction<Tower>([](Tower& t, sf::Time)
-        {
-            if (!t.IsMoving())
-            {
-                t.Destroy();
-            }
-        });
-        commands.Push(command);
-    }
-		
+    }		
 
 }
 //Adapted from the SFML Game Development-book
