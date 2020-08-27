@@ -2,6 +2,7 @@
 
 #include "bullet.hpp"
 #include "../game_field.hpp"
+#include "../animation.hpp"
 
 /* Bomb class is derived class of bullet, with some extra features.
  * A bomb is shot by bombing towers, and it
@@ -18,8 +19,13 @@ class Bomb : public Bullet {
         // Getter for bomb's range
         int GetRange();
         // Indicator that tells if bomb can detonate
+        void Detonate();
+        
         bool CanDetonate();
+        bool HasDetonated();
+        bool AnimationFinished();
 
+        void DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
         void UpdateCurrent(sf::Time dt,CommandQueue& commands);
 
     private:
@@ -27,4 +33,7 @@ class Bomb : public Bullet {
         int             range_;             // the range within which enemies will be hit
         float           travelledDistance_; // how far the bomb has already travelled        
         bool            canDetonate_;       // Indicator that tells if bomb is travelled far enough and can detonate
+        bool            hasDetonated_;
+
+        Animation       hitAnimation_;
 };
