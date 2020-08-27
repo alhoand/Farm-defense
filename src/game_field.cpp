@@ -86,7 +86,7 @@ void GameField::LoadTextures() {
 	textures_.Load(Textures::ID::BombingTower, "../media/textures/tower.png");
 	textures_.Load(Textures::ID::BasicBullet, "../media/textures/bullet.png");
 	textures_.Load(Textures::ID::SuperBullet, "../media/textures/bullet.png");
-	textures_.Load(Textures::ID::Bomb, "../media/textures/bullet.png");
+	textures_.Load(Textures::ID::Bomb, "../media/textures/bomb.png");
 	textures_.Load(Textures::ID::NoTexture,      "../media/textures/noTexture.png");
 	textures_.Load(Textures::ID::DeathAnimation,      "../media/textures/deathAnimation.png");
 	textures_.Load(Textures::ID::Leppis,      "../media/textures/leppakerttu.png");
