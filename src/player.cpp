@@ -34,6 +34,7 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
                         }
                    }else if(tower.IsActive() && !tower.IsColliding() && !tower.IsMoving())
                    {
+                       SetPlacementSuccess();
                        std::cout << "The tower was active, not colliding and not moving." << std::endl;
                    }else if(!tower.IsColliding()) // If there was a click and tower is moving and not colliding
                    {
