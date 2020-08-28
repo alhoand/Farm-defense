@@ -139,6 +139,7 @@ bool Container::HasSelection() const
 	return selectedChild_ >= 0;
 }
 
+// This is for the sidebar to move if needed
 void Container::SetVelocity(sf::Vector2f velocity) {
 	velocity_ = velocity;
 }

@@ -176,28 +176,33 @@ void SidebarState::AddTowerButton(Tower::Type type, float relX, float relY, sf::
                 {
                     return;
                 }
-                if (GetContext().player_->BuyTower(towerTable[towerButton->GetTowerType()].price))
+                auto player = GetContext().player_;
+                if (!player->IsDragging())
                 {
-                    Command command;
-                    command.category_ = Category::Type::GameField;
-                    command.gameFieldAction_ = GameFieldAction(
-                                [towerButton] (GameField& gameField, sf::Time)
-                                {
-                                    //std::cout << "Button pressed!" <<std::endl;
-                                    
-                                    gameField.AddTower(towerButton->GetTowerType(), towerButton->GetClickPosition());
-                                    // cannot buy tower if does not have enough money
-                                }
-                    );
+                    if(player->BuyTower(towerTable[towerButton->GetTowerType()].price))
+                    {
+                        Command command;
+                        command.category_ = Category::Type::GameField;
+                        command.gameFieldAction_ = GameFieldAction(
+                                    [towerButton] (GameField& gameField, sf::Time)
+                                    {
+                                        //std::cout << "Button pressed!" <<std::endl;
+                                        
+                                        gameField.AddTower(towerButton->GetTowerType(), towerButton->GetClickPosition());
+                                        // cannot buy tower if does not have enough money
+                                    }
+                        );
+                    
 
-                    GUIController_.SendCommand(command);
-                    towerButton->GetTowerPic()->Activate();
+                        GUIController_.SendCommand(command);
+
+                        towerButton->GetTowerPic()->Activate();
+                    }else
+                    {
+                        showInfotext_ = true;
                     
-                } else
-                {
-                    showInfotext_ = true;
-                    
-                    std::cout << "not enough money to buy towers!" << std::endl;
+                        std::cout << "not enough money to buy towers!" << std::endl;
+                    }
                 }
 
             });

@@ -46,8 +46,7 @@ class Component : public sf::Drawable, public sf::Transformable, private sf::Non
         sf::Vector2f        GetWorldPosition() const;
 
         virtual sf::FloatRect GetGlobalBounds() const{return sf::FloatRect();}
-        virtual bool		  HandleEvent(const sf::Event& event) = 0;
-        //void			     DrawBoundingRect(sf::RenderTarget& target, sf::RenderStates states) const;
+        virtual bool		HandleEvent(const sf::Event& event) = 0;
 
         GUI::ID             GetType() const;
         void                SetType(GUI::ID type);
@@ -56,7 +55,7 @@ class Component : public sf::Drawable, public sf::Transformable, private sf::Non
         GUI::ID             type_;
         bool				isSelected_;
         bool				isActive_;
-        GUI::Component*          parent_;
+        GUI::Component*     parent_;
 
 };
 

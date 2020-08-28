@@ -72,7 +72,7 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
         activateTowerPicture.action_ = DerivedAction<TowerPicture>([mouse, this] (TowerPicture& tp, sf::Time)
         {
 
-            if (tp.GetBoundingRect().contains(mouse) && !tp.IsDragged())
+            if (tp.GetBoundingRect().contains(mouse) && !tp.IsDragged() && !IsDragging())
             {
                 if (tp.IsActive())
                 {
@@ -83,6 +83,7 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
                     //tp.setPosition(mouse - parent - origin);//sf::Vector2f(100.f, 100.f)); //- tp.GetClickPos()); //-  tp.GetSidebarPos() * 100.f - tp.GetClickPos()); //+ tp.GetSidebarPos());
                     tp.setPosition(mouse);
                     tp.Drag();
+                    Drag();
                     
 
                 }
@@ -120,7 +121,6 @@ void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
             }
         });
         commands.Push(movePic);
-
     }		
 
 }
@@ -133,18 +133,35 @@ void Player::HandleRealtimeInput(CommandQueue& commands) {
         deactivateTp.category_ = Category::TowerPicture;
         deactivateTp.action_ = DerivedAction<TowerPicture>([this](TowerPicture& tp, sf::Time)
         {
-            if (tp.IsDragged())
+            if (tp.IsDragged() && IsDragging())
             {
                 if (PlacementSuccess())
                 {
                     tp.GetBack();
                     SetPlacementFailure(); // Reset placement so that this block of code is not called all the time
+                    ResetDragging();
                 }else{
                 }
             }
         });
         commands.Push(deactivateTp);
     }
+}
+
+
+bool Player::IsDragging() const
+{
+    return isDragging_;
+}
+
+void Player::Drag()
+{
+    isDragging_ = true;
+}
+
+void Player::ResetDragging()
+{
+    isDragging_ = false;
 }
 
 void Player::ReduceLife()

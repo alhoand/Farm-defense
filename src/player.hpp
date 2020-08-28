@@ -37,6 +37,9 @@ class Player {
         bool        InfoPopRequested() const;
         void        ResetInfoRequestStatus();
         void        ResetInfoPopStatus();
+        bool        IsDragging() const;
+        void        Drag();
+        void        ResetDragging();
 
         void        RequestInfoPop();
         
@@ -56,5 +59,6 @@ class Player {
         bool                towerPlacementSuccess_;
         bool                infoRequested_;
         bool                infoPopRequested_;
+        bool                isDragging_;
 
 };
