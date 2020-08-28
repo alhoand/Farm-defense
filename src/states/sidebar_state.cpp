@@ -96,7 +96,7 @@ SidebarState::SidebarState(StateStack& stack, Context context)
         AddTowerButton(Tower::Type::Super, +75.f, 150.f, sf::IntRect(55,53,83,83),sf::IntRect(55,53,83,83), *context.fonts_);
 
         backgroundShape_.setFillColor(sf::Color(160,82,45,252));
-        backgroundShape_.setOutlineThickness(12.f);
+        backgroundShape_.setOutlineThickness(15.f);
         backgroundShape_.setOutlineColor(sf::Color(115,67,33, 252));
 
         backgroundShape_.setSize(viewSize_);

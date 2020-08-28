@@ -119,7 +119,7 @@ TowerInfoState::TowerInfoState(StateStack& stack, Context context) :
 
         backgroundShape_.setSize(viewSize_);
 
-        backgroundShape_.setOutlineThickness(12.f);
+        backgroundShape_.setOutlineThickness(15.f);
         backgroundShape_.setOutlineColor(sf::Color(115,67,33, 252));
 
         GUIContainer_.setPosition(context.window_->getView().getSize().x - viewSize_.x, 0);

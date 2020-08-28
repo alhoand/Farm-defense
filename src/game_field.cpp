@@ -36,7 +36,7 @@ GameField::GameField(sf::RenderWindow& window, sf::Vector2f viewOffset)
 	hasActiveEntities_(false),
 	newLevelStarted_(false),
 	isEndOfLevel_(false),
-	outOfBounds_(sf::IntRect(sf::Vector2i(gameFieldBounds_.left, gameFieldBounds_.top), sf::Vector2i(gameFieldBounds_.width/5, gameFieldBounds_.height)))
+	outOfBounds_(sf::IntRect(sf::Vector2i(gameFieldBounds_.left, gameFieldBounds_.top), sf::Vector2i(gameFieldBounds_.width/5 + 18, gameFieldBounds_.height)))
 	{ 
 
 		LoadTextures();
