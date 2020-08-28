@@ -140,8 +140,9 @@ bool TowerInfoState::Update(sf::Time dt) {
     UpdateGUI(dt);
     UpdateTowerInfo();
     auto player = GetContext().player_;
-    if (player->InfoRequested())
+    if (player->InfoRequested()){
         player->ResetInfoRequestStatus();
+    }
 	return true;
 }
 

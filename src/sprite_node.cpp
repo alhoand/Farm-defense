@@ -9,6 +9,7 @@ SpriteNode::SpriteNode(const sf::Texture& texture, sf::IntRect &textureRect)
 void SpriteNode::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(sprite_, states);
 }
+
 sf::FloatRect SpriteNode::GetBoundingRect() const
 {
     if (category_ != Category::None) // Meaning we have given it a category
@@ -16,9 +17,10 @@ sf::FloatRect SpriteNode::GetBoundingRect() const
         sf::Transform transform = GetWorldTransform();//getTransform();
         return transform.transformRect(sprite_.getGlobalBounds()); 
     }else{
-        SceneNode::GetBoundingRect();
+        return SceneNode::GetBoundingRect();
     }
 }
+
 void SpriteNode::SetCategory(unsigned int category)
 {
     category_ = category;
