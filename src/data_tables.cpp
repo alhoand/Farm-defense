@@ -60,10 +60,13 @@ std::vector<TowerData> InitializeTowerData()
 {
 	std::vector<TowerData> data(Tower::TypeCount);
 
+	float capExCoefficient = 0.9f; // how many percent of the original price you get after selling the tower
+
 	data[Tower::Type::Basic].texture = Textures::ID::BasicTower;
 	data[Tower::Type::Basic].range = 200;
 	data[Tower::Type::Basic].reloadTime = 2;
 	data[Tower::Type::Basic].price = 150;
+	data[Tower::Type::Basic].sellPrice = data[Tower::Type::Basic].price * capExCoefficient;
 	data[Tower::Type::Basic].name = "Basic Tower";
 
 	data[Tower::Type::Super].texture = Textures::ID::SuperTower;
@@ -71,18 +74,21 @@ std::vector<TowerData> InitializeTowerData()
 	data[Tower::Type::Super].reloadTime = 0.5;
 	data[Tower::Type::Super].scale = 0.5;
 	data[Tower::Type::Super].price = 600;
+	data[Tower::Type::Super].sellPrice = data[Tower::Type::Super].price * capExCoefficient;
 	data[Tower::Type::Super].name = "Super Tower";
 
 	data[Tower::Type::Slowing].texture = Textures::ID::SlowingTower;
 	data[Tower::Type::Slowing].range = 200;
 	data[Tower::Type::Slowing].reloadTime = 0;
 	data[Tower::Type::Slowing].price = 200;
+	data[Tower::Type::Slowing].sellPrice = data[Tower::Type::Slowing].price * capExCoefficient;
 	data[Tower::Type::Slowing].name = "Slowing Tower";
 
 	data[Tower::Type::Bombing].texture = Textures::ID::BombingTower;
 	data[Tower::Type::Bombing].range = 150;
 	data[Tower::Type::Bombing].reloadTime = 3;
 	data[Tower::Type::Bombing].price = 350;
+	data[Tower::Type::Bombing].sellPrice = data[Tower::Type::Bombing].price * capExCoefficient;
 	data[Tower::Type::Bombing].name = "Bomb Tower";
 
 	return data;

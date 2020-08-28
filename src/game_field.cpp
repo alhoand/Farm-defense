@@ -585,7 +585,7 @@ void GameField::MakeTowersShoot()
 	{
 		if (tower.IsDestroyed()) // If the tower is not sold yet
 		{
-			roundMoney_ += towerTable[tower.GetType()].price;
+			roundMoney_ += towerTable[tower.GetType()].sellPrice;
 			//std::cout << "Money added" << std::endl;
 		}
 	});

@@ -178,7 +178,7 @@ void UpgradeTowerState::UpdateTowerInfo()
         /*descriptionText->SetText("  HP: " + std::to_string(t.GetHitpoints())
             + "\n  " + std::to_string(pos.x) + ", " + std::to_string(pos.y)
         );*/ 
-        sellButton->SetText("Sell for " + std::to_string(data[t.GetType()].price));
+        sellButton->SetText("Sell for " + std::to_string(data[t.GetType()].sellPrice));
 
         //std::cout << "use count of ttitle text " << titleText.use_count() << std::endl;
 
