@@ -6,12 +6,10 @@
 #include <vector>
 
 
-//Making a Fire type enemy as a basic derived class
-BasicEnemy::BasicEnemy(const TextureHolder& textures, float difficultyLevel, float travelledDistance, int directionIndex)
+//Making a basic enemy class
+BasicEnemy::BasicEnemy(const TextureHolder& textures, unsigned int difficultyLevel, float travelledDistance, int directionIndex)
     : Enemy(Enemy::Basic, textures, difficultyLevel, travelledDistance, directionIndex)
-    { 
-        //sprite_ = 
-        
+    {       
         showDeathAnimation_ = true;
         
         movementAnimation_.SetTexture(textures.Get(Textures::ID::HamahakkiIso)),
@@ -34,15 +32,4 @@ void BasicEnemy::TakeHit(int, unsigned int)
 {
     Destroy();
 }
-
-// basic enemy resists slowing down and actually gets speed boost in the slowing towers range
-float BasicEnemy::GetSpeed() const
-{
-    if (isSlowedDown_)
-    {
-        return (2-slowDownRate_) * DifficultyCoefficient() * maxSpeed_; 
-    } 
-    return DifficultyCoefficient() * maxSpeed_;
-}
-
 

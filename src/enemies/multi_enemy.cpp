@@ -8,7 +8,7 @@
 
 
 //Making a leaf type enemy as a test of derived class
-MultiEnemy::MultiEnemy(const TextureHolder& textures, float difficultyLevel, float travelledDistance, int directionIndex, int spawnCount)
+MultiEnemy::MultiEnemy(const TextureHolder& textures, unsigned int difficultyLevel, float travelledDistance, int directionIndex, int spawnCount)
     : Enemy(Enemy::Multiplying, textures, difficultyLevel, travelledDistance, directionIndex), spawnTimer_(sf::Time::Zero), spawnCount_(spawnCount)
     { 
         showDeathAnimation_ = false;
@@ -60,7 +60,7 @@ bool MultiEnemy::CheckDestroyBehaviour(sf::Time dt, CommandQueue& commands)
             commands.Push(spawnBasicEnemyCommand_);
 
             spawnCount_--;
-            spawnTimer_ = sf::seconds(0.1);
+            spawnTimer_ = sf::seconds(0.5);
         } else
         {
             spawnTimer_ -= dt;

@@ -1,8 +1,9 @@
 #include "game_state.hpp"
 #include "../node_component.hpp"
 #include "../resource_identifiers.hpp"
-#include <memory>
 #include "../data_tables.hpp"
+
+#include <memory>
 
 namespace {
 	const std::vector<GUIData> table = InitializeGUIData();
@@ -13,16 +14,17 @@ GameState::GameState(StateStack& stack, Context context) :
     gameField_(*context.window_, context.viewOffset_),
     player_(*context.player_),
     GUIContainer_(),
-    GUIController_(*context.GUIController_)
+    GUIController_(*context.GUIController_),
+    gameEnded_(false)
     { 
         player_.SetGameStatus(Player::GameRunning);
         
         auto pauseButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, table[GUIitems::ID::PauseButton].normalTexture, table[GUIitems::ID::PauseButton].selectedTexture);
         pauseButton->setPosition(10, 10);
         pauseButton->SetCallback([this] ()
-	{
-		RequestStackPush(States::ID::Pause);
-	});
+        {
+            RequestStackPush(States::ID::Pause);
+        });
         GUIContainer_.Pack(pauseButton);
         
         // Share the pausebutton with the other game states
@@ -41,41 +43,41 @@ void GameState::Draw() {
 }
 
 bool GameState::Update(sf::Time dt) {
+    if (gameEnded_)
+    {
+        RequestStackPush(States::ID::GameOver);
+        return false;
+    }
+
     gameField_.Update(dt); // updates the gamefield on each tick
     IncreasePlayerMoney(gameField_.GetAddedMoney());
-    
+    CommandQueue& commands = gameField_.GetCommandQueue();
+	player_.HandleRealtimeInput(commands);
+    GUIController_.FetchInput(commands);
+
     for (int i = 0; i < gameField_.NewEnemiesReachedEnd(); i++)
     {
         player_.ReduceLife();
     }
     if (player_.GetLives() <= 0) 
     {
+        gameEnded_ = true;
         player_.SetGameStatus(Player::GameLost);
-        std::cout << "hello from end of game" << std::endl;
-        RequestStackPush(States::ID::GameOver);
-        return false;
+        return true;
     }
     if (gameField_.IsEndOfGame())
     {
+        gameEnded_ = true;
         player_.SetGameStatus(Player::GameWon);
-        std::cout << "hello from end of game" << std::endl;
-        RequestStackPush(States::ID::GameOver);
-        return false;
+        return true;
     }
-
-
-    CommandQueue& commands = gameField_.GetCommandQueue();
-	player_.HandleRealtimeInput(commands);
-    GUIController_.FetchInput(commands);
-    
-
-/*     if (gameField_.IsEndOfLevel())
+    if (gameField_.IsEndOfLevel())
     {
-        IncreasePlayerMoney(gameField_.GetCurrentLevel() * 500);
-        // when level ends open side bar 
         RequestStackPush(States::ID::EndOfLevel);
+        gameField_.NextLevel();
+        player_.AdvanceLevel();
         return false;
-    } */
+    } 
 
 	return true;
 }
@@ -85,7 +87,6 @@ bool GameState::HandleEvent(const sf::Event& event) {
 
     CommandQueue& commands = gameField_.GetCommandQueue();
     player_.HandleEvent(event, commands);
-    //std::cout << "We got here after player_.handleevent" << std::endl;
     
     if (event.type == sf::Event::MouseButtonReleased)
     {
@@ -105,21 +106,13 @@ bool GameState::HandleEvent(const sf::Event& event) {
                 player_.ResetInfoPopStatus();
             }*/
         
-    }
-    
-    
+    }  
 
     if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::P))
-		RequestStackPush(States::ID::Pause);
+	{
+        RequestStackPush(States::ID::Pause);
+    }
     
-
-
-    /*if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::U))
-    {
-        std::cout << "Requested upgrade " << std::endl;
-        RequestStackPush(States::ID::Sidebar);
-		RequestStackPush(States::ID::GameUpgradeTowerSideBar);
-    }*/
     if ((event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::I))
     {
         std::cout << "Requested info " << std::endl;
@@ -134,6 +127,5 @@ bool GameState::HandleEvent(const sf::Event& event) {
 void GameState::IncreasePlayerMoney(int amount)
 {
     player_.AddMoney(amount);
-    //std::cout << "current score: " << player_.GetPlayerMoney() << std::endl;
 }
 

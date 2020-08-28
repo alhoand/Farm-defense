@@ -17,92 +17,83 @@ SidebarState::SidebarState(StateStack& stack, Context context)
     , backgroundSprite_()
     , backgroundShape_()
     , titleText_(nullptr)
-    , descriptionText_(nullptr)
+    , lifeText_(nullptr)
+    , moneyText_(nullptr)
     , infoText_(nullptr)
+    , towerTitle_(nullptr)
     , viewSize_(context.window_->getView().getSize().x/4.f, context.window_->getView().getSize().y)
     , GUIContainer_() 
     , GUIController_(*context.GUIController_)
-    , towerPosition_(sf::Vector2f(viewSize_.x/2.f, 450.f))
+    , towerPosition_(sf::Vector2f(viewSize_.x/2.f, 425.f))
     , sidebarWorld_(*context.window_,towerPosition_)
-    , currentLevel_(0)
     , showInfotext_(false)
     , elapsedTime_(sf::Time::Zero)
+    , towerTexts_()
     {
         GUIContainer_.setPosition(context.window_->getView().getSize().x - viewSize_.x, 0);
         sidebarWorld_.SetGraphPosition(GUIContainer_.getTransform());
-        //std::cout << "Here we are!" << std::endl;
 
-        titleText_ = std::make_shared<GUI::Label>("Level: 0", *context.fonts_, 30, Fonts::Main);
-        //titleText_->CenterTextOrigin();
+        titleText_ = std::make_shared<GUI::Label>("Level: 1", *context.fonts_, 30, Fonts::Main);
         titleText_->setPosition(context.window_->getView().getSize().x-viewSize_.x + 10.f, 10.f);
-        //GUIContainer_.Pack(titleText_, true);
+        titleText_->SetColor(sf::Color(236,212,182));
 
-        descriptionText_ = std::make_shared<GUI::Label>("Lives: 10\nMoney: 0" + std::to_string(GetContext().player_->GetPlayerMoney()), *context.fonts_, 30, Fonts::Main);
-        descriptionText_->setPosition(context.window_->getView().getSize().x-viewSize_.x + 10.f, 45.f);
-        descriptionText_->SetText("Lives:"+ std::to_string(GetContext().player_->GetLives()) + "\nMoney: " + std::to_string(GetContext().player_->GetPlayerMoney()), false);
+        lifeText_ = std::make_shared<GUI::Label>("Lives: "+ std::to_string(GetContext().player_->GetLives()), *context.fonts_, 30, Fonts::Main);
+        lifeText_->setPosition(context.window_->getView().getSize().x-viewSize_.x + 10.f, 45.f);
+        lifeText_->SetColor(sf::Color(236,212,182));
+
+        moneyText_ = std::make_shared<GUI::Label>("Money: " + std::to_string(GetContext().player_->GetPlayerMoney()), *context.fonts_, 30, Fonts::Main);
+        moneyText_->setPosition(context.window_->getView().getSize().x-viewSize_.x + 10.f, 80.f);
+        moneyText_->SetColor(sf::Color(236,212,182));
 
         infoText_ = std::make_shared<GUI::Label>("", *context.fonts_, 20, Fonts::Main);
-        infoText_->SetColor(sf::Color::Red);
-        infoText_->setPosition(context.window_->getView().getSize().x-viewSize_.x + 10.f, 135.f);
+        infoText_->SetColor(sf::Color(246,62,0), true);
+        //infoText_->SetColor(sf::Color(206,21,0), true);
 
-        //std::cout << "Here we are 2!" << std::endl;
-
+        infoText_->setPosition(context.window_->getView().getSize().x-(viewSize_.x/2), 685.f);
+        infoText_->SetText(" ");
 
         auto levelButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_);
         levelButton->setOrigin(levelButton->GetGlobalBounds().width/2.f, levelButton->GetGlobalBounds().height/2.f);
-        levelButton->setPosition(viewSize_.x/2.f, 250.f);
-        levelButton->SetText("Next level");
+        levelButton->setPosition(viewSize_.x/2.f, 175.f);
+        levelButton->SetText("Start level");
         levelButton->SetCallback([this, levelButton] ()
         {
             Command nextLevelCommand;
             nextLevelCommand.category_ = Category::Type::GameField;
             nextLevelCommand.gameFieldAction_ = GameFieldAction(
                 [this, levelButton] (GameField& gameField, sf::Time)
-                {
-                    if (gameField.CanSpawnNewWave())
-                    {
-                        //gameField.NextLevel();
-                        
-                        gameField.NextEnemyWave();
-                        titleText_->SetText("Level: " + std::to_string(gameField.GetCurrentLevel()), false);
-                        currentLevel_ = gameField.GetCurrentLevel();
-                    }
+                {    
+                    gameField.NextEnemyWave();
                 }
             );
             GUIController_.SendCommand(nextLevelCommand);
         });
+
+        auto retryButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, sf::IntRect(0,374,200,88),sf::IntRect(0,550,200,88));
+        retryButton->setOrigin(retryButton->GetGlobalBounds().width/2.f, retryButton->GetGlobalBounds().height/2.f);
+        retryButton->setPosition(viewSize_.x/2.f, 275.f);
+        retryButton->SetText("Retry game");
+        retryButton->SetCallback([this] ()
+        {
+            GetContext().player_->ResetGame();
+            RequestStackPop();
+            RequestStackPop();
+            RequestStackPush(States::ID::Game);
+            RequestStackPush(States::ID::Sidebar);
+        });
         
         GUIContainer_.Pack(levelButton, true);
+        GUIContainer_.Pack(retryButton, true);
 
-        /* auto waveButton = std::make_shared<GUI::Button>(*context.fonts_, *context.textures_, sf::IntRect(0,104,200,88),sf::IntRect(0,192,200,88));
-        waveButton->setOrigin(waveButton->GetGlobalBounds().width/2.f, waveButton->GetGlobalBounds().height/2.f);
-        waveButton->setPosition(viewSize_.x/2.f, 350.f);
-        waveButton->SetText("Next wave");
-        waveButton->SetCallback([this, waveButton] ()
-            {
-                std::cout << "Wave button was pressed." << std::endl;
-                Command waveCommand;
-                waveCommand.category_ = Category::Type::GameField;
-                waveCommand.gameFieldAction_ = GameFieldAction(
-                    [this, waveButton] (GameField& gameField, sf::Time)
-                    {
-                        if (gameField.CanSpawnNewWave())
-                        {
-                            gameField.NextEnemyWave();
-                            titleText_->SetText("Level " + std::to_string(gameField.GetCurrentLevel()), false);
-                        } 
-                    }
-                );
-                GUIController_.SendCommand(waveCommand);
-               
-            }); */
+        towerTitle_ = std::make_shared<GUI::Label>("", *context.fonts_, 35, Fonts::Main);
+        towerTitle_->setPosition(context.window_->getView().getSize().x-(viewSize_.x/2), 350.f);
+        towerTitle_->SetText("Buy Towers");
+        towerTitle_->SetColor(sf::Color(236,212,182));
 
-
-
-        AddTowerButton(Tower::Type::Basic, -100.f, 0.f, sf::IntRect(55,53,83,83),sf::IntRect(55,53,83,83));
-        AddTowerButton(Tower::Type::Slowing, +50.f, 0.f,sf::IntRect(55,53,83,83),sf::IntRect(55,53,83,83));
-        AddTowerButton(Tower::Type::Bombing, -100.f, 150.f, sf::IntRect(55,53,83,83),sf::IntRect(55,53,83,83));
-        AddTowerButton(Tower::Type::Super, +50.f, 150.f, sf::IntRect(55,53,83,83),sf::IntRect(55,53,83,83));
+        AddTowerButton(Tower::Type::Basic, -75.f, 0.f, sf::IntRect(55,53,83,83),sf::IntRect(55,53,83,83), *context.fonts_);
+        AddTowerButton(Tower::Type::Slowing, +75.f, 0.f,sf::IntRect(55,53,83,83),sf::IntRect(55,53,83,83), *context.fonts_);
+        AddTowerButton(Tower::Type::Bombing, -75.f, 150.f, sf::IntRect(55,53,83,83),sf::IntRect(55,53,83,83), *context.fonts_);
+        AddTowerButton(Tower::Type::Super, +75.f, 150.f, sf::IntRect(55,53,83,83),sf::IntRect(55,53,83,83), *context.fonts_);
 
         backgroundShape_.setFillColor(sf::Color(160,82,45,235));
         backgroundShape_.setSize(viewSize_);
@@ -118,23 +109,31 @@ void SidebarState::Draw() {
 
     window.draw(backgroundShape_);
     window.draw(*titleText_);
-    window.draw(*descriptionText_);
+    window.draw(*lifeText_);
+    window.draw(*moneyText_);
     window.draw(*infoText_);
+    window.draw(*towerTitle_);
     window.draw(GUIContainer_);
+    for (auto it = towerTexts_.begin(); it != towerTexts_.end(); it++)
+    {
+        window.draw(**it);
+    }
     sidebarWorld_.Draw();
 }
 
 bool SidebarState::Update(sf::Time dt) {
     if (showInfotext_) 
     {
-        infoText_->SetText("Not enough money to buy tower", false);
+        infoText_->SetText("Not enough money to buy tower");
+        moneyText_->SetColor(sf::Color(246,62,0));
         elapsedTime_ += dt;
     } 
-    if (elapsedTime_ >= sf::seconds(5))
+    if (elapsedTime_ >= sf::seconds(13))
     {
         showInfotext_ = false;
         elapsedTime_ = sf::Time::Zero;
         infoText_->SetText("", false);
+        moneyText_->SetColor(sf::Color(236,212,182));
     }
 
     UpdateGUI(dt);
@@ -142,14 +141,15 @@ bool SidebarState::Update(sf::Time dt) {
 }
 
 void SidebarState::UpdateGUI(sf::Time dt) {
-    //titleText_->SetText("Level: "+ std::to_string(currentWave_) +"\nWave: 0", false);
-    descriptionText_->SetText("Lives:"+ std::to_string(GetContext().player_->GetLives()) + "\nMoney: " + std::to_string(GetContext().player_->GetPlayerMoney()), false);
+    titleText_->SetText("Level: " + std::to_string(GetContext().player_->GetCurrentLevel()), false);
+    lifeText_->SetText("Lives: "+ std::to_string(GetContext().player_->GetLives()), false);
+    moneyText_->SetText("Money: " + std::to_string(GetContext().player_->GetPlayerMoney()), false);
     GUIContainer_.Update(dt);
     sidebarWorld_.Update(dt);
     //backgroundShape_.setPosition(GUIContainer_.getPosition());
 }
 
-void SidebarState::AddTowerButton(Tower::Type type, float relX, float relY, sf::IntRect normalTexture, sf::IntRect selectedTexture)
+void SidebarState::AddTowerButton(Tower::Type type, float relX, float relY, sf::IntRect normalTexture, sf::IntRect selectedTexture, const FontHolder& fonts)
 {
         //std::cout << "we got hereeeeeeeeeee" << std::endl;
 
@@ -165,7 +165,6 @@ void SidebarState::AddTowerButton(Tower::Type type, float relX, float relY, sf::
         //sf::Vector2f buttonPosition = towerButton->GetWorldPosition();
         sidebarWorld_.AddTowerPicture(std::move(towerPic));
         
-        std::string towerName = towerTable[type].name;
         //towerButton->SetText(towerName.append("\n").append(std::to_string(towerTable[type].price)));
         GUIContainer_.Pack(towerButton, true); //Pack it before getting position to get the real pos
         
@@ -196,6 +195,19 @@ void SidebarState::AddTowerButton(Tower::Type type, float relX, float relY, sf::
                 }
 
             });
+
+        auto towerText = std::make_shared<GUI::Label>(towerTable[type].name, fonts, 20, Fonts::Main);
+        towerText->setOrigin(towerText->GetGlobalBounds().width/2.f, towerText->GetGlobalBounds().height/2.f);
+        towerText->setPosition(towerButton->GetWorldPosition().x + towerButton->GetGlobalBounds().width/2.f, towerButton->GetWorldPosition().y + towerButton->GetGlobalBounds().height + 10.f);
+        towerText->SetColor(sf::Color(236,212,182));
+
+        auto priceText = std::make_shared<GUI::Label>("Price: " + std::to_string(towerTable[type].price), fonts, 20, Fonts::Main);
+        priceText->setOrigin(priceText->GetGlobalBounds().width/2.f, priceText->GetGlobalBounds().height/2.f);
+        priceText->setPosition(towerButton->GetWorldPosition().x + towerButton->GetGlobalBounds().width/2.f, towerButton->GetWorldPosition().y + towerButton->GetGlobalBounds().height + 30.f);
+        priceText->SetColor(sf::Color(236,212,182));
+
+        towerTexts_.push_back(towerText);
+        towerTexts_.push_back(priceText);
 }
 
 bool SidebarState::HandleEvent(const sf::Event& event) {

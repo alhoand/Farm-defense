@@ -5,9 +5,8 @@
 
 
 Player::Player(sf::RenderWindow& window, sf::Vector2f viewOffset) 
-    : window_(window), viewOffset_(viewOffset), lives_(10), status_(), money_(500), infoRequested_(false), infoPopRequested_(false) { }
+    : window_(window), viewOffset_(viewOffset), lives_(10), status_(), money_(500), currentLevel_(1), infoRequested_(false), infoPopRequested_(false) { }
 
-// Adapted from SFML Game Development-book
 
 void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
     if (event.type == sf::Event::MouseButtonPressed) // CLICK
@@ -180,38 +179,14 @@ void Player::ReduceLife()
     std::cout << "Player lost one life, lives now: " << lives_ << std::endl;
 }
 
-int Player::GetLives()
+int Player::GetLives() const
 {
     return lives_;
 }
 
-Player::GameStatus Player::GetGameStatus()
+Player::GameStatus Player::GetGameStatus() const
 {
     return status_;
-}
-
-void Player::ResetGame()
-{
-    lives_ = 10;
-    status_ = GameStatus::GameRunning; 
-    money_ = 500;
-}
-
-
-// Used to tell the GUI that there was a successfull placement of a tower
-void Player::SetPlacementSuccess()
-{
-    towerPlacementSuccess_ = true;
-}
-
-void Player::SetPlacementFailure()
-{
-    towerPlacementSuccess_ = false;
-}
-
-bool Player::PlacementSuccess()
-{
-    return towerPlacementSuccess_;
 }
 
 void Player::SetGameStatus(Player::GameStatus newStatus)
@@ -219,7 +194,15 @@ void Player::SetGameStatus(Player::GameStatus newStatus)
     status_ = newStatus;
 }
 
-int Player::GetPlayerMoney()
+void Player::ResetGame()
+{
+    lives_ = 10;
+    status_ = GameStatus::GameRunning; 
+    money_ = 500;
+    currentLevel_ = 1;
+}
+
+int Player::GetPlayerMoney() const
 {
     return money_;
 }
@@ -227,6 +210,16 @@ int Player::GetPlayerMoney()
 void Player::AddMoney(int money)
 {
     money_ += money;
+}
+
+int Player::GetCurrentLevel() const
+{
+    return currentLevel_;
+}
+
+void Player::AdvanceLevel()
+{
+    currentLevel_++;
 }
 
 bool Player::BuyTower(int price)
@@ -250,29 +243,48 @@ bool Player::SellTower(int price)
     return success;
 }
 
+bool Player::PlacementSuccess()
+{
+    return towerPlacementSuccess_;
+}
+
 bool Player::InfoRequested() const
 {
     return infoRequested_;
 }
-void Player::RequestInfo()
+
+bool Player::InfoPopRequested() const
 {
-    infoRequested_ = true;
+    return infoPopRequested_;
 }
+
 void Player::ResetInfoRequestStatus()
 {
     infoRequested_ = false;
+}
+
+void  Player::ResetInfoPopStatus()
+{
+    infoPopRequested_ = false;
 }
 
 void Player::RequestInfoPop()
 {
     infoPopRequested_ = true;
 }
-void  Player::ResetInfoPopStatus()
+
+// Used to tell the GUI that there was a successfull placement of a tower
+void Player::SetPlacementSuccess()
 {
-    infoPopRequested_ = false;
+    towerPlacementSuccess_ = true;
 }
 
-bool Player::InfoPopRequested() const
+void Player::SetPlacementFailure()
 {
-    return infoPopRequested_;
+    towerPlacementSuccess_ = false;
+}
+
+void Player::RequestInfo()
+{
+    infoRequested_ = true;
 }

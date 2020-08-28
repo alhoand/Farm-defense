@@ -15,6 +15,5 @@ class EndOfLevelState : public State {
 
     private:
         sf::Text        levelOverText_;
-        GUI::Container  GUIContainer_;
-        GUI::Controller& GUIController_;
+        sf::Time        elapsedTime_;
 };

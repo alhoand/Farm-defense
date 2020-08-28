@@ -5,13 +5,8 @@
 class BasicEnemy : public Enemy {
 
     public:
-        BasicEnemy(const TextureHolder &textures, float difficultyLevel = 1.f, float travelledDistance = 0.f, int directionIndex = 0);
+        BasicEnemy(const TextureHolder &textures, unsigned int difficultyLevel = 1, float travelledDistance = 0.f, int directionIndex = 0);
         //~BasicEnemy();
         
         void TakeHit(int damage, unsigned int bulletType);
-        float GetSpeed() const;
-        
-
-    private:
-       // bool CheckDestroyBehaviour(CommandQueue& commands) override;
 };

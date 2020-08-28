@@ -22,12 +22,14 @@ class Player {
         void        HandleEvent(const sf::Event& event, CommandQueue&);
         void        HandleRealtimeInput(CommandQueue&);
         void        ReduceLife();
-        int         GetLives();
-        GameStatus  GetGameStatus();
+        int         GetLives() const;
+        GameStatus  GetGameStatus() const;
         void        SetGameStatus(GameStatus newStatus);
         void        ResetGame();
-        int         GetPlayerMoney();
+        int         GetPlayerMoney() const;
         void        AddMoney(int money);
+        int         GetCurrentLevel() const;
+        void        AdvanceLevel();
         bool        BuyTower(int price);
         bool        SellTower(int price);
         bool        PlacementSuccess();
@@ -50,6 +52,7 @@ class Player {
         int                 lives_;
         GameStatus          status_;
         int                 money_;
+        int                 currentLevel_;
         bool                towerPlacementSuccess_;
         bool                infoRequested_;
         bool                infoPopRequested_;

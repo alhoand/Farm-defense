@@ -1,5 +1,6 @@
 #include "state.hpp"
 #include "../container.hpp"
+#include "../player.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -18,4 +19,5 @@ class MenuState : public State
 	private:
 		sf::Sprite		backgroundSprite_,logoSprite_;
 		GUI::Container  GUIContainer_;
+		//Player			player_;
 };

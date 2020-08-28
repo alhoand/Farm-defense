@@ -3,6 +3,7 @@
 #include "menu_state.hpp"
 #include "../button.hpp"
 #include "../resource_holder.hpp"
+#include "../player.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/View.hpp>
@@ -23,6 +24,7 @@ MenuState::MenuState(StateStack& stack, Context context)
 	playButton->SetText("Play");
 	playButton->SetCallback([this] ()
 	{
+		GetContext().player_->ResetGame();
 		RequestStackPop();
 		RequestStackPush(States::ID::Game);
 		std::cout << "Sidebar requested" << std::endl;

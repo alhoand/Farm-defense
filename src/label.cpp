@@ -50,9 +50,14 @@ void Label::SetText(const std::string& text, bool center)
 		CenterOrigin(text_);
 }
 
-void Label::SetColor(const sf::Color color)
+void Label::SetColor(const sf::Color color, bool outline)
 {
 	text_.setFillColor(color);
+	if (outline)
+	{
+		text_.setOutlineColor(sf::Color(186,15,0));	
+		text_.setOutlineThickness(0.75);
+	}
 }
 
 }

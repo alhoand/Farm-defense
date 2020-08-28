@@ -96,8 +96,6 @@ bool Enemy::CheckDestroyBehaviour(sf::Time, CommandQueue&)
 // returns Enemy category, but if enemy is destroyed returns None (0)
 unsigned int Enemy::GetCategory() const 
 {
-     if(IsDestroyed())
-        return 0; 
     return Category::Enemy;
 } 
 
@@ -124,7 +122,7 @@ void Enemy::UpdateMovementPattern(sf::Time dt)
 		float vx = GetSpeed() * std::cos(radians);
 		float vy = GetSpeed() * std::sin(radians);
 
-		SetVelocity(vx, vy); //entity function
+		SetVelocity(vx, vy);
 
 		travelledDistance_ += GetSpeed() * dt.asSeconds();
 
@@ -145,7 +143,7 @@ void Enemy::UpdateMovementAnimation(sf::Time dt){
 
 // flags if enemy can be removed from game field, initialized false
 bool Enemy::IsMarkedForRemoval() const {
-    return isMarkedForRemoval_;// && (deathAnimation_.IsFinished() || !showDeathAnimation_));
+    return isMarkedForRemoval_;
 }
 
 // returns how many score'points enemy is worth, one enemy returns it's score only once
@@ -165,7 +163,7 @@ float Enemy::GetSpeed() const
 {
     if (isSlowedDown_)
     {
-        return slowDownRate_ * DifficultyCoefficient() * maxSpeed_; 
+        return (1-slowDownRate_) * DifficultyCoefficient() * maxSpeed_; 
     } 
     return DifficultyCoefficient() * maxSpeed_;
 }

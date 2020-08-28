@@ -22,4 +22,5 @@ private:
     Player&         player_;
     GUI::Container  GUIContainer_;
     GUI::Controller& GUIController_;
+    bool            gameEnded_;
 };
