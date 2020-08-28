@@ -5,7 +5,7 @@
 
 
 Player::Player(sf::RenderWindow& window, sf::Vector2f viewOffset) 
-    : window_(window), viewOffset_(viewOffset), lives_(10), status_(), money_(500), currentLevel_(1), infoRequested_(false), infoPopRequested_(false) { }
+    : window_(window), viewOffset_(viewOffset), lives_(10), status_(), money_(500), currentLevel_(1), infoRequested_(false), infoPopRequested_(false), isDragging_(false) { }
 
 
 void Player::HandleEvent(const sf::Event& event, CommandQueue& commands) {
