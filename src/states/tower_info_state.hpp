@@ -3,10 +3,10 @@
 #include <SFML/Graphics.hpp>
 #include "../label.hpp"
 
-class UpgradeTowerState : public State {
+class TowerInfoState : public State {
     public:
-        UpgradeTowerState(StateStack& stack, Context context);
-        ~UpgradeTowerState(); //{std::cout << "U deleted" <<std::endl; }
+        TowerInfoState(StateStack& stack, Context context);
+        ~TowerInfoState(); //{std::cout << "U deleted" <<std::endl; }
         virtual void Draw();
         virtual bool Update(sf::Time dt);
         virtual bool HandleEvent(const sf::Event& event);

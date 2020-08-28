@@ -230,7 +230,7 @@ bool SidebarState::HandleEvent(const sf::Event& event) {
             {
                 std::cout << "Sidebar now recognised that player is requesting info" << std::endl;
                 RequestStackPop(); // Should pop this state 
-                RequestStackPush(States::ID::GameUpgradeTowerSideBar); // Pushes the upgrade/sell side bar
+                RequestStackPush(States::ID::TowerInfo); // Pushes the upgrade/sell side bar
                 GetContext().player_->ResetInfoRequestStatus(); // Resets the player to not request info
                 
             }
@@ -258,7 +258,7 @@ bool SidebarState::HandleEvent(const sf::Event& event) {
        // std::cout << "Sidebar: U-KeyPressed" << std::endl;
 		RequestStackPop();
         RequestStackPush(States::ID::Sidebar);
-        RequestStackPush(States::ID::GameUpgradeTowerSideBar);
+        RequestStackPush(States::ID::TowerInfo);
     }*/
     
     //If p is pressed, go to Pause state

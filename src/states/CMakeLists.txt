@@ -12,8 +12,6 @@ target_sources(TowerDefense
 	state.cpp
 	title_state.hpp
 	title_state.cpp
-	upgrade_tower_state.hpp
-	upgrade_tower_state.cpp
 	pause_state.cpp
 	pause_state.hpp
 	menu_state.hpp
@@ -24,6 +22,8 @@ target_sources(TowerDefense
 	game_over_state.cpp
 	score_state.hpp
 	score_state.cpp
+	tower_info_state.cpp
+	tower_info_state.hpp
 	end_of_level_state.hpp
 	end_of_level_state.cpp
 )

@@ -6,7 +6,7 @@
 #include "states/game_state.hpp"
 #include "states/menu_state.hpp"
 #include "states/pause_state.hpp"
-#include "states/upgrade_tower_state.hpp"
+#include "states/tower_info_state.hpp"
 #include "states/sidebar_state.hpp"
 #include "states/game_over_state.hpp"
 #include "states/score_state.hpp"
@@ -51,7 +51,7 @@ void Application::RegisterStates() {
     stateStack_.RegisterState<MenuState>(States::ID::Menu);
     stateStack_.RegisterState<GameState>(States::ID::Game);
     stateStack_.RegisterState<SidebarState>(States::ID::Sidebar);
-    stateStack_.RegisterState<UpgradeTowerState>(States::ID::GameUpgradeTowerSideBar);
+    stateStack_.RegisterState<TowerInfoState>(States::ID::TowerInfo);
     stateStack_.RegisterState<PauseState>(States::ID::Pause);
     stateStack_.RegisterState<GameOverState>(States::ID::GameOver);
     stateStack_.RegisterState<ScoreState>(States::ID::Score);

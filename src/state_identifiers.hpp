@@ -9,7 +9,7 @@ namespace States {
         Pause,
 		Settings,
         Sidebar,
-        GameUpgradeTowerSideBar,
+        TowerInfo,
         GameOver,
         Score,
         EndOfLevel,

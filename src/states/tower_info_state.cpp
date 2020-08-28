@@ -3,7 +3,7 @@
 #include "../label.hpp"
 #include "../towers/tower.hpp"
 #include <cmath>
-#include "upgrade_tower_state.hpp"
+#include "tower_info_state.hpp"
 #include <memory>
 #include <string>
 #include <iostream>
@@ -15,7 +15,7 @@ namespace {
     auto towerData = InitializeTowerData();
 }
 
-UpgradeTowerState::UpgradeTowerState(StateStack& stack, Context context) :
+TowerInfoState::TowerInfoState(StateStack& stack, Context context) :
     State(stack, context),
     backgroundSprite_(),
     backgroundShape_(),
@@ -121,7 +121,7 @@ UpgradeTowerState::UpgradeTowerState(StateStack& stack, Context context) :
         backgroundShape_.setPosition(GUIContainer_.getPosition());
     }
 
-void UpgradeTowerState::Draw() {
+void TowerInfoState::Draw() {
     sf::RenderWindow& window = *GetContext().window_;
     window.setView(window.getDefaultView());
 
@@ -130,13 +130,13 @@ void UpgradeTowerState::Draw() {
     //window.draw(pla)
 }
 
-UpgradeTowerState::~UpgradeTowerState()
+TowerInfoState::~TowerInfoState()
 {
    // std::cout << "U deleted" <<std::endl;
     //GetContext().player_->ResetInfoPopStatus();
 }
 
-bool UpgradeTowerState::Update(sf::Time dt) {
+bool TowerInfoState::Update(sf::Time dt) {
     UpdateGUI(dt);
     UpdateTowerInfo();
     auto player = GetContext().player_;
@@ -145,7 +145,7 @@ bool UpgradeTowerState::Update(sf::Time dt) {
 	return true;
 }
 
-void UpgradeTowerState::UpdateGUI(sf::Time dt) {
+void TowerInfoState::UpdateGUI(sf::Time dt) {
 
     if (GetContext().player_->InfoPopRequested())
     {
@@ -161,7 +161,7 @@ void UpgradeTowerState::UpdateGUI(sf::Time dt) {
 }
 
 
-void UpgradeTowerState::UpdateTowerInfo()
+void TowerInfoState::UpdateTowerInfo()
 {
     Command command;
     command.category_ = Category::Active;
@@ -188,7 +188,7 @@ void UpgradeTowerState::UpdateTowerInfo()
 }
 
 
-bool UpgradeTowerState::HandleEvent(const sf::Event& event) {
+bool TowerInfoState::HandleEvent(const sf::Event& event) {
 	if (!GUIContainer_.HandleEvent(event))
     {
         //std::cout << "Here we are at false" << std::endl;
