@@ -203,7 +203,12 @@ void SidebarState::AddTowerButton(Tower::Type type, float relX, float relY, sf::
                     
                         std::cout << "not enough money to buy towers!" << std::endl;
                     }
+                }else
+                {
+                    std::cout << "The player is dragging" << std::endl;
                 }
+                
+
 
             });
 
