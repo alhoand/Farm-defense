@@ -1,3 +1,3 @@
-Place documents here
+# Project documentation
 
-Class documentation is the document to help class implementation and highlight problems and issues that need yet to be solved. Document is used also in final documentation for explaining class functionality.
+Full project documentation is provided in the project_doc.pdf file.
