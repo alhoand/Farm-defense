@@ -40,7 +40,15 @@ MultiEnemy::MultiEnemy(const TextureHolder& textures, unsigned int difficultyLev
 //If dies after taking damage from bomb, doubles spawncount
 void MultiEnemy::TakeHit(int damage, unsigned int bulletType)
 {
-    Damage(damage);
+    int finalDamage = damage;
+    if (bulletType == Category::BasicBullet)
+    {
+        finalDamage = std::ceil(finalDamage * 0.5);
+    } else if (bulletType == Category::SuperBullet)
+    {
+        finalDamage = std::floor(finalDamage * 2);
+    }
+    Damage(finalDamage);
     if (bulletType == Category::Bomb && IsDestroyed())
     {
         spawnCount_ *= 2;

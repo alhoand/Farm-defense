@@ -21,7 +21,7 @@ FastEnemy::FastEnemy(const TextureHolder& textures, unsigned int difficultyLevel
         sprite_.setScale(sf::Vector2f(0.2,0.2));
     }
 
-// FastEnemy resists damage from superBullets and gets more damage from bombs
+// FastEnemy resists damage from super bullets and gets more damage from bombs
 void FastEnemy::TakeHit(int damage, unsigned int bulletType)
 {
     int finalDamage = damage;

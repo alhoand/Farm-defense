@@ -20,8 +20,6 @@ target_sources(farmitaistelu
 	game_state.cpp
 	game_over_state.hpp
 	game_over_state.cpp
-	score_state.hpp
-	score_state.cpp
 	tower_info_state.cpp
 	tower_info_state.hpp
 	end_of_level_state.hpp
