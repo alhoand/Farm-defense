@@ -22,7 +22,7 @@ BulkEnemy::BulkEnemy(const TextureHolder& textures, unsigned int difficultyLevel
 
      }
 
-
+// Bulk enemy resists damage from basic and super bullets
 void BulkEnemy::TakeHit(int damage, unsigned int bulletType)
 {
     int finalDamage = damage;

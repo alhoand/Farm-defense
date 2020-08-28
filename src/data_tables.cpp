@@ -10,7 +10,7 @@ std::vector<EnemyData> InitializeEnemyData()
 
 	std::vector<EnemyData> data(Enemy::TypeCount);
 
-	// basic enemy resists slowing down and slowns down less than other enemies
+	// basic enemy resists slowing down and slowns down less than other enemies5
 	data[Enemy::Basic].hitpoints = 10;
 	data[Enemy::Basic].speed = 50.f;
 	data[Enemy::Basic].slowDownRate = 0.2;
@@ -23,10 +23,10 @@ std::vector<EnemyData> InitializeEnemyData()
 	data[Enemy::Multiplying].texture = Textures::Leaf;
 	data[Enemy::Multiplying].worthOfMoney = 10;
 	
-
+	// Bulk enemy slows down more than other enemies
 	data[Enemy::Bulk].hitpoints = 50;
 	data[Enemy::Bulk].speed = 50.f;
-	data[Enemy::Bulk].slowDownRate = 0.5;
+	data[Enemy::Bulk].slowDownRate = 0.7;
 	data[Enemy::Bulk].texture = Textures::Water;
 	data[Enemy::Bulk].worthOfMoney = 15;
 

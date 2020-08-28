@@ -7,7 +7,6 @@
 #include <vector>
 
 
-//Making a leaf type enemy as a test of derived class
 MultiEnemy::MultiEnemy(const TextureHolder& textures, unsigned int difficultyLevel, float travelledDistance, int directionIndex, int spawnCount)
     : Enemy(Enemy::Multiplying, textures, difficultyLevel, travelledDistance, directionIndex), spawnTimer_(sf::Time::Zero), spawnCount_(spawnCount)
     { 
@@ -30,20 +29,19 @@ MultiEnemy::MultiEnemy(const TextureHolder& textures, unsigned int difficultyLev
         spawnBasicEnemyCommand_.category_ = Category::Scene;
         spawnBasicEnemyCommand_.action_ = [this, &textures] (SceneNode& node, sf::Time) 
         {
-            std::cout <<"spawning a new enemy" << std::endl;
+            //std::cout <<"spawning a new enemy" << std::endl;
             std::unique_ptr<Enemy> newEnemy(new BasicEnemy(textures, difficultyLevel_, travelledDistance_, directionIndex_));
 		    newEnemy->setPosition(this->GetWorldPosition());
-            //newEnemy->setScale(0.25f, 0.25f);
 		    newEnemy->SetVelocity( UnitVector(this->GetVelocity()) * newEnemy->GetSpeed() ); 
 		    node.AttachChild(std::move(newEnemy));
         };
     }
 
-//If takes damage from bomb, doubles spawncount
+//If dies after taking damage from bomb, doubles spawncount
 void MultiEnemy::TakeHit(int damage, unsigned int bulletType)
 {
     Damage(damage);
-    if (bulletType == Category::Bomb)
+    if (bulletType == Category::Bomb && IsDestroyed())
     {
         spawnCount_ *= 2;
     }
@@ -56,11 +54,11 @@ bool MultiEnemy::CheckDestroyBehaviour(sf::Time dt, CommandQueue& commands)
     {
         if (spawnTimer_ <= sf::Time::Zero)
         {
-            std::cout << "spawning a basic enemy" << std::endl;
+            //std::cout << "spawning a basic enemy" << std::endl;
             commands.Push(spawnBasicEnemyCommand_);
 
             spawnCount_--;
-            spawnTimer_ = sf::seconds(0.5);
+            spawnTimer_ = sf::seconds(0.3);
         } else
         {
             spawnTimer_ -= dt;

@@ -16,7 +16,7 @@ namespace
     const std::vector<Direction> Path = InitializeEnemyPath();
 }
 
-// Constructor that works with SFML
+// Constructor
 Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, unsigned int difficultyLevel, float travelledDistance, int directionIndex)
     : Entity(Table[type].hitpoints),
         type_(type), 
@@ -24,7 +24,7 @@ Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, unsigned int diffi
         travelledDistance_(travelledDistance), 
         directionIndex_(directionIndex),
         difficultyLevel_(difficultyLevel),
-        difficultyIncrement_(0.2), //initial, can be initialized as parameter in future
+        difficultyIncrement_(0.2), 
         maxSpeed_(Table[type].speed),
         isSlowedDown_(false),
         slowDownRate_(Table[type].slowDownRate), 
@@ -41,9 +41,6 @@ Enemy::Enemy(Enemy::Type type, const TextureHolder& textures, unsigned int diffi
         deathAnimation_.SetFrameSize(sf::Vector2i(187, 201));
 	    deathAnimation_.SetNumFrames(15);
 	    deathAnimation_.SetDuration(sf::seconds(0.35));
-        //sf::FloatRect deathAnimationBounds = deathAnimation_.GetLocalBounds();
-        //deathAnimation_.setOrigin(deathAnimationBounds.width/2.f, deathAnimationBounds.height/2.f);
-
     }
 
 Enemy::~Enemy() {}
@@ -60,15 +57,12 @@ void Enemy::DrawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 
 //Update the state of enemy
 /* Possible cases:
-* 1. enemy is alive (hp > 0) 
-*   - and not at the end of the path
-*   => move enemy forward (change position) 
-*   - and it is at the end of the path)
-    => game lost
+* 1. enemy is alive (IsDestroyed() == false) 
+*   - update movement animation and pattern (check if enemy needs to turn)
+*   - run entity class' update
 * 2. enemy is dead (hp <= 0)
-*  => return something to indicate enemy should be deleted from the game field
-* TODO:
-* Long lasting damage implementation
+*   - show deathanimation
+*   - when animation is finished mark enemy for removal
 */
 void Enemy::UpdateCurrent(sf::Time dt, CommandQueue& commands) {
 
@@ -87,9 +81,9 @@ void Enemy::UpdateCurrent(sf::Time dt, CommandQueue& commands) {
 
 // Returns false if enemy has no ongoing destroy behaviour, and true if something is still happening
 // used to determine if enemy can be marked for removal
+// Enemy doesn't have any destroy behaviour by default
 bool Enemy::CheckDestroyBehaviour(sf::Time, CommandQueue&)
-{
-    // Doesn't have any destroy behaviour by default
+{ 
     return false;
 }
 
@@ -133,10 +127,6 @@ void Enemy::UpdateMovementPattern(sf::Time dt)
 
 void Enemy::UpdateMovementAnimation(sf::Time dt){
     if(hasMovementAnimation_){
-        //sf::Vector2f vel = GetVelocity();
-        //int rotation = atan(-vel.x/vel.y)*57.29577+90; //*57.29577 to convert rad -> deg
-        //movementAnimation_.Update(dt,rotation);
-        //jos tää menee rikki ni sen saa taas toimii noilla ylemmillä riveillä
         movementAnimation_.Update(dt,Path[directionIndex_].angle);
     }
 }
@@ -146,7 +136,7 @@ bool Enemy::IsMarkedForRemoval() const {
     return isMarkedForRemoval_;
 }
 
-// returns how many score'points enemy is worth, one enemy returns it's score only once
+// returns how much money enemy is worth, money can be gained from one enemy only once
 int Enemy::GetMoney()
 {
     if (isGivenMoney_)

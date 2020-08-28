@@ -114,6 +114,10 @@ int GameField::GetAddedMoney()
 // Creates a new enemy wave
 void GameField::NextEnemyWave()
 {
+	if (isEndOfLevel_ || newLevelStarted_)
+	{
+		return;
+	}
 	difficultyLevel_++;
 	newLevelStarted_ = true;
 
