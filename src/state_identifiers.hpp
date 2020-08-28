@@ -11,7 +11,6 @@ namespace States {
         Sidebar,
         TowerInfo,
         GameOver,
-        Score,
         EndOfLevel,
         None
     };

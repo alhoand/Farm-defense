@@ -9,7 +9,6 @@
 #include "states/tower_info_state.hpp"
 #include "states/sidebar_state.hpp"
 #include "states/game_over_state.hpp"
-#include "states/score_state.hpp"
 #include "states/end_of_level_state.hpp"
 #include <iostream>
 
@@ -54,7 +53,6 @@ void Application::RegisterStates() {
     stateStack_.RegisterState<TowerInfoState>(States::ID::TowerInfo);
     stateStack_.RegisterState<PauseState>(States::ID::Pause);
     stateStack_.RegisterState<GameOverState>(States::ID::GameOver);
-    stateStack_.RegisterState<ScoreState>(States::ID::Score);
     stateStack_.RegisterState<EndOfLevelState>(States::ID::EndOfLevel);
 }
 
