@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.9)
-project (TowerDefense)
+project (farmitaistelu)
 
-set(EXECUTABLE_NAME TowerDefense)
+set(EXECUTABLE_NAME farmitaistelu)
 
 # This is for the paths to work correctly 
 cmake_policy(SET CMP0076 NEW)

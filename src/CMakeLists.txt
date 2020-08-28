@@ -2,7 +2,7 @@ add_subdirectory(enemies)
 add_subdirectory(towers)
 add_subdirectory(states)
 
-target_sources(TowerDefense
+target_sources(farmitaistelu
     PRIVATE
 	animation.cpp
 	animation.hpp

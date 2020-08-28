@@ -1,4 +1,4 @@
-target_sources(TowerDefense
+target_sources(farmitaistelu
     PRIVATE
         enemy.hpp
 	enemy.cpp

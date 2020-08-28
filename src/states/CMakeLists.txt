@@ -1,4 +1,4 @@
-target_sources(TowerDefense
+target_sources(farmitaistelu
     PRIVATE
 	game_state.hpp
 	game_state.cpp
