@@ -46,6 +46,7 @@ sf::Vector2f TowerPicture::GetClickPos() const
 
 
 void TowerPicture::GetBack() {
+    UnDrag();
     Deactivate();
 
    /* std::cout << "TowerPic origin:" << getOrigin().x << ", " << getOrigin().y << std::endl;

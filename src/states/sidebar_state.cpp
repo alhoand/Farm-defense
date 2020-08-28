@@ -137,6 +137,7 @@ bool SidebarState::Update(sf::Time dt) {
     }
 
     UpdateGUI(dt);
+    GetContext().player_->HandleRealtimeInput(sidebarWorld_.GetCommandQueue());
 	return true;
 }
 
