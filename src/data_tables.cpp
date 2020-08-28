@@ -28,13 +28,13 @@ std::vector<EnemyData> InitializeEnemyData()
 	data[Enemy::Bulk].speed = 50.f;
 	data[Enemy::Bulk].slowDownRate = 0.7;
 	data[Enemy::Bulk].texture = Textures::Water;
-	data[Enemy::Bulk].worthOfMoney = 15;
+	data[Enemy::Bulk].worthOfMoney = 20;
 
 	data[Enemy::Fast].hitpoints = 20;
 	data[Enemy::Fast].speed = 100.f;
 	data[Enemy::Fast].slowDownRate = 0.7;
 	data[Enemy::Fast].texture = Textures::Water;
-	data[Enemy::Fast].worthOfMoney = 20;
+	data[Enemy::Fast].worthOfMoney = 25;
 
 
 	return data;
