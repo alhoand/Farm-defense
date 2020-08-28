@@ -4,7 +4,6 @@
 #include <SFML/System/Time.hpp>
 
 #include <iostream> // for debugging
-#include <limits>
 #include <algorithm>
 #include <cassert>
 
@@ -396,50 +395,54 @@ void GameField::SpawnEnemies(sf::Time dt) {
 // randomizes the enemy types that spawn
 void GameField::RandomEnemySpawner(unsigned int level)
 {
-	int num = RandomInt(std::min((int) level, 4)); //random int that is max level-1 or 4
-
-		switch(num)
+	int num = RandomInt(level); //random int that is max level-1
+	if (level == 5) // on the last level, no basicEnemies are spawned
+	{
+		num = std::max(num, 1); 
+	}
+	
+	switch(num)
+	{
+		case 0: 
 		{
-			case 0: 
-			{
-				std::unique_ptr<BasicEnemy> newEnemy(new BasicEnemy(textures_, difficultyLevel_));
-				newEnemy->setPosition(spawnPosition_);
-				newEnemy->SetVelocity(newEnemy->GetSpeed(), 0.f); //this need to be tought again if we have multiple paths
-				sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
-			}
-				break;
-			case 1:
-			{
-				std::unique_ptr<MultiEnemy> newEnemy(new MultiEnemy(textures_, difficultyLevel_));
-				newEnemy->setPosition(spawnPosition_);
-				newEnemy->SetVelocity(newEnemy->GetSpeed(), 0.f); //this need to be tought again if we have multiple paths
-				sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
-			}
-				break;
-			case 2:
-			{
-				std::unique_ptr<BulkEnemy> newEnemy(new BulkEnemy(textures_, difficultyLevel_));
-				newEnemy->setPosition(spawnPosition_);
-				newEnemy->SetVelocity(newEnemy->GetSpeed(), 0.f); //this need to be tought again if we have multiple paths
-				sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
-			}
-				break;
-			case 3:
-			{
-				std::unique_ptr<FastEnemy> newEnemy(new FastEnemy(textures_, difficultyLevel_));
-				newEnemy->setPosition(spawnPosition_);
-				newEnemy->SetVelocity(newEnemy->GetSpeed(), 0.f); //this need to be tought again if we have multiple paths
-				sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
-			}
-				break;
-			default:
-			{
-				std::unique_ptr<BulkEnemy> newEnemy(new BulkEnemy(textures_, difficultyLevel_));
-				newEnemy->setPosition(spawnPosition_);
-				newEnemy->SetVelocity(newEnemy->GetSpeed(), 0.f); //this need to be tought again if we have multiple paths
-				sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
-			}
+			std::unique_ptr<BasicEnemy> newEnemy(new BasicEnemy(textures_, difficultyLevel_));
+			newEnemy->setPosition(spawnPosition_);
+			newEnemy->SetVelocity(newEnemy->GetSpeed(), 0.f); 
+			sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
 		}
+			break;
+		case 1:
+		{
+			std::unique_ptr<MultiEnemy> newEnemy(new MultiEnemy(textures_, difficultyLevel_));
+			newEnemy->setPosition(spawnPosition_);
+			newEnemy->SetVelocity(newEnemy->GetSpeed(), 0.f); 
+			sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
+		}
+			break;
+		case 2:
+		{
+			std::unique_ptr<BulkEnemy> newEnemy(new BulkEnemy(textures_, difficultyLevel_));
+			newEnemy->setPosition(spawnPosition_);
+			newEnemy->SetVelocity(newEnemy->GetSpeed(), 0.f);
+			sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
+		}
+			break;
+		case 3:
+		{
+			std::unique_ptr<FastEnemy> newEnemy(new FastEnemy(textures_, difficultyLevel_));
+			newEnemy->setPosition(spawnPosition_);
+			newEnemy->SetVelocity(newEnemy->GetSpeed(), 0.f); 
+			sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
+		}
+			break;
+		default:
+		{
+			std::unique_ptr<MultiEnemy> newEnemy(new MultiEnemy(textures_, difficultyLevel_));
+			newEnemy->setPosition(spawnPosition_);
+			newEnemy->SetVelocity(newEnemy->GetSpeed(), 0.f); 
+			sceneLayers_[Field] -> AttachChild(std::move(newEnemy));
+		}
+	}
 }
 
 // destroys entities that are no longer on the game field
@@ -521,13 +524,14 @@ void GameField::MakeTowersShoot()
 		if (!tower.CanShoot())
 			return;
 
-		float minDistance = std::numeric_limits<float>::max();
-		Enemy* closestEnemy = nullptr;
+		float maxDistanceTravelled = 0;
+		Enemy* farthestEnemy = nullptr;
 
-		// Find closest enemy
+		// Find enemy that is farthest on the path
 		for(Enemy* enemy : activeEnemies_)
 		{
 			float enemyDistance = Distance(tower, *enemy);
+			float distanceTravelled = enemy->GetTravelledDistance();
 
 			if (enemyDistance <= tower.GetRange())
 			{
@@ -535,18 +539,18 @@ void GameField::MakeTowersShoot()
 					enemy->SlowDown();
 					continue;
 				}
-				if (enemyDistance < minDistance)
+				if (distanceTravelled > maxDistanceTravelled)
 				{
-					closestEnemy = enemy;
-					minDistance = enemyDistance;
+					farthestEnemy = enemy;
+					maxDistanceTravelled = distanceTravelled;
 				}
 			}
 			
 		}
 
-		if (closestEnemy)
+		if (farthestEnemy)
 		{
-			sf::Vector2f direction(closestEnemy->GetWorldPosition() - tower.GetWorldPosition());
+			sf::Vector2f direction(farthestEnemy->GetWorldPosition() - tower.GetWorldPosition());
 			//std::cout << "shooting direction: " << direction.x << ", " << direction.y << std::endl;
 			tower.Shoot(commandQueue_, direction);
 		}

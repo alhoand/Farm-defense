@@ -35,6 +35,7 @@ class Enemy : public Entity {
         virtual void    TakeHit(int damage, unsigned int bulletType) = 0; // some enemies resist or take more damage if bullet is certain type, so that can be defined in derived classes
         bool            IsMarkedForRemoval() const override;
         int             GetMoney();
+        float           GetTravelledDistance();
 
     protected:
         virtual void    UpdateMovementPattern(sf::Time dt); 
@@ -46,6 +47,7 @@ class Enemy : public Entity {
         Type            type_;
         sf::Sprite      sprite_;
         float           travelledDistance_;
+        float           totalTravelledDistance_;
 		std::size_t     directionIndex_;
         unsigned int    difficultyLevel_;
         float           difficultyIncrement_;
