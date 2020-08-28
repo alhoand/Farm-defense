@@ -398,7 +398,7 @@ void GameField::RandomEnemySpawner(unsigned int level)
 	int num = RandomInt(level); //random int that is max level-1
 	if (level == 5) // on the last level, no basicEnemies are spawned
 	{
-		num = std::max(num, 1); 
+		num = std::max(1, RandomInt(4)); 
 	}
 	
 	switch(num)

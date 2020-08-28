@@ -32,7 +32,7 @@ std::vector<EnemyData> InitializeEnemyData()
 
 	data[Enemy::Fast].hitpoints = 20;
 	data[Enemy::Fast].speed = 100.f;
-	data[Enemy::Fast].slowDownRate = 0.7;
+	data[Enemy::Fast].slowDownRate = 0.5;
 	data[Enemy::Fast].texture = Textures::Water;
 	data[Enemy::Fast].worthOfMoney = 25;
 

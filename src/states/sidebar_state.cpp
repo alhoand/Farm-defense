@@ -171,6 +171,11 @@ void SidebarState::AddTowerButton(Tower::Type type, float relX, float relY, sf::
         
         towerButton->SetCallback([this, towerButton] ()
             {
+                // If button has already been pressed and tower hasn't been placed on the gameField yet, player can't buy another tower 
+                if ( towerButton->GetTowerPic()->IsActive())
+                {
+                    return;
+                }
                 if (GetContext().player_->BuyTower(towerTable[towerButton->GetTowerType()].price))
                 {
                     Command command;
