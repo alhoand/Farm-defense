@@ -196,8 +196,8 @@ void GameField::LoadTextures() {
 	textures_.Load(Textures::ID::SlowingTower, "../media/textures/jaavehje.png");
 	textures_.Load(Textures::ID::BombingTower, "../media/textures/tractor.png");
 	textures_.Load(Textures::ID::BasicBullet, "../media/textures/bullet.png");
-	textures_.Load(Textures::ID::SuperBullet, "../media/textures/bullet.png");
-	textures_.Load(Textures::ID::Bomb, "../media/textures/bomb.png");
+	textures_.Load(Textures::ID::SuperBullet, "../media/textures/superBullet.png");
+	textures_.Load(Textures::ID::Bomb, "../media/textures/bensa.png");
 	textures_.Load(Textures::ID::NoTexture,      "../media/textures/noTexture.png");
 	textures_.Load(Textures::ID::DeathAnimation,      "../media/textures/deathAnimation.png");
 	textures_.Load(Textures::ID::Explosion,      "../media/textures/explosion.png");

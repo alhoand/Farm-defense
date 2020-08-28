@@ -52,6 +52,7 @@ sf::FloatRect Bullet::GetBoundingRect() const {
 
 void Bullet::UpdateCurrent(sf::Time dt,CommandQueue& commands) {
     Entity::UpdateCurrent(dt, commands);
+    sprite_.rotate(2);
 }
 
 void Bullet::DrawCurrent(sf::RenderTarget& target,sf::RenderStates states) const {
