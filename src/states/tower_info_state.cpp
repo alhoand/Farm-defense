@@ -114,10 +114,16 @@ TowerInfoState::TowerInfoState(StateStack& stack, Context context) :
         auto pauseButton = GetContext().GUIContainer_->GetChild(GUI::ID::PlayPause);
         GUIContainer_.Pack(pauseButton);
 
-        backgroundShape_.setFillColor(sf::Color(160,82,45,230));
+        backgroundShape_.setFillColor(sf::Color(160,82,45,252));
         //backgroundShape_.setFillColor(sf::Color(0,0,235,230));
+
         backgroundShape_.setSize(viewSize_);
+
+        backgroundShape_.setOutlineThickness(12.f);
+        backgroundShape_.setOutlineColor(sf::Color(115,67,33, 252));
+
         GUIContainer_.setPosition(context.window_->getView().getSize().x - viewSize_.x, 0);
+        
         backgroundShape_.setPosition(GUIContainer_.getPosition());
     }
 

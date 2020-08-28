@@ -95,7 +95,10 @@ SidebarState::SidebarState(StateStack& stack, Context context)
         AddTowerButton(Tower::Type::Bombing, -75.f, 150.f, sf::IntRect(55,53,83,83),sf::IntRect(55,53,83,83), *context.fonts_);
         AddTowerButton(Tower::Type::Super, +75.f, 150.f, sf::IntRect(55,53,83,83),sf::IntRect(55,53,83,83), *context.fonts_);
 
-        backgroundShape_.setFillColor(sf::Color(160,82,45,235));
+        backgroundShape_.setFillColor(sf::Color(160,82,45,252));
+        backgroundShape_.setOutlineThickness(12.f);
+        backgroundShape_.setOutlineColor(sf::Color(115,67,33, 252));
+
         backgroundShape_.setSize(viewSize_);
 
         backgroundShape_.setPosition(GUIContainer_.getPosition());
@@ -203,13 +206,8 @@ void SidebarState::AddTowerButton(Tower::Type type, float relX, float relY, sf::
                     
                         std::cout << "not enough money to buy towers!" << std::endl;
                     }
-                }else
-                {
-                    std::cout << "The player is dragging" << std::endl;
                 }
                 
-
-
             });
 
         auto towerText = std::make_shared<GUI::Label>(towerTable[type].name, fonts, 20, Fonts::Main);
