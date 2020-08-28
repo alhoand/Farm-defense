@@ -191,6 +191,7 @@ void Player::ResetGame()
     status_ = GameStatus::GameRunning; 
     money_ = 500;
     currentLevel_ = 1;
+    isDragging_ = false;
 }
 
 int Player::GetPlayerMoney() const
