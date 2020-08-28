@@ -192,10 +192,10 @@ void GameField::LoadTextures() {
 	textures_.Load(Textures::ID::Leaf, "../media/textures/cat.png");
 	textures_.Load(Textures::ID::Grass, "../media/textures/grass.jpg");
 	textures_.Load(Textures::ID::Path, "../media/textures/path.png");
-	textures_.Load(Textures::ID::BasicTower, "../media/textures/tractor.png");
+	textures_.Load(Textures::ID::BasicTower, "../media/textures/farmer.png");
 	textures_.Load(Textures::ID::SuperTower, "../media/textures/harvester.png");
-	textures_.Load(Textures::ID::SlowingTower, "../media/textures/tower.png");
-	textures_.Load(Textures::ID::BombingTower, "../media/textures/tower.png");
+	textures_.Load(Textures::ID::SlowingTower, "../media/textures/jaavehje.png");
+	textures_.Load(Textures::ID::BombingTower, "../media/textures/tractor.png");
 	textures_.Load(Textures::ID::BasicBullet, "../media/textures/bullet.png");
 	textures_.Load(Textures::ID::SuperBullet, "../media/textures/bullet.png");
 	textures_.Load(Textures::ID::Bomb, "../media/textures/bomb.png");
