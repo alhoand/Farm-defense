@@ -1,21 +1,22 @@
-# Sample README file for C++ programming project
+# Farmitaistelu tower defence game
 
-This is an initial git repository for your programming project.
-It contains an initial directory structure that we wish you could
-use as follows:
+Farmitaistelu is a tower defence game made with C++ and SFML. To run the game you need cmake and SFML installed into your system.
 
-  * `plan/` -- Your project plan should be put here. You may use different sources,
-    but we hope to get the plan **also as a pdf file**.
-
-  * `doc/` -- The documentation sources related to your project should be put here.
-    You may use different tools for documentation (e.g. latex),
-    but we hope to get the final version of the document
-    **also as pdf file**.
-
-  * `src/` -- Here are the C++ source files. You can have subfolders as needed.
-
-  * `README.md` -- This file. You should modify it to represent
-    your project.
-
-You may also add other new directories as needed, for example
-for testing tools.
+## Usage
+To build the game, one should first create an empty directory for the build into the root of the repository:
+```
+mkdir build
+```
+Navigate to the directory created above:
+```
+cd build
+```
+Inside the build directory first run cmake and then make:
+```
+cmake .. 
+make
+```
+To run the game, run the executable farmitaistelu:
+```
+./farmitaistelu
+```
