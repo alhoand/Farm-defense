@@ -3,7 +3,7 @@
 Farmitaistelu is a tower defence game made with C++ and SFML. To run the game you need cmake and SFML installed into your system.
 
 ## Usage
-To build the game, one should first create an empty directory for the build into the root of the repository:
+To build the game, first create an empty directory for the build into the root of the repository:
 ```
 mkdir build
 ```
