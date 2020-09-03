@@ -1,0 +1,11 @@
+Design: 4
+The design choices are sensible and use appropriate features. Inheritance is used for the towers and enemies. A class for storing some settings etc. would have been useful to avoid hard coding paths etc. in the classes.
+
+Working practices: 4
+Git commits are sensible, but branching is not used quite correctly. Work log is good. Testing of the software is documented.
+
+Implementation: 4
+Software works as intended and is easy to build with CMake. Memory management and practices regarding it are not documented, smart pointers are not used for example when storing active enemies. 
+
+Topical features: 4
+All the basic features have been implemented and in addition some additional features have been implemented too.

@@ -1,0 +1,13 @@
+Design: 4
+The project seems to have a clear class structure, but there might be a bit too many classes, which makes it harder for an outsider to figure out how everything works. Abstract classes, inheritance and templates are used. Towers and enemies are implemented using inheritance (abstract classes). Design seems to be well documented. UML charts are provided in the documentation. It seems that everything is hardcoded, so extending the game is probably quite difficult.
+
+Working practices: 4
+Division of work is well documented, commits are properly used and branching is used properly. Apparently playtesting was used to test the software. 
+
+Implementation: 3
+Instructions for building the software are incomplete. There was also an issue with filepaths in the code ( ../ had to be removed from included files), and we had to edit them to make the program run in the environment we used (linux ubuntu). The project uses cmake which seems to work properly. Handling exceptions is not properly implemented with just one try and catch in main.cpp. Unique_ptrs are used in the code. ﻿
+
+Topical features: 4
+The game has the basic features and some additional features. The implemented features seem to work robustly. 
+
+
